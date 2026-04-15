@@ -34,7 +34,7 @@ export default function LoginPage() {
       await login(email, password);
       setStatus('success');
       // Espera mock
-      setTimeout(() => navigate('/admin'), 500);
+      setTimeout(() => navigate('/dashboard'), 500);
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -46,7 +46,7 @@ export default function LoginPage() {
     setStatus('loading');
     try {
       console.log('Simulating Google Login...');
-      setTimeout(() => navigate('/admin'), 1000);
+      setTimeout(() => navigate('/dashboard'), 1000);
     } catch (error) {
       setStatus('error');
       setErrorMessage('Error al iniciar sesión con Google.');
