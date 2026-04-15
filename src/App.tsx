@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
 // Layouts
 import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/layout/AdminLayout';
+import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Public Pages
@@ -13,8 +14,9 @@ import HomePage from './pages/public/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 
-// Admin Pages
+// Admin / Dashboard Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import OverviewPage from './pages/dashboard/OverviewPage';
 
 function App() {
   return (
@@ -30,6 +32,17 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
+          {/* Internal Shared Dashboard Routes (Player, Coach, Club) */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route index element={<OverviewPage />} />
+              {/* Placeholders for upcoming features */}
+              <Route path="profile" element={<div className="p-6 text-white">Perfil (En construcció)</div>} />
+              <Route path="opportunities" element={<div className="p-6 text-white">Oportunitats (En construcció)</div>} />
+              <Route path="analytics" element={<div className="p-6 text-white">Analítiques (En construcció)</div>} />
+            </Route>
+          </Route>
+
           {/* Admin Routes inside AdminLayout (Protected) */}
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminLayout />}>
@@ -39,7 +52,7 @@ function App() {
           </Route>
 
           {/* 404 Catch-all */}
-          <Route path="*" element={<div className="p-20 text-center text-3xl font-bold">404 Not Found</div>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

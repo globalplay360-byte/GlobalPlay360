@@ -1,0 +1,73 @@
+import { useAuth } from '@/context/AuthContext';
+import { Link, useLocation } from 'react-router-dom';
+
+export default function Sidebar() {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  // Simulació d'opcions de navegació en base al rol de l'usuari
+  const navItems = [
+    { label: 'Overview', path: '/dashboard', icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+    )},
+    { label: 'El Meu Perfil', path: '/dashboard/profile', icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+    )},
+    { label: 'Oportunitats', path: '/dashboard/opportunities', icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+    )},
+    { label: 'Analítiques', path: '/dashboard/analytics', icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+    )}
+  ];
+
+  return (
+    <aside className="w-64 bg-[#111827] border-r border-[#1F2937] flex-shrink-0 flex flex-col hidden lg:flex">
+      <div className="h-16 flex items-center px-6 border-b border-[#1F2937]">
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <span className="text-2xl text-[#3B82F6]">🏆</span>
+          <span className="text-lg font-bold text-white tracking-tight">GP<span className="text-[#3B82F6]">360</span></span>
+        </Link>
+      </div>
+
+      <div className="p-4">
+        <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2 px-3">
+          Menú Principal
+        </p>
+        <nav className="flex flex-col space-y-1">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive 
+                    ? 'bg-[#3B82F6]/10 text-[#3B82F6]' 
+                    : 'text-[#9CA3AF] hover:text-white hover:bg-[#1F2937]'
+                }`}
+              >
+                <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
+                  {item.icon}
+                </div>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="mt-auto p-4 border-t border-[#1F2937]">
+        <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#0F172A] border border-[#1F2937]">
+          <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center text-[#3B82F6] font-bold text-sm shrink-0">
+            {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">{user?.displayName || 'Usuari de prova'}</p>
+            <p className="text-xs text-[#6B7280] truncate">{user?.role || 'Jugador'}</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}

@@ -40,7 +40,7 @@ export default function RegisterPage() {
     try {
       await register(email, password, displayName);
       setStatus('success');
-      setTimeout(() => navigate('/admin'), 500);
+      setTimeout(() => navigate('/dashboard'), 500);
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -52,7 +52,7 @@ export default function RegisterPage() {
     setStatus('loading');
     try {
       console.log('Simulating Google Register...');
-      setTimeout(() => navigate('/admin'), 1000);
+      setTimeout(() => navigate('/dashboard'), 1000);
     } catch (error) {
       setStatus('error');
       setErrorMessage('Error al registrarse con Google.');
