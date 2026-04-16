@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { mockConversations, mockUsers } from '@/services/mockData';
+import { subscribeToUserConversations } from '@/services/messages.service';
+import { getUserDoc } from '@/services/auth.service';
 import type { Conversation, User } from '@/types';
 import EmptyState from '@/components/ui/EmptyState';
 
@@ -9,9 +11,9 @@ interface ConversationExtended extends Conversation {
 }
 
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
-function ConversationListItem({ conv, currentUserId }: { conv: ConversationExtended, currentUserId: string }) {
-  const isLocked = conv.isPremiumLocked && currentUserId === 'user-player-1'; // Mock condition per a provar el comportament Free
-  // En un entorn real: const isLocked = conv.isPremiumLocked && currentPlan === 'free';
+function ConversationListItem({ conv, currentUserId, currentPlan }: { conv: ConversationExtended, currentUserId: string, currentPlan: string }) {
+  // En un entorn real: 'free' no existeix, seria 'trial', però mantenim la sintaxi de l'exemple
+  const isLocked = conv.isPremiumLocked && currentPlan === 'free';
   
   const displayDate = new Date(conv.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
   const time = new Date(conv.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -47,7 +49,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
         </div>
         
         <p className={`text-sm truncate ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : 'text-[#9CA3AF] group-hover:text-white transition-colors'}`}>
-          {isLocked ? "Missatge protegit per restricció premium. Actualitza el teu pla per llegir-lo." : conv.lastMessage}
+          {isLocked ? "Missatge protegit per restricció premium. Actualitza el teu pla per llegir-lo." : conv.lastMessage || 'Nova conversa.'}
         </p>
       </div>
 
@@ -65,17 +67,38 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
 
 export default function MessagesPage() {
   const { user } = useAuth();
-  const currentUserId = user?.uid || 'user-player-1';
+  const [conversations, setConversations] = useState<ConversationExtended[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Obtenim converses on participa l'usuari i afegim la info del "contrincant"
-  const conversations: ConversationExtended[] = mockConversations
-    .filter(c => c.participants.includes(currentUserId))
-    .map(c => {
-      const otherUserId = c.participants.find(id => id !== currentUserId);
-      const otherParticipant = mockUsers.find(u => u.uid === otherUserId);
-      return { ...c, otherParticipant };
-    })
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  useEffect(() => {
+    if (!user) return;
+
+    const unsubscribe = subscribeToUserConversations(user.uid, async (convs) => {
+      const extendedConvs = await Promise.all(
+        convs.map(async (c) => {
+          const otherUserId = c.participants.find(id => id !== user.uid);
+          let otherParticipant;
+          if (otherUserId) {
+            otherParticipant = await getUserDoc(otherUserId) || undefined;
+          }
+          return { ...c, otherParticipant };
+        })
+      );
+      
+      setConversations(extendedConvs);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto w-full">
@@ -89,7 +112,12 @@ export default function MessagesPage() {
       {conversations.length > 0 ? (
         <div className="flex flex-col gap-3">
           {conversations.map(conv => (
-            <ConversationListItem key={conv.id} conv={conv} currentUserId={currentUserId} />
+            <ConversationListItem 
+              key={conv.id} 
+              conv={conv} 
+              currentUserId={user?.uid || ''} 
+              currentPlan={user?.plan || 'trial'}
+            />
           ))}
         </div>
       ) : (

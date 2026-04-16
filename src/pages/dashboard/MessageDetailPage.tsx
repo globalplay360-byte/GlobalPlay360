@@ -1,8 +1,13 @@
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { mockConversations, mockMessages, mockUsers } from '@/services/mockData';
+import { subscribeToMessages, sendMessage } from '@/services/messages.service';
+import { getUserDoc } from '@/services/auth.service';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/services/firebase';
 import PremiumLockCard from '@/components/ui/PremiumLockCard';
 import EmptyState from '@/components/ui/EmptyState';
+import type { Conversation, Message, User } from '@/types';
 
 interface ChatHeaderProps {
   displayName: string;
@@ -31,7 +36,7 @@ function ChatHeader({ displayName, role }: ChatHeaderProps) {
         </div>
       </div>
       
-      {/* Botó accions de conversa (mock) */}
+      {/* Botó accions de conversa */}
       <button className="p-2 text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] rounded-lg transition-colors">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -59,14 +64,33 @@ function ChatMessageBubble({ text, isSender, timestamp }: { text: string, isSend
   );
 }
 
-function MessageComposer() {
+function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }) {
+  const [text, setText] = useState('');
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!text.trim() || sending) return;
+    
+    setSending(true);
+    try {
+      await onSend(text.trim());
+      setText('');
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
-    <div className="bg-[#111827] border-t border-[#1F2937] p-4 mt-auto">
+    <form onSubmit={handleSubmit} className="bg-[#111827] border-t border-[#1F2937] p-4 mt-auto">
       <div className="flex items-end gap-2 bg-[#0F172A] border border-[#374151] rounded-xl p-1 shadow-inner focus-within:border-[#3B82F6] focus-within:ring-1 focus-within:ring-[#3B82F6] transition-all">
         <button 
           type="button" 
           className="p-3 text-[#9CA3AF] hover:text-white transition-colors flex-shrink-0"
           aria-label="Adjuntar arxiu"
+          disabled={sending}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
@@ -77,18 +101,32 @@ function MessageComposer() {
           className="flex-1 max-h-32 min-h-[44px] bg-transparent border-none text-white text-sm focus:ring-0 resize-none py-3 placeholder:text-[#6B7280]"
           placeholder="Escriu el teu missatge..."
           rows={1}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          disabled={sending}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
         />
         
         <button 
           type="submit" 
-          className="p-3 text-white bg-[#3B82F6] hover:bg-[#2563EB] rounded-lg transition-colors flex-shrink-0 m-1 shadow-md shadow-[#3B82F6]/20"
+          disabled={sending || !text.trim()}
+          className="p-3 text-white bg-[#3B82F6] hover:bg-[#2563EB] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors flex-shrink-0 m-1 shadow-md shadow-[#3B82F6]/20"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-          </svg>
+          {sending ? (
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          )}
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -96,11 +134,82 @@ export default function MessageDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
   
-  const currentUserId = user?.uid || 'user-player-1';
-  const currentUserPlan = user?.plan || 'free'; 
+  const currentUserId = user?.uid || '';
+  const currentUserPlan = user?.plan || 'trial'; 
 
-  // Cercar la conversa al mock
-  const conversation = mockConversations.find(c => c.id === id);
+  const [conversation, setConversation] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [otherUser, setOtherUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll a l'últim missatge
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (!id || !user) return;
+
+    let unsubscribeMessages: () => void;
+
+    const initChat = async () => {
+      try {
+        // Obtenir la conversa
+        const snap = await getDoc(doc(db, 'conversations', id));
+        if (snap.exists()) {
+          const convData = snap.data();
+          const conv: Conversation = {
+            id,
+            participants: convData.participants || [],
+            lastMessage: convData.lastMessage || '',
+            updatedAt: convData.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+            isPremiumLocked: convData.isPremiumLocked || false
+          };
+          setConversation(conv);
+
+          // Obtenir altre participant
+          const otherId = conv.participants.find((pId: string) => pId !== user.uid);
+          if (otherId) {
+            const ou = await getUserDoc(otherId);
+            setOtherUser(ou);
+          }
+        }
+
+        // Subscripció als missatges
+        unsubscribeMessages = subscribeToMessages(id, (newMessages) => {
+          setMessages(newMessages);
+          // Donem una mica de temps per renderitzar i fer scroll
+          setTimeout(scrollToBottom, 100);
+        });
+
+      } catch (err) {
+        console.error("Error loading chat:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initChat();
+
+    return () => {
+      if (unsubscribeMessages) unsubscribeMessages();
+    };
+  }, [id, user]);
+
+  const handleSend = async (text: string) => {
+    if (!id || !user) return;
+    await sendMessage(id, user.uid, text);
+    scrollToBottom();
+  };
+
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]"></div>
+      </div>
+    );
+  }
 
   if (!conversation) {
     return (
@@ -118,12 +227,7 @@ export default function MessageDetailPage() {
     );
   }
 
-  // Trobem l'altre usuari per a la capçalera
-  const otherUserId = conversation.participants.find(pId => pId !== currentUserId);
-  const otherUser = mockUsers.find(u => u.uid === otherUserId);
-
-  // LOGICA DE RESTRICCIÓ 
-  // Usuaris "free" no poden veure converses bloquejades, encara que sintonitzin per url
+  // LOGICA DE RESTRICCIÓ (només per exemple)
   const accessDenied = conversation.isPremiumLocked && currentUserPlan === 'free';
   
   if (accessDenied) {
@@ -137,11 +241,6 @@ export default function MessageDetailPage() {
       </div>
     );
   }
-
-  // Agafar missatges relacionats
-  const currentMessages = mockMessages
-    .filter(m => m.conversationId === id)
-    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
   return (
     <div className="max-w-4xl mx-auto w-full h-[calc(100vh-theme(spacing.16))] md:h-[calc(100vh-theme(spacing.16)-4rem)] flex flex-col bg-[#0B1120] md:border-x md:border-[#1F2937] overflow-hidden">
@@ -159,8 +258,8 @@ export default function MessageDetailPage() {
           </span>
         </div>
 
-        {currentMessages.length > 0 ? (
-          currentMessages.map(msg => (
+        {messages.length > 0 ? (
+          messages.map(msg => (
              <ChatMessageBubble 
                key={msg.id}
                text={msg.text}
@@ -173,9 +272,10 @@ export default function MessageDetailPage() {
             Escriu el primer missatge per començar.
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
-      <MessageComposer />
+      <MessageComposer onSend={handleSend} />
     </div>
   );
 }
