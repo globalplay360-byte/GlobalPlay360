@@ -3,6 +3,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  updateDoc,
+  deleteDoc,
   query,
   orderBy,
   where,
@@ -49,7 +51,7 @@ export async function getOpportunityById(id: string): Promise<Opportunity | null
   return { id: snap.id, ...snap.data() } as Opportunity;
 }
 
-// ── Write (base prepared — will be expanded with the create form) ───
+// ── Write ───────────────────────────────────────────────
 
 /** Create a new opportunity (only clubs should call this) */
 export async function createOpportunity(
@@ -61,6 +63,31 @@ export async function createOpportunity(
     _createdAt: serverTimestamp(),
   });
   return docRef.id;
+}
+
+/** Update an existing opportunity (partial update) */
+export async function updateOpportunity(
+  id: string,
+  data: Partial<Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>>,
+): Promise<void> {
+  await updateDoc(doc(db, COLLECTION, id), {
+    ...data,
+    _updatedAt: serverTimestamp(),
+  });
+}
+
+/** Toggle opportunity status between open and closed */
+export async function toggleOpportunityStatus(id: string, currentStatus: Opportunity['status']): Promise<void> {
+  const newStatus = currentStatus === 'open' ? 'closed' : 'open';
+  await updateDoc(doc(db, COLLECTION, id), {
+    status: newStatus,
+    _updatedAt: serverTimestamp(),
+  });
+}
+
+/** Delete an opportunity permanently */
+export async function deleteOpportunity(id: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTION, id));
 }
 
 // ── Seed (dev only) ─────────────────────────────────────

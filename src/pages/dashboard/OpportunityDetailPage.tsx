@@ -164,11 +164,11 @@ export default function OpportunityDetailPage() {
       {/* Top Nav */}
       <div>
         <button
-          onClick={() => navigate('/dashboard/opportunities')}
+          onClick={() => navigate(user?.role === 'club' ? '/dashboard/opportunities/mine' : '/dashboard/opportunities')}
           className="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
         >
           <ArrowLeftIcon className="w-4 h-4 mr-2" />
-          Tornar al Marketplace
+          {user?.role === 'club' ? 'Tornar a Les Meves Ofertes' : 'Tornar al Marketplace'}
         </button>
       </div>
 
