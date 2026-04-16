@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Opportunity } from '@/types';
-import { getOpportunities } from '@/services/opportunities.service';
+import { getOpportunitiesByField } from '@/services/opportunities.service';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -23,7 +23,7 @@ export default function OpportunitiesPage() {
       try {
         setIsLoading(true);
         setError(null);
-        const data = await getOpportunities();
+        const data = await getOpportunitiesByField('status', '==', 'open');
         if (!cancelled) setOpportunities(data);
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant oportunitats');
