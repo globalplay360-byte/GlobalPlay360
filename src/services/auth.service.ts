@@ -4,11 +4,13 @@ import type { User } from '@/types';
 // See firebase.ts for setup instructions
 
 const MOCK_USER: User = {
-  uid: 'mock-uid-001',
-  email: 'demo@globalplay360.com',
-  displayName: 'Demo User',
-  role: 'admin',
-  createdAt: new Date().toISOString(),
+  uid: 'user-player-1',
+  email: 'player@globalplay360.com',
+  displayName: 'Leo Messi (Mock)',
+  role: 'player',
+  plan: 'free',
+  onboardingCompleted: true,
+  createdAt: '2026-01-01T10:00:00Z',
 };
 
 export async function loginWithEmail(
