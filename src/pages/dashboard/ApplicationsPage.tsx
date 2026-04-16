@@ -1,12 +1,14 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { mockApplications, mockOpportunities, mockUsers } from '@/services/mockData';
+import { getUserApplications } from '@/services/applications.service';
+import { getOpportunityById } from '@/services/opportunities.service';
+import { getUserDoc } from '@/services/auth.service';
 import type { Application, Opportunity, User } from '@/types';
 import StatusBadge from '@/components/ui/StatusBadge';
 import EmptyState from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
 
-// Extended type per a poder renderitzar les targetes amb dades completes
 interface ApplicationExtended extends Application {
   opportunity?: Opportunity;
   club?: User;
@@ -14,10 +16,51 @@ interface ApplicationExtended extends Application {
 
 export default function ApplicationsPage() {
   const { user } = useAuth();
-  const currentUserId = user?.uid || 'user-player-1'; 
   const currentUserRole = user?.role || 'player';
 
-  // Si és un club, per ara mostrem un placeholder (ja que gestiona candidats, no aplica)
+  const [applications, setApplications] = useState<ApplicationExtended[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    async function fetch() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const apps = await getUserApplications(user!.uid);
+
+        // Enrich each application with opportunity + club data
+        const enriched: ApplicationExtended[] = await Promise.all(
+          apps.map(async (app) => {
+            const [opportunity, club] = await Promise.all([
+              getOpportunityById(app.opportunityId),
+              app.clubId ? getUserDoc(app.clubId) : null,
+            ]);
+            return {
+              ...app,
+              opportunity: opportunity ?? undefined,
+              club: club ?? undefined,
+            };
+          }),
+        );
+
+        if (!cancelled) setApplications(enriched);
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant candidatures');
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+
+    fetch();
+    return () => { cancelled = true; };
+  }, [user]);
+
+  // Club placeholder (gestió de candidats — futur)
   if (currentUserRole === 'club') {
     return (
       <div className="p-6 max-w-6xl mx-auto w-full">
@@ -35,15 +78,39 @@ export default function ApplicationsPage() {
     );
   }
 
-  // Filtrar aplicacions per l'usuari actual i estendre-les amb l'oportunitat i club
-  const applications: ApplicationExtended[] = mockApplications
-    .filter((app) => app.userId === currentUserId)
-    .map((app) => {
-      const opportunity = mockOpportunities.find((opp) => opp.id === app.opportunityId);
-      const club = mockUsers.find((u) => u.uid === opportunity?.clubId);
-      return { ...app, opportunity, club };
-    })
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  // ── Error state ───────────────────────────────────────
+  if (error) {
+    return (
+      <div className="p-6 max-w-6xl mx-auto w-full">
+        <EmptyState
+          title="Error de connexió"
+          description={error}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          }
+          action={
+            <Button variant="primary" onClick={() => window.location.reload()}>Reintentar</Button>
+          }
+        />
+      </div>
+    );
+  }
+
+  // ── Loading state ─────────────────────────────────────
+  if (isLoading) {
+    return (
+      <div className="p-6 max-w-6xl mx-auto w-full">
+        <div className="h-8 w-48 bg-gray-800 rounded mb-6 animate-pulse" />
+        <div className="flex flex-col gap-4">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="h-40 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto w-full">
@@ -62,12 +129,12 @@ export default function ApplicationsPage() {
         {applications.length > 0 ? (
           <div className="flex flex-col gap-4">
             {applications.map((app) => (
-              <div 
-                key={app.id} 
+              <div
+                key={app.id}
                 className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 transition-colors group flex flex-col md:flex-row p-5 gap-6 mb-4 relative overflow-hidden"
               >
-                {/* Línia superior de status segons el badge */}
-                <div className={`absolute top-0 left-0 h-1 w-full 
+                {/* Línia superior de status */}
+                <div className={`absolute top-0 left-0 h-1 w-full
                   ${app.status === 'accepted' ? 'bg-emerald-500' : ''}
                   ${app.status === 'rejected' ? 'bg-red-500' : ''}
                   ${app.status === 'in_review' ? 'bg-purple-500' : ''}
@@ -78,13 +145,13 @@ export default function ApplicationsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[#9CA3AF] text-sm font-medium">
-                      Aplicat el {new Date(app.createdAt).toLocaleDateString()}
+                      Aplicat el {new Date(app.createdAt).toLocaleDateString('ca-ES')}
                     </span>
                     <div className="block md:hidden">
                       <StatusBadge status={app.status} />
                     </div>
                   </div>
-                  
+
                   <h2 className="text-lg font-bold text-white mb-1 truncate">
                     {app.opportunity?.title || 'Oportunitat Tancada'}
                   </h2>
@@ -93,17 +160,20 @@ export default function ApplicationsPage() {
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
-                    <div className="flex items-center gap-1.5">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                      <span>{app.opportunity?.sport}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                      <span>{app.opportunity?.location}</span>
-                    </div>
+                    {app.opportunity?.sport && (
+                      <div className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        <span>{app.opportunity.sport}</span>
+                      </div>
+                    )}
+                    {app.opportunity?.location && (
+                      <div className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>{app.opportunity.location}</span>
+                      </div>
+                    )}
                   </div>
-                  
-                  {/* Missatge d'apliació truncat per a que no ocupi tot */}
+
                   {app.message && (
                     <div className="mt-4 p-3 bg-[#0F172A] border border-[#1F2937] rounded-lg">
                       <p className="text-sm text-[#9CA3AF] italic line-clamp-2">"{app.message}"</p>
@@ -116,7 +186,7 @@ export default function ApplicationsPage() {
                   <div className="hidden md:block">
                     <StatusBadge status={app.status} className="text-sm px-3 py-1" />
                   </div>
-                  <Link 
+                  <Link
                     to={`/dashboard/opportunities/${app.opportunityId}`}
                     className="w-full md:w-auto px-4 py-2 border border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6]/10 text-sm font-medium rounded-lg transition-colors text-center"
                   >
@@ -136,8 +206,8 @@ export default function ApplicationsPage() {
               </svg>
             }
             action={
-              <Link 
-                to="/dashboard/opportunities" 
+              <Link
+                to="/dashboard/opportunities"
                 className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-white hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
               >
                 Buscar Oportunitats

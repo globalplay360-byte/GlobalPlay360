@@ -6,7 +6,9 @@ export const mockUsers: User[] = [
     email: 'player@globalplay360.com',
     displayName: 'Leo Messi (Mock)',
     role: 'player',
-    plan: 'free',
+    plan: 'trial',
+    subscriptionStatus: 'trialing',
+    trialEndsAt: '2026-02-01T10:00:00Z',
     onboardingCompleted: true,
     createdAt: '2026-01-01T10:00:00Z'
   },
@@ -16,6 +18,8 @@ export const mockUsers: User[] = [
     displayName: 'Pep Guardiola (Mock)',
     role: 'coach',
     plan: 'premium',
+    subscriptionStatus: 'active',
+    trialEndsAt: '2026-02-02T10:00:00Z',
     onboardingCompleted: true,
     createdAt: '2026-01-02T10:00:00Z'
   },
@@ -25,6 +29,8 @@ export const mockUsers: User[] = [
     displayName: 'FC Barcelona (Mock)',
     role: 'club',
     plan: 'pro',
+    subscriptionStatus: 'active',
+    trialEndsAt: '2026-02-03T10:00:00Z',
     onboardingCompleted: true,
     createdAt: '2026-01-03T10:00:00Z'
   }
@@ -108,6 +114,7 @@ export const mockApplications: Application[] = [
     id: 'app-1',
     opportunityId: 'opp-1',
     userId: 'user-player-1',
+    clubId: 'user-club-1',
     status: 'submitted',
     createdAt: '2026-04-14T10:15:00Z',
     message: 'I would love to join your academy. Here is my highlight reel!'
@@ -116,6 +123,7 @@ export const mockApplications: Application[] = [
     id: 'app-2',
     opportunityId: 'opp-2',
     userId: 'user-player-1',
+    clubId: 'user-club-1',
     status: 'in_review',
     createdAt: '2026-04-10T11:00:00Z',
     message: 'I have experience internationally and can contribute immediately.'
@@ -124,6 +132,7 @@ export const mockApplications: Application[] = [
     id: 'app-3',
     opportunityId: 'opp-1',
     userId: 'user-player-1',
+    clubId: 'user-club-1',
     status: 'accepted',
     createdAt: '2026-03-20T09:30:00Z',
     message: 'Looking forward to the trials.'
@@ -132,6 +141,7 @@ export const mockApplications: Application[] = [
     id: 'app-4',
     opportunityId: 'opp-2',
     userId: 'user-player-1',
+    clubId: 'user-club-1',
     status: 'rejected',
     createdAt: '2026-02-15T14:45:00Z',
     message: 'Thanks for considering my profile.'

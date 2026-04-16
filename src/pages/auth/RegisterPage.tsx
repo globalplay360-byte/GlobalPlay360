@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import type { UserRole } from '@/types';
+
+const ROLE_MAP: Record<string, UserRole> = {
+  jugador: 'player',
+  entrenador: 'coach',
+  club: 'club',
+};
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const defaultRole = searchParams.get('type') || 'jugador';
@@ -38,7 +45,7 @@ export default function RegisterPage() {
     setStatus('loading');
     
     try {
-      await register(email, password, displayName);
+      await register(email, password, displayName, ROLE_MAP[role] ?? 'player');
       setStatus('success');
       setTimeout(() => navigate('/dashboard'), 500);
     } catch (err) {
@@ -51,9 +58,10 @@ export default function RegisterPage() {
   const handleGoogleLogin = async () => {
     setStatus('loading');
     try {
-      console.log('Simulating Google Register...');
-      setTimeout(() => navigate('/dashboard'), 1000);
-    } catch (error) {
+      await loginWithGoogle(ROLE_MAP[role] ?? 'player');
+      setStatus('success');
+      setTimeout(() => navigate('/dashboard'), 500);
+    } catch {
       setStatus('error');
       setErrorMessage('Error al registrarse con Google.');
     }

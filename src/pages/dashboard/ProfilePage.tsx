@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { mockProfiles } from '@/services/mockData';
 import EmptyState from '@/components/ui/EmptyState';

@@ -1,5 +1,6 @@
-export type UserRole = 'player' | 'coach' | 'club' | 'admin' | 'guest'; // 'guest' before onboarding
-export type PlanType = 'free' | 'premium' | 'pro';
+export type UserRole = 'player' | 'coach' | 'club' | 'admin';
+export type PlanType = 'trial' | 'premium' | 'pro';
+export type SubscriptionStatus = 'trialing' | 'active' | 'canceled' | 'expired';
 
 export interface User {
   uid: string;
@@ -8,6 +9,8 @@ export interface User {
   photoURL?: string;
   role: UserRole;
   plan: PlanType;
+  subscriptionStatus: SubscriptionStatus;
+  trialEndsAt: string;          // ISO date — createdAt + 30 days
   onboardingCompleted: boolean;
   createdAt: string;
 }
@@ -42,6 +45,7 @@ export interface Application {
   id: string;
   opportunityId: string;
   userId: string;
+  clubId: string;
   status: 'submitted' | 'in_review' | 'accepted' | 'rejected';
   createdAt: string;
   message?: string;
@@ -49,7 +53,7 @@ export interface Application {
 
 export interface Conversation {
   id: string;
-  participants: string[]; // User IDs
+  participants: string[];
   lastMessage: string;
   updatedAt: string;
   isPremiumLocked?: boolean;
@@ -68,6 +72,6 @@ export interface Subscription {
   id: string;
   userId: string;
   plan: PlanType;
-  status: 'active' | 'canceled' | 'past_due';
+  status: SubscriptionStatus;
   currentPeriodEnd: string;
 }
