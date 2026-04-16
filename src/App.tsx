@@ -17,6 +17,9 @@ import RegisterPage from './pages/auth/RegisterPage';
 // Admin / Dashboard Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import OverviewPage from './pages/dashboard/OverviewPage';
+import OpportunitiesPage from './pages/dashboard/OpportunitiesPage';
+import OpportunityDetailPage from './pages/dashboard/OpportunityDetailPage';
+import ApplicationsPage from './pages/dashboard/ApplicationsPage';
 
 function App() {
   return (
@@ -38,7 +41,16 @@ function App() {
               <Route index element={<OverviewPage />} />
               {/* Placeholders for upcoming features */}
               <Route path="profile" element={<div className="p-6 text-white">Perfil (En construcció)</div>} />
-              <Route path="opportunities" element={<div className="p-6 text-white">Oportunitats (En construcció)</div>} />
+              
+              {/* Oportunitats niades clares */}
+              <Route path="opportunities">
+                <Route index element={<OpportunitiesPage />} />
+                <Route path=":id" element={<OpportunityDetailPage />} />        
+              </Route>
+
+              {/* Candidatures / Aplicacions */}
+              <Route path="applications" element={<ApplicationsPage />} />
+
               <Route path="analytics" element={<div className="p-6 text-white">Analítiques (En construcció)</div>} />
             </Route>
           </Route>
