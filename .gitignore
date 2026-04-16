@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 build_output
+
+# Env files
+.env
+.env.*
+!.env.example
