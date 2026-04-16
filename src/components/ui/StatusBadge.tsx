@@ -1,5 +1,3 @@
-import React from 'react';
-
 type StatusType = 'submitted' | 'in_review' | 'accepted' | 'rejected' | 'open' | 'closed' | string;
 
 interface StatusBadgeProps {

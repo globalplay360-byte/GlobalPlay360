@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   
   const [email, setEmail] = useState('');
@@ -45,9 +45,10 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setStatus('loading');
     try {
-      console.log('Simulating Google Login...');
-      setTimeout(() => navigate('/dashboard'), 1000);
-    } catch (error) {
+      await loginWithGoogle();
+      setStatus('success');
+      setTimeout(() => navigate('/dashboard'), 500);
+    } catch {
       setStatus('error');
       setErrorMessage('Error al iniciar sesión con Google.');
     }

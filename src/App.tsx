@@ -19,6 +19,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import OverviewPage from './pages/dashboard/OverviewPage';
 import OpportunitiesPage from './pages/dashboard/OpportunitiesPage';
 import OpportunityDetailPage from './pages/dashboard/OpportunityDetailPage';
+import CreateOpportunityPage from './pages/dashboard/CreateOpportunityPage';
 import ApplicationsPage from './pages/dashboard/ApplicationsPage';
 import MessagesPage from './pages/dashboard/MessagesPage';
 import MessageDetailPage from './pages/dashboard/MessageDetailPage';
@@ -48,7 +49,8 @@ function App() {
               {/* Oportunitats niades clares */}
               <Route path="opportunities">
                 <Route index element={<OpportunitiesPage />} />
-                <Route path=":id" element={<OpportunityDetailPage />} />        
+                <Route path="new" element={<CreateOpportunityPage />} />
+                <Route path=":id" element={<OpportunityDetailPage />} />
               </Route>
 
               {/* Candidatures / Aplicacions */}

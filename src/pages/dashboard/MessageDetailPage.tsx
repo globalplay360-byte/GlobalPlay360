@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { mockConversations, mockMessages, mockUsers } from '@/services/mockData';
