@@ -228,8 +228,8 @@ export default function MessageDetailPage() {
   }
 
   // LOGICA DE RESTRICCIÓ (només per exemple)
-  const accessDenied = conversation.isPremiumLocked && currentUserPlan === 'free';
-  
+  const accessDenied = false; // Desactivat temporalment per proves: conversation.isPremiumLocked && currentUserPlan === 'free';
+
   if (accessDenied) {
     return (
       <div className="p-6 h-full flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">

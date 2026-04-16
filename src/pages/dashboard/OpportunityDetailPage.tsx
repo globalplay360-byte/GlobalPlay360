@@ -4,6 +4,7 @@ import type { Opportunity } from '@/types';
 import { getOpportunityById } from '@/services/opportunities.service';
 import { getUserDoc } from '@/services/auth.service';
 import { createApplication, hasUserApplied } from '@/services/applications.service';
+import { getOrCreateConversation } from '@/services/messages.service';
 import { Card, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -94,11 +95,24 @@ export default function OpportunityDetailPage() {
     }
   };
 
-  const handleMessage = () => {
-    if (user?.plan === 'trial') {
+const handleMessage = async () => {
+    if (!user || !opportunity) return;
+
+    // Desactivat temporalment per proves
+    /* if (user.plan === 'trial') {
       alert('Actualitza a Premium per contactar directament amb el club!');
-    } else {
-      alert('Redirigint a missatges...');
+      return;
+    } */
+
+    try {
+      setApplying(true);
+      const convId = await getOrCreateConversation(user.uid, opportunity.clubId);
+      navigate(`/dashboard/messages/${convId}`);
+    } catch (err) {
+      alert('Error en intentar obrir el xat directe.');
+      console.error(err);
+    } finally {
+      setApplying(false);
     }
   };
 
@@ -274,12 +288,14 @@ export default function OpportunityDetailPage() {
                     Contactar Club
                   </Button>
 
+                  {/*
                   {user?.plan === 'trial' && (
                     <div className="mt-4 text-xs text-center text-gray-400 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
                       <span className="text-yellow-500 font-bold mb-1 block">Funció Premium</span>
                       Contactar clubs directament requereix una subscripció Premium.
                     </div>
                   )}
+                  */}
                 </div>
               )}
             </CardContent>

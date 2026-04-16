@@ -1,22 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { getUserApplications } from '@/services/applications.service';
-import { getOpportunityById } from '@/services/opportunities.service';
-import { getUserDoc } from '@/services/auth.service';
-import type { Application, Opportunity, User } from '@/types';
-import StatusBadge from '@/components/ui/StatusBadge';
-import EmptyState from '@/components/ui/EmptyState';
-import { Button } from '@/components/ui/Button';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import {
+  getUserApplications,
+  getClubApplications,
+} from "@/services/applications.service";
+import { getOpportunityById } from "@/services/opportunities.service";
+import { getUserDoc } from "@/services/auth.service";
+import { getOrCreateConversation } from "@/services/messages.service";
+import { useNavigate } from "react-router-dom";
+import type { Application, Opportunity, User } from "@/types";
+import StatusBadge from "@/components/ui/StatusBadge";
+import EmptyState from "@/components/ui/EmptyState";
+import { Button } from "@/components/ui/Button";
 
 interface ApplicationExtended extends Application {
   opportunity?: Opportunity;
   club?: User;
+  candidate?: User;
 }
 
 export default function ApplicationsPage() {
   const { user } = useAuth();
-  const currentUserRole = user?.role || 'player';
+  const navigate = useNavigate();
+  const currentUserRole = user?.role || "player";
 
   const [applications, setApplications] = useState<ApplicationExtended[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,52 +38,48 @@ export default function ApplicationsPage() {
         setIsLoading(true);
         setError(null);
 
-        const apps = await getUserApplications(user!.uid);
+        const apps =
+          currentUserRole === "club"
+            ? await getClubApplications(user!.uid)
+            : await getUserApplications(user!.uid);
 
-        // Enrich each application with opportunity + club data
+        // Enrich each application with opportunity + club/candidate data
         const enriched: ApplicationExtended[] = await Promise.all(
           apps.map(async (app) => {
-            const [opportunity, club] = await Promise.all([
+            const [opportunity, externalUser] = await Promise.all([
               getOpportunityById(app.opportunityId),
-              app.clubId ? getUserDoc(app.clubId) : null,
+              currentUserRole === "club"
+                ? getUserDoc(app.userId)
+                : app.clubId
+                  ? getUserDoc(app.clubId)
+                  : null,
             ]);
             return {
               ...app,
               opportunity: opportunity ?? undefined,
-              club: club ?? undefined,
+              ...(currentUserRole === "club"
+                ? { candidate: externalUser ?? undefined }
+                : { club: externalUser ?? undefined }),
             };
           }),
         );
 
         if (!cancelled) setApplications(enriched);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant candidatures');
+        if (!cancelled)
+          setError(
+            err instanceof Error ? err.message : "Error carregant candidatures",
+          );
       } finally {
         if (!cancelled) setIsLoading(false);
       }
     }
 
     fetch();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
-
-  // Club placeholder (gestió de candidats — futur)
-  if (currentUserRole === 'club') {
-    return (
-      <div className="p-6 max-w-6xl mx-auto w-full">
-        <h1 className="text-2xl font-bold text-white mb-6">Gestió de Candidats</h1>
-        <EmptyState
-          title="Panell en construcció"
-          description="Aquesta vista estarà destinada a gestionar els jugadors i entrenadors que apliquin a les teves oportunitats."
-          icon={
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          }
-        />
-      </div>
-    );
-  }
 
   // ── Error state ───────────────────────────────────────
   if (error) {
@@ -86,12 +89,24 @@ export default function ApplicationsPage() {
           title="Error de connexió"
           description={error}
           icon={
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           }
           action={
-            <Button variant="primary" onClick={() => window.location.reload()}>Reintentar</Button>
+            <Button variant="primary" onClick={() => window.location.reload()}>
+              Reintentar
+            </Button>
           }
         />
       </div>
@@ -105,7 +120,10 @@ export default function ApplicationsPage() {
         <div className="h-8 w-48 bg-gray-800 rounded mb-6 animate-pulse" />
         <div className="flex flex-col gap-4">
           {[1, 2, 3].map((n) => (
-            <div key={n} className="h-40 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse" />
+            <div
+              key={n}
+              className="h-40 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -118,14 +136,19 @@ export default function ApplicationsPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">Candidatures</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">
+              {currentUserRole === "club"
+                ? "Gestió de Candidats"
+                : "Candidatures"}
+            </h1>
             <p className="text-[#9CA3AF] mt-1 text-sm">
-              Seguiment de totes les teves peticions i processos de selecció actius.
+              {currentUserRole === "club"
+                ? "Aquests són els jugadors i entrenadors que han aplicat a les teves oportunitats."
+                : "Seguiment de totes les teves peticions i processos de selecció actius."}
             </p>
           </div>
         </div>
 
-        {/* Content */}
         {applications.length > 0 ? (
           <div className="flex flex-col gap-4">
             {applications.map((app) => (
@@ -134,18 +157,21 @@ export default function ApplicationsPage() {
                 className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 transition-colors group flex flex-col md:flex-row p-5 gap-6 mb-4 relative overflow-hidden"
               >
                 {/* Línia superior de status */}
-                <div className={`absolute top-0 left-0 h-1 w-full
-                  ${app.status === 'accepted' ? 'bg-emerald-500' : ''}
-                  ${app.status === 'rejected' ? 'bg-red-500' : ''}
-                  ${app.status === 'in_review' ? 'bg-purple-500' : ''}
-                  ${app.status === 'submitted' ? 'bg-blue-500' : ''}
-                `} />
+                <div
+                  className={`absolute top-0 left-0 h-1 w-full
+                  ${app.status === "accepted" ? "bg-emerald-500" : ""}
+                  ${app.status === "rejected" ? "bg-red-500" : ""}
+                  ${app.status === "in_review" ? "bg-purple-500" : ""}
+                  ${app.status === "submitted" ? "bg-blue-500" : ""}
+                `}
+                />
 
                 {/* Info Principal */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[#9CA3AF] text-sm font-medium">
-                      Aplicat el {new Date(app.createdAt).toLocaleDateString('ca-ES')}
+                      Aplicat el{" "}
+                      {new Date(app.createdAt).toLocaleDateString("ca-ES")}
                     </span>
                     <div className="block md:hidden">
                       <StatusBadge status={app.status} />
@@ -153,22 +179,54 @@ export default function ApplicationsPage() {
                   </div>
 
                   <h2 className="text-lg font-bold text-white mb-1 truncate">
-                    {app.opportunity?.title || 'Oportunitat Tancada'}
+                    {app.opportunity?.title || "Oportunitat Tancada"}
                   </h2>
                   <p className="text-[#3B82F6] font-medium text-sm mb-4">
-                    {app.club?.displayName || 'Club Desconegut'}
+                    {currentUserRole === "club"
+                      ? `Candidat: ${app.candidate?.displayName || "Usuari Desconegut"}`
+                      : app.club?.displayName || "Club Desconegut"}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
                     {app.opportunity?.sport && (
                       <div className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
                         <span>{app.opportunity.sport}</span>
                       </div>
                     )}
                     {app.opportunity?.location && (
                       <div className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
                         <span>{app.opportunity.location}</span>
                       </div>
                     )}
@@ -176,7 +234,9 @@ export default function ApplicationsPage() {
 
                   {app.message && (
                     <div className="mt-4 p-3 bg-[#0F172A] border border-[#1F2937] rounded-lg">
-                      <p className="text-sm text-[#9CA3AF] italic line-clamp-2">"{app.message}"</p>
+                      <p className="text-sm text-[#9CA3AF] italic line-clamp-2">
+                        "{app.message}"
+                      </p>
                     </div>
                   )}
                 </div>
@@ -184,14 +244,41 @@ export default function ApplicationsPage() {
                 {/* Accions i Estat */}
                 <div className="flex flex-col justify-between items-start md:items-end gap-4 min-w-[160px] border-t border-[#1F2937] md:border-t-0 pt-4 md:pt-0">
                   <div className="hidden md:block">
-                    <StatusBadge status={app.status} className="text-sm px-3 py-1" />
+                    <StatusBadge
+                      status={app.status}
+                      className="text-sm px-3 py-1"
+                    />
                   </div>
-                  <Link
-                    to={`/dashboard/opportunities/${app.opportunityId}`}
-                    className="w-full md:w-auto px-4 py-2 border border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6]/10 text-sm font-medium rounded-lg transition-colors text-center"
-                  >
-                    Veure Detall
-                  </Link>
+                  <div className="flex flex-col sm:flex-row w-full gap-2">
+                    <Link
+                      to={`/dashboard/opportunities/${app.opportunityId}`}
+                      className="w-full sm:w-auto px-4 py-2 border border-[#1F2937] text-white hover:bg-[#1F2937] text-sm font-medium rounded-lg transition-colors text-center"
+                    >
+                      Veure Detall
+                    </Link>
+
+                    {currentUserRole === "club" && app.candidate && (
+                      <Button
+                        variant="primary"
+                        className="w-full sm:w-auto px-4 py-2 text-sm"
+                        onClick={async () => {
+                          if (!user) return;
+                          try {
+                            const convId = await getOrCreateConversation(
+                              user.uid,
+                              app.candidate!.uid
+                            );
+                            navigate(`/dashboard/messages/${convId}`);
+                          } catch (error) {
+                            console.error("Error creant el xat:", error);
+                            alert("S'ha produït un error en intentar obrir el xat.");
+                          }
+                        }}
+                      >
+                        Contactar
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -201,8 +288,18 @@ export default function ApplicationsPage() {
             title="Encara no has aplicat a cap oportunitat"
             description="Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil."
             icon={
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <svg
+                className="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
               </svg>
             }
             action={

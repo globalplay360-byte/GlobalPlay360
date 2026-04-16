@@ -13,8 +13,8 @@ interface ConversationExtended extends Conversation {
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
 function ConversationListItem({ conv, currentUserId, currentPlan }: { conv: ConversationExtended, currentUserId: string, currentPlan: string }) {
   // En un entorn real: 'free' no existeix, seria 'trial', però mantenim la sintaxi de l'exemple
-  const isLocked = conv.isPremiumLocked && currentPlan === 'free';
-  
+  const isLocked = false; // Desactivat temporalment: conv.isPremiumLocked && currentPlan === 'free';
+
   const displayDate = new Date(conv.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
   const time = new Date(conv.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 

@@ -25,7 +25,16 @@ export async function getUserApplications(userId: string): Promise<Application[]
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Application);
 }
-
+/** Get all applications received by a given club, newest first */
+export async function getClubApplications(clubId: string): Promise<Application[]> {
+  const q = query(
+    collection(db, COLLECTION),
+    where('clubId', '==', clubId)
+  );
+  const snap = await getDocs(q);
+  const apps = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Application);
+  return apps.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
 /** Check if a user has already applied to a specific opportunity */
 export async function hasUserApplied(userId: string, opportunityId: string): Promise<boolean> {
   const q = query(
