@@ -1,0 +1,104 @@
+import type { User, Sport } from '@/types';
+import { Field, Input, Select } from './FormControls';
+import SportSpecificFields from '../sports';
+
+interface Props {
+  formData: User;
+  onChange: (patch: Partial<User>) => void;
+  disabled?: boolean;
+}
+
+const SPORT_OPTIONS: { value: Sport; label: string }[] = [
+  { value: 'football', label: 'Futbol 11' },
+  { value: 'basketball', label: 'Bàsquet' },
+  { value: 'futsal', label: 'Futbol Sala' },
+  { value: 'volleyball', label: 'Voleibol' },
+  { value: 'handball', label: 'Handbol' },
+  { value: 'waterpolo', label: 'Waterpolo' },
+  { value: 'tennis', label: 'Tennis' },
+  { value: 'rugby', label: 'Rugbi' },
+  { value: 'american_football', label: 'Futbol Americà' },
+  { value: 'hockey', label: 'Hoquei' },
+  { value: 'other', label: 'Altres' },
+];
+
+export default function PlayerFields({ formData, onChange, disabled }: Props) {
+  const handleSportChange = (value: string) => {
+    const newSport = (value || undefined) as Sport | undefined;
+    // Reset sport-specific fields when the sport changes to avoid stale data.
+    onChange({
+      sport: newSport,
+      position: undefined,
+      preferredFoot: undefined,
+      preferredHand: undefined,
+      playingHand: undefined,
+      stickHand: undefined,
+      backhandType: undefined,
+      wingspan: undefined,
+      spikeReach: undefined,
+    });
+  };
+
+  return (
+    <>
+      <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-5">
+        <div className="flex items-center gap-2">
+          <span className="w-1 h-5 rounded bg-emerald-500" />
+          <h2 className="text-base font-bold text-white">Dades esportives</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Field label="Esport principal">
+            <Select value={formData.sport || ''} onChange={(e) => handleSportChange(e.target.value)} disabled={disabled}>
+              <option value="">Selecciona un esport</option>
+              {SPORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </Select>
+          </Field>
+          <Field label="Data de naixement">
+            <Input
+              type="date"
+              value={formData.dateOfBirth?.slice(0, 10) || ''}
+              onChange={(e) =>
+                onChange({
+                  dateOfBirth: e.target.value ? new Date(e.target.value).toISOString() : undefined,
+                })
+              }
+              disabled={disabled}
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Field label="Alçada" hint="En centímetres.">
+            <Input
+              type="number"
+              min={100}
+              max={250}
+              value={formData.height ?? ''}
+              onChange={(e) => onChange({ height: e.target.value ? Number(e.target.value) : undefined })}
+              placeholder="Ex: 180"
+              disabled={disabled}
+            />
+          </Field>
+          <Field label="Pes" hint="En quilograms.">
+            <Input
+              type="number"
+              min={30}
+              max={200}
+              value={formData.weight ?? ''}
+              onChange={(e) => onChange({ weight: e.target.value ? Number(e.target.value) : undefined })}
+              placeholder="Ex: 75"
+              disabled={disabled}
+            />
+          </Field>
+        </div>
+      </section>
+
+      {formData.sport && formData.sport !== 'other' && (
+        <SportSpecificFields formData={formData} onChange={onChange} disabled={disabled} />
+      )}
+    </>
+  );
+}
