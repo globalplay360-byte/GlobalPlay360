@@ -135,7 +135,6 @@ export default function MessageDetailPage() {
   const { user } = useAuth();
   
   const currentUserId = user?.uid || '';
-  const currentUserPlan = user?.plan || 'trial'; 
 
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
