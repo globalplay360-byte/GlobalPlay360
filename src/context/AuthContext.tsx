@@ -15,6 +15,7 @@ interface AuthContextValue extends AuthState {
   register: (email: string, password: string, displayName: string, role?: UserRole) => Promise<void>;
   loginWithGoogle: (role?: UserRole) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -85,8 +86,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState({ user: null, loading: false, error: null });
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    const current = auth.currentUser;
+    if (!current) return;
+    const userDoc = await authService.getUserDoc(current.uid);
+    setState((s) => ({ ...s, user: userDoc }));
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ ...state, login, register, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ ...state, login, register, loginWithGoogle, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,4 @@
-import type { User, Profile, Opportunity, Application, Conversation, Message, Subscription } from '../types';
+import type { User, Opportunity, Application, Conversation, Message, Subscription } from '../types';
 
 export const mockUsers: User[] = [
   {
@@ -33,50 +33,6 @@ export const mockUsers: User[] = [
     trialEndsAt: '2026-02-03T10:00:00Z',
     onboardingCompleted: true,
     createdAt: '2026-01-03T10:00:00Z'
-  }
-];
-
-export const mockProfiles: Profile[] = [
-  {
-    id: 'prof-player-1',
-    userId: 'user-player-1',
-    type: 'player',
-    name: 'Leo Messi',
-    sport: 'Football',
-    country: 'Argentina',
-    description: 'Looking for a new challenge in Europe.',
-    stats: {
-      matches: 104,
-      goals: 89,
-      assists: 45
-    },
-    mediaUrls: ['https://example.com/video1.mp4']
-  },
-  {
-    id: 'prof-coach-1',
-    userId: 'user-coach-1',
-    type: 'coach',
-    name: 'Pep Guardiola',
-    sport: 'Football',
-    country: 'Spain',
-    description: 'UEFA Pro License coach looking for an ambitious project.',
-    stats: {
-      experienceYears: 15,
-      titles: 30
-    }
-  },
-  {
-    id: 'prof-club-1',
-    userId: 'user-club-1',
-    type: 'club',
-    name: 'FC Barcelona',
-    sport: 'Football',
-    country: 'Spain',
-    description: 'Top European club looking for young talents.',
-    stats: {
-      founded: 1899,
-      stadiumCapacity: 99354
-    }
   }
 ];
 
