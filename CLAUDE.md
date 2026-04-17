@@ -64,11 +64,12 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - Les dades mock s'han deixat enrere i ja estem operant amb la base de dades.
 - Finalitzada la UI del panell de `ApplicationsPage` (Candidatures).
 - Finalitzada la UI i lògica de `OpportunitiesPage` (Portal public d'Oportunitats).
+- **Edició del Perfil (`ProfilePage.tsx`)**: Formularis dinàmics multi-esport connectats a Firestore, i suport de pujada d'imatges via Firebase Storage.
 
 **🚧 Roadmap (Endavant):**
 
-1. **Edició del Perfil (`ProfilePage.tsx`)**: [TASCA ACTUAL]. Formularis dinàmics que mostrin camps d'edició diferents i adaptats exclusivament al rol de l'usuari actiu (`player`, `coach`, `club`). Connectat per actualitzar els documents a Firestore.
-2. **Pagaments (Stripe)**: Subscripcions reals de pas a Premium/Pro (futur).
+1. **Pagaments (Stripe)**: [TASCA ACTUAL]. Integració de subscripcions reals per permetre el pas a Premium/Pro desbloquejant el xat directe.
+2. **Revisió 360 i UX/UI complet**: Un cop funcioni l'arquitectura core, passarem el "pinzell de plata" a tota l'app per fer coincidir els marxes, colors i components.
 
 ---
 
