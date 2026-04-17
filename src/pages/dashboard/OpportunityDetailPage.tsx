@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import type { Opportunity } from '@/types';
 import { getOpportunityById } from '@/services/opportunities.service';
 import { getUserDoc } from '@/services/auth.service';
@@ -21,7 +21,20 @@ import {
 export default function OpportunityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
+
+  // Resol "Tornar" en funció de l'origen de navegació (state.from)
+  const from = (location.state as { from?: string } | null)?.from;
+  const backTarget = (() => {
+    if (from === 'applications') return { url: '/dashboard/applications', label: 'Tornar a Candidatures' };
+    if (from === 'mine') return { url: '/dashboard/opportunities/mine', label: 'Tornar a Les Meves Ofertes' };
+    if (from === 'marketplace') return { url: '/dashboard/opportunities', label: 'Tornar al Marketplace' };
+    // Fallback per accés directe per URL: decidim pel rol
+    return user?.role === 'club'
+      ? { url: '/dashboard/opportunities/mine', label: 'Tornar a Les Meves Ofertes' }
+      : { url: '/dashboard/opportunities', label: 'Tornar al Marketplace' };
+  })();
 
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
   const [clubName, setClubName] = useState<string>('');
@@ -178,11 +191,11 @@ const handleMessage = async () => {
       {/* Top Nav */}
       <div>
         <button
-          onClick={() => navigate(user?.role === 'club' ? '/dashboard/opportunities/mine' : '/dashboard/opportunities')}
+          onClick={() => navigate(backTarget.url)}
           className="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
         >
           <ArrowLeftIcon className="w-4 h-4 mr-2" />
-          {user?.role === 'club' ? 'Tornar a Les Meves Ofertes' : 'Tornar al Marketplace'}
+          {backTarget.label}
         </button>
       </div>
 

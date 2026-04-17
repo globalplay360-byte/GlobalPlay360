@@ -1,7 +1,9 @@
 import {
   collection,
+  doc,
   getDocs,
   addDoc,
+  updateDoc,
   query,
   where,
   orderBy,
@@ -75,4 +77,15 @@ export async function createApplication(data: CreateApplicationInput): Promise<s
   });
 
   return docRef.id;
+}
+
+/** Update the status of an application (only the owning club should call this) */
+export async function updateApplicationStatus(
+  id: string,
+  status: Application['status'],
+): Promise<void> {
+  await updateDoc(doc(db, COLLECTION, id), {
+    status,
+    _updatedAt: serverTimestamp(),
+  });
 }

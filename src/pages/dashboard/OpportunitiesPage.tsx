@@ -149,11 +149,11 @@ export default function OpportunitiesPage() {
                   Publicat: {formatDate(opp.createdAt)}
                 </div>
                 <div className="flex gap-3">
-                  <Button variant="outline" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`)}>
+                  <Button variant="outline" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
                     Veure Detall
                   </Button>
                   {user?.role !== 'club' && (
-                    <Button variant="primary" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`)}>
+                    <Button variant="primary" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
                       Aplicar
                     </Button>
                   )}

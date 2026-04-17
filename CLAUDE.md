@@ -53,6 +53,23 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - `git rebase` per mantenir un historial lineal abans de fusionar.
 - `git log --oneline` o l'ús de `--amend` per arreglar un error a l'últim commit.
 
+## 📊 Estat del Projecte i Propers Passos
+
+**✅ Assoliments fins ara:**
+
+- Arquitectura base establerta (React, TypeScript, Vite, Tailwind CSS amb estil Dark SaaS Navy).
+- Integració completa amb Firebase (Auth i Firestore real-time).
+- Sistema de Rols (`player`, `coach`, `club`) i Plans de subscripció (`free`, `premium`, `pro`).
+- Dashboard funcional (Panell principal, Xat en temps real amb paywalls, Gestió d'oportunitats per a clubs).
+- Les dades mock s'han deixat enrere i ja estem operant amb la base de dades.
+
+**🚧 Roadmap (Endavant):**
+
+1. **UI de Candidatures (`ApplicationsPage.tsx`)**: [TASCA ACTUAL]. Renderitzar la llista de sol·licituds que l'usuari obté del backend amb accions visuals i fluxos com Acceptar/Rebutjar o Contactar.
+2. **Portal d'Oportunitats (`OpportunitiesPage.tsx`)**: Feed general on jugadors/entrenadors poden buscar i inscriure's a ofertes d'arreu.
+3. **Edició del Perfil (`ProfilePage.tsx`)**: Formularis dinàmics que mostrin camps d'edició diferents i adaptats exclusivament al rol de l'usuari actiu.
+4. **Pagaments (Stripe)**: Subscripcions reals (futur).
+
 ---
 
-**Claude:** Llegeix aquest document sempre abans d'iniciar tasques relacionades amb Git. L'usuari compta amb tu per adquirir bons hàbits de programació i control de versions!
+**Claude:** Llegeix aquest document sempre abans d'iniciar tasques relacionades amb Git i per entendre en quin punt ens trobem del desenvolupament global. L'usuari compta amb tu per adquirir bons hàbits i avançar de forma estructurada!

@@ -173,7 +173,7 @@ export default function MyOpportunitiesPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => navigate(`/dashboard/opportunities/${opp.id}`)}
+                  onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'mine' } })}
                 >
                   Veure
                 </Button>
