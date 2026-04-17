@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import {
   getUserApplications,
   getClubApplications,
+  updateApplicationStatus,
 } from "@/services/applications.service";
 import { getOpportunityById } from "@/services/opportunities.service";
 import { getUserDoc } from "@/services/auth.service";
@@ -28,6 +29,35 @@ export default function ApplicationsPage() {
   const [applications, setApplications] = useState<ApplicationExtended[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  const handleStatusChange = async (
+    app: ApplicationExtended,
+    newStatus: Application['status'],
+  ) => {
+    const previousStatus = app.status;
+    setUpdatingId(app.id);
+    // Actualització optimista: canviem l'estat local immediatament
+    setApplications((prev) =>
+      prev.map((a) => (a.id === app.id ? { ...a, status: newStatus } : a)),
+    );
+
+    try {
+      await updateApplicationStatus(app.id, newStatus);
+    } catch (err) {
+      // Rollback si falla
+      setApplications((prev) =>
+        prev.map((a) => (a.id === app.id ? { ...a, status: previousStatus } : a)),
+      );
+      alert(
+        err instanceof Error
+          ? err.message
+          : "Error actualitzant l'estat de la candidatura",
+      );
+    } finally {
+      setUpdatingId(null);
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -252,6 +282,7 @@ export default function ApplicationsPage() {
                   <div className="flex flex-col sm:flex-row w-full gap-2">
                     <Link
                       to={`/dashboard/opportunities/${app.opportunityId}`}
+                      state={{ from: 'applications' }}
                       className="w-full sm:w-auto px-4 py-2 border border-[#1F2937] text-white hover:bg-[#1F2937] text-sm font-medium rounded-lg transition-colors text-center"
                     >
                       Veure Detall
@@ -279,6 +310,52 @@ export default function ApplicationsPage() {
                       </Button>
                     )}
                   </div>
+
+                  {/* Accions de gestió d'estat (només club) */}
+                  {currentUserRole === "club" && (
+                    <div className="flex flex-wrap gap-2 w-full justify-end">
+                      {app.status === "submitted" && (
+                        <button
+                          onClick={() => handleStatusChange(app, "in_review")}
+                          disabled={updatingId === app.id}
+                          title="Marcar com a En revisió"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors disabled:opacity-50"
+                        >
+                          {updatingId === app.id ? "..." : "En revisió"}
+                        </button>
+                      )}
+                      {(app.status === "submitted" || app.status === "in_review") && (
+                        <>
+                          <button
+                            onClick={() => handleStatusChange(app, "accepted")}
+                            disabled={updatingId === app.id}
+                            title="Acceptar la candidatura"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors disabled:opacity-50"
+                          >
+                            {updatingId === app.id ? "..." : "Acceptar"}
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange(app, "rejected")}
+                            disabled={updatingId === app.id}
+                            title="Rebutjar la candidatura"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                          >
+                            {updatingId === app.id ? "..." : "Rebutjar"}
+                          </button>
+                        </>
+                      )}
+                      {(app.status === "accepted" || app.status === "rejected") && (
+                        <button
+                          onClick={() => handleStatusChange(app, "in_review")}
+                          disabled={updatingId === app.id}
+                          title="Reobrir aquesta candidatura i tornar-la a En revisió"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[#1F2937] text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] transition-colors disabled:opacity-50"
+                        >
+                          {updatingId === app.id ? "..." : "Reobrir"}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
