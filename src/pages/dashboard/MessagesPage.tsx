@@ -11,9 +11,8 @@ interface ConversationExtended extends Conversation {
 }
 
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
-function ConversationListItem({ conv, currentUserId, currentPlan }: { conv: ConversationExtended, currentUserId: string, currentPlan: string }) {
-  // En un entorn real: 'free' no existeix, seria 'trial', però mantenim la sintaxi de l'exemple
-  const isLocked = false; // Desactivat temporalment: conv.isPremiumLocked && currentPlan === 'free';
+function ConversationListItem({ conv }: { conv: ConversationExtended }) {
+  const isLocked = false;
 
   const displayDate = new Date(conv.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
   const time = new Date(conv.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -112,11 +111,9 @@ export default function MessagesPage() {
       {conversations.length > 0 ? (
         <div className="flex flex-col gap-3">
           {conversations.map(conv => (
-            <ConversationListItem 
-              key={conv.id} 
-              conv={conv} 
-              currentUserId={user?.uid || ''} 
-              currentPlan={user?.plan || 'trial'}
+            <ConversationListItem
+              key={conv.id}
+              conv={conv}
             />
           ))}
         </div>
