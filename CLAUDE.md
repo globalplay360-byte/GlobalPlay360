@@ -62,13 +62,13 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - Sistema de Rols (`player`, `coach`, `club`) i Plans de subscripció (`free`, `premium`, `pro`).
 - Dashboard funcional (Panell principal, Xat en temps real amb paywalls, Gestió d'oportunitats per a clubs).
 - Les dades mock s'han deixat enrere i ja estem operant amb la base de dades.
+- Finalitzada la UI del panell de `ApplicationsPage` (Candidatures).
+- Finalitzada la UI i lògica de `OpportunitiesPage` (Portal public d'Oportunitats).
 
 **🚧 Roadmap (Endavant):**
 
-1. **UI de Candidatures (`ApplicationsPage.tsx`)**: [TASCA ACTUAL]. Renderitzar la llista de sol·licituds que l'usuari obté del backend amb accions visuals i fluxos com Acceptar/Rebutjar o Contactar.
-2. **Portal d'Oportunitats (`OpportunitiesPage.tsx`)**: Feed general on jugadors/entrenadors poden buscar i inscriure's a ofertes d'arreu.
-3. **Edició del Perfil (`ProfilePage.tsx`)**: Formularis dinàmics que mostrin camps d'edició diferents i adaptats exclusivament al rol de l'usuari actiu.
-4. **Pagaments (Stripe)**: Subscripcions reals (futur).
+1. **Edició del Perfil (`ProfilePage.tsx`)**: [TASCA ACTUAL]. Formularis dinàmics que mostrin camps d'edició diferents i adaptats exclusivament al rol de l'usuari actiu (`player`, `coach`, `club`). Connectat per actualitzar els documents a Firestore.
+2. **Pagaments (Stripe)**: Subscripcions reals de pas a Premium/Pro (futur).
 
 ---
 
