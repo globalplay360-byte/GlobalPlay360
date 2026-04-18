@@ -132,7 +132,7 @@ export default function HomePage() {
                 <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#FFC107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Herramientas de Video y PDF</li>
               </ul>
               
-              <Link to="/register?plan=premium" className="block w-full py-3 px-4 text-center rounded-lg bg-[#0070F3] text-white hover:bg-[#0051B3] font-semibold transition-colors shadow-lg">
+              <Link to="/pricing" className="block w-full py-3 px-4 text-center rounded-lg bg-[#0070F3] text-white hover:bg-[#0051B3] font-semibold transition-colors shadow-lg">
                 Actualizar Ahora
               </Link>
             </div>

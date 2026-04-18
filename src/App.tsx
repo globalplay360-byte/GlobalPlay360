@@ -9,6 +9,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Public Pages
 import HomePage from './pages/public/HomePage';
+import PricingPage from './pages/public/PricingPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -26,6 +27,7 @@ import ApplicationsPage from './pages/dashboard/ApplicationsPage';
 import MessagesPage from './pages/dashboard/MessagesPage';
 import MessageDetailPage from './pages/dashboard/MessageDetailPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
+import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
 
 function App() {
   return (
@@ -36,6 +38,9 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
             
+            {/* Pricing (public) */}
+            <Route path="/pricing" element={<PricingPage />} />
+
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -59,6 +64,9 @@ function App() {
 
               {/* Candidatures / Aplicacions */}
               <Route path="applications" element={<ApplicationsPage />} />
+
+              {/* Checkout success (post-Stripe redirect) */}
+              <Route path="checkout/success" element={<CheckoutSuccessPage />} />
 
               {/* Missatgeria (Mock) */}
               <Route path="messages">
