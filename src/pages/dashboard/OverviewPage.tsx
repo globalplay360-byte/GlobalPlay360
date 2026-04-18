@@ -25,10 +25,10 @@ type BaseStats = {
 };
 
 export default function OverviewPage() {
-  const { user } = useAuth();
-  
+  const { user, activePlan } = useAuth();
+
   const isClub = user?.role === 'club';
-  const isPremium = user?.plan === 'premium' || user?.plan === 'pro';
+  const isPremium = activePlan === 'premium';
 
   const userApplications = mockApplications.filter(app => app.userId === user?.uid);
   const userOpportunities = mockOpportunities.filter(op => op.clubId === user?.uid);
@@ -64,7 +64,7 @@ export default function OverviewPage() {
                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' 
                 : 'bg-gray-800 text-gray-300 border-gray-700'
             }`}>
-              PLA {user?.plan.toUpperCase() || 'FREE'}
+              PLA {activePlan.toUpperCase()}
             </span>
           </div>
           <p className="text-gray-400 text-sm md:text-base">
@@ -193,7 +193,7 @@ export default function OverviewPage() {
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircleIcon className="w-5 h-5 text-blue-400" />
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{user?.plan}</span>
+                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{activePlan}</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">Pla Actiu</h3>
                   <p className="text-sm text-gray-400 mb-5 leading-relaxed">Gaudeix de posicionament prioritari i accés total a contactes directes i ofertes exclusives.</p>
@@ -216,7 +216,7 @@ export default function OverviewPage() {
                    <p className="text-sm text-gray-400 mb-5 leading-relaxed">
                      Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
                    </p>
-                   <Link to="/subscription" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-colors w-full relative z-10">
+                   <Link to="/pricing" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-colors w-full relative z-10">
                      Veure Plans
                    </Link>
                  </div>

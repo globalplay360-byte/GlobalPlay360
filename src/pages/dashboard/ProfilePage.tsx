@@ -22,7 +22,7 @@ const SPORT_LABELS: Record<Sport, string> = {
 };
 
 export default function ProfilePage() {
-  const { user, refreshUser } = useAuth();
+  const { user, activePlan, refreshUser } = useAuth();
   const [mode, setMode] = useState<'view' | 'edit'>('view');
   
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export default function ProfilePage() {
     );
   }
 
-  const isPremium = user.plan === 'premium' || user.plan === 'pro';
+  const isPremium = activePlan === 'premium';
 
   // ── Edit mode ──────────────────────────────────────────
   if (mode === 'edit') {
@@ -210,7 +210,7 @@ export default function ProfilePage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-white font-bold tracking-tight capitalize">{user.plan} Plan</p>
+                <p className="text-white font-bold tracking-tight capitalize">{activePlan} Plan</p>
                 <p className="text-xs text-[#9CA3AF]">
                   {isPremium ? 'Accés total habilitat.' : 'Actualitza per contactar directament.'}
                 </p>
@@ -219,7 +219,7 @@ export default function ProfilePage() {
             {!isPremium && (
               <Button 
                 className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all" 
-                onClick={() => navigate('/dashboard/upgrade')}
+                onClick={() => navigate('/pricing')}
               >
                 Millorar Pla
               </Button>
