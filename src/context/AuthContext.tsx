@@ -3,9 +3,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/services/firebase';
 import type { User, UserRole } from '@/types';
 import * as authService from '@/services/auth.service';
+import { subscribeToActiveSubscription, type StripeSubscription } from '@/services/stripe.service';
+
+export type ActivePlan = 'free' | 'premium';
 
 interface AuthState {
   user: User | null;
+  activePlan: ActivePlan;
+  subscription: StripeSubscription | null;
+  subscriptionLoading: boolean;
   loading: boolean;
   error: string | null;
 }
@@ -23,6 +29,9 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
+    activePlan: 'free',
+    subscription: null,
+    subscriptionLoading: false,
     loading: true,   // starts true until onAuthStateChanged resolves
     error: null,
   });
@@ -31,22 +40,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // User is signed in → fetch Firestore doc
         const userDoc = await authService.getUserDoc(firebaseUser.uid);
-        setState({ user: userDoc, loading: false, error: null });
+        setState((s) => ({ ...s, user: userDoc, loading: false, error: null }));
       } else {
-        // No user
-        setState({ user: null, loading: false, error: null });
+        setState((s) => ({
+          ...s,
+          user: null,
+          activePlan: 'free',
+          subscription: null,
+          subscriptionLoading: false,
+          loading: false,
+          error: null,
+        }));
       }
     });
     return unsubscribe;
   }, []);
 
+  // Listen to Stripe subscription in real-time — font de veritat del pla actiu
+  useEffect(() => {
+    const uid = state.user?.uid;
+    if (!uid) return;
+
+    setState((s) => ({ ...s, subscriptionLoading: true }));
+    const unsub = subscribeToActiveSubscription(
+      uid,
+      (sub) => {
+        setState((s) => ({
+          ...s,
+          subscription: sub,
+          activePlan: sub ? 'premium' : 'free',
+          subscriptionLoading: false,
+        }));
+      },
+      () => {
+        setState((s) => ({ ...s, subscriptionLoading: false }));
+      },
+    );
+    return unsub;
+  }, [state.user?.uid]);
+
   const login = useCallback(async (email: string, password: string) => {
     setState((s) => ({ ...s, loading: true, error: null }));
     try {
       const user = await authService.loginWithEmail(email, password);
-      setState({ user, loading: false, error: null });
+      setState((s) => ({ ...s, user, loading: false, error: null }));
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed';
       setState((s) => ({ ...s, loading: false, error: message }));
@@ -59,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setState((s) => ({ ...s, loading: true, error: null }));
       try {
         const user = await authService.registerWithEmail(email, password, displayName, role);
-        setState({ user, loading: false, error: null });
+        setState((s) => ({ ...s, user, loading: false, error: null }));
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Registration failed';
         setState((s) => ({ ...s, loading: false, error: message }));
@@ -73,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, loading: true, error: null }));
     try {
       const user = await authService.loginWithGoogle(role);
-      setState({ user, loading: false, error: null });
+      setState((s) => ({ ...s, user, loading: false, error: null }));
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Google login failed';
       setState((s) => ({ ...s, loading: false, error: message }));
@@ -83,7 +121,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     await authService.logout();
-    setState({ user: null, loading: false, error: null });
+    setState({
+      user: null,
+      activePlan: 'free',
+      subscription: null,
+      subscriptionLoading: false,
+      loading: false,
+      error: null,
+    });
   }, []);
 
   const refreshUser = useCallback(async () => {

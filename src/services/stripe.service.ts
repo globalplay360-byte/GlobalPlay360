@@ -32,6 +32,27 @@ export interface StripeProduct {
   prices: StripePrice[];
 }
 
+export type StripeSubscriptionStatus =
+  | 'trialing'
+  | 'active'
+  | 'canceled'
+  | 'incomplete'
+  | 'incomplete_expired'
+  | 'past_due'
+  | 'unpaid';
+
+export interface StripeSubscription {
+  id: string;
+  status: StripeSubscriptionStatus;
+  cancel_at_period_end: boolean;
+  current_period_end_seconds: number | null;
+  trial_end_seconds: number | null;
+  price_id: string | null;
+  product_id: string | null;
+  role: string | null;
+  metadata: Record<string, string>;
+}
+
 // ── Read: Products + Prices ─────────────────────────────
 
 export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
@@ -130,4 +151,67 @@ export async function createCheckoutSession(
       },
     );
   });
+}
+
+// ── Subscriptions: real-time listener ───────────────────
+
+function toSeconds(value: unknown): number | null {
+  if (!value) return null;
+  if (typeof value === 'number') return value;
+  if (typeof value === 'object' && value !== null && 'seconds' in value) {
+    const s = (value as { seconds: unknown }).seconds;
+    return typeof s === 'number' ? s : null;
+  }
+  return null;
+}
+
+function toRefId(value: unknown): string | null {
+  if (!value) return null;
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object' && value !== null && 'id' in value) {
+    const id = (value as { id: unknown }).id;
+    return typeof id === 'string' ? id : null;
+  }
+  return null;
+}
+
+/**
+ * Escolta en temps real la subscripció activa (trialing | active) d'un usuari.
+ * L'extensió escriu aquesta col·lecció via webhook, amb `price` i `product` com a
+ * DocumentReference, per això els normalitzem a string id.
+ */
+export function subscribeToActiveSubscription(
+  uid: string,
+  callback: (sub: StripeSubscription | null) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  const q = query(
+    collection(db, 'customers', uid, 'subscriptions'),
+    where('status', 'in', ['trialing', 'active']),
+  );
+  return onSnapshot(
+    q,
+    (snap) => {
+      if (snap.empty) {
+        callback(null);
+        return;
+      }
+      const docSnap = snap.docs[0];
+      const d = docSnap.data();
+      callback({
+        id: docSnap.id,
+        status: d.status as StripeSubscriptionStatus,
+        cancel_at_period_end: Boolean(d.cancel_at_period_end),
+        current_period_end_seconds: toSeconds(d.current_period_end),
+        trial_end_seconds: toSeconds(d.trial_end),
+        price_id: toRefId(d.price),
+        product_id: toRefId(d.product),
+        role: typeof d.role === 'string' ? d.role : null,
+        metadata: d.metadata ?? {},
+      });
+    },
+    (err) => {
+      if (onError) onError(err);
+    },
+  );
 }

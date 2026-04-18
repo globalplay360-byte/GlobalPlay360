@@ -10,9 +10,11 @@ import {
 type Interval = 'month' | 'year';
 
 export default function PricingPage() {
-  const { user } = useAuth();
+  const { user, activePlan, subscriptionLoading } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const isAlreadyPremium = activePlan === 'premium';
 
   const [interval, setBillingInterval] = useState<Interval>('month');
   const [prices, setPrices] = useState<Record<Interval, StripePrice | null>>({
@@ -198,20 +200,33 @@ export default function PricingPage() {
                 <FeatureRow included>Suport preferent</FeatureRow>
               </ul>
 
-              <button
-                type="button"
-                onClick={handleSubscribe}
-                disabled={loading || checkoutLoading || !prices[interval]}
-                className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {checkoutLoading
-                  ? 'Redirigint a Stripe...'
-                  : user
-                    ? 'Comença la prova de 30 dies'
-                    : 'Registra\'t per començar'}
-              </button>
+              {isAlreadyPremium ? (
+                <Link
+                  to="/dashboard"
+                  className="w-full py-3 px-4 text-center rounded-lg bg-[#10B981] hover:bg-[#0E9F6E] text-white font-semibold transition-colors shadow-lg block"
+                >
+                  Ja tens Premium actiu →
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSubscribe}
+                  disabled={loading || checkoutLoading || subscriptionLoading || !prices[interval]}
+                  className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {checkoutLoading
+                    ? 'Redirigint a Stripe...'
+                    : subscriptionLoading
+                      ? 'Carregant...'
+                      : user
+                        ? 'Comença la prova de 30 dies'
+                        : 'Registra\'t per començar'}
+                </button>
+              )}
               <p className="text-xs text-[#8892B0] text-center mt-3">
-                Cancel·la quan vulguis. Sense permanència.
+                {isAlreadyPremium
+                  ? 'Gestiona la teva subscripció des del dashboard.'
+                  : 'Cancel·la quan vulguis. Sense permanència.'}
               </p>
             </div>
           </div>
