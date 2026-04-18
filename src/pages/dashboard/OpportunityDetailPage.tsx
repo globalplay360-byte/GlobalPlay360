@@ -111,12 +111,6 @@ export default function OpportunityDetailPage() {
 const handleMessage = async () => {
     if (!user || !opportunity) return;
 
-    // Desactivat temporalment per proves
-    /* if (user.plan === 'trial') {
-      alert('Actualitza a Premium per contactar directament amb el club!');
-      return;
-    } */
-
     try {
       setApplying(true);
       const convId = await getOrCreateConversation(user.uid, opportunity.clubId);
@@ -300,15 +294,6 @@ const handleMessage = async () => {
                   <Button variant="secondary" size="lg" fullWidth onClick={handleMessage}>
                     Contactar Club
                   </Button>
-
-                  {/*
-                  {user?.plan === 'trial' && (
-                    <div className="mt-4 text-xs text-center text-gray-400 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
-                      <span className="text-yellow-500 font-bold mb-1 block">Funció Premium</span>
-                      Contactar clubs directament requereix una subscripció Premium.
-                    </div>
-                  )}
-                  */}
                 </div>
               )}
             </CardContent>
