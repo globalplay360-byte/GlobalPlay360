@@ -80,6 +80,8 @@ service cloud.firestore {
       // Checkout sessions: el client en CREA una per iniciar un checkout (amb price, success_url, etc.);
       // l'extensió hi escriu després la URL de Stripe (amb Admin SDK, bypassa rules).
       // Permetem create + read del propi uid. Ni update ni delete (immutables).
+      // NOTA: el Customer Portal no usa aquest patró, es crida via Callable Function
+      // `ext-firestore-stripe-payments-createPortalLink`.
       match /checkout_sessions/{sessionId} {
         allow read: if request.auth != null && request.auth.uid == uid;
         allow create: if request.auth != null && request.auth.uid == uid;
