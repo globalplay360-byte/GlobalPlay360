@@ -28,6 +28,7 @@ import MessagesPage from './pages/dashboard/MessagesPage';
 import MessageDetailPage from './pages/dashboard/MessageDetailPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
 import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
+import BillingPage from './pages/dashboard/BillingPage';
 
 function App() {
   return (
@@ -67,6 +68,9 @@ function App() {
 
               {/* Checkout success (post-Stripe redirect) */}
               <Route path="checkout/success" element={<CheckoutSuccessPage />} />
+
+              {/* Facturació (només Premium — la pàgina fa el guard intern) */}
+              <Route path="billing" element={<BillingPage />} />
 
               {/* Missatgeria (Mock) */}
               <Route path="messages">

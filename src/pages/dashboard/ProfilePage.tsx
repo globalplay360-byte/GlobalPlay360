@@ -216,9 +216,16 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
-            {!isPremium && (
-              <Button 
-                className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all" 
+            {isPremium ? (
+              <Button
+                className="w-full mt-4 bg-[#0F172A] hover:bg-gray-800 text-white border border-gray-700 transition-colors"
+                onClick={() => navigate('/dashboard/billing')}
+              >
+                Gestionar Subscripció
+              </Button>
+            ) : (
+              <Button
+                className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all"
                 onClick={() => navigate('/pricing')}
               >
                 Millorar Pla

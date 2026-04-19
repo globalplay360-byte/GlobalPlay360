@@ -6,7 +6,8 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { httpsCallable } from 'firebase/functions';
+import { db, functions } from './firebase';
 
 // ── Types ───────────────────────────────────────────────
 
@@ -97,7 +98,6 @@ export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
 // ── Write: Create Checkout Session ──────────────────────
 
 export interface CheckoutSessionOptions {
-  trialPeriodDays?: number;
   allowPromotionCodes?: boolean;
   successUrl?: string;
   cancelUrl?: string;
@@ -106,6 +106,9 @@ export interface CheckoutSessionOptions {
 /**
  * Client creates the doc; the Firebase extension writes back `url` (or `error`)
  * using Admin SDK. We listen for that write and resolve with the Stripe URL.
+ *
+ * El període de prova està configurat al Price de Stripe (`recurring.trial_period_days`).
+ * L'extensió envia `trial_from_plan: true` a Stripe, que llegeix el trial del Price.
  */
 export async function createCheckoutSession(
   uid: string,
@@ -113,7 +116,6 @@ export async function createCheckoutSession(
   options: CheckoutSessionOptions = {},
 ): Promise<string> {
   const {
-    trialPeriodDays = 30,
     allowPromotionCodes = true,
     successUrl = `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl = `${window.location.origin}/pricing?checkout=cancel`,
@@ -122,9 +124,9 @@ export async function createCheckoutSession(
   const sessionsCol = collection(db, 'customers', uid, 'checkout_sessions');
   const sessionRef = await addDoc(sessionsCol, {
     price: priceId,
+    mode: 'subscription',
     success_url: successUrl,
     cancel_url: cancelUrl,
-    trial_period_days: trialPeriodDays,
     allow_promotion_codes: allowPromotionCodes,
   });
 
@@ -151,6 +153,27 @@ export async function createCheckoutSession(
       },
     );
   });
+}
+
+// ── Write: Create Customer Portal Session ───────────────
+
+/**
+ * Redirigeix l'usuari al Customer Portal de Stripe on pot gestionar la seva
+ * subscripció (cancel·lar, actualitzar mètode de pagament, veure factures).
+ *
+ * L'extensió firestore-stripe-payments exposa una Cloud Function callable
+ * `ext-firestore-stripe-payments-createPortalLink` que retorna directament la URL
+ * signada del portal. No usa el patró de `portal_sessions` + onSnapshot.
+ */
+export async function createPortalSession(
+  returnUrl: string = `${window.location.origin}/dashboard/billing`,
+): Promise<string> {
+  const fn = httpsCallable<
+    { returnUrl: string; locale?: string },
+    { url: string }
+  >(functions, 'ext-firestore-stripe-payments-createPortalLink');
+  const { data } = await fn({ returnUrl, locale: 'auto' });
+  return data.url;
 }
 
 // ── Subscriptions: real-time listener ───────────────────

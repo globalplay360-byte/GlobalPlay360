@@ -197,9 +197,9 @@ export default function OverviewPage() {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">Pla Actiu</h3>
                   <p className="text-sm text-gray-400 mb-5 leading-relaxed">Gaudeix de posicionament prioritari i accés total a contactes directes i ofertes exclusives.</p>
-                  <button className="w-full bg-[#0F172A] hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-gray-700 transition-colors">
+                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-gray-700 transition-colors">
                     Gestionar Subscripció
-                  </button>
+                  </Link>
                 </div>
               </div>
             ) : (
