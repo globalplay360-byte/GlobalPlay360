@@ -5,8 +5,16 @@ export default function HomePage() {
     <div className="flex flex-col w-full bg-[#0B1120] text-white">
       {/* 1. Hero Section */}
       <section className="relative w-full h-[100vh] flex flex-col justify-center items-center overflow-hidden pt-16">
-        <div className="absolute inset-0 bg-[#0B1120] z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120] via-transparent to-[#0B1120] opacity-80" />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/globalHome.mp4?alt=media&token=239272b5-8d5d-4e1b-a347-05fe2bb94710"
+        />
+        <div className="absolute inset-0 bg-[#0B1120]/70 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/90 via-[#0B1120]/40 to-[#0B1120] opacity-90" />
         </div>
         
         <div className="relative z-10 text-center max-w-4xl px-4 flex flex-col items-center">
