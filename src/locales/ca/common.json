@@ -345,6 +345,36 @@
     "contactAndSocial": "Contacte & Social",
     "viewHighlights": "Veure highlights",
     "memberSince": "Membre des de {{date}}"
+  },
+  "applications": {
+    "errorChat": "S'ha produït un error en intentar obrir el xat.",
+    "errorUpdateStatus": "Error actualitzant l'estat de la candidatura",
+    "errorLoading": "Error carregant candidatures",
+    "errorConnection": "Error de connexió",
+    "retry": "Reintentar",
+    "titleClub": "Gestió de Candidats",
+    "titlePlayer": "Candidatures",
+    "descClub": "Aquests són els jugadors i entrenadors que han aplicat a les teves oportunitats.",
+    "descPlayer": "Seguiment de totes les teves peticions i processos de selecció actius.",
+    "appliedOn": "Aplicat el {{date}}",
+    "opportunityClosed": "Oportunitat Tancada",
+    "candidateLabel": "Candidat: {{name}}",
+    "unknownUser": "Usuari Desconegut",
+    "unknownClub": "Club Desconegut",
+    "viewDetail": "Veure Detall",
+    "contact": "Contactar",
+    "startConversation": "Iniciar conversa",
+    "markInReview": "En revisió",
+    "accept": "Acceptar",
+    "reject": "Rebutjar",
+    "reopen": "Reobrir",
+    "titleMarkInReview": "Marcar com a En revisió",
+    "titleAccept": "Acceptar la candidatura",
+    "titleReject": "Rebutjar la candidatura",
+    "titleReopen": "Reobrir aquesta candidatura i tornar-la a En revisió",
+    "emptyTitle": "Encara no has aplicat a cap oportunitat",
+    "emptyDesc": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
+    "exploreMarketplace": "Explorar Oportunitats"
   }
 }
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 import {
   getUserApplications,
   getClubApplications,
@@ -24,6 +25,7 @@ interface ApplicationExtended extends Application {
 export default function ApplicationsPage() {
   const { user, activePlan } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const currentUserRole = user?.role || "player";
   const isFree = activePlan === 'free';
 
@@ -43,7 +45,7 @@ export default function ApplicationsPage() {
       navigate(`/dashboard/messages/${convId}`);
     } catch (err) {
       console.error("Error creant el xat:", err);
-      alert("S'ha produït un error en intentar obrir el xat.");
+      alert(t('applications.errorChat'));
     }
   };
 
@@ -68,7 +70,7 @@ export default function ApplicationsPage() {
       alert(
         err instanceof Error
           ? err.message
-          : "Error actualitzant l'estat de la candidatura",
+          : t('applications.errorUpdateStatus'),
       );
     } finally {
       setUpdatingId(null);
@@ -114,7 +116,7 @@ export default function ApplicationsPage() {
       } catch (err) {
         if (!cancelled)
           setError(
-            err instanceof Error ? err.message : "Error carregant candidatures",
+            err instanceof Error ? err.message : t('applications.errorLoading'),
           );
       } finally {
         if (!cancelled) setIsLoading(false);
@@ -132,7 +134,7 @@ export default function ApplicationsPage() {
     return (
       <div className="p-6 max-w-6xl mx-auto w-full">
         <EmptyState
-          title="Error de connexió"
+          title={t('applications.errorConnection')}
           description={error}
           icon={
             <svg
@@ -151,7 +153,7 @@ export default function ApplicationsPage() {
           }
           action={
             <Button variant="primary" onClick={() => window.location.reload()}>
-              Reintentar
+              {t('applications.retry')}
             </Button>
           }
         />
@@ -184,13 +186,13 @@ export default function ApplicationsPage() {
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">
               {currentUserRole === "club"
-                ? "Gestió de Candidats"
-                : "Candidatures"}
+                ? t('applications.titleClub')
+                : t('applications.titlePlayer')}
             </h1>
             <p className="text-[#9CA3AF] mt-1 text-sm">
               {currentUserRole === "club"
-                ? "Aquests són els jugadors i entrenadors que han aplicat a les teves oportunitats."
-                : "Seguiment de totes les teves peticions i processos de selecció actius."}
+                ? t('applications.descClub')
+                : t('applications.descPlayer')}
             </p>
           </div>
         </div>
@@ -216,8 +218,7 @@ export default function ApplicationsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[#9CA3AF] text-sm font-medium">
-                      Aplicat el{" "}
-                      {new Date(app.createdAt).toLocaleDateString("ca-ES")}
+                      {t('applications.appliedOn', { date: new Date(app.createdAt).toLocaleDateString("ca-ES") })}
                     </span>
                     <div className="block md:hidden">
                       <StatusBadge status={app.status} />
@@ -225,12 +226,12 @@ export default function ApplicationsPage() {
                   </div>
 
                   <h2 className="text-lg font-bold text-white mb-1 truncate">
-                    {app.opportunity?.title || "Oportunitat Tancada"}
+                    {app.opportunity?.title || t('applications.opportunityClosed')}
                   </h2>
                   <p className="text-[#3B82F6] font-medium text-sm mb-4">
                     {currentUserRole === "club"
-                      ? `Candidat: ${app.candidate?.displayName || "Usuari Desconegut"}`
-                      : app.club?.displayName || "Club Desconegut"}
+                      ? t('applications.candidateLabel', { name: app.candidate?.displayName || t('applications.unknownUser') })
+                      : app.club?.displayName || t('applications.unknownClub')}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
@@ -301,7 +302,7 @@ export default function ApplicationsPage() {
                       state={{ from: 'applications' }}
                       className="w-full sm:w-auto px-4 py-2 border border-[#1F2937] text-white hover:bg-[#1F2937] text-sm font-medium rounded-lg transition-colors text-center"
                     >
-                      Veure Detall
+                      {t('applications.viewDetail')}
                     </Link>
 
                     {currentUserRole === "club" &&
@@ -317,7 +318,7 @@ export default function ApplicationsPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
-                          Contactar
+                          {t('applications.contact')}
                         </Button>
                       )}
 
@@ -334,7 +335,7 @@ export default function ApplicationsPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
-                          Iniciar conversa
+                          {t('applications.startConversation')}
                         </Button>
                       )}
                   </div>
@@ -346,10 +347,10 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
-                          title="Marcar com a En revisió"
+                          title={t('applications.titleMarkInReview')}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors disabled:opacity-50"
                         >
-                          {updatingId === app.id ? "..." : "En revisió"}
+                          {updatingId === app.id ? "..." : t('applications.markInReview')}
                         </button>
                       )}
                       {(app.status === "submitted" || app.status === "in_review") && (
@@ -357,18 +358,18 @@ export default function ApplicationsPage() {
                           <button
                             onClick={() => handleStatusChange(app, "accepted")}
                             disabled={updatingId === app.id}
-                            title="Acceptar la candidatura"
+                            title={t('applications.titleAccept')}
                             className="px-3 py-1.5 text-xs font-medium rounded-lg border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors disabled:opacity-50"
                           >
-                            {updatingId === app.id ? "..." : "Acceptar"}
+                            {updatingId === app.id ? "..." : t('applications.accept')}
                           </button>
                           <button
                             onClick={() => handleStatusChange(app, "rejected")}
                             disabled={updatingId === app.id}
-                            title="Rebutjar la candidatura"
+                            title={t('applications.titleReject')}
                             className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
                           >
-                            {updatingId === app.id ? "..." : "Rebutjar"}
+                            {updatingId === app.id ? "..." : t('applications.reject')}
                           </button>
                         </>
                       )}
@@ -376,10 +377,10 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
-                          title="Reobrir aquesta candidatura i tornar-la a En revisió"
+                          title={t('applications.titleReopen')}
                           className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[#1F2937] text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] transition-colors disabled:opacity-50"
                         >
-                          {updatingId === app.id ? "..." : "Reobrir"}
+                          {updatingId === app.id ? "..." : t('applications.reopen')}
                         </button>
                       )}
                     </div>
@@ -390,8 +391,8 @@ export default function ApplicationsPage() {
           </div>
         ) : (
           <EmptyState
-            title="Encara no has aplicat a cap oportunitat"
-            description="Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil."
+            title={t('applications.emptyTitle')}
+            description={t('applications.emptyDesc')}
             icon={
               <svg
                 className="w-8 h-8"
@@ -421,3 +422,5 @@ export default function ApplicationsPage() {
     </div>
   );
 }
+
+
