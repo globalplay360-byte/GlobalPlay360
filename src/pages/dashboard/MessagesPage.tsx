@@ -5,6 +5,7 @@ import { subscribeToUserConversations } from '@/services/messages.service';
 import { getUserDoc } from '@/services/auth.service';
 import type { Conversation, User } from '@/types';
 import EmptyState from '@/components/ui/EmptyState';
+import PremiumLockCard from '@/components/ui/PremiumLockCard';
 
 interface ConversationExtended extends Conversation {
   otherParticipant?: User;
@@ -65,12 +66,12 @@ function ConversationListItem({ conv }: { conv: ConversationExtended }) {
 }
 
 export default function MessagesPage() {
-  const { user } = useAuth();
+  const { user, activePlan, subscriptionLoading } = useAuth();
   const [conversations, setConversations] = useState<ConversationExtended[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || activePlan === 'free') return;
 
     const unsubscribe = subscribeToUserConversations(user.uid, async (convs) => {
       const extendedConvs = await Promise.all(
@@ -83,18 +84,36 @@ export default function MessagesPage() {
           return { ...c, otherParticipant };
         })
       );
-      
+
       setConversations(extendedConvs);
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, activePlan]);
 
-  if (loading) {
+  if (subscriptionLoading || (activePlan === 'premium' && loading)) {
     return (
       <div className="p-6 max-w-4xl mx-auto flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]"></div>
+      </div>
+    );
+  }
+
+  if (activePlan === 'free') {
+    return (
+      <div className="p-6 max-w-2xl mx-auto w-full">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-white tracking-tight">Missatges</h1>
+          <p className="text-[#9CA3AF] mt-1 text-sm">
+            Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.
+          </p>
+        </div>
+
+        <PremiumLockCard
+          title="Desbloqueja la missatgeria directa"
+          description="Amb Premium pots iniciar converses amb clubs i entrenadors, llegir missatges sense límits i rebre respostes prioritàries. Comença la prova de 30 dies gratuïts."
+        />
       </div>
     );
   }

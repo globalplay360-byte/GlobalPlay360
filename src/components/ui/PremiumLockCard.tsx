@@ -25,8 +25,8 @@ export default function PremiumLockCard({
       <h3 className="text-xl font-bold text-white mb-2 z-10">{title}</h3>
       <p className="text-[#9CA3AF] mb-6 max-w-md z-10">{description}</p>
       
-      <Link 
-        to="/dashboard" // Redirigirà a pricing en el futur
+      <Link
+        to="/pricing"
         className="z-10 inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:from-[#2563EB] hover:to-[#1D4ED8] text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20"
       >
         Millora el teu Pla
