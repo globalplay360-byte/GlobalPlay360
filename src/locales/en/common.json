@@ -231,5 +231,77 @@
       "sent": "Verification email sent!",
       "resend": "Resend email"
     }
+  },
+  "overview": {
+    "sportsman": "Sportsman",
+    "hello": "Hello",
+    "planTag": "PLAN",
+    "clubDescription": "Manage your club's talent and analyze data.",
+    "coachDescription": "Your main dashboard for technical management and professional challenges.",
+    "playerDescription": "This is your sports operations center. Take a look.",
+    "publishOffer": "Publish Offer",
+    "completeProfile": "Complete Profile",
+    "stats": {
+      "club": {
+        "activeOffers": "Active Offers",
+        "applicationsReceived": "Received Applications",
+        "conversations": "Conversations",
+        "profileVisits": "Profile Visits"
+      },
+      "coachPlayer": {
+        "savedOffers": "Saved Offers",
+        "applications": "Applications",
+        "pendingMessages": "Pending Messages",
+        "profileStrength": "Profile Strength"
+      },
+      "trends": {
+        "thisMonth": "+1 this month",
+        "sinceYesterday": "+4 since yesterday",
+        "thisWeek": "+2 this week",
+        "activeRecently": "Active recently",
+        "highLevel": "High Level"
+      }
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "exploreOffers": "Explore offers",
+      "applications": "Applications",
+      "messages": "Messages",
+      "yourProfile": "Your Profile"
+    },
+    "recentApplicationsTitle": "Latest received applications",
+    "recommendedOffersTitle": "Recommended Opportunities (Mock)",
+    "seeMore": "See more",
+    "reviewCV": "Review CV",
+    "enter": "+ Enter",
+    "activePlan": {
+      "title": "Active Plan",
+      "description": "Enjoy priority positioning, full access to direct contacts, and exclusive offers.",
+      "manageButton": "Manage Subscription"
+    },
+    "upgrade": {
+      "title": "Upgrade to Premium",
+      "description": "Get up to <1>300% more</1> club impressions and send direct messages.",
+      "button": "View Plans"
+    },
+    "activity": {
+      "title": "Activity",
+      "last7Days": "Last 7 days",
+      "item1": {
+        "title": "New Message",
+        "desc": "You received a reply to your application.",
+        "time": "2 hours ago"
+      },
+      "item2": {
+        "title": "\"In Review\" Status",
+        "desc": "Your CV is being evaluated.",
+        "time": "Yesterday, 14:30"
+      },
+      "item3": {
+        "title": "3 New Offers",
+        "desc": "They match your filters.",
+        "time": "Tuesday, 09:15"
+      }
+    }
   }
 }

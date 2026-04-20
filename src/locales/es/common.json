@@ -222,12 +222,86 @@
   },
   "topbar": {
     "searchPlaceholder": "Busca jugadores, clubes, estadísticas...",
-    "logout": "Salir"  },
+    "logout": "Salir"
+  },
   "dashboardLayout": {
     "banner": {
       "unverifiedText": "Tu cuenta no está verificada. Por favor, revisa tu correo electrónico.",
       "sending": "Enviando...",
       "sent": "¡Correo de verificación enviado!",
       "resend": "Reenviar correo"
-    }  }
+    }
+  },
+  "overview": {
+    "sportsman": "Deportista",
+    "hello": "Hola",
+    "planTag": "PLAN",
+    "clubDescription": "Gestiona el talento de tu club y analiza los datos.",
+    "coachDescription": "Tu panel principal de gestión técnica y retos profesionales.",
+    "playerDescription": "Este es tu centro de operaciones deportivo. Echa un vistazo.",
+    "publishOffer": "Publicar Oferta",
+    "completeProfile": "Completar Perfil",
+    "stats": {
+      "club": {
+        "activeOffers": "Ofertas Activas",
+        "applicationsReceived": "Candidaturas Recibidas",
+        "conversations": "Conversaciones",
+        "profileVisits": "Visitas al Perfil"
+      },
+      "coachPlayer": {
+        "savedOffers": "Ofertas Guardadas",
+        "applications": "Candidaturas",
+        "pendingMessages": "Mensajes Pendientes",
+        "profileStrength": "Fuerza del Perfil"
+      },
+      "trends": {
+        "thisMonth": "+1 este mes",
+        "sinceYesterday": "+4 desde ayer",
+        "thisWeek": "+2 esta semana",
+        "activeRecently": "Activo recientemente",
+        "highLevel": "Nivel Alto"
+      }
+    },
+    "quickActions": {
+      "title": "Accesos rápidos",
+      "exploreOffers": "Explorar ofertas",
+      "applications": "Candidaturas",
+      "messages": "Mensajes",
+      "yourProfile": "Tu Perfil"
+    },
+    "recentApplicationsTitle": "Últimas candidaturas recibidas",
+    "recommendedOffersTitle": "Oportunidades recomendadas (Mock)",
+    "seeMore": "Ver más",
+    "reviewCV": "Revisar CV",
+    "enter": "+ Entrar",
+    "activePlan": {
+      "title": "Plan Activo",
+      "description": "Disfruta de posicionamiento prioritario y acceso total a contactos directos y ofertas exclusivas.",
+      "manageButton": "Gestionar Suscripción"
+    },
+    "upgrade": {
+      "title": "Pásate a Premium",
+      "description": "Recibe hasta un <1>300% más</1> de impresiones de clubes y envía mensajes directos.",
+      "button": "Ver Planes"
+    },
+    "activity": {
+      "title": "Actividad",
+      "last7Days": "Últimos 7 días",
+      "item1": {
+        "title": "Mensaje Nuevo",
+        "desc": "Has recibido respuesta de una candidatura.",
+        "time": "Hace 2 horas"
+      },
+      "item2": {
+        "title": "Estado \"En Revisión\"",
+        "desc": "El CV está siendo valorado.",
+        "time": "Ayer, 14:30"
+      },
+      "item3": {
+        "title": "3 Nuevas Ofertas",
+        "desc": "Encajan con tus filtros.",
+        "time": "Martes, 09:15"
+      }
+    }
+  }
 }

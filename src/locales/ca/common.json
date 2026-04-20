@@ -229,5 +229,77 @@
       "sent": "Correu de verificació enviat!",
       "resend": "Reenviar correu"
     }
+  },
+  "overview": {
+    "sportsman": "Esportista",
+    "hello": "Hola",
+    "planTag": "PLA",
+    "clubDescription": "Gestiona el talent del teu club i analitza les dades.",
+    "coachDescription": "El teu panell principal de gestió tècnica i reptes professionals.",
+    "playerDescription": "Aquest és el teu centre d'operacions esportiu. Dóna una ullada.",
+    "publishOffer": "Publicar Oferta",
+    "completeProfile": "Completar Perfil",
+    "stats": {
+      "club": {
+        "activeOffers": "Ofertes Actives",
+        "applicationsReceived": "Candidatures Rebudes",
+        "conversations": "Converses",
+        "profileVisits": "Visites al Perfil"
+      },
+      "coachPlayer": {
+        "savedOffers": "Ofertes Guardades",
+        "applications": "Candidatures",
+        "pendingMessages": "Missatges Pendents",
+        "profileStrength": "Força del Perfil"
+      },
+      "trends": {
+        "thisMonth": "+1 aquest mes",
+        "sinceYesterday": "+4 des d'ahir",
+        "thisWeek": "+2 aquesta setmana",
+        "activeRecently": "Actiu recentment",
+        "highLevel": "Nivell Alt"
+      }
+    },
+    "quickActions": {
+      "title": "Accessos ràpids",
+      "exploreOffers": "Explorar ofertes",
+      "applications": "Candidatures",
+      "messages": "Missatges",
+      "yourProfile": "El teu Perfil"
+    },
+    "recentApplicationsTitle": "Últimes candidatures rebudes",
+    "recommendedOffersTitle": "Oportunitats recomanades (Mock)",
+    "seeMore": "Veure més",
+    "reviewCV": "Revisar CV",
+    "enter": "+ Entrar",
+    "activePlan": {
+      "title": "Pla Actiu",
+      "description": "Gaudeix de posicionament prioritari i accés total a contactes directes i ofertes exclusives.",
+      "manageButton": "Gestionar Subscripció"
+    },
+    "upgrade": {
+      "title": "Passa a Premium",
+      "description": "Rep fins a un <1>300% més</1> d'impressions de clubs i envia missatges directes.",
+      "button": "Veure Plans"
+    },
+    "activity": {
+      "title": "Activitat",
+      "last7Days": "Darrers 7 dies",
+      "item1": {
+        "title": "Missatge Nou",
+        "desc": "Has rebut resposta d'una candidatura.",
+        "time": "Fa 2 hores"
+      },
+      "item2": {
+        "title": "Estat \"En Revisió\"",
+        "desc": "El CV està sent valorat.",
+        "time": "Ahir, 14:30"
+      },
+      "item3": {
+        "title": "3 Noves Ofertes",
+        "desc": "Encaixen amb els teus filtres.",
+        "time": "Dimarts, 09:15"
+      }
+    }
   }
 }
