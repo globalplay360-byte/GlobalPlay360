@@ -1,28 +1,16 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import EmptyState from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import ProfileEditForm from '@/components/profile/ProfileEditForm';
-import { uploadAvatar, updateUserProfile } from '@/services/profile.service';
+import { uploadAvatar, updateUserProfile } from '@/services/profile.service';   
 import type { Sport } from '@/types';
-
-const SPORT_LABELS: Record<Sport, string> = {
-  football: 'Futbol 11',
-  basketball: 'Bàsquet',
-  futsal: 'Futbol Sala',
-  volleyball: 'Voleibol',
-  handball: 'Handbol',
-  waterpolo: 'Waterpolo',
-  tennis: 'Tennis',
-  rugby: 'Rugbi',
-  american_football: 'Futbol Americà',
-  hockey: 'Hoquei',
-  other: 'Altres',
-};
 
 export default function ProfilePage() {
   const { user, activePlan, refreshUser } = useAuth();
+  const { t } = useTranslation();
   const [mode, setMode] = useState<'view' | 'edit'>('view');
   
   const navigate = useNavigate();
@@ -40,7 +28,7 @@ export default function ProfilePage() {
       await refreshUser();
     } catch (err) {
       console.error(err);
-      alert('Error en pujar la foto. Intenta-ho més tard.');
+      alert(t('profile.uploadError'));
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -51,8 +39,8 @@ export default function ProfilePage() {
     return (
       <div className="p-6 max-w-5xl mx-auto w-full">
         <EmptyState
-          title="No autenticat"
-          description="Inicia sessió per veure el teu perfil."
+          title={t('profile.notAuthenticated')}
+          description={t('profile.loginToView')}
         />
       </div>
     );
@@ -66,13 +54,13 @@ export default function ProfilePage() {
       <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-6">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">Editar Perfil</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">{t('profile.editProfile')}</h1>
             <p className="text-[#9CA3AF] text-sm mt-1">
-              Actualitza la teva informació per atraure les millors oportunitats.
+              {t('profile.updateInfo')}
             </p>
           </div>
           <Button variant="outline" onClick={() => setMode('view')}>
-            Tornar al perfil
+            {t('profile.backToProfile')}
           </Button>
         </header>
 
@@ -119,7 +107,7 @@ export default function ProfilePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    Canviar
+                    {t('profile.changeAvatar')}
                   </div>
                 )}
               </div>
@@ -149,7 +137,7 @@ export default function ProfilePage() {
                 {user.sport && (
                   <>
                     <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-[#374151]"></span>
-                    <span>{SPORT_LABELS[user.sport]}</span>
+                    <span>{t(`profile.sports.${user.sport}`)}</span>
                   </>
                 )}
                 {user.country && (
@@ -164,7 +152,7 @@ export default function ProfilePage() {
 
           <div className="flex items-center gap-3 w-full md:w-auto pt-4 md:pt-0">
             <Button variant="primary" onClick={() => setMode('edit')} className="flex-1 md:flex-none">
-              Editar Perfil
+              {t('profile.editProfile')}
             </Button>
           </div>
         </div>
@@ -175,23 +163,23 @@ export default function ProfilePage() {
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
             <h2 className="text-lg font-bold text-white mb-4">
-              Sobre {user.role === 'club' ? "l'entitat" : 'mi'}
+              {user.role === 'club' ? t('profile.aboutEntity') : t('profile.aboutMe')}
             </h2>
             <p className="text-[#9CA3AF] leading-relaxed whitespace-pre-wrap">
-              {user.bio || 'Encara no has afegit cap biografia. Edita el perfil per donar-te a conèixer.'}
+              {user.bio || t('profile.emptyBio')}
             </p>
           </div>
 
           {user.role === 'player' && (user.height || user.weight || user.position || user.dateOfBirth) && (
             <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
-              <h2 className="text-lg font-bold text-white mb-4">Dades esportives</h2>
+              <h2 className="text-lg font-bold text-white mb-4">{t('profile.sportsData')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {user.position && <StatCell label="Posició" value={user.position} />}
-                {user.height && <StatCell label="Alçada" value={`${user.height} cm`} />}
-                {user.weight && <StatCell label="Pes" value={`${user.weight} kg`} />}
+                {user.position && <StatCell label={t('profile.position')} value={user.position} />}
+                {user.height && <StatCell label={t('profile.height')} value={`${user.height} cm`} />}
+                {user.weight && <StatCell label={t('profile.weight')} value={`${user.weight} kg`} />}
                 {user.dateOfBirth && (
                   <StatCell
-                    label="Naixement"
+                    label={t('profile.birthDate')}
                     value={new Date(user.dateOfBirth).toLocaleDateString('ca-ES')}
                   />
                 )}
@@ -202,7 +190,7 @@ export default function ProfilePage() {
 
         <div className="flex flex-col gap-6">
           <div className={`rounded-xl p-6 border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
-            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">Estat de Membresia</h3>
+            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">{t('profile.membershipStatus')}</h3>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isPremium ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,9 +198,9 @@ export default function ProfilePage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-white font-bold tracking-tight capitalize">{activePlan} Plan</p>
+                <p className="text-white font-bold tracking-tight capitalize">{t('profile.planName', { plan: activePlan })}</p>
                 <p className="text-xs text-[#9CA3AF]">
-                  {isPremium ? 'Accés total habilitat.' : 'Actualitza per contactar directament.'}
+                  {isPremium ? t('profile.premiumAccess') : t('profile.upgradeToContact')}
                 </p>
               </div>
             </div>
@@ -221,22 +209,22 @@ export default function ProfilePage() {
                 className="w-full mt-4 bg-[#0F172A] hover:bg-gray-800 text-white border border-gray-700 transition-colors"
                 onClick={() => navigate('/dashboard/billing')}
               >
-                Gestionar Subscripció
+                {t('profile.manageSubscription')}
               </Button>
             ) : (
               <Button
                 className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all"
                 onClick={() => navigate('/pricing')}
               >
-                Millorar Pla
+                {t('profile.upgradePlan')}
               </Button>
             )}
           </div>
 
           {(user.phone || user.instagram || user.youtubeVideoUrl) && (
             <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-3">
-              <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Contacte & Social</h3>
-              {user.phone && <InfoRow label="Telèfon" value={user.phone} />}
+              <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial')}</h3>
+              {user.phone && <InfoRow label={t('profile.phone')} value={user.phone} />}
               {user.instagram && <InfoRow label="Instagram" value={user.instagram} />}
               {user.youtubeVideoUrl && (
                 <a
@@ -245,7 +233,7 @@ export default function ProfilePage() {
                   rel="noreferrer"
                   className="text-sm text-[#3B82F6] hover:underline truncate"
                 >
-                  Veure highlights
+                  {t('profile.viewHighlights')}
                 </a>
               )}
             </div>
@@ -253,7 +241,7 @@ export default function ProfilePage() {
 
           <div className="text-center">
             <span className="text-xs text-[#4B5563]">
-              Membre des de {new Date(user.createdAt).toLocaleDateString('ca-ES')}
+              {t('profile.memberSince', { date: new Date(user.createdAt).toLocaleDateString('ca-ES') })}
             </span>
           </div>
         </div>
@@ -279,3 +267,4 @@ function InfoRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+

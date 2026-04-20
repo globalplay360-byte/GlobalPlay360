@@ -303,5 +303,49 @@
         "time": "Martes, 09:15"
       }
     }
+  },
+  "profile": {
+    "notAuthenticated": "No autenticado",
+    "loginToView": "Inicia sesión para ver tu perfil.",
+    "editProfile": "Editar Perfil",
+    "updateInfo": "Actualiza tu información para atraer las mejores oportunidades.",
+    "backToProfile": "Volver al perfil",
+    "uploadError": "Error al subir la foto. Inténtalo más tarde.",
+    "changeAvatar": "Cambiar",
+    "aboutEntity": "Sobre la entidad",
+    "aboutMe": "Sobre mí",
+    "emptyBio": "Aún no has añadido ninguna biografía. Edita el perfil para darte a conocer.",
+    "sportsData": "Datos deportivos",
+    "position": "Posición",
+    "height": "Altura",
+    "weight": "Peso",
+    "birthDate": "Nacimiento",
+    "location": "Ubicación y Contacto",
+    "city": "Ciudad",
+    "phone": "Teléfono",
+    "url": "Web/Enlace",
+    "noLocation": "No se ha indicado ubicación o contacto",
+    "sports": {
+      "football": "Fútbol 11",
+      "basketball": "Baloncesto",
+      "futsal": "Fútbol Sala",
+      "volleyball": "Voleibol",
+      "handball": "Balonmano",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tenis",
+      "rugby": "Rugby",
+      "american_football": "Fútbol Americano",
+      "hockey": "Hockey",
+      "other": "Otros"
+    },
+    "membershipStatus": "Estado de Membresía",
+    "planName": "Plan {{plan}}",
+    "premiumAccess": "Acceso total habilitado.",
+    "upgradeToContact": "Actualiza para contactar directamente.",
+    "manageSubscription": "Gestionar Suscripción",
+    "upgradePlan": "Mejorar Plan",
+    "contactAndSocial": "Contacto & Social",
+    "viewHighlights": "Ver highlights",
+    "memberSince": "Miembro desde {{date}}"
   }
 }

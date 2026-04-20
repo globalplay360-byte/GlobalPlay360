@@ -319,6 +319,7 @@ export default function RegisterPage() {
           {t('registerPage.hasAccount')}{' '}
           <Link to="/login" className="text-[#3B82F6] hover:text-[#2563EB] font-medium transition-colors">
             {t('registerPage.loginLink')}
+          </Link>
         </div>
 
       </div>

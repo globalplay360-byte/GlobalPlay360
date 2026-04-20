@@ -303,5 +303,49 @@
         "time": "Tuesday, 09:15"
       }
     }
+  },
+  "profile": {
+    "notAuthenticated": "Not authenticated",
+    "loginToView": "Log in to view your profile.",
+    "editProfile": "Edit Profile",
+    "updateInfo": "Update your information to attract the best opportunities.",
+    "backToProfile": "Back to profile",
+    "uploadError": "Error uploading photo. Try again later.",
+    "changeAvatar": "Change",
+    "aboutEntity": "About the entity",
+    "aboutMe": "About me",
+    "emptyBio": "You haven't added a bio yet. Edit your profile to introduce yourself.",
+    "sportsData": "Sports Data",
+    "position": "Position",
+    "height": "Height",
+    "weight": "Weight",
+    "birthDate": "Date of Birth",
+    "location": "Location and Contact",
+    "city": "City",
+    "phone": "Phone",
+    "url": "Web/Link",
+    "noLocation": "No location or contact provided",
+    "sports": {
+      "football": "Football (Soccer)",
+      "basketball": "Basketball",
+      "futsal": "Futsal",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tennis",
+      "rugby": "Rugby",
+      "american_football": "American Football",
+      "hockey": "Hockey",
+      "other": "Other"
+    },
+    "membershipStatus": "Membership Status",
+    "planName": "{{plan}} Plan",
+    "premiumAccess": "Full access enabled.",
+    "upgradeToContact": "Upgrade to contact directly.",
+    "manageSubscription": "Manage Subscription",
+    "upgradePlan": "Upgrade Plan",
+    "contactAndSocial": "Contact & Social",
+    "viewHighlights": "View highlights",
+    "memberSince": "Member since {{date}}"
   }
 }

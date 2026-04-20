@@ -87,6 +87,8 @@ export default function OverviewPage() {
           <Link to="/profile" className="bg-[#111827] hover:bg-gray-800 text-white border border-gray-700 hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
             <UserCircleIcon className="w-5 h-5 text-gray-400" />
             {t('overview.completeProfile')}
+          </Link>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">

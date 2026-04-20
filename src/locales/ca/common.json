@@ -301,5 +301,50 @@
         "time": "Dimarts, 09:15"
       }
     }
+  },
+  "profile": {
+    "notAuthenticated": "No autenticat",
+    "loginToView": "Inicia sessió per veure el teu perfil.",
+    "editProfile": "Editar Perfil",
+    "updateInfo": "Actualitza la teva informació per atraure les millors oportunitats.",
+    "backToProfile": "Tornar al perfil",
+    "uploadError": "Error en pujar la foto. Intenta-ho més tard.",
+    "changeAvatar": "Canviar",
+    "aboutEntity": "Sobre l'entitat",
+    "aboutMe": "Sobre mi",
+    "emptyBio": "Encara no has afegit cap biografia. Edita el perfil per donar-te a conèixer.",
+    "sportsData": "Dades esportives",
+    "position": "Posició",
+    "height": "Alçada",
+    "weight": "Pes",
+    "birthDate": "Naixement",
+    "location": "Ubicació i Contacte",
+    "city": "Ciutat",
+    "phone": "Telèfon",
+    "url": "Web/Enllaç",
+    "noLocation": "No s'ha indicat ubicació o contacte",
+    "sports": {
+      "football": "Futbol 11",
+      "basketball": "Bàsquet",
+      "futsal": "Futbol Sala",
+      "volleyball": "Voleibol",
+      "handball": "Handbol",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tennis",
+      "rugby": "Rugbi",
+      "american_football": "Futbol Americà",
+      "hockey": "Hoquei",
+      "other": "Altres"
+    },
+    "membershipStatus": "Estat de Membresia",
+    "planName": "Pla {{plan}}",
+    "premiumAccess": "Accés total habilitat.",
+    "upgradeToContact": "Actualitza per contactar directament.",
+    "manageSubscription": "Gestionar Subscripció",
+    "upgradePlan": "Millorar Pla",
+    "contactAndSocial": "Contacte & Social",
+    "viewHighlights": "Veure highlights",
+    "memberSince": "Membre des de {{date}}"
   }
 }
+
