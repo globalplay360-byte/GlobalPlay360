@@ -76,5 +76,67 @@
     "logout": "Logout",
     "login": "Login",
     "register": "Sign Up"
+  },
+  "footer": {
+    "description": "Global Play 360 is the leading platform connecting athletes, coaches, and sports organizations worldwide.",
+    "contact": "Contact",
+    "about": "About Us",
+    "pricing": "Pricing",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "2026 Global Play 360. All rights reserved.",
+    "followUs": "Follow Us"
+  },
+  "pricingPage": {
+    "title": "Choose your plan",
+    "subtitle1": "Start for free or unlock your full potential with Premium. Try it ",
+    "subtitleBold": "30 days risk-free",
+    "subtitle2": ".",
+    "cancelBanner": "The subscription was not completed. You can try again whenever you want.",
+    "errorPrice": "Error loading prices.",
+    "errorCheckout": "Could not start checkout.",
+    "noPremiumActive": "No active Premium product found.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "save": "Save €{{amount}}",
+    "free": {
+      "title": "Free",
+      "month": "/month",
+      "desc": "Basic visibility to get started.",
+      "features": {
+        "f1": "Basic profile",
+        "f2": "Limited opportunity search",
+        "f3": "1 application per week",
+        "f4": "Direct messaging",
+        "f5": "Unlimited applications",
+        "f6": "Search priority"
+      },
+      "cta": "Sign up for free"
+    },
+    "premium": {
+      "badge": "Recommended",
+      "title": "Premium",
+      "month": "/month",
+      "year": "/year",
+      "trial": "✓ 30-day free trial",
+      "desc": "Professional tools to accelerate your career.",
+      "features": {
+        "f1": "Featured profile with videos",
+        "f2": "Unlimited search",
+        "f3": "Direct messaging",
+        "f4": "Unlimited applications",
+        "f5": "Search priority",
+        "f6": "Priority support"
+      },
+      "active": "You already have Premium active →",
+      "redirecting": "Redirecting to Stripe...",
+      "loading": "Loading...",
+      "ctaLoggedIn": "Start 30-day trial",
+      "ctaLoggedOut": "Sign up to start",
+      "manage": "Manage your subscription from the dashboard.",
+      "cancelAnytime": "Cancel anytime. No long-term commitments."
+    },
+    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable"
   }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import {
   listActiveProductsWithPrices,
   createCheckoutSession,
@@ -11,6 +12,7 @@ type Interval = 'month' | 'year';
 
 export default function PricingPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -33,13 +35,13 @@ export default function PricingPage() {
       try {
         const products = await listActiveProductsWithPrices();
         const premium = products.find((p) => p.role === 'premium') ?? products[0];
-        if (!premium) throw new Error('No hi ha cap producte Premium actiu.');
+        if (!premium) throw new Error(t('pricingPage.noPremiumActive'));
         const month = premium.prices.find((p) => p.interval === 'month') ?? null;
         const year = premium.prices.find((p) => p.interval === 'year') ?? null;
         if (!cancelled) setPrices({ month, year });
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Error carregant els preus.');
+          setError(err instanceof Error ? err.message : t('pricingPage.errorPrice'));
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -48,7 +50,7 @@ export default function PricingPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   const handleSubscribe = async () => {
     if (!user) {
@@ -64,7 +66,7 @@ export default function PricingPage() {
       const url = await createCheckoutSession(user.uid, price.id);
       window.location.assign(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No s\'ha pogut iniciar el checkout.');
+      setError(err instanceof Error ? err.message : t('pricingPage.errorCheckout'));
       setCheckoutLoading(false);
     }
   };
@@ -83,17 +85,18 @@ export default function PricingPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Escull el teu pla</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('pricingPage.title')}</h1>
             <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">
-              Comença gratis o desbloqueja tot el potencial amb Premium. Prova-ho{' '}
-              <strong className="text-white">30 dies sense compromís</strong>.
+              {t('pricingPage.subtitle1')}
+              <strong className="text-white">{t('pricingPage.subtitleBold')}</strong>
+              {t('pricingPage.subtitle2')}
             </p>
           </div>
 
           {/* Cancel banner */}
           {canceled && (
             <div className="max-w-2xl mx-auto mb-8 p-4 rounded-lg bg-[#FFC107]/10 border border-[#FFC107]/30 text-[#FFC107] text-sm text-center">
-              La subscripció no s'ha completat. Pots tornar-ho a intentar quan vulguis.
+              {t('pricingPage.cancelBanner')}
             </div>
           )}
 
@@ -116,7 +119,7 @@ export default function PricingPage() {
                     : 'text-[#8892B0] hover:text-white'
                 }`}
               >
-                Mensual
+                {t('pricingPage.monthly')}
               </button>
               <button
                 type="button"
@@ -127,10 +130,10 @@ export default function PricingPage() {
                     : 'text-[#8892B0] hover:text-white'
                 }`}
               >
-                Anual
+                {t('pricingPage.annual')}
                 {monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 && (
                   <span className="text-xs bg-[#FFC107] text-[#020C1B] px-2 py-0.5 rounded-full">
-                    Estalvia {monthlyTotalIfAnnual.toFixed(0)}€
+                    {t('pricingPage.save', { amount: monthlyTotalIfAnnual.toFixed(0) })}
                   </span>
                 )}
               </button>
@@ -142,62 +145,62 @@ export default function PricingPage() {
             {/* Free */}
             <div className="bg-[#0A192F] rounded-2xl p-8 border border-white/10 flex flex-col">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">Gratuït</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('pricingPage.free.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-5xl font-extrabold text-white">0€</span>
-                  <span className="text-[#8892B0]">/mes</span>
+                  <span className="text-[#8892B0]">{t('pricingPage.free.month')}</span>
                 </div>
-                <p className="text-[#8892B0] text-sm">Visibilitat bàsica per començar.</p>
+                <p className="text-[#8892B0] text-sm">{t('pricingPage.free.desc')}</p>
               </div>
 
               <ul className="space-y-3 mb-8 text-sm text-[#E2E8F0] flex-1">
-                <FeatureRow included>Perfil bàsic</FeatureRow>
-                <FeatureRow included>Cerca limitada d'oportunitats</FeatureRow>
-                <FeatureRow included>1 aplicació per setmana</FeatureRow>
-                <FeatureRow>Missatgeria directa</FeatureRow>
-                <FeatureRow>Aplicacions il·limitades</FeatureRow>
-                <FeatureRow>Prioritat a les cerques</FeatureRow>
+                <FeatureRow included>{t('pricingPage.free.features.f1')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.free.features.f2')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.free.features.f3')}</FeatureRow>
+                <FeatureRow>{t('pricingPage.free.features.f4')}</FeatureRow>
+                <FeatureRow>{t('pricingPage.free.features.f5')}</FeatureRow>
+                <FeatureRow>{t('pricingPage.free.features.f6')}</FeatureRow>
               </ul>
 
               <Link
                 to="/register"
                 className="block w-full py-3 px-4 text-center rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold transition-colors"
               >
-                Registra't gratis
+                {t('pricingPage.free.cta')}
               </Link>
             </div>
 
             {/* Premium */}
             <div className="bg-gradient-to-b from-[#112240] to-[#0A192F] rounded-2xl p-8 border-2 border-[#0070F3] shadow-[0_0_30px_rgba(0,112,243,0.15)] relative flex flex-col">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0070F3] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                Recomanat
+                {t('pricingPage.premium.badge')}
               </div>
 
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('pricingPage.premium.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-5xl font-extrabold text-[#0070F3]">
                     {loading ? '...' : priceLabel(prices[interval])}
                   </span>
                   <span className="text-[#8892B0]">
-                    /{interval === 'month' ? 'mes' : 'any'}
+                    {interval === 'month' ? t('pricingPage.premium.month') : t('pricingPage.premium.year')}
                   </span>
                 </div>
                 <p className="text-sm text-[#FFC107] font-medium mb-2">
-                  ✓ 30 dies de prova gratuïts
+                  {t('pricingPage.premium.trial')}
                 </p>
                 <p className="text-[#8892B0] text-sm">
-                  Eines professionals per accelerar la teva carrera.
+                  {t('pricingPage.premium.desc')}
                 </p>
               </div>
 
               <ul className="space-y-3 mb-8 text-sm text-[#E2E8F0] flex-1">
-                <FeatureRow included>Perfil destacat amb vídeos</FeatureRow>
-                <FeatureRow included>Cerca il·limitada</FeatureRow>
-                <FeatureRow included>Missatgeria directa</FeatureRow>
-                <FeatureRow included>Aplicacions il·limitades</FeatureRow>
-                <FeatureRow included>Prioritat a les cerques</FeatureRow>
-                <FeatureRow included>Suport preferent</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f1')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f2')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f3')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f4')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f5')}</FeatureRow>
+                <FeatureRow included>{t('pricingPage.premium.features.f6')}</FeatureRow>
               </ul>
 
               {isAlreadyPremium ? (
@@ -205,7 +208,7 @@ export default function PricingPage() {
                   to="/dashboard"
                   className="w-full py-3 px-4 text-center rounded-lg bg-[#10B981] hover:bg-[#0E9F6E] text-white font-semibold transition-colors shadow-lg block"
                 >
-                  Ja tens Premium actiu →
+                  {t('pricingPage.premium.active')}
                 </Link>
               ) : (
                 <button
@@ -215,25 +218,25 @@ export default function PricingPage() {
                   className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading
-                    ? 'Redirigint a Stripe...'
+                    ? t('pricingPage.premium.redirecting')
                     : subscriptionLoading
-                      ? 'Carregant...'
+                      ? t('pricingPage.premium.loading')
                       : user
-                        ? 'Comença la prova de 30 dies'
-                        : 'Registra\'t per començar'}
+                        ? t('pricingPage.premium.ctaLoggedIn')
+                        : t('pricingPage.premium.ctaLoggedOut')}
                 </button>
               )}
               <p className="text-xs text-[#8892B0] text-center mt-3">
                 {isAlreadyPremium
-                  ? 'Gestiona la teva subscripció des del dashboard.'
-                  : 'Cancel·la quan vulguis. Sense permanència.'}
+                  ? t('pricingPage.premium.manage')
+                  : t('pricingPage.premium.cancelAnytime')}
               </p>
             </div>
           </div>
 
           {/* Trust row */}
           <div className="mt-12 text-center text-xs text-[#8892B0]">
-            Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui
+            {t('pricingPage.trustText')}
           </div>
         </div>
       </section>

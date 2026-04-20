@@ -76,5 +76,67 @@
     "logout": "Salir",
     "login": "Entrar",
     "register": "Registro"
+  },
+  "footer": {
+    "description": "Global Play 360 es la plataforma principal que conecta atletas, entrenadores y organizaciones deportivas en todo el mundo.",
+    "contact": "Contacto",
+    "about": "Nosotros",
+    "pricing": "Precios",
+    "legal": "Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "rights": "2026 Global Play 360. Todos los derechos reservados.",
+    "followUs": "Síguenos"
+  },
+  "pricingPage": {
+    "title": "Elige tu plan",
+    "subtitle1": "Empieza gratis o desbloquea todo el potencial con Premium. Pruébalo ",
+    "subtitleBold": "30 días sin compromiso",
+    "subtitle2": ".",
+    "cancelBanner": "La suscripción no se ha completado. Puedes volver a intentarlo cuando quieras.",
+    "errorPrice": "Error cargando los precios.",
+    "errorCheckout": "No se ha podido iniciar el checkout.",
+    "noPremiumActive": "No hay ningún producto Premium activo.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "save": "Ahorra {{amount}}€",
+    "free": {
+      "title": "Gratuito",
+      "month": "/mes",
+      "desc": "Visibilidad básica para empezar.",
+      "features": {
+        "f1": "Perfil básico",
+        "f2": "Búsqueda limitada de oportunidades",
+        "f3": "1 aplicación por semana",
+        "f4": "Mensajería directa",
+        "f5": "Aplicaciones ilimitadas",
+        "f6": "Prioridad en las búsquedas"
+      },
+      "cta": "Regístrate gratis"
+    },
+    "premium": {
+      "badge": "Recomendado",
+      "title": "Premium",
+      "month": "/mes",
+      "year": "/año",
+      "trial": "✓ 30 días de prueba gratuitos",
+      "desc": "Herramientas profesionales para acelerar tu carrera.",
+      "features": {
+        "f1": "Perfil destacado con vídeos",
+        "f2": "Búsqueda ilimitada",
+        "f3": "Mensajería directa",
+        "f4": "Aplicaciones ilimitadas",
+        "f5": "Prioridad en las búsquedas",
+        "f6": "Soporte preferente"
+      },
+      "active": "Ya tienes Premium activo →",
+      "redirecting": "Redirigiendo a Stripe...",
+      "loading": "Cargando...",
+      "ctaLoggedIn": "Empieza la prueba de 30 días",
+      "ctaLoggedOut": "Regístrate para empezar",
+      "manage": "Gestiona tu suscripción desde el dashboard.",
+      "cancelAnytime": "Cancela cuando quieras. Sin permanencia."
+    },
+    "trustText": "Pago seguro gestionado por Stripe · Facturación en EUR · IVA incluido según corresponda"
   }
 }

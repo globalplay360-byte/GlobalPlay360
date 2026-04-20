@@ -74,5 +74,67 @@
     "logout": "Tancar Sessió",
     "login": "Iniciar Sessió",
     "register": "Registre"
+  },
+  "footer": {
+    "description": "Global Play 360 és la plataforma principal que connecta atletes, entrenadors i organitzacions esportives de tot el món.",
+    "contact": "Contacte",
+    "about": "Sobre Nosaltres",
+    "pricing": "Preus",
+    "legal": "Legal",
+    "privacy": "Política de Privacitat",
+    "terms": "Termes de Servei",
+    "rights": "2026 Global Play 360. Tots els drets reservats.",
+    "followUs": "Segueix-nos"
+  },
+  "pricingPage": {
+    "title": "Escull el teu pla",
+    "subtitle1": "Comença gratis o desbloqueja tot el potencial amb Premium. Prova-ho ",
+    "subtitleBold": "30 dies sense compromís",
+    "subtitle2": ".",
+    "cancelBanner": "La subscripció no s'ha completat. Pots tornar-ho a intentar quan vulguis.",
+    "errorPrice": "Error carregant els preus.",
+    "errorCheckout": "No s'ha pogut iniciar el checkout.",
+    "noPremiumActive": "No hi ha cap producte Premium actiu.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "save": "Estalvia {{amount}}€",
+    "free": {
+      "title": "Gratuït",
+      "month": "/mes",
+      "desc": "Visibilitat bàsica per començar.",
+      "features": {
+        "f1": "Perfil bàsic",
+        "f2": "Cerca limitada d'oportunitats",
+        "f3": "1 aplicació per setmana",
+        "f4": "Missatgeria directa",
+        "f5": "Aplicacions il·limitades",
+        "f6": "Prioritat a les cerques"
+      },
+      "cta": "Registra't gratis"
+    },
+    "premium": {
+      "badge": "Recomanat",
+      "title": "Premium",
+      "month": "/mes",
+      "year": "/any",
+      "trial": "✓ 30 dies de prova gratuïts",
+      "desc": "Eines professionals per accelerar la teva carrera.",
+      "features": {
+        "f1": "Perfil destacat amb vídeos",
+        "f2": "Cerca il·limitada",
+        "f3": "Missatgeria directa",
+        "f4": "Aplicacions il·limitades",
+        "f5": "Prioritat a les cerques",
+        "f6": "Suport preferent"
+      },
+      "active": "Ja tens Premium actiu →",
+      "redirecting": "Redirigint a Stripe...",
+      "loading": "Carregant...",
+      "ctaLoggedIn": "Comença la prova de 30 dies",
+      "ctaLoggedOut": "Registra't per començar",
+      "manage": "Gestiona la teva subscripció des del dashboard.",
+      "cancelAnytime": "Cancel·la quan vulguis. Sense permanència."
+    },
+    "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui"
   }
 }
