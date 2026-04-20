@@ -202,5 +202,32 @@
     "googleButton": "Google",
     "hasAccount": "¿Ya tienes cuenta?",
     "loginLink": "Iniciar sesión"
-  }
+  },
+  "sidebar": {
+    "nav": {
+      "overview": "Vista General",
+      "profile": "Mi Perfil",
+      "opportunities": "Oportunidades",
+      "myOffers": "Mis Ofertas",
+      "applications": "Candidaturas",
+      "messages": "Mensajes",
+      "analytics": "Analíticas",
+      "billing": "Facturación"
+    },
+    "mainMenu": "Menú Principal",
+    "testUser": "Usuario",
+    "playerRole": "Jugador",
+    "coachRole": "Entrenador",
+    "clubRole": "Club"
+  },
+  "topbar": {
+    "searchPlaceholder": "Busca jugadores, clubes, estadísticas...",
+    "logout": "Salir"  },
+  "dashboardLayout": {
+    "banner": {
+      "unverifiedText": "Tu cuenta no está verificada. Por favor, revisa tu correo electrónico.",
+      "sending": "Enviando...",
+      "sent": "¡Correo de verificación enviado!",
+      "resend": "Reenviar correo"
+    }  }
 }

@@ -202,5 +202,34 @@
     "googleButton": "Google",
     "hasAccount": "Already have an account?",
     "loginLink": "Log in"
+  },
+  "sidebar": {
+    "nav": {
+      "overview": "Overview",
+      "profile": "My Profile",
+      "opportunities": "Opportunities",
+      "myOffers": "My Offers",
+      "applications": "Applications",
+      "messages": "Messages",
+      "analytics": "Analytics",
+      "billing": "Billing"
+    },
+    "mainMenu": "Main Menu",
+    "testUser": "User",
+    "playerRole": "Player",
+    "coachRole": "Coach",
+    "clubRole": "Club"
+  },
+  "topbar": {
+    "searchPlaceholder": "Search players, clubs, statistics...",
+    "logout": "Log out"
+  },
+  "dashboardLayout": {
+    "banner": {
+      "unverifiedText": "Your account is not verified. Please check your email.",
+      "sending": "Sending...",
+      "sent": "Verification email sent!",
+      "resend": "Resend email"
+    }
   }
 }

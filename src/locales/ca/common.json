@@ -200,5 +200,34 @@
     "googleButton": "Google",
     "hasAccount": "Ja tens compte?",
     "loginLink": "Inicia sessió"
+  },
+  "sidebar": {
+    "nav": {
+      "overview": "Vista General",
+      "profile": "El Meu Perfil",
+      "opportunities": "Oportunitats",
+      "myOffers": "Les Meves Ofertes",
+      "applications": "Candidatures",
+      "messages": "Missatges",
+      "analytics": "Analítiques",
+      "billing": "Facturació"
+    },
+    "mainMenu": "Menú Principal",
+    "testUser": "Usuari",
+    "playerRole": "Jugador",
+    "coachRole": "Entrenador",
+    "clubRole": "Club"
+  },
+  "topbar": {
+    "searchPlaceholder": "Cerca jugadors, clubs, estadístiques...",
+    "logout": "Sortir"
+  },
+  "dashboardLayout": {
+    "banner": {
+      "unverifiedText": "El teu compte no està verificat. Si us plau, comprova el teu correu electrònic.",
+      "sending": "Enviant...",
+      "sent": "Correu de verificació enviat!",
+      "resend": "Reenviar correu"
+    }
   }
 }

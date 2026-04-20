@@ -5,10 +5,12 @@ import { useAuth } from '@/context/AuthContext';
 import { auth } from '@/services/firebase';
 import { verifyEmail } from '@/services/auth.service';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function DashboardLayout() {
   const { user } = useAuth();
-  
+  const { t } = useTranslation();
+
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [isVerified, setIsVerified] = useState(true); // per defecte suposem que sí fins a revisar
@@ -55,20 +57,16 @@ export default function DashboardLayout() {
           <div className="bg-[#3B82F6]/10 border-b border-[#3B82F6]/20 px-4 py-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-sm z-10 sticky top-0">
             <div className="flex items-center gap-2 text-[#9CA3AF]">
               <svg className="w-5 h-5 text-[#3B82F6] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-              <span>El teu compte no està verificat. Si us plau, comprova el teu correu electrònic.</span>
+              <span>{t('dashboardLayout.banner.unverifiedText')}</span>
             </div>
-            <button 
+            <button
               onClick={handleResend}
               disabled={sending || sent}
-              className={`font-medium whitespace-nowrap transition-colors ${
+              className={`font-medium whitespace-nowrap transition-colors ${    
                 sent ? 'text-green-500 cursor-default' : 'text-[#3B82F6] hover:text-[#2563EB] underline underline-offset-2 hover:decoration-2'
               }`}
             >
-              {sending ? 'Enviant...' : sent ? 'Correu de verificació enviat!' : 'Reenviar correu'}
-            </button>
-          </div>
-        )}
-
+              {sending ? t('dashboardLayout.banner.sending') : sent ? t('dashboardLayout.banner.sent') : t('dashboardLayout.banner.resend')}
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar">
           <Outlet />
         </main>
