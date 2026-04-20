@@ -5,6 +5,10 @@ import {
   GoogleAuthProvider,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  sendEmailVerification,
+  applyActionCode,
   type UserCredential,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -78,6 +82,10 @@ export async function registerWithEmail(
   // Set displayName on Firebase Auth profile
   await updateProfile(cred.user, { displayName });
 
+  // Send verification email automatically
+  const url = `${window.location.origin}/auth/action`;
+  await sendEmailVerification(cred.user, { url });
+
   // Create Firestore user document with trial
   return createUserDoc(cred.user.uid, email, displayName, role);
 }
@@ -110,4 +118,29 @@ export async function loginWithGoogle(
 
 export async function logout(): Promise<void> {
   await signOut(auth);
+}
+
+// ── Custom Auth flows ────────────────────────────────────
+
+/** Reset password via email link */
+export async function resetPassword(email: string): Promise<void> {
+  const url = `${window.location.origin}/auth/action`;
+  await sendPasswordResetEmail(auth, email, { url });
+}
+
+/** Confirm the new password with the code received via email */
+export async function confirmNewPassword(code: string, newPassword: string): Promise<void> {
+  await confirmPasswordReset(auth, code, newPassword);
+}
+
+/** Send verification email to currently logged in user */
+export async function verifyEmail(): Promise<void> {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Cap usuari autenticat en aquesta sessió.');
+  const url = `${window.location.origin}/auth/action`;
+  await sendEmailVerification(user, { url });
+}
+
+export async function confirmEmailVerification(code: string): Promise<void> {
+  await applyActionCode(auth, code);
 }

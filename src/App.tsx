@@ -14,6 +14,8 @@ import PricingPage from './pages/public/PricingPage';
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import AuthActionPage from './pages/auth/AuthActionPage';
 
 // Admin / Dashboard Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -45,6 +47,8 @@ function App() {
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/auth/action" element={<AuthActionPage />} />
           </Route>
 
           {/* Internal Shared Dashboard Routes (Player, Coach, Club) */}
