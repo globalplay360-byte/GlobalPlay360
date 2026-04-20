@@ -1,15 +1,17 @@
-import { 
-  collection, 
-  doc, 
-  addDoc, 
-  setDoc, 
-  updateDoc, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot, 
+import {
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+  updateDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
   serverTimestamp,
-  getDocs
+  getDoc,
+  getDocs,
+  increment
 } from 'firebase/firestore';
 import { db } from './firebase';
 import type { Conversation, Message } from '@/types';
@@ -34,7 +36,8 @@ export function subscribeToUserConversations(
         lastMessage: data.lastMessage || '',
         // Use standard date if timestamp is missing or resolving
         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-        isPremiumLocked: data.isPremiumLocked || false
+        isPremiumLocked: data.isPremiumLocked || false,
+        unreadCount: data.unreadCount || {}
       };
     });
     callback(convs);
@@ -71,9 +74,13 @@ export function subscribeToMessages(
 export async function sendMessage(conversationId: string, senderId: string, text: string) {
   const messageRef = collection(db, `conversations/${conversationId}/messages`);
   const conversationRef = doc(db, 'conversations', conversationId);
-  
+
+  const convSnap = await getDoc(conversationRef);
+  const participants: string[] = convSnap.exists() ? (convSnap.data().participants || []) : [];
+  const recipients = participants.filter((pId) => pId !== senderId);
+
   const now = serverTimestamp();
-  
+
   await addDoc(messageRef, {
     senderId,
     text,
@@ -81,9 +88,23 @@ export async function sendMessage(conversationId: string, senderId: string, text
     read: false
   });
 
+  const unreadUpdates: Record<string, ReturnType<typeof increment>> = {};
+  recipients.forEach((rId) => {
+    unreadUpdates[`unreadCount.${rId}`] = increment(1);
+  });
+
   await updateDoc(conversationRef, {
     lastMessage: text,
-    updatedAt: now
+    updatedAt: now,
+    ...unreadUpdates
+  });
+}
+
+// Reset the unread counter for a user on a conversation (called when they open it)
+export async function markConversationAsRead(conversationId: string, userId: string) {
+  const conversationRef = doc(db, 'conversations', conversationId);
+  await updateDoc(conversationRef, {
+    [`unreadCount.${userId}`]: 0
   });
 }
 
@@ -109,8 +130,9 @@ export async function getOrCreateConversation(userId1: string, userId2: string):
     participants: [userId1, userId2],
     lastMessage: '',
     updatedAt: serverTimestamp(),
-    isPremiumLocked: false
+    isPremiumLocked: false,
+    unreadCount: { [userId1]: 0, [userId2]: 0 }
   });
-  
+
   return newRef.id;
 }

@@ -12,8 +12,10 @@ interface ConversationExtended extends Conversation {
 }
 
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
-function ConversationListItem({ conv }: { conv: ConversationExtended }) {
+function ConversationListItem({ conv, currentUserId }: { conv: ConversationExtended; currentUserId: string }) {
   const isLocked = false;
+  const unread = conv.unreadCount?.[currentUserId] ?? 0;
+  const hasUnread = unread > 0;
 
   const displayDate = new Date(conv.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
   const time = new Date(conv.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -35,7 +37,7 @@ function ConversationListItem({ conv }: { conv: ConversationExtended }) {
       {/* Contingut */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <h3 className="text-white font-bold text-base truncate flex items-center gap-2">
+          <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-white font-bold' : 'text-white font-bold'}`}>
             {conv.otherParticipant?.displayName || 'Usuari desconegut'}
             {isLocked && (
               <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,15 +45,25 @@ function ConversationListItem({ conv }: { conv: ConversationExtended }) {
               </svg>
             )}
           </h3>
-          <span className="text-xs text-[#9CA3AF] whitespace-nowrap ml-2">
+          <span className={`text-xs whitespace-nowrap ml-2 ${hasUnread ? 'text-[#3B82F6] font-semibold' : 'text-[#9CA3AF]'}`}>
             {displayDate}, {time}
           </span>
         </div>
-        
-        <p className={`text-sm truncate ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : 'text-[#9CA3AF] group-hover:text-white transition-colors'}`}>
+
+        <p className={`text-sm truncate ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-white font-medium' : 'text-[#9CA3AF] group-hover:text-white transition-colors'}`}>
           {isLocked ? "Missatge protegit per restricció premium. Actualitza el teu pla per llegir-lo." : conv.lastMessage || 'Nova conversa.'}
         </p>
       </div>
+
+      {/* Unread badge */}
+      {hasUnread && (
+        <span
+          className="ml-2 inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-[11px] font-bold text-white bg-[#3B82F6] rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] shrink-0"
+          aria-label={`${unread} missatge${unread > 1 ? 's' : ''} sense llegir`}
+        >
+          {unread > 9 ? '9+' : unread}
+        </span>
+      )}
 
       {/* Angle right arrow for unlockeds */}
       {!isLocked && (
@@ -133,6 +145,7 @@ export default function MessagesPage() {
             <ConversationListItem
               key={conv.id}
               conv={conv}
+              currentUserId={user!.uid}
             />
           ))}
         </div>
