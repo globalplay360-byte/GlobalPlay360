@@ -3,5 +3,76 @@
   "login": "Iniciar sessió",
   "register": "Registrar-se",
   "home": "Inici",
-  "dashboard": "Tauler"
+  "dashboard": "Tauler",  "homePage": {
+    "hero": {
+      "title": "On el Talent Troba la \n Oportunitat",
+      "subtitle": "Connecta amb jugadors, entrenadors i clubs de tot el món. Desenvolupa la teva carrera esportiva amb Global Play 360.",
+      "btnPlayer": "Sóc Jugador",
+      "btnCoach": "Sóc Entrenador",
+      "btnClub": "Sóc Club"
+    },
+    "howItWorks": {
+      "title": "Com Funciona",
+      "subtitle": "Uneix-te a milers d'atletes, entrenadors i clubs que ja estan construint el seu futur.",
+      "step1": {
+        "title": "Crea el teu Perfil",
+        "desc": "Mostra les teves habilitats, estadístiques i vídeos destacats."
+      },
+      "step2": {
+        "title": "Descobreix Oportunitats",
+        "desc": "Troba ofertes de clubs i perfils compatibles fàcilment."
+      },
+      "step3": {
+        "title": "Connecta i Aplica",
+        "desc": "Envia missatges directes i aplica a posicions obertes."
+      },
+      "step4": {
+        "title": "Puja de Nivell",
+        "desc": "Accelera la teva carrera professional en el món de l'esport."
+      }
+    },
+    "pricing": {
+      "title": "Gratis vs Premium",
+      "subtitle": "Tria el pla que s'adapti a les teves metes i accelera la teva carrera.",
+      "month": "/mes",
+      "free": {
+        "title": "Pla Gratuït",
+        "desc": "Visibilitat bàsica per a atletes aspirants",
+        "feat1": "Perfil Bàsic",
+        "feat2": "Cerca Limitada",
+        "feat3": "Missatgeria Il·limitada",
+        "feat4": "Prioritat de Cerca",
+        "feat5": "Eines de Vídeo i PDF",
+        "cta": "Registrar-se Pla Gratuït"
+      },
+      "premium": {
+        "badge": "MÉS POPULAR",
+        "title": "Pla Premium",
+        "desc": "Eines professionals per a carreres serioses",
+        "feat1": "Perfil Millorat",
+        "feat2": "Cerca Il·limitada",
+        "feat3": "Missatgeria Il·limitada",
+        "feat4": "Prioritat de Cerca i Suport",
+        "feat5": "Eines de Vídeo i PDF",
+        "cta": "Actualitzar Ara"
+      }
+    },
+    "social": {
+      "title": "Segueix-nos a les Xarxes Socials",
+      "subtitle": "Uneix-te a la nostra comunitat i mantén-te al dia amb les últimes oportunitats i notícies esportives."
+    }
+  },  "navbar": {
+    "banner": {
+      "title": "Membres Fundadors – Accés Gratuït",
+      "description": "Sigues un dels primers 100 membres en unir-te i obtén accés Premium gratuït fins al 1 de juliol de 2026!",
+      "cta": "Reclama el teu Estatus"
+    },
+    "brand": "Global Play 360",
+    "home": "Inici",
+    "about": "Sobre Nosaltres",
+    "admin": "Panell",
+    "logout": "Tancar Sessió",
+    "login": "Iniciar Sessió",
+    "register": "Registre"
+  }
 }

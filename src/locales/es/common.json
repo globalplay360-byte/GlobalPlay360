@@ -3,5 +3,78 @@
   "login": "Iniciar sesión",
   "register": "Registrarse",
   "home": "Inicio",
-  "dashboard": "Panel"
+  "dashboard": "Panel",
+  "homePage": {
+    "hero": {
+      "title": "Donde el Talento Encuentra la \n Oportunidad",
+      "subtitle": "Conecta con jugadores, entrenadores y clubes de todo el mundo. Desarrolla tu carrera deportiva con Global Play 360.",
+      "btnPlayer": "Soy Jugador",
+      "btnCoach": "Soy Entrenador",
+      "btnClub": "Soy Club"
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "subtitle": "Únete a miles de atletas, entrenadores y clubes que ya están construyendo su futuro.",
+      "step1": {
+        "title": "Crea tu Perfil",
+        "desc": "Muestra tus habilidades, estadísticas y videos destacados."
+      },
+      "step2": {
+        "title": "Descubre Oportunidades",
+        "desc": "Encuentra ofertas de clubes y perfiles compatibles fácilmente."
+      },
+      "step3": {
+        "title": "Conecta y Aplica",
+        "desc": "Envía mensajes directos y aplica a posiciones abiertas."
+      },
+      "step4": {
+        "title": "Sube de Nivel",
+        "desc": "Acelera tu carrera profesional en el mundo del deporte."
+      }
+    },
+    "pricing": {
+      "title": "Gratis vs Premium",
+      "subtitle": "Elige el plan que se adapte a tus metas y acelera tu carrera.",
+      "month": "/mes",
+      "free": {
+        "title": "Plan Gratuito",
+        "desc": "Visibilidad básica para atletas aspirantes",
+        "feat1": "Perfil Básico",
+        "feat2": "Búsqueda Limitada",
+        "feat3": "Mensajería Ilimitada",
+        "feat4": "Prioridad de Búsqueda",
+        "feat5": "Herramientas de Video y PDF",
+        "cta": "Registrarse Plan Gratuito"
+      },
+      "premium": {
+        "badge": "MÁS POPULAR",
+        "title": "Plan Premium",
+        "desc": "Herramientas profesionales para carreras serias",
+        "feat1": "Perfil Mejorado",
+        "feat2": "Búsqueda Ilimitada",
+        "feat3": "Mensajería Ilimitada",
+        "feat4": "Prioridad de Búsqueda y Soporte",
+        "feat5": "Herramientas de Video y PDF",
+        "cta": "Actualizar Ahora"
+      }
+    },
+    "social": {
+      "title": "Síguenos en Redes Sociales",
+      "subtitle": "Únete a nuestra comunidad y mantente al día con las últimas oportunidades y noticias deportivas."
+    }
+  },
+  "navbar": {
+    "banner": {
+      "title": "Miembros Fundadores – Acceso Gratuito",
+      "description": "¡Sé uno de los primeros 100 miembros en unirse y obtén acceso Premium gratis hasta el 1 de julio de 2026!",
+      "cta": "Reclama tu Estatus"
+    },
+    "brand": "Global Play 360",
+    "home": "Inicio",
+    "about": "Nosotros",
+    "admin": "Dashboard",
+    "logout": "Salir",
+    "login": "Entrar",
+    "register": "Registro"
+  }
 }

@@ -3,5 +3,78 @@
   "login": "Login",
   "register": "Register",
   "home": "Home",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "homePage": {
+    "hero": {
+      "title": "Where Talent Meets \n Opportunity",
+      "subtitle": "Connect with players, coaches, and clubs around the world. Develop your sports career with Global Play 360.",
+      "btnPlayer": "I'm a Player",
+      "btnCoach": "I'm a Coach",
+      "btnClub": "I'm a Club"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Join thousands of athletes, coaches, and clubs who are already building their future.",
+      "step1": {
+        "title": "Create your Profile",
+        "desc": "Showcase your skills, stats, and highlight videos."
+      },
+      "step2": {
+        "title": "Discover Opportunities",
+        "desc": "Easily find club offers and compatible profiles."
+      },
+      "step3": {
+        "title": "Connect and Apply",
+        "desc": "Send direct messages and apply to open positions."
+      },
+      "step4": {
+        "title": "Level Up",
+        "desc": "Accelerate your professional career in the sports world."
+      }
+    },
+    "pricing": {
+      "title": "Free vs Premium",
+      "subtitle": "Choose the plan that fits your goals and accelerates your career.",
+      "month": "/month",
+      "free": {
+        "title": "Free Plan",
+        "desc": "Basic visibility for aspiring athletes",
+        "feat1": "Basic Profile",
+        "feat2": "Limited Search",
+        "feat3": "Unlimited Messaging",
+        "feat4": "Search Priority",
+        "feat5": "Video and PDF Tools",
+        "cta": "Sign Up Free"
+      },
+      "premium": {
+        "badge": "MOST POPULAR",
+        "title": "Premium Plan",
+        "desc": "Professional tools for serious careers",
+        "feat1": "Enhanced Profile",
+        "feat2": "Unlimited Search",
+        "feat3": "Unlimited Messaging",
+        "feat4": "Search Priority and Support",
+        "feat5": "Video and PDF Tools",
+        "cta": "Upgrade Now"
+      }
+    },
+    "social": {
+      "title": "Follow Us on Social Media",
+      "subtitle": "Join our community and stay up to date with the latest sports opportunities and news."
+    }
+  },
+  "navbar": {
+    "banner": {
+      "title": "Founding Members – Free Access",
+      "description": "Be one of the first 100 members to join and get free Premium access until July 1, 2026!",
+      "cta": "Claim Your Status"
+    },
+    "brand": "Global Play 360",
+    "home": "Home",
+    "about": "About Us",
+    "admin": "Dashboard",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Sign Up"
+  }
 }
