@@ -378,6 +378,57 @@
     "emptyDesc": "Explore the marketplace and send your first application to clubs or offers that fit your profile.",
     "exploreMarketplace": "Explore Opportunities"
   },
+    "myOpportunities": {
+    "errorLoading": "Error loading opportunities",
+    "errorToggling": "Error changing status",
+    "confirmDelete": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+    "errorDeleting": "Error deleting opportunity",
+    "restrictedTitle": "Restricted Access",
+    "restrictedDesc": "Only clubs can access this page.",
+    "pageTitle": "My Offers",
+    "publishNew": "Publish New Offer",
+    "emptyTitle": "You do not have any published offers",
+    "emptyDesc": "Go ahead and search for the players and coaches you need.",
+    "sport": "Sport",
+    "sector": "Sector",
+    "candidatesSummary": "Candidates Summary",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+    "statusUnknown": "Unknown Status",
+    "viewDetails": "View details",
+    "closeOffer": "Close Offer",
+    "reopenOffer": "Reopen Offer",
+    "processing": "Processing...",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "edit": "Edit"
+  },
+    "opportunityDetail": {
+    "backApplications": "Back to Applications",
+    "backMine": "Back to My Offers",
+    "backMarketplace": "Back to Marketplace",
+    "errorLoading": "Error loading opportunity",
+    "errorApply": "Error submitting application",
+    "errorChat": "Error trying to open direct chat.",
+    "connErrorTitle": "Connection Error",
+    "retry": "Retry",
+    "notFoundTitle": "Opportunity not found",
+    "notFoundDesc": "This opportunity might have been deleted or the ID is invalid.",
+    "location": "Location",
+    "contract": "Contract",
+    "gender": "Gender",
+    "published": "Published",
+    "aboutOpp": "About the Opportunity",
+    "requirements": "Requirements and Necessary Profile",
+    "clubCannotApply": "Clubs cannot apply to opportunities.",
+    "alreadyApplied": "You have already applied to this opportunity",
+    "sending": "Sending...",
+    "applyNow": "Apply Now",
+    "contactClub": "Contact Club",
+    "aboutClub": "About the Club",
+    "club": "Club",
+    "viewFullProfile": "View Full Profile"
+  },
   "opportunities": {
     "errorLoading": "Error loading opportunities",
     "errorConnection": "Connection Error",
@@ -403,5 +454,62 @@
     "published": "Published:",
     "viewDetail": "View Detail",
     "apply": "Apply"
+  },
+  "opportunityForm": {
+    "restricted": "Restricted access",
+    "onlyClubs": "Only clubs can publish opportunities.",
+    "notFoundTitle": "Opportunity not found",
+    "notFoundDesc": "This opportunity does not exist or has been deleted.",
+    "backBtn": "Back",
+    "onlyOwner": "Only the owner club can edit this opportunity.",
+    "backToMine": "Back to My Offers",
+    
+    "backToMarketplace": "Back to Marketplace",
+    "createNewTitle": "Publish New Opportunity",
+    "createNewDesc": "Fill the form to publish a new offer in the marketplace.",
+    "editTitle": "Edit Opportunity",
+    "editDesc": "Modify details and requirements to keep the offer updated.",
+    "publishBtn": "Publish Opportunity",
+    "publishingBtn": "Publishing...",
+    "saveChangesBtn": "Save Changes",
+    "savingBtn": "Saving...",
+    "cancelBtn": "Cancel",
+    "genderLabel": "Gender *",
+    "contractLabel": "Contract Type *",
+    "salaryLabel": "Offered Salary / Compensation",
+    "locationLabel": "Location / City *",
+    "descLabel": "Description and Conditions *",
+    "requirementsLabel": "Add Key Requirements",
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "mixed": "Mixed"
+    },
+    "contractOptions": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Academy",
+      "trial": "Trials"
+    },
+    "errors": {
+      "titleRequired": "The title is mandatory.",
+      "locationRequired": "The location is mandatory.",
+      "descRequired": "The description is mandatory.",
+      "saveError": "Error saving opportunity."
+    },
+    "fields": {
+      "titleLabel": "Opportunity Title *",
+      "titlePlaceholder": "Ex: Center Forward for the First Team",
+      "sportLabel": "Sport *",
+      "salaryPlaceholder": "Ex: €15.000/year + accommodation",
+      "locationPlaceholder": "Ex: Barcelona, Spain",
+      "descPlaceholder": "Detail the responsibilities, team, goals, etc.",
+      "requirementsPlaceholder": "Ex: +2 years Professional experience..."
+    }
   }
 }
+
+
+
+

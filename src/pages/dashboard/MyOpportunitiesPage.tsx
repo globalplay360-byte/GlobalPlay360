@@ -28,7 +28,7 @@ export default function MyOpportunitiesPage() {
         const data = await getOpportunitiesByField('clubId', '==', user!.uid);
         if (!cancelled) setOpportunities(data);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant oportunitats');
+        if (!cancelled) setError(err instanceof Error ? err.message : t('myOpportunities.errorLoading'));
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -49,7 +49,7 @@ export default function MyOpportunitiesPage() {
         ),
       );
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Error canviant l\'estat');
+      alert(err instanceof Error ? err.message : t('myOpportunities.errorToggling'));
     } finally {
       setTogglingId(null);
     }
@@ -57,7 +57,7 @@ export default function MyOpportunitiesPage() {
 
   const handleDelete = async (opp: Opportunity) => {
     const confirmed = window.confirm(
-      `Segur que vols eliminar "${opp.title}"? Aquesta acció és irreversible.`
+      t("myOpportunities.confirmDelete", { title: opp.title })
     );
     if (!confirmed) return;
 
@@ -66,7 +66,7 @@ export default function MyOpportunitiesPage() {
       await deleteOpportunity(opp.id);
       setOpportunities((prev) => prev.filter((o) => o.id !== opp.id));
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Error eliminant l\'oportunitat');
+      alert(err instanceof Error ? err.message : t('myOpportunities.errorDeleting'));
     } finally {
       setDeletingId(null);
     }
@@ -214,3 +214,4 @@ export default function MyOpportunitiesPage() {
     </div>
   );
 }
+

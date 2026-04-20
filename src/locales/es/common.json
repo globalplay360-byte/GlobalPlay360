@@ -378,6 +378,57 @@
     "emptyDesc": "Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.",
     "exploreMarketplace": "Explorar Oportunidades"
   },
+    "myOpportunities": {
+    "errorLoading": "Error cargando oportunidades",
+    "errorToggling": "Error cambiando el estado",
+    "confirmDelete": "¿Seguro que quieres eliminar \"{{title}}\"? Esta acción es irreversible.",
+    "errorDeleting": "Error eliminando la oportunidad",
+    "restrictedTitle": "Acceso restringido",
+    "restrictedDesc": "Solo los clubes pueden acceder a esta página.",
+    "pageTitle": "Mis Ofertas",
+    "publishNew": "Publicar Nueva Oferta",
+    "emptyTitle": "No tienes ninguna oferta publicada",
+    "emptyDesc": "Anímate a buscar los jugadores y entrenadores que necesitas.",
+    "sport": "Deporte",
+    "sector": "Sector",
+    "candidatesSummary": "Resumen de Candidatos",
+    "statusOpen": "Abierta",
+    "statusClosed": "Cerrada",
+    "statusUnknown": "Sin Estado",
+    "viewDetails": "Ver detalles",
+    "closeOffer": "Cerrar Oferta",
+    "reopenOffer": "Reabrir Oferta",
+    "processing": "Procesando...",
+    "delete": "Eliminar",
+    "deleting": "Eliminando...",
+    "edit": "Editar"
+  },
+    "opportunityDetail": {
+    "backApplications": "Volver a Candidaturas",
+    "backMine": "Volver a Mis Ofertas",
+    "backMarketplace": "Volver al Marketplace",
+    "errorLoading": "Error cargando la oportunidad",
+    "errorApply": "Error enviando la candidatura",
+    "errorChat": "Error al intentar abrir el chat directo.",
+    "connErrorTitle": "Error de conexión",
+    "retry": "Reintentar",
+    "notFoundTitle": "Oportunidad no encontrada",
+    "notFoundDesc": "Esta oportunidad podría haber sido eliminada o el ID no es válido.",
+    "location": "Ubicación",
+    "contract": "Contrato",
+    "gender": "Género",
+    "published": "Publicado",
+    "aboutOpp": "Sobre la Oportunidad",
+    "requirements": "Requisitos y Perfil Necesario",
+    "clubCannotApply": "Los clubes no pueden aplicar a oportunidades.",
+    "alreadyApplied": "Ya has aplicado a esta oportunidad",
+    "sending": "Enviando...",
+    "applyNow": "Aplicar Ahora",
+    "contactClub": "Contactar Club",
+    "aboutClub": "Sobre el Club",
+    "club": "Club",
+    "viewFullProfile": "Ver Perfil Completo"
+  },
   "opportunities": {
     "errorLoading": "Error cargando oportunidades",
     "errorConnection": "Error de conexión",
@@ -403,5 +454,62 @@
     "published": "Publicado:",
     "viewDetail": "Ver Detalle",
     "apply": "Aplicar"
+  },
+  "opportunityForm": {
+    "restricted": "Acceso restringido",
+    "onlyClubs": "Solo los clubes pueden publicar oportunidades.",
+    "notFoundTitle": "Oportunidad no encontrada",
+    "notFoundDesc": "Esta oportunidad no existe o ha sido eliminada.",
+    "backBtn": "Volver",
+    "onlyOwner": "Solo el club propietario puede editar esta oportunidad.",
+    "backToMine": "Volver a Mis Ofertas",
+    
+    "backToMarketplace": "Volver al Marketplace",
+    "createNewTitle": "Publicar Nueva Oportunidad",
+    "createNewDesc": "Rellena el formulario para publicar una oferta en el marketplace.",
+    "editTitle": "Editar Oportunidad",
+    "editDesc": "Modifica los detalles y requisitos para mantener la oferta actualizada.",
+    "publishBtn": "Publicar Oportunidad",
+    "publishingBtn": "Publicando...",
+    "saveChangesBtn": "Guardar Cambios",
+    "savingBtn": "Guardando...",
+    "cancelBtn": "Cancelar",
+    "genderLabel": "Género *",
+    "contractLabel": "Tipo de Contrato *",
+    "salaryLabel": "Salario Ofrecido / Compensación",
+    "locationLabel": "Ubicación / Ciudad *",
+    "descLabel": "Descripción y Condiciones *",
+    "requirementsLabel": "Añade Requisitos Clave",
+    "gender": {
+      "male": "Masculino",
+      "female": "Femenino",
+      "mixed": "Mixto"
+    },
+    "contractOptions": {
+      "pro": "Profesional",
+      "semi-pro": "Semi-profesional",
+      "amateur": "Amateur",
+      "academy": "Academia",
+      "trial": "Pruebas / Trial"
+    },
+    "errors": {
+      "titleRequired": "El título es obligatorio.",
+      "locationRequired": "La ubicación es obligatoria.",
+      "descRequired": "La descripción es obligatoria.",
+      "saveError": "Error guardando la oportunidad."
+    },
+    "fields": {
+      "titleLabel": "Título de la Oportunidad *",
+      "titlePlaceholder": "Ej: Delantero Centro para el Primer Equipo",
+      "sportLabel": "Deporte *",
+      "salaryPlaceholder": "Ej: 15.000€/año + alojamiento",
+      "locationPlaceholder": "Ej: Barcelona, España",
+      "descPlaceholder": "Detalla las responsabilidades, el equipo, los objetivos, etc.",
+      "requirementsPlaceholder": "Ej: +2 años experiencia Profesional..."
+    }
   }
 }
+
+
+
+

@@ -376,6 +376,57 @@
     "emptyDesc": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
     "exploreMarketplace": "Explorar Oportunitats"
   },
+    "myOpportunities": {
+    "errorLoading": "Error carregant oportunitats",
+    "errorToggling": "Error canviant l'estat",
+    "confirmDelete": "Segur que vols eliminar \"{{title}}\"? Aquesta acció és irreversible.",
+    "errorDeleting": "Error eliminant l'oportunitat",
+    "restrictedTitle": "Accés restringit",
+    "restrictedDesc": "Només els clubs poden accedir a aquesta pàgina.",
+    "pageTitle": "Les Meves Ofertes",
+    "publishNew": "Publicar Nova Oferta",
+    "emptyTitle": "No tens cap oferta publicada",
+    "emptyDesc": "Anima't a buscar els jugadors i entrenadors que necessites.",
+    "sport": "Esport",
+    "sector": "Sector",
+    "candidatesSummary": "Resum de Candidats",
+    "statusOpen": "Oberta",
+    "statusClosed": "Tancada",
+    "statusUnknown": "Sense Estat",
+    "viewDetails": "Veure detalls",
+    "closeOffer": "Tancar Oferta",
+    "reopenOffer": "Reobrir Oferta",
+    "processing": "Processant...",
+    "delete": "Eliminar",
+    "deleting": "S'està eliminant...",
+    "edit": "Editar"
+  },
+    "opportunityDetail": {
+    "backApplications": "Tornar a Candidatures",
+    "backMine": "Tornar a Les Meves Ofertes",
+    "backMarketplace": "Tornar al Marketplace",
+    "errorLoading": "Error carregant la oportunitat",
+    "errorApply": "Error enviant la candidatura",
+    "errorChat": "Error en intentar obrir el xat directe.",
+    "connErrorTitle": "Error de connexió",
+    "retry": "Reintentar",
+    "notFoundTitle": "Oportunitat no trobada",
+    "notFoundDesc": "Aquesta oportunitat podria haver estat eliminada o l'ID no és vàlid.",
+    "location": "Ubicació",
+    "contract": "Contracte",
+    "gender": "Gènere",
+    "published": "Publicat",
+    "aboutOpp": "Sobre l'Oportunitat",
+    "requirements": "Requisits i Perfil Necessari",
+    "clubCannotApply": "Els clubs no poden aplicar a oportunitats.",
+    "alreadyApplied": "Ja has aplicat a aquesta oportunitat",
+    "sending": "Enviant...",
+    "applyNow": "Aplicar Ara",
+    "contactClub": "Contactar Club",
+    "aboutClub": "Sobre el Club",
+    "club": "Club",
+    "viewFullProfile": "Veure Perfil Complet"
+  },
   "opportunities": {
     "errorLoading": "Error carregant oportunitats",
     "errorConnection": "Error de connexió",
@@ -401,6 +452,64 @@
     "published": "Publicat:",
     "viewDetail": "Veure Detall",
     "apply": "Aplicar"
+  },
+  "opportunityForm": {
+    "restricted": "Accés restringit",
+    "onlyClubs": "Només els clubs poden publicar oportunitats.",
+    "notFoundTitle": "Oportunitat no trobada",
+    "notFoundDesc": "Aquesta oportunitat no existeix o ha estat eliminada.",
+    "backBtn": "Tornar",
+    "onlyOwner": "Només el club propietari pot editar aquesta oportunitat.",
+    "backToMine": "Tornar a Les Meves Ofertes",
+    
+    "backToMarketplace": "Tornar al Marketplace",
+    "createNewTitle": "Publicar Nova Oportunitat",
+    "createNewDesc": "Omple el formulari per publicar una oferta al marketplace.",
+    "editTitle": "Editar Oportunitat",
+    "editDesc": "Modifica els detalls i els requisits per mantenir l'oferta actualitzada.",
+    "publishBtn": "Publicar Oportunitat",
+    "publishingBtn": "Publicant...",
+    "saveChangesBtn": "Desar Canvis",
+    "savingBtn": "Desant...",
+    "cancelBtn": "Cancel·lar",
+    "genderLabel": "Gènere *",
+    "contractLabel": "Tipus de Contracte *",
+    "salaryLabel": "Salari Ofert / Compensació",
+    "locationLabel": "Ubicació / Ciutat *",
+    "descLabel": "Descripció i Condicions *",
+    "requirementsLabel": "Afegeix Requisits Clau",
+    "gender": {
+      "male": "Masculí",
+      "female": "Femení",
+      "mixed": "Mixt"
+    },
+    "contractOptions": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Acadèmia",
+      "trial": "Proves / Trial"
+    },
+    "errors": {
+      "titleRequired": "El títol és obligatori.",
+      "locationRequired": "La ubicació és obligatòria.",
+      "descRequired": "La descripció és obligatòria.",
+      "saveError": "Error desant l'oportunitat."
+    },
+    "fields": {
+      "titleLabel": "Títol de l'Oportunitat *",
+      "titlePlaceholder": "Ex: Davanter Centre per al Primer Equip",
+      "sportLabel": "Esport *",
+      "salaryPlaceholder": "Ex: 15.000€/any + allotjament",
+      "locationPlaceholder": "Ex: Barcelona, Espanya",
+      "descPlaceholder": "Detalla les responsabilitats, l'equip, els objectius, etc.",
+      "requirementsPlaceholder": "Ex: +2 anys experiència Professional..."
+    }
   }
 }
+
+
+
+
+
 

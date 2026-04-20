@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Opportunity } from '@/types';
 import { getOpportunityById } from '@/services/opportunities.service';
 import { getUserDoc } from '@/services/auth.service';
@@ -23,17 +24,18 @@ export default function OpportunityDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  const { t, i18n } = useTranslation();
 
   // Resol "Tornar" en funció de l'origen de navegació (state.from)
   const from = (location.state as { from?: string } | null)?.from;
   const backTarget = (() => {
-    if (from === 'applications') return { url: '/dashboard/applications', label: 'Tornar a Candidatures' };
-    if (from === 'mine') return { url: '/dashboard/opportunities/mine', label: 'Tornar a Les Meves Ofertes' };
-    if (from === 'marketplace') return { url: '/dashboard/opportunities', label: 'Tornar al Marketplace' };
+    if (from === 'applications') return { url: '/dashboard/applications', label: t('opportunityDetail.backApplications') };
+    if (from === 'mine') return { url: '/dashboard/opportunities/mine', label: t('opportunityDetail.backMine') };
+    if (from === 'marketplace') return { url: '/dashboard/opportunities', label: t('opportunityDetail.backMarketplace') };
     // Fallback per accés directe per URL: decidim pel rol
-    return user?.role === 'club'
-      ? { url: '/dashboard/opportunities/mine', label: 'Tornar a Les Meves Ofertes' }
-      : { url: '/dashboard/opportunities', label: 'Tornar al Marketplace' };
+    return user?.role === t('opportunityDetail.club')
+      ? { url: '/dashboard/opportunities/mine', label: t('opportunityDetail.backMine') }
+      : { url: '/dashboard/opportunities', label: t('opportunityDetail.backMarketplace') };
   })();
 
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
@@ -80,7 +82,7 @@ export default function OpportunityDetailPage() {
           setAlreadyApplied(applied);
         }
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant la oportunitat');
+        if (!cancelled) setError(err instanceof Error ? err.message : t('opportunityDetail.errorLoading'));
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -102,7 +104,7 @@ export default function OpportunityDetailPage() {
       });
       setAlreadyApplied(true);
     } catch (err) {
-      setApplyError(err instanceof Error ? err.message : 'Error enviant la candidatura');
+      setApplyError(err instanceof Error ? err.message : t('opportunityDetail.errorApply'));
     } finally {
       setApplying(false);
     }
@@ -116,7 +118,7 @@ const handleMessage = async () => {
       const convId = await getOrCreateConversation(user.uid, opportunity.clubId);
       navigate(`/dashboard/messages/${convId}`);
     } catch (err) {
-      alert('Error en intentar obrir el xat directe.');
+      alert(t('opportunityDetail.errorChat'));
       console.error(err);
     } finally {
       setApplying(false);
@@ -124,7 +126,7 @@ const handleMessage = async () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('ca-ES', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
+    return new Intl.DateTimeFormat(i18n.language === 'ca' ? 'ca-ES' : i18n.language === 'es' ? 'es-ES' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
   };
 
   // ── Loading state ─────────────────────────────────────
@@ -143,7 +145,7 @@ const handleMessage = async () => {
     return (
       <div className="max-w-5xl mx-auto px-4 py-16">
         <EmptyState
-          title="Error de connexió"
+          title={t("opportunityDetail.connErrorTitle")}
           description={error}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,7 +153,7 @@ const handleMessage = async () => {
             </svg>
           }
           action={
-            <Button variant="primary" onClick={() => window.location.reload()}>Reintentar</Button>
+            <Button variant="primary" onClick={() => window.location.reload()}>{t("opportunityDetail.retry")}</Button>
           }
         />
       </div>
@@ -163,7 +165,7 @@ const handleMessage = async () => {
     return (
       <div className="max-w-5xl mx-auto px-4 py-16">
         <EmptyState
-          title="Oportunitat no trobada"
+          title={t("opportunityDetail.notFoundTitle")}
           description="Aquesta oportunitat podria haver estat eliminada o l'ID no és vàlid."
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,25 +213,25 @@ const handleMessage = async () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-gray-800 mb-8">
               <div>
                 <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
-                  <MapPinIcon className="w-3.5 h-3.5 mr-1" /> Ubicació
+                  <MapPinIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.location")}
                 </div>
                 <div className="font-medium text-white">{opportunity.location}</div>
               </div>
               <div>
                 <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
-                  <BriefcaseIcon className="w-3.5 h-3.5 mr-1" /> Contracte
+                  <BriefcaseIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.contract")}
                 </div>
                 <div className="font-medium text-white capitalize">{opportunity.contractType.replace('-', ' ')}</div>
               </div>
               <div>
                 <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
-                  <UserGroupIcon className="w-3.5 h-3.5 mr-1" /> Gènere
+                  <UserGroupIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.gender")}
                 </div>
                 <div className="font-medium text-white capitalize">{opportunity.gender}</div>
               </div>
               <div>
                 <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
-                  <CalendarIcon className="w-3.5 h-3.5 mr-1" /> Publicat
+                  <CalendarIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.published")}
                 </div>
                 <div className="font-medium text-white">{formatDate(opportunity.createdAt)}</div>
               </div>
@@ -245,7 +247,7 @@ const handleMessage = async () => {
 
             {/* Requirements */}
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-white">Requisits i Perfil Necessari</h2>
+              <h2 className="text-xl font-semibold mb-4 text-white">{t("opportunityDetail.requirements")}</h2>
               <ul className="space-y-3">
                 {opportunity.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start">
@@ -263,7 +265,7 @@ const handleMessage = async () => {
           {/* Action Card */}
           <Card className="border-blue-900/30 shadow-lg shadow-blue-900/10">
             <CardContent className="p-6">
-              {user?.role === 'club' ? (
+              {user?.role === t('opportunityDetail.club') ? (
                 <div className="text-center text-gray-400 p-4">
                   Els clubs no poden aplicar a oportunitats.
                 </div>
@@ -271,7 +273,7 @@ const handleMessage = async () => {
                 <div className="space-y-4">
                   {alreadyApplied ? (
                     <div className="text-center p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                      <span className="text-emerald-400 font-semibold text-sm">Ja has aplicat a aquesta oportunitat</span>
+                      <span className="text-emerald-400 font-semibold text-sm">{t('opportunityDetail.alreadyApplied')}</span>
                     </div>
                   ) : (
                     <Button
@@ -281,7 +283,7 @@ const handleMessage = async () => {
                       onClick={handleApply}
                       disabled={applying}
                     >
-                      {applying ? 'Enviant...' : 'Aplicar Ara'}
+                      {applying ? t('opportunityDetail.sending') : t('opportunityDetail.applyNow')}
                     </Button>
                   )}
 
@@ -302,13 +304,13 @@ const handleMessage = async () => {
           {/* Club Info Card */}
           <Card>
             <CardContent className="p-6 space-y-4 text-sm">
-              <h3 className="font-semibold text-white">Sobre el Club</h3>
+              <h3 className="font-semibold text-white">{t('opportunityDetail.aboutClub')}</h3>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-xl font-bold text-gray-400 overflow-hidden">
                   {clubName?.charAt(0) || 'C'}
                 </div>
                 <div>
-                  <div className="font-bold text-white text-base">{clubName || 'Club'}</div>
+                  <div className="font-bold text-white text-base">{clubName || t('opportunityDetail.club')}</div>
                   {clubEmail && <div className="text-blue-400">{clubEmail}</div>}
                 </div>
               </div>
@@ -324,3 +326,4 @@ const handleMessage = async () => {
     </div>
   );
 }
+
