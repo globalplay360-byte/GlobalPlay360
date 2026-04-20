@@ -22,14 +22,30 @@ interface ApplicationExtended extends Application {
 }
 
 export default function ApplicationsPage() {
-  const { user } = useAuth();
+  const { user, activePlan } = useAuth();
   const navigate = useNavigate();
   const currentUserRole = user?.role || "player";
+  const isFree = activePlan === 'free';
 
   const [applications, setApplications] = useState<ApplicationExtended[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  const handleStartConversation = async (otherUserId: string) => {
+    if (!user) return;
+    if (isFree) {
+      navigate('/pricing');
+      return;
+    }
+    try {
+      const convId = await getOrCreateConversation(user.uid, otherUserId);
+      navigate(`/dashboard/messages/${convId}`);
+    } catch (err) {
+      console.error("Error creant el xat:", err);
+      alert("S'ha produït un error en intentar obrir el xat.");
+    }
+  };
 
   const handleStatusChange = async (
     app: ApplicationExtended,
@@ -288,27 +304,39 @@ export default function ApplicationsPage() {
                       Veure Detall
                     </Link>
 
-                    {currentUserRole === "club" && app.candidate && (
-                      <Button
-                        variant="primary"
-                        className="w-full sm:w-auto px-4 py-2 text-sm"
-                        onClick={async () => {
-                          if (!user) return;
-                          try {
-                            const convId = await getOrCreateConversation(
-                              user.uid,
-                              app.candidate!.uid
-                            );
-                            navigate(`/dashboard/messages/${convId}`);
-                          } catch (error) {
-                            console.error("Error creant el xat:", error);
-                            alert("S'ha produït un error en intentar obrir el xat.");
-                          }
-                        }}
-                      >
-                        Contactar
-                      </Button>
-                    )}
+                    {currentUserRole === "club" &&
+                      app.candidate &&
+                      (app.status === "accepted" || app.status === "in_review") && (
+                        <Button
+                          variant="primary"
+                          className="w-full sm:w-auto px-4 py-2 text-sm inline-flex items-center justify-center gap-1.5"
+                          onClick={() => handleStartConversation(app.candidate!.uid)}
+                        >
+                          {isFree && (
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
+                            </svg>
+                          )}
+                          Contactar
+                        </Button>
+                      )}
+
+                    {currentUserRole !== "club" &&
+                      app.status === "accepted" &&
+                      app.club && (
+                        <Button
+                          variant="primary"
+                          className="w-full sm:w-auto px-4 py-2 text-sm inline-flex items-center justify-center gap-1.5"
+                          onClick={() => handleStartConversation(app.club!.uid)}
+                        >
+                          {isFree && (
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
+                            </svg>
+                          )}
+                          Iniciar conversa
+                        </Button>
+                      )}
                   </div>
 
                   {/* Accions de gestió d'estat (només club) */}
