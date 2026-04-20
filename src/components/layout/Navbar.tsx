@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -50,9 +51,8 @@ export default function Navbar() {
 
             {/* Right side */}
             <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2 mr-2">
-                <button className="text-xs font-semibold bg-[#2D2D2D] text-white px-2 py-1 rounded">ES</button>
-                <button className="text-xs font-semibold text-white/50 hover:text-white px-2 py-1">EN</button>
+              <div className="hidden sm:flex items-center mr-2">
+                <LanguageSelector />
               </div>
 
               {user ? (

@@ -65,11 +65,13 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - Finalitzada la UI del panell de `ApplicationsPage` (Candidatures).
 - Finalitzada la UI i lògica de `OpportunitiesPage` (Portal public d'Oportunitats).
 - **Edició del Perfil (`ProfilePage.tsx`)**: Formularis dinàmics multi-esport connectats a Firestore, i suport de pujada d'imatges via Firebase Storage.
+- **Autenticació (Auth)**: S'ha creat de zero un flux complet de restabliment de contrasenyes i verificació de correus elèctronics customitzat amb el disseny Dark SaaS.
+- **Pagaments (Stripe)**: Integració de subscripcions completada per als plans Premium/Pro.
 
 **🚧 Roadmap (Endavant):**
 
-1. **Pagaments (Stripe)**: [TASCA ACTUAL]. Integració de subscripcions reals per permetre el pas a Premium/Pro desbloquejant el xat directe.
-2. **Revisió 360 i UX/UI complet**: Un cop funcioni l'arquitectura core, passarem el "pinzell de plata" a tota l'app per fer coincidir els marxes, colors i components.
+1. **Revisió 360 i UX/UI complet**: [TASCA ACTUAL]. Un cop funcionen l'Autenticació, Base de Dades i Pagaments, toca passar el "pinzell de plata" a tota l'app per unificar marges, colors, components recurrents i comportament Mobile/Desktop segons el "Dark SaaS Navy".
+2. **Poliment d'Errors Menors (QA)**: Identificar i arreglar petites inconsistències abans del llançament final.
 
 ---
 
