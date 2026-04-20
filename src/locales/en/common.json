@@ -377,5 +377,31 @@
     "emptyTitle": "You haven't applied to any opportunities yet",
     "emptyDesc": "Explore the marketplace and send your first application to clubs or offers that fit your profile.",
     "exploreMarketplace": "Explore Opportunities"
+  },
+  "opportunities": {
+    "errorLoading": "Error loading opportunities",
+    "errorConnection": "Connection Error",
+    "retry": "Retry",
+    "marketplace": "Marketplace",
+    "discoverOpps": "Discover the latest opportunities around the world.",
+    "createOpportunity": "Create Opportunity",
+    "filters": {
+      "all": "All",
+      "football": "Football",
+      "basketball": "Basketball",
+      "proContracts": "Pro Contracts"
+    },
+    "emptyTitle": "No opportunities yet",
+    "emptyDesc": "No published opportunities found. Try again later or create the first one if you are a club.",
+    "status": {
+      "open": "open",
+      "closed": "closed",
+      "draft": "draft"
+    },
+    "keyRequirements": "Key Requirements",
+    "more": "more",
+    "published": "Published:",
+    "viewDetail": "View Detail",
+    "apply": "Apply"
   }
 }

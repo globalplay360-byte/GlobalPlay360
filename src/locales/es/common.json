@@ -377,5 +377,31 @@
     "emptyTitle": "Aún no has aplicado a ninguna oportunidad",
     "emptyDesc": "Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.",
     "exploreMarketplace": "Explorar Oportunidades"
+  },
+  "opportunities": {
+    "errorLoading": "Error cargando oportunidades",
+    "errorConnection": "Error de conexión",
+    "retry": "Reintentar",
+    "marketplace": "Marketplace",
+    "discoverOpps": "Descubre las últimas oportunidades alrededor del mundo.",
+    "createOpportunity": "Crear Oportunidad",
+    "filters": {
+      "all": "Todas",
+      "football": "Fútbol 11",
+      "basketball": "Baloncesto",
+      "proContracts": "Contratos Pro"
+    },
+    "emptyTitle": "Aún no hay oportunidades",
+    "emptyDesc": "No se han encontrado oportunidades publicadas. Vuelve a intentarlo más tarde o crea la primera si eres un club.",
+    "status": {
+      "open": "abierto",
+      "closed": "cerrado",
+      "draft": "borrador"
+    },
+    "keyRequirements": "Requisitos Clave",
+    "more": "más",
+    "published": "Publicado:",
+    "viewDetail": "Ver Detalle",
+    "apply": "Aplicar"
   }
 }

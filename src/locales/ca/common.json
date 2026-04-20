@@ -375,6 +375,32 @@
     "emptyTitle": "Encara no has aplicat a cap oportunitat",
     "emptyDesc": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
     "exploreMarketplace": "Explorar Oportunitats"
+  },
+  "opportunities": {
+    "errorLoading": "Error carregant oportunitats",
+    "errorConnection": "Error de connexió",
+    "retry": "Reintentar",
+    "marketplace": "Marketplace",
+    "discoverOpps": "Descobreix les últimes oportunitats arreu del món.",
+    "createOpportunity": "Crear Oportunitat",
+    "filters": {
+      "all": "Totes",
+      "football": "Futbol 11",
+      "basketball": "Bàsquet",
+      "proContracts": "Contractes Pro"
+    },
+    "emptyTitle": "Encara no hi ha oportunitats",
+    "emptyDesc": "No s'han trobat oportunitats publicades. Torna-ho a provar més tard o crea la primera si ets un club.",
+    "status": {
+      "open": "obert",
+      "closed": "tancat",
+      "draft": "esborrany"
+    },
+    "keyRequirements": "Requisits Clau",
+    "more": "més",
+    "published": "Publicat:",
+    "viewDetail": "Veure Detall",
+    "apply": "Aplicar"
   }
 }
 
