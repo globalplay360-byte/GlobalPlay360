@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { confirmNewPassword, confirmEmailVerification } from '@/services/auth.service';
 import { auth } from '@/services/firebase';
 import { Button } from '@/components/ui/Button';
@@ -67,9 +67,9 @@ export default function AuthActionPage() {
           }
           setSuccess(true);
           setTimeout(() => navigate('/dashboard'), 3000);
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error(err);
-          if (err.code === 'auth/expired-action-code' || err.code === 'auth/invalid-action-code') {
+          if (err && typeof err === 'object' && 'code' in err && ((err as any).code === 'auth/expired-action-code' || (err as any).code === 'auth/invalid-action-code')) {
             setError("L'enllaç ha expirat o ja s'ha utilitzat.");
           } else {
             setError("No s'ha pogut verificar el correu.");
@@ -106,9 +106,9 @@ export default function AuthActionPage() {
       await confirmNewPassword(oobCode, newPassword);
       setSuccess(true);
       setTimeout(() => navigate('/login'), 3000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      if (err.code === 'auth/expired-action-code' || err.code === 'auth/invalid-action-code') {
+      if (err && typeof err === 'object' && 'code' in err && ((err as any).code === 'auth/expired-action-code' || (err as any).code === 'auth/invalid-action-code')) {
         setError("L'enllaç ha expirat o ja s'ha utilitzat.");
       } else {
         setError('Ha ocorregut un error en canviar la contrasenya.');
@@ -314,8 +314,7 @@ export default function AuthActionPage() {
               type="submit"
               variant="primary"
               fullWidth
-              loading={loading}
-              disabled={!oobCode}
+              disabled={loading || !oobCode}
             >
               Guardar Contrasenya
             </Button>

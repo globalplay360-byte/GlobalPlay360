@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 type StatusType = 'submitted' | 'in_review' | 'accepted' | 'rejected' | 'open' | 'closed' | string;
 
 interface StatusBadgeProps {
@@ -6,6 +8,8 @@ interface StatusBadgeProps {
 }
 
 export default function StatusBadge({ status, className = '' }: StatusBadgeProps) {
+  const { t } = useTranslation();
+  
   const getBadgeStyles = () => {
     switch (status) {
       case 'submitted':
@@ -31,7 +35,8 @@ export default function StatusBadge({ status, className = '' }: StatusBadgeProps
     <span
       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getBadgeStyles()} ${className}`}
     >
-      {formatText(status)}
+      {t(`status.${status}`, formatText(status))}
+
     </span>
   );
 }

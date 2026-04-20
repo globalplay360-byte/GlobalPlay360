@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { createPortalSession } from '@/services/stripe.service';
 import {
@@ -10,8 +11,7 @@ import {
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
 
-export default function BillingPage() {
-  const { user, subscription, activePlan, subscriptionLoading } = useAuth();
+export default function BillingPage() {  const { t, i18n } = useTranslation();  const { user, subscription, activePlan, subscriptionLoading } = useAuth();
   const navigate = useNavigate();
   const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +31,7 @@ export default function BillingPage() {
       const url = await createPortalSession();
       window.location.assign(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No s\'ha pogut obrir el portal.');
+      setError(err instanceof Error ? err.message : t('billing.portal.error', 'No s\'ha pogut obrir el portal.'));
       setPortalLoading(false);
     }
   };
@@ -48,20 +48,20 @@ export default function BillingPage() {
   }
 
   const statusLabel: Record<typeof subscription.status, { text: string; className: string }> = {
-    trialing: { text: 'En període de prova', className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' },
-    active: { text: 'Activa', className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
-    canceled: { text: 'Cancel·lada', className: 'bg-gray-800 text-gray-400 border-gray-700' },
-    incomplete: { text: 'Incompleta', className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' },
-    incomplete_expired: { text: 'Expirada', className: 'bg-red-500/10 text-red-400 border-red-500/30' },
-    past_due: { text: 'Pagament pendent', className: 'bg-red-500/10 text-red-400 border-red-500/30' },
-    unpaid: { text: 'No pagada', className: 'bg-red-500/10 text-red-400 border-red-500/30' },
+    trialing: { text: t('billing.status.trialing', 'En període de prova'), className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' },
+    active: { text: t('billing.status.active', 'Activa'), className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
+    canceled: { text: t('billing.status.canceled', 'Cancel·lada'), className: 'bg-gray-800 text-gray-400 border-gray-700' },
+    incomplete: { text: t('billing.status.incomplete', 'Incompleta'), className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' },
+    incomplete_expired: { text: t('billing.status.incomplete_expired', 'Expirada'), className: 'bg-red-500/10 text-red-400 border-red-500/30' },
+    past_due: { text: t('billing.status.past_due', 'Pagament pendent'), className: 'bg-red-500/10 text-red-400 border-red-500/30' },
+    unpaid: { text: t('billing.status.unpaid', 'No pagada'), className: 'bg-red-500/10 text-red-400 border-red-500/30' },
   };
 
   const status = statusLabel[subscription.status];
 
   const formatDate = (seconds: number | null) => {
     if (!seconds) return '—';
-    return new Intl.DateTimeFormat('ca-ES', {
+    return new Intl.DateTimeFormat(i18n.language === 'en' ? 'en-US' : (i18n.language === 'es' ? 'es-ES' : 'ca-ES'), {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -69,14 +69,14 @@ export default function BillingPage() {
   };
 
   const nextEvent = subscription.status === 'trialing'
-    ? { label: 'Fi del període de prova', date: subscription.trial_end_seconds }
-    : { label: 'Propera facturació', date: subscription.current_period_end_seconds };
+    ? { label: t('billing.nextEvent.trialEnd', 'Fi del període de prova'), date: subscription.trial_end_seconds }
+    : { label: t('billing.nextEvent.nextBilling', 'Propera facturació'), date: subscription.current_period_end_seconds };
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 text-white">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Facturació</h1>
-        <p className="text-gray-400 text-sm">Gestiona la teva subscripció, mètodes de pagament i factures.</p>
+        <h1 className="text-3xl font-bold tracking-tight mb-2">{t('billing.title', 'Facturació')}</h1>
+        <p className="text-gray-400 text-sm">{t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}</p>
       </div>
 
       {/* Banner cancel·lació programada */}
@@ -84,11 +84,10 @@ export default function BillingPage() {
         <div className="flex items-start gap-3 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
           <ExclamationTriangleIcon className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
           <div className="text-sm">
-            <p className="font-semibold text-yellow-300 mb-1">Subscripció cancel·lada</p>
+            <p className="font-semibold text-yellow-300 mb-1">{t('billing.cancelBanner.title', 'Subscripció cancel·lada')}</p>
             <p className="text-yellow-200/80">
-              La teva subscripció està programada per finalitzar el{' '}
-              <strong>{formatDate(subscription.current_period_end_seconds)}</strong>. Fins aleshores
-              pots continuar gaudint de totes les funcions Premium.
+              {t('billing.cancelBanner.message1', 'La teva subscripció està programada per finalitzar el')}{' '}        
+              <strong>{formatDate(subscription.current_period_end_seconds)}</strong>. {t('billing.cancelBanner.message2', 'Fins aleshores pots continuar gaudint de totes les funcions Premium.')}
             </p>
           </div>
         </div>

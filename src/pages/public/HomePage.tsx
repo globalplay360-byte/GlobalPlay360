@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col w-full bg-[#0B1120] text-white">
       {/* 1. Hero Section */}
@@ -18,26 +21,25 @@ export default function HomePage() {
         </div>
         
         <div className="relative z-10 text-center max-w-4xl px-4 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-semibold mb-5 leading-tight tracking-tight text-white">
-            Donde el Talento Encuentra la <br /> Oportunidad
+          <h1 className="text-4xl md:text-6xl font-semibold mb-5 leading-tight tracking-tight text-white whitespace-pre-wrap">
+            {t('homePage.hero.title')}
           </h1>
           <p className="text-lg md:text-xl font-light text-[#E2E8F0] mb-10 max-w-[600px] leading-relaxed">
-            Conecta con jugadores, entrenadores y clubes de todo el mundo.
-            Desarrolla tu carrera deportiva con Global Play 360.
+            {t('homePage.hero.subtitle')}
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/register?type=jugador" className="flex items-center justify-center gap-2 bg-[#0070F3] hover:bg-[#0051B3] text-white px-7 py-3.5 rounded-md font-medium transition-colors w-full sm:w-auto text-sm">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Soy Jugador
+              {t('homePage.hero.btnPlayer')}
             </Link>
             <Link to="/register?type=entrenador" className="flex items-center justify-center gap-2 border border-white/20 hover:border-white/50 hover:bg-white/5 px-7 py-3.5 rounded-md font-medium transition-all w-full sm:w-auto text-sm">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-              Soy Entrenador
+              {t('homePage.hero.btnCoach')}
             </Link>
             <Link to="/register?type=club" className="flex items-center justify-center gap-2 border border-white/20 hover:border-white/50 hover:bg-white/5 px-7 py-3.5 rounded-md font-medium transition-all w-full sm:w-auto text-sm">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-              Soy Club
+              {t('homePage.hero.btnClub')}
             </Link>
           </div>
         </div>
@@ -47,37 +49,37 @@ export default function HomePage() {
       <section className="py-24 px-4 bg-[#0A192F]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Cómo Funciona</h2>
-            <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">Únete a miles de atletas, entrenadores y clubes que ya están construyendo su futuro.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">{t('homePage.howItWorks.title')}</h2>
+            <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">{t('homePage.howItWorks.subtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-[#020C1B] rounded-xl p-8 border border-white/10 relative overflow-hidden group hover:border-[#0070F3] transition-colors">
               <div className="text-5xl font-black text-white/5 absolute -top-4 -right-2">01</div>
               <svg className="w-10 h-10 mb-6 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              <h3 className="text-xl font-bold mb-3 text-white">Crea tu Perfil</h3>
-              <p className="text-[#8892B0] text-sm leading-relaxed">Muestra tus habilidades, estadísticas y videos destacados.</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{t('homePage.howItWorks.step1.title')}</h3>
+              <p className="text-[#8892B0] text-sm leading-relaxed">{t('homePage.howItWorks.step1.desc')}</p>
             </div>
             
             <div className="bg-[#020C1B] rounded-xl p-8 border border-white/10 relative overflow-hidden group hover:border-[#0070F3] transition-colors">
               <div className="text-5xl font-black text-white/5 absolute -top-4 -right-2">02</div>
               <svg className="w-10 h-10 mb-6 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              <h3 className="text-xl font-bold mb-3 text-white">Descubre Oportunidades</h3>
-              <p className="text-[#8892B0] text-sm leading-relaxed">Encuentra ofertas de clubes y perfiles compatibles fácilmente.</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{t('homePage.howItWorks.step2.title')}</h3>
+              <p className="text-[#8892B0] text-sm leading-relaxed">{t('homePage.howItWorks.step2.desc')}</p>
             </div>
 
             <div className="bg-[#020C1B] rounded-xl p-8 border border-white/10 relative overflow-hidden group hover:border-[#0070F3] transition-colors">
               <div className="text-5xl font-black text-white/5 absolute -top-4 -right-2">03</div>
               <svg className="w-10 h-10 mb-6 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-              <h3 className="text-xl font-bold mb-3 text-white">Conecta y Aplica</h3>
-              <p className="text-[#8892B0] text-sm leading-relaxed">Envía mensajes directos y aplica a posiciones abiertas.</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{t('homePage.howItWorks.step3.title')}</h3>
+              <p className="text-[#8892B0] text-sm leading-relaxed">{t('homePage.howItWorks.step3.desc')}</p>
             </div>
 
             <div className="bg-[#020C1B] rounded-xl p-8 border border-white/10 relative overflow-hidden group hover:border-[#0070F3] transition-colors">
               <div className="text-5xl font-black text-white/5 absolute -top-4 -right-2">04</div>
               <svg className="w-10 h-10 mb-6 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-              <h3 className="text-xl font-bold mb-3 text-white">Sube de Nivel</h3>
-              <p className="text-[#8892B0] text-sm leading-relaxed">Acelera tu carrera profesional en el mundo del deporte.</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{t('homePage.howItWorks.step4.title')}</h3>
+              <p className="text-[#8892B0] text-sm leading-relaxed">{t('homePage.howItWorks.step4.desc')}</p>
             </div>
           </div>
         </div>
@@ -87,8 +89,8 @@ export default function HomePage() {
       <section className="py-24 px-4 bg-[#020C1B]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Gratis vs Premium</h2>
-            <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">Elige el plan que se adapte a tus metas y acelera tu carrera.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">{t('homePage.pricing.title')}</h2>
+            <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">{t('homePage.pricing.subtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -96,52 +98,52 @@ export default function HomePage() {
             {/* Free Plan */}
             <div className="bg-[#0A192F] rounded-2xl p-8 border border-white/10 shadow-xl">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">Plan Gratuito</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('homePage.pricing.free.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-4xl font-extrabold text-white">0€</span>
-                  <span className="text-[#8892B0]">/mes</span>
+                  <span className="text-[#8892B0]">{t('homePage.pricing.month')}</span>
                 </div>
-                <p className="text-[#8892B0] text-sm">Visibilidad básica para atletas aspirantes</p>
+                <p className="text-[#8892B0] text-sm">{t('homePage.pricing.free.desc')}</p>
               </div>
               
               <ul className="space-y-4 mb-8 text-sm text-[#E2E8F0]">
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Perfil Básico</li>
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Búsqueda Limitada</li>
-                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">Mensajería Ilimitada</s></li>
-                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">Prioridad de Búsqueda</s></li>
-                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">Herramientas de Video y PDF</s></li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.free.feat1')}</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.free.feat2')}</li>
+                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">{t('homePage.pricing.free.feat3')}</s></li>
+                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">{t('homePage.pricing.free.feat4')}</s></li>
+                <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">{t('homePage.pricing.free.feat5')}</s></li>
               </ul>
               
               <Link to="/register" className="block w-full py-3 px-4 text-center rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold transition-colors">
-                Registrarse Plan Gratuito
+                {t('homePage.pricing.free.cta')}
               </Link>
             </div>
 
             {/* Premium Plan */}
             <div className="bg-gradient-to-b from-[#112240] to-[#0A192F] rounded-2xl p-8 border-2 border-[#0070F3] shadow-[0_0_30px_rgba(0,112,243,0.15)] relative transform md:-translate-y-4">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0070F3] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                MÁS POPULAR
+                {t('homePage.pricing.premium.badge')}
               </div>
               
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">Plan Premium</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('homePage.pricing.premium.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-4xl font-extrabold text-[#0070F3]">25€</span>
-                  <span className="text-[#8892B0]">/mes</span>
+                  <span className="text-[#8892B0]">{t('homePage.pricing.month')}</span>
                 </div>
-                <p className="text-[#8892B0] text-sm">Herramientas profesionales para carreras serias</p>
+                <p className="text-[#8892B0] text-sm">{t('homePage.pricing.premium.desc')}</p>
               </div>
               
               <ul className="space-y-4 mb-8 text-sm text-[#E2E8F0]">
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Perfil Mejorado</li>
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Búsqueda Ilimitada</li>
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Mensajería Ilimitada</li>
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#FFC107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Prioridad de Búsqueda y Soporte</li>
-                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#FFC107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Herramientas de Video y PDF</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.premium.feat1')}</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.premium.feat2')}</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#0070F3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.premium.feat3')}</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#FFC107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.premium.feat4')}</li>
+                <li className="flex items-center gap-3"><svg className="w-5 h-5 text-[#FFC107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> {t('homePage.pricing.premium.feat5')}</li>
               </ul>
               
               <Link to="/pricing" className="block w-full py-3 px-4 text-center rounded-lg bg-[#0070F3] text-white hover:bg-[#0051B3] font-semibold transition-colors shadow-lg">
-                Actualizar Ahora
+                {t('homePage.pricing.premium.cta')}
               </Link>
             </div>
 
@@ -152,9 +154,9 @@ export default function HomePage() {
       {/* 4. Social & Community CTA */}
       <section className="py-20 px-4 bg-[#0A192F] border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4 text-white">Síguenos en Redes Sociales</h2>
+          <h2 className="text-3xl font-bold mb-4 text-white">{t('homePage.social.title')}</h2>
           <p className="text-[#8892B0] text-lg mb-8 max-w-xl mx-auto">
-            Únete a nuestra comunidad y mantente al día con las últimas oportunidades y noticias deportivas.
+            {t('homePage.social.subtitle')}
           </p>
           <div className="flex justify-center gap-6">
             <a href="#" className="w-12 h-12 rounded-full bg-[#020C1B] border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-[#0070F3] transition-all">

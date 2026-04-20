@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface PremiumLockCardProps {
   title?: string;
@@ -6,11 +7,15 @@ interface PremiumLockCardProps {
   className?: string;
 }
 
-export default function PremiumLockCard({ 
-  title = "Exclusiu per a usuaris Premium", 
-  description = "Actualitza el teu pla per desbloquejar aquesta funcionalitat i interactuar directament amb aquest perfil.",
+export default function PremiumLockCard({
+  title,
+  description,
   className = ""
 }: PremiumLockCardProps) {
+  const { t } = useTranslation();
+  const finalTitle = title || t('premiumLock.defaultTitle');
+  const finalDescription = description || t('premiumLock.defaultDesc'); 
+
   return (
     <div className={`flex flex-col items-center justify-center p-8 bg-[#111827] border border-[#1F2937] rounded-xl text-center shadow-lg relative overflow-hidden group ${className}`}>
       {/* Fons subtil per donar profunditat */}
@@ -22,8 +27,8 @@ export default function PremiumLockCard({
         </svg>
       </div>
       
-      <h3 className="text-xl font-bold text-white mb-2 z-10">{title}</h3>
-      <p className="text-[#9CA3AF] mb-6 max-w-md z-10">{description}</p>
+      <h3 className="text-xl font-bold text-white mb-2 z-10">{finalTitle}</h3>
+      <p className="text-[#9CA3AF] mb-6 max-w-md z-10">{finalDescription}</p>
       
       <Link
         to="/pricing"
@@ -34,3 +39,4 @@ export default function PremiumLockCard({
     </div>
   );
 }
+
