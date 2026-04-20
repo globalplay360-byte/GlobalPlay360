@@ -1,14 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
-import { useAuth } from '@/context/AuthContext';
 import { auth } from '@/services/firebase';
 import { verifyEmail } from '@/services/auth.service';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function DashboardLayout() {
-  const { user } = useAuth();
   const { t } = useTranslation();
 
   const [sending, setSending] = useState(false);

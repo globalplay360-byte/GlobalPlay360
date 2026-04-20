@@ -19,9 +19,9 @@ export default function ForgotPasswordPage() {
     try {
       await resetPassword(email);
       setSuccess(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-email') {
+      if (err && typeof err === 'object' && 'code' in err && (err as any).code === 'auth/user-not-found' || (err as any).code === 'auth/invalid-email') {
         setError('No s\'ha trobat cap compte amb aquest correu.');
       } else {
         setError('Hi ha hagut un error en processar la petició. Intenta-ho més tard.');
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
               type="submit"
               variant="primary"
               fullWidth
-              loading={loading}
+              disabled={loading}
             >
               Crea una nova contrasenya
             </Button>

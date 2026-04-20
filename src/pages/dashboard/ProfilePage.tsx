@@ -6,7 +6,6 @@ import EmptyState from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import ProfileEditForm from '@/components/profile/ProfileEditForm';
 import { uploadAvatar, updateUserProfile } from '@/services/profile.service';   
-import type { Sport } from '@/types';
 
 export default function ProfilePage() {
   const { user, activePlan, refreshUser } = useAuth();
