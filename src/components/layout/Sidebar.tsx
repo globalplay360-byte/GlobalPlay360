@@ -43,7 +43,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-[#111827] border-r border-[#1F2937] flex-shrink-0 flex flex-col hidden lg:flex">
+    <aside className="w-64 bg-[#0B1120] border-r border-[#1F2937] flex-shrink-0 flex flex-col hidden lg:flex">
       <div className="h-16 flex items-center px-6 border-b border-[#1F2937]">
         <Link to="/dashboard" className="flex items-center gap-2">
           <span className="text-2xl text-[#3B82F6]">🏆</span>

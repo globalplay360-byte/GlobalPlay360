@@ -47,7 +47,7 @@ export default function DashboardLayout() {
   return (
     <div className="flex h-screen bg-[#0B1120] font-sans overflow-hidden">
       <Sidebar />
-      <div className="flex flex-col flex-1 bg-[#0B1120] relative min-w-0">
+      <div className="flex flex-col flex-1 bg-[#0F172A] relative min-w-0">
         <Topbar />
         
         {/* Banner Global de Verificació (sota de la Topbar, dins de l'espai visible del tauler) */}
