@@ -132,8 +132,8 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
 
 export default function MessageDetailPage() {
   const { id } = useParams();
-  const { user } = useAuth();
-  
+  const { user, activePlan, subscriptionLoading } = useAuth();
+
   const currentUserId = user?.uid || '';
 
   const [conversation, setConversation] = useState<Conversation | null>(null);
@@ -202,10 +202,22 @@ export default function MessageDetailPage() {
     scrollToBottom();
   };
 
-  if (loading) {
+  if (loading || subscriptionLoading) {
     return (
       <div className="h-full flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]"></div>
+      </div>
+    );
+  }
+
+  if (activePlan === 'free') {
+    return (
+      <div className="p-6 h-full flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
+        <PremiumLockCard
+          className="max-w-md w-full"
+          title="Missatgeria directa · Premium"
+          description="Amb Premium pots llegir i respondre als missatges d'entrenadors i caçatalents sense límits. Comença la prova de 30 dies gratuïts."
+        />
       </div>
     );
   }
@@ -221,21 +233,6 @@ export default function MessageDetailPage() {
               Tornar a Missatges
             </Link>
           }
-        />
-      </div>
-    );
-  }
-
-  // LOGICA DE RESTRICCIÓ (només per exemple)
-  const accessDenied = false; // Desactivat temporalment per proves: conversation.isPremiumLocked && currentUserPlan === 'free';
-
-  if (accessDenied) {
-    return (
-      <div className="p-6 h-full flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
-        <PremiumLockCard 
-          className="max-w-md w-full"
-          title={`No pots respondre a ${otherUser?.displayName || 'aquest usuari'}`}
-          description="Aquesta és una conversa bloquejada per opcions premium. Actualitza el teu pla i desbloqueja el xat directe amb entrenadors i caçatalents sense límits."
         />
       </div>
     );
