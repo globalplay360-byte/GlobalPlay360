@@ -6,18 +6,8 @@ import type { Opportunity } from '@/types';
 type FormData = Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>;
 
 const SPORT_OPTIONS = ['Football', 'Basketball', 'Tennis', 'Handball', 'Volleyball', 'Rugby', 'Swimming', 'Athletics'];
-const GENDER_OPTIONS: { value: Opportunity['gender']; label: string }[] = [
-  { value: 'male', label: 'Masculí' },
-  { value: 'female', label: 'Femení' },
-  { value: 'mixed', label: 'Mixt' },
-];
-const CONTRACT_OPTIONS: { value: Opportunity['contractType']; label: string }[] = [
-  { value: 'pro', label: 'Professional' },
-  { value: 'semi-pro', label: 'Semi-professional' },
-  { value: 'amateur', label: 'Amateur' },
-  { value: 'academy', label: 'Acadèmia' },
-  { value: 'trial', label: 'Proves / Trial' },
-];
+
+
 
 export const INITIAL_FORM: FormData = {
   title: '',
@@ -37,6 +27,20 @@ interface OpportunityFormProps {
   submittingLabel: string;
   onCancel: () => void;
 }
+
+const GENDER_OPTIONS = [
+  { value: 'male' },
+  { value: 'female' },
+  { value: 'mixed' },
+];
+
+const CONTRACT_OPTIONS = [
+  { value: 'pro' },
+  { value: 'semi-pro' },
+  { value: 'amateur' },
+  { value: 'academy' },
+  { value: 'trial' },
+];
 
 export default function OpportunityForm({
   initialData,

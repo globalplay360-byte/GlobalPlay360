@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { confirmNewPassword, confirmEmailVerification } from '@/services/auth.service';
 import { auth } from '@/services/firebase';
 import { Button } from '@/components/ui/Button';
 
 export default function AuthActionPage() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -160,7 +162,7 @@ export default function AuthActionPage() {
                 <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <p className="font-medium text-lg">Correu verificat!</p>
+                <p className="font-medium text-lg">{t('authAction.verifySuccess', 'Correu verificat!')}</p>
               </div>
               <p className="text-sm text-[#9CA3AF]">Redirigint-te al teu tauler...</p>
             </div>
