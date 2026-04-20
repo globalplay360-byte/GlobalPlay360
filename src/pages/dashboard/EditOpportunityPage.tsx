@@ -89,7 +89,7 @@ export default function EditOpportunityPage() {
 
   const handleUpdate = async (data: Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>) => {
     await updateOpportunity(opportunity.id, data);
-    navigate(`/dashboard/opportunities/${opportunity.id}`);
+    navigate(`/dashboard/opportunities/${opportunity.id}`, { state: { from: 'mine' } });
   };
 
   // Build initialData from existing opportunity (strip id, createdAt, clubId)
