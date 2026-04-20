@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-[#FFFFFF] py-12">
-      <div className="w-full max-w-lg bg-[#111827] rounded-xl border border-[#1F2937] shadow-xl p-8 relative overflow-hidden">
+      <div className="w-full max-w-lg bg-[#111827] rounded-xl border border-[#1F2937] shadow-xl p-6 sm:p-8 relative overflow-hidden">
         
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-50" />
 

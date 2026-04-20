@@ -13,7 +13,7 @@ export default function CreateOpportunityPage() {
 
   if (user?.role !== 'club') {
     return (
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 max-w-3xl mx-auto">
         <EmptyState
           title={t("opportunityForm.restricted")}
           description={t("opportunityForm.onlyClubs")}
@@ -38,7 +38,7 @@ export default function CreateOpportunityPage() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto w-full">
+    <div className="p-4 sm:p-6 max-w-3xl mx-auto w-full">
       <div className="mb-8">
         <button
           onClick={() => navigate('/dashboard/opportunities')}
@@ -62,4 +62,5 @@ export default function CreateOpportunityPage() {
     </div>
   );
 }
+
 

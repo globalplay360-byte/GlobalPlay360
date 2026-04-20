@@ -89,7 +89,7 @@ export default function OpportunitiesPage() {
 
       {/* ── Loading state ──────────────────────────────── */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
           {[1, 2, 3, 4].map((n) => (
             <div key={n} className="h-64 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse" />
           ))}
@@ -109,7 +109,7 @@ export default function OpportunitiesPage() {
 
       /* ── Data state ────────────────────────────────── */
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
           {opportunities.map((opp) => (
             <Card key={opp.id} className="flex flex-col hover:border-[#374151] transition-colors">
               <CardHeader className="flex justify-between items-start">

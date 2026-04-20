@@ -12,13 +12,13 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
 
   return (
-    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-5">
+    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 flex flex-col gap-4 sm:gap-5">
       <div className="flex items-center gap-2">
         <span className="w-1 h-5 rounded bg-[#3B82F6]" />
         <h2 className="text-base font-bold text-white">{t('profileEdit.fields.generalInfo', 'Informació general')}</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
         <Field label={t('profileEdit.fields.displayName', 'Nom mostrat')}>
           <Input
             type="text"
@@ -48,7 +48,7 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
         />
       </Field>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
         <Field label={t('profileEdit.fields.phone', 'Telèfon')} hint={t('profileEdit.hints.phone', 'Visible per clubs premium.')}>
           <Input
             type="tel"
@@ -80,3 +80,4 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
     </section>
   );
 }
+

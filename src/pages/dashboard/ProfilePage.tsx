@@ -50,7 +50,7 @@ export default function ProfilePage() {
   // ── Edit mode ──────────────────────────────────────────
   if (mode === 'edit') {
     return (
-      <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-6">
+      <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-4 sm:p-6">
         <header className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
@@ -77,7 +77,7 @@ export default function ProfilePage() {
 
   // ── View mode ──────────────────────────────────────────
   return (
-    <div className="p-6 max-w-5xl mx-auto w-full flex flex-col gap-6">
+    <div className="p-6 max-w-5xl mx-auto w-full flex flex-col gap-4 sm:p-6">
       {/* Capçalera */}
       <div className="bg-[#111827] border border-[#1F2937] rounded-2xl overflow-hidden relative">
         <div className="h-32 md:h-48 w-full bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] relative">
@@ -158,9 +158,9 @@ export default function ProfilePage() {
       </div>
 
       {/* Contingut */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:p-6">
+        <div className="lg:col-span-2 flex flex-col gap-4 sm:p-6">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6">
             <h2 className="text-lg font-bold text-white mb-4">
               {user.role === 'club' ? t('profile.aboutEntity', 'Sobre l\'entitat') : t('profile.aboutMe', 'Sobre mi')}
             </h2>
@@ -170,7 +170,7 @@ export default function ProfilePage() {
           </div>
 
           {user.role === 'player' && (user.height || user.weight || user.position || user.dateOfBirth) && (
-            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
+            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6">
               <h2 className="text-lg font-bold text-white mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {user.position && <StatCell label={t('profile.position', 'Posició')} value={user.position} />}
@@ -187,8 +187,8 @@ export default function ProfilePage() {
           )}
         </div>
 
-        <div className="flex flex-col gap-6">
-          <div className={`rounded-xl p-6 border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
+        <div className="flex flex-col gap-4 sm:p-6">
+          <div className={`rounded-xl p-4 sm:p-6 border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
             <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">{t('profile.membershipStatus', 'Subscripció')}</h3>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isPremium ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
@@ -221,7 +221,7 @@ export default function ProfilePage() {
           </div>
 
           {(user.phone || user.instagram || user.youtubeVideoUrl) && (
-            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-3">
+            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 flex flex-col gap-3">
               <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial', 'Contacte i Xarxes')}</h3>
               {user.phone && <InfoRow label={t('profile.phone', 'Telèfon')} value={user.phone} />}
               {user.instagram && <InfoRow label={t('profile.instagram', 'Instagram')} value={user.instagram} />}
@@ -266,4 +266,5 @@ function InfoRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 

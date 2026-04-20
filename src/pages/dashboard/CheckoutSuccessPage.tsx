@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function CheckoutSuccessPage() {
   return (
-    <div className="min-h-[70vh] flex items-center justify-center p-6">
+    <div className="min-h-[70vh] flex items-center justify-center p-4 sm:p-6">
       <div className="max-w-lg w-full bg-[#0A192F] border border-white/10 rounded-2xl p-10 text-center">
         <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#0070F3]/20 flex items-center justify-center">
           <svg

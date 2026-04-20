@@ -91,7 +91,7 @@ export default function OverviewPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 sm:p-6">
         {stats.map((stat, i) => (
           <div key={i} className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col relative overflow-hidden group transition-colors hover:border-[#374151]">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -115,8 +115,8 @@ export default function OverviewPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-        <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6 sm:p-8">
+        <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-6 sm:p-8">
           <section>
             <h2 className="text-base font-semibold text-white mb-4">{t('overview.quickActions.title')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -185,10 +185,10 @@ export default function OverviewPage() {
           </section>
         </div>
 
-        <div className="flex flex-col gap-6 lg:gap-8">
+        <div className="flex flex-col gap-6 lg:gap-6 sm:p-8">
           <section>
             {isPremium ? (
-              <div className="bg-[#111827] border border-blue-500/30 rounded-xl p-6 relative overflow-hidden shadow-lg shadow-blue-500/5">
+              <div className="bg-[#111827] border border-blue-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden shadow-lg shadow-blue-500/5">
                 <div className="absolute -top-4 -right-4 p-4 opacity-[0.03]">
                   <SparklesIcon className="w-32 h-32 text-blue-500" />
                 </div>
@@ -205,7 +205,7 @@ export default function OverviewPage() {
                 </div>
               </div>
             ) : (
-               <div className="bg-gradient-to-br from-[#1E3A8A]/40 via-[#111827] to-[#111827] border border-blue-500/30 rounded-xl p-6 relative overflow-hidden group">
+               <div className="bg-gradient-to-br from-[#1E3A8A]/40 via-[#111827] to-[#111827] border border-blue-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden group">
                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-300">
                    <SparklesIcon className="w-24 h-24 text-blue-500" />
                  </div>

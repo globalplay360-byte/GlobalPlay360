@@ -39,7 +39,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
   // Loading mentre l'AuthContext encara no ha resolt la subscripció
   if (subscriptionLoading || !subscription) {
     return (
-      <div className="max-w-3xl mx-auto p-6 space-y-4 animate-pulse">
+      <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-4 animate-pulse">
         <div className="h-8 w-48 bg-gray-800 rounded" />
         <div className="h-40 bg-gray-900 rounded-xl" />
         <div className="h-24 bg-gray-900 rounded-xl" />
@@ -73,7 +73,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
     : { label: t('billing.nextEvent.nextBilling', 'Propera facturació'), date: subscription.current_period_end_seconds };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6 text-white">
+    <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 text-white">
       <div>
         <h1 className="text-3xl font-bold tracking-tight mb-2">{t('billing.title', 'Facturació')}</h1>
         <p className="text-gray-400 text-sm">{t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}</p>
@@ -94,7 +94,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
       )}
 
       {/* Targeta resum de la subscripció */}
-      <div className="bg-[#111827] border border-gray-800 rounded-xl p-6 space-y-5">
+      <div className="bg-[#111827] border border-gray-800 rounded-xl p-4 sm:p-6 space-y-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
@@ -130,7 +130,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
       </div>
 
       {/* Bot\u00f3 portal */}
-      <div className="bg-[#111827] border border-gray-800 rounded-xl p-6 space-y-4">
+      <div className="bg-[#111827] border border-gray-800 rounded-xl p-4 sm:p-6 space-y-4">
         <div>
           <h2 className="font-semibold text-white mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
           <p className="text-sm text-gray-400">{t('billing.portal.description', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>

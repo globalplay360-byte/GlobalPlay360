@@ -40,7 +40,7 @@ export default function EditOpportunityPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 max-w-3xl mx-auto animate-pulse space-y-6">
+      <div className="p-4 sm:p-6 max-w-3xl mx-auto animate-pulse space-y-6">
         <div className="h-6 w-48 bg-gray-800 rounded" />
         <div className="h-64 bg-[#111827] rounded-xl" />
       </div>
@@ -49,7 +49,7 @@ export default function EditOpportunityPage() {
 
   if (error) {
     return (
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 max-w-3xl mx-auto">
         <EmptyState
           title={t("opportunities.errorConnection")}
           description={error}
@@ -61,7 +61,7 @@ export default function EditOpportunityPage() {
 
   if (!opportunity) {
     return (
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 max-w-3xl mx-auto">
         <EmptyState
           title={t("opportunityForm.notFoundTitle")}
           description={t("opportunityForm.notFoundDesc")}
@@ -74,7 +74,7 @@ export default function EditOpportunityPage() {
   // Only the owner club can edit
   if (user?.uid !== opportunity.clubId) {
     return (
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 max-w-3xl mx-auto">
         <EmptyState
           title={t("opportunityForm.restricted")}
           description={t("opportunityForm.onlyOwner")}
@@ -98,7 +98,7 @@ export default function EditOpportunityPage() {
   const { id: _id, createdAt: _ca, clubId: _cid, ...initialData } = opportunity;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto w-full">
+    <div className="p-4 sm:p-6 max-w-3xl mx-auto w-full">
       <div className="mb-8">
         <button
           onClick={() => navigate(`/dashboard/opportunities/mine`)}
@@ -123,4 +123,5 @@ export default function EditOpportunityPage() {
     </div>
   );
 }
+
 

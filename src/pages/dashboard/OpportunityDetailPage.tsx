@@ -195,10 +195,10 @@ const handleMessage = async () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:p-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-8">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 sm:p-8">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight text-white mb-2">{opportunity.title}</h1>
@@ -264,7 +264,7 @@ const handleMessage = async () => {
         <div className="space-y-6">
           {/* Action Card */}
           <Card className="border-blue-900/30 shadow-lg shadow-blue-900/10">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               {user?.role === t('opportunityDetail.club') ? (
                 <div className="text-center text-[#9CA3AF] p-4">
                   Els clubs no poden aplicar a oportunitats.

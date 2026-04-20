@@ -22,7 +22,7 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-6">
+    <form onSubmit={onSubmit} className="flex flex-col gap-4 sm:p-6">
       {/* Secció comuna a tots els rols */}
       <CommonFields formData={formData} onChange={handleChange} disabled={saving} />
 
@@ -32,13 +32,13 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
       )}
 
       {user.role === 'coach' && (
-        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 text-sm text-[#9CA3AF]">
+        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 text-sm text-[#9CA3AF]">
           {t('profileEdit.coachDev', 'Secció Coach en desenvolupament.')}
         </section>
       )}
 
       {user.role === 'club' && (
-        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 text-sm text-[#9CA3AF]">
+        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 text-sm text-[#9CA3AF]">
           {t('profileEdit.clubDev', 'Secció Club en desenvolupament.')}
         </section>
       )}
@@ -56,7 +56,7 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
       )}
 
       {/* Accions */}
-      <div className="sticky bottom-0 bg-[#0B1120]/95 backdrop-blur-sm border-t border-[#1F2937] -mx-6 px-6 py-4 flex items-center justify-between gap-3">
+      <div className="sticky bottom-0 bg-[#0B1120]/95 backdrop-blur-sm border-t border-[#1F2937] -mx-4 px-4 py-3 sm:-mx-6 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
         <div className="text-xs text-[#6B7280]">
           {isDirty ? t('profileEdit.unsavedChanges', 'Hi ha canvis sense desar.') : t('profileEdit.noChanges', 'Sense canvis pendents.')}  
         </div>
@@ -80,3 +80,4 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
     </form>
   );
 }
+

@@ -17,6 +17,7 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', cla
     warning: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
     danger: 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20',
     info: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+  };
 
   return (
     <span className={`${baseStyles} ${variants[variant]} ${className}`} {...props}>
@@ -24,3 +25,4 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', cla
     </span>
   );
 };
+

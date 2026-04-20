@@ -17,7 +17,7 @@ export const Card: React.FC<CardProps> = ({ children, className = '', ...props }
 
 export const CardHeader: React.FC<CardProps> = ({ children, className = '', ...props }) => {
   return (
-    <div className={`px-6 py-4 border-b border-[#1F2937] ${className}`} {...props}>
+    <div className={`px-4 py-3 sm:px-6 sm:py-4 border-b border-[#1F2937] ${className}`} {...props}>
       {children}
     </div>
   );
@@ -25,7 +25,7 @@ export const CardHeader: React.FC<CardProps> = ({ children, className = '', ...p
 
 export const CardContent: React.FC<CardProps> = ({ children, className = '', ...props }) => {
   return (
-    <div className={`p-6 ${className}`} {...props}>
+    <div className={`p-4 sm:p-6 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -33,8 +33,9 @@ export const CardContent: React.FC<CardProps> = ({ children, className = '', ...
 
 export const CardFooter: React.FC<CardProps> = ({ children, className = '', ...props }) => {
   return (
-    <div className={`px-6 py-4 bg-[#0F172A] border-t border-[#1F2937] flex items-center ${className}`} {...props}>
+    <div className={`px-4 py-3 sm:px-6 sm:py-4 bg-[#0F172A] border-t border-[#1F2937] flex items-center ${className}`} {...props}>
       {children}
     </div>
   );
 };
+

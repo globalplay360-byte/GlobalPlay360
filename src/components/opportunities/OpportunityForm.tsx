@@ -88,12 +88,12 @@ export default function OpportunityForm({
     }
   };
 
-  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-4 py-3 text-white text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-colors';
+  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-white text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-colors';
   const labelClass = 'block text-sm font-medium text-[#9CA3AF] mb-1.5';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 space-y-5">
+      <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5">
         {/* Títol */}
         <div>
           <label className={labelClass}>{t("opportunityForm.fields.titleLabel")}</label>
@@ -154,7 +154,7 @@ export default function OpportunityForm({
       </div>
 
       {/* Requisits */}
-      <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 space-y-4">
+      <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4">
         <label className={labelClass}>{t("opportunityForm.requirementsLabel", "Requisits")}</label>
         <div className="flex gap-2">
           <input
@@ -170,7 +170,7 @@ export default function OpportunityForm({
           <button
             type="button"
             onClick={addRequirement}
-            className="px-4 py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-colors border border-[#374151]"
+            className="px-3 py-2.5 sm:px-4 sm:py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-colors border border-[#374151]"
           >
             {t("opportunityForm.addBtn", "Afegir")}
           </button>
@@ -209,6 +209,7 @@ export default function OpportunityForm({
     </form>
   );
 }
+
 
 
 

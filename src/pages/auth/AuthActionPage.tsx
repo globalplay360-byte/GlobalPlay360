@@ -124,7 +124,7 @@ export default function AuthActionPage() {
   if (mode !== 'resetPassword' && mode !== 'verifyEmail') {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-8 text-center text-[#9CA3AF]">
+        <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 text-center text-[#9CA3AF]">
           Aquesta funcionalitat (<code>{mode || 'desconeguda'}</code>) no està implementada.
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function AuthActionPage() {
   if (mode === 'verifyEmail') {
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-8 shadow-xl shadow-black/50 text-center">
+        <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50 text-center">
           <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-6">
             Verificació
           </h2>
@@ -182,7 +182,7 @@ export default function AuthActionPage() {
   // ── Mode: resetPassword ────────────────────────────────────
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-8 shadow-xl shadow-black/50">
+      <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
             Nova Contrasenya

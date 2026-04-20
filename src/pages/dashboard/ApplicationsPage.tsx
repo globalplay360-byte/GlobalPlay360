@@ -180,7 +180,7 @@ export default function ApplicationsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto w-full">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:p-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
