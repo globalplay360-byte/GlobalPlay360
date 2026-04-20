@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { subscribeToMessages, sendMessage } from '@/services/messages.service';
+import { subscribeToMessages, sendMessage, markConversationAsRead } from '@/services/messages.service';
 import { getUserDoc } from '@/services/auth.service';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
@@ -16,32 +16,23 @@ interface ChatHeaderProps {
 
 function ChatHeader({ displayName, role }: ChatHeaderProps) {
   return (
-    <div className="bg-[#111827] border-b border-[#1F2937] p-4 flex items-center justify-between sticky top-0 z-10">
-      <div className="flex items-center gap-3">
-        <Link 
-          to="/dashboard/messages" 
-          className="p-2 -ml-2 text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] rounded-lg transition-colors"
-          aria-label="Tornar"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </Link>
-        <div className="w-10 h-10 rounded-full bg-[#1F2937] text-white flex items-center justify-center font-bold">
-          {displayName.charAt(0)}
-        </div>
-        <div>
-          <h2 className="text-white font-bold text-base leading-tight">{displayName}</h2>
-          <p className="text-[#3B82F6] text-xs font-medium uppercase tracking-wider">{role}</p>
-        </div>
-      </div>
-      
-      {/* Botó accions de conversa */}
-      <button className="p-2 text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] rounded-lg transition-colors">
+    <div className="bg-[#111827] border-b border-[#1F2937] p-4 flex items-center gap-3 sticky top-0 z-10">
+      <Link
+        to="/dashboard/messages"
+        className="p-2 -ml-2 text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] rounded-lg transition-colors"
+        aria-label="Tornar"
+      >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
-      </button>
+      </Link>
+      <div className="w-10 h-10 rounded-full bg-[#1F2937] text-white flex items-center justify-center font-bold">
+        {displayName.charAt(0)}
+      </div>
+      <div className="min-w-0">
+        <h2 className="text-white font-bold text-base leading-tight truncate">{displayName}</h2>
+        <p className="text-[#3B82F6] text-xs font-medium uppercase tracking-wider">{role}</p>
+      </div>
     </div>
   );
 }
@@ -85,18 +76,7 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
 
   return (
     <form onSubmit={handleSubmit} className="bg-[#111827] border-t border-[#1F2937] p-4 mt-auto">
-      <div className="flex items-end gap-2 bg-[#0F172A] border border-[#374151] rounded-xl p-1 shadow-inner focus-within:border-[#3B82F6] focus-within:ring-1 focus-within:ring-[#3B82F6] transition-all">
-        <button 
-          type="button" 
-          className="p-3 text-[#9CA3AF] hover:text-white transition-colors flex-shrink-0"
-          aria-label="Adjuntar arxiu"
-          disabled={sending}
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-          </svg>
-        </button>
-        
+      <div className="flex items-end gap-2 bg-[#0F172A] border border-[#374151] rounded-xl pl-4 pr-1 shadow-inner focus-within:border-[#3B82F6] focus-within:ring-1 focus-within:ring-[#3B82F6] transition-all">
         <textarea
           className="flex-1 max-h-32 min-h-[44px] bg-transparent border-none text-white text-sm focus:ring-0 resize-none py-3 placeholder:text-[#6B7280]"
           placeholder="Escriu el teu missatge..."
@@ -174,6 +154,11 @@ export default function MessageDetailPage() {
             setOtherUser(ou);
           }
         }
+
+        // Reset del comptador de no llegits per aquest usuari
+        markConversationAsRead(id, user.uid).catch((err) => {
+          console.warn("No s'ha pogut marcar la conversa com a llegida:", err);
+        });
 
         // Subscripció als missatges
         unsubscribeMessages = subscribeToMessages(id, (newMessages) => {

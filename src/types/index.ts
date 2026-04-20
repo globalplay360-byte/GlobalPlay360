@@ -97,6 +97,7 @@ export interface Conversation {
   lastMessage: string;
   updatedAt: string;
   isPremiumLocked?: boolean;
+  unreadCount?: Record<string, number>;
 }
 
 export interface Message {
