@@ -590,5 +590,147 @@
     "desc": "Your subscription has been successfully activated. You have a <1>30-day free trial</1>  the first charge will be made when the period ends. You can cancel anytime from the billing panel.",
     "goToDashboard": "Go to dashboard",
     "completeProfile": "Complete my profile"
+  },
+  "enums": {
+    "sport": {
+      "football": "Football",
+      "basketball": "Basketball",
+      "futsal": "Futsal",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "waterpolo": "Water Polo",
+      "tennis": "Tennis",
+      "rugby": "Rugby",
+      "american_football": "American Football",
+      "hockey": "Hockey",
+      "other": "Other"
+    },
+    "role": {
+      "player": "Player",
+      "coach": "Coach",
+      "club": "Club",
+      "admin": "Admin"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "mixed": "Mixed"
+    },
+    "contractType": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Academy",
+      "trial": "Trial"
+    },
+    "handedness": {
+      "left": "Left",
+      "right": "Right",
+      "both": "Both"
+    },
+    "stickHand": {
+      "left": "Left",
+      "right": "Right"
+    },
+    "backhandType": {
+      "one-hand": "One-handed",
+      "two-hand": "Two-handed"
+    },
+    "opportunityStatus": {
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "applicationStatus": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "plan": {
+      "trial": "Trial",
+      "premium": "Premium",
+      "pro": "Pro"
+    },
+    "subscriptionStatus": {
+      "trialing": "Trial",
+      "active": "Active",
+      "canceled": "Canceled",
+      "expired": "Expired"
+    },
+    "position": {
+      "football": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "fullback": "Fullback",
+        "midfielder": "Midfielder",
+        "winger": "Winger",
+        "forward": "Forward"
+      },
+      "basketball": {
+        "point_guard": "Point Guard (PG)",
+        "shooting_guard": "Shooting Guard (SG)",
+        "small_forward": "Small Forward (SF)",
+        "power_forward": "Power Forward (PF)",
+        "center": "Center (C)"
+      },
+      "futsal": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "winger": "Winger",
+        "pivot": "Pivot",
+        "universal": "Universal"
+      },
+      "volleyball": {
+        "setter": "Setter",
+        "opposite": "Opposite",
+        "outside_hitter": "Outside Hitter",
+        "middle_blocker": "Middle Blocker",
+        "libero": "Libero"
+      },
+      "handball": {
+        "goalkeeper": "Goalkeeper",
+        "center": "Centre",
+        "wingback": "Wing Back",
+        "wing": "Wing",
+        "pivot": "Pivot"
+      },
+      "waterpolo": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "hole_set": "Hole Set",
+        "wing": "Wing",
+        "center": "Center"
+      },
+      "rugby": {
+        "prop": "Prop",
+        "hooker": "Hooker",
+        "lock": "Lock",
+        "flanker": "Flanker",
+        "number_eight": "Number 8",
+        "scrum_half": "Scrum Half",
+        "fly_half": "Fly Half",
+        "centre": "Centre",
+        "wing": "Wing",
+        "fullback": "Fullback"
+      },
+      "american_football": {
+        "quarterback": "Quarterback (QB)",
+        "running_back": "Running Back (RB)",
+        "wide_receiver": "Wide Receiver (WR)",
+        "tight_end": "Tight End (TE)",
+        "offensive_line": "Offensive Line (OL)",
+        "defensive_line": "Defensive Line (DL)",
+        "linebacker": "Linebacker (LB)",
+        "cornerback": "Cornerback (CB)",
+        "safety": "Safety (S)",
+        "kicker_punter": "Kicker / Punter"
+      },
+      "hockey": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "midfielder": "Midfielder",
+        "forward": "Forward"
+      }
+    }
   }
 }

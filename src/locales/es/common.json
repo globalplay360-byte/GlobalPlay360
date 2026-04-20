@@ -590,5 +590,147 @@
     "desc": "Tu suscripción se ha activado correctamente. Tienes <1>30 días de prueba gratuitos</1>  el primer cargo se hará cuando finalice el período. Puedes cancelar en cualquier momento desde el panel de facturación.",
     "goToDashboard": "Ir al panel",
     "completeProfile": "Completar mi perfil"
+  },
+  "enums": {
+    "sport": {
+      "football": "Fútbol 11",
+      "basketball": "Baloncesto",
+      "futsal": "Fútbol Sala",
+      "volleyball": "Voleibol",
+      "handball": "Balonmano",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tenis",
+      "rugby": "Rugby",
+      "american_football": "Fútbol Americano",
+      "hockey": "Hockey",
+      "other": "Otros"
+    },
+    "role": {
+      "player": "Jugador",
+      "coach": "Entrenador",
+      "club": "Club",
+      "admin": "Administrador"
+    },
+    "gender": {
+      "male": "Masculino",
+      "female": "Femenino",
+      "mixed": "Mixto"
+    },
+    "contractType": {
+      "pro": "Profesional",
+      "semi-pro": "Semi-profesional",
+      "amateur": "Amateur",
+      "academy": "Academia",
+      "trial": "Prueba"
+    },
+    "handedness": {
+      "left": "Izquierda",
+      "right": "Derecha",
+      "both": "Ambidiestro"
+    },
+    "stickHand": {
+      "left": "Izquierda",
+      "right": "Derecha"
+    },
+    "backhandType": {
+      "one-hand": "A una mano",
+      "two-hand": "A dos manos"
+    },
+    "opportunityStatus": {
+      "open": "Abierta",
+      "closed": "Cerrada"
+    },
+    "applicationStatus": {
+      "submitted": "Enviada",
+      "in_review": "En revisión",
+      "accepted": "Aceptada",
+      "rejected": "Rechazada"
+    },
+    "plan": {
+      "trial": "Prueba",
+      "premium": "Premium",
+      "pro": "Pro"
+    },
+    "subscriptionStatus": {
+      "trialing": "En prueba",
+      "active": "Activa",
+      "canceled": "Cancelada",
+      "expired": "Expirada"
+    },
+    "position": {
+      "football": {
+        "goalkeeper": "Portero",
+        "defender": "Defensa",
+        "fullback": "Lateral",
+        "midfielder": "Centrocampista",
+        "winger": "Extremo",
+        "forward": "Delantero"
+      },
+      "basketball": {
+        "point_guard": "Base (PG)",
+        "shooting_guard": "Escolta (SG)",
+        "small_forward": "Alero (SF)",
+        "power_forward": "Ala-Pívot (PF)",
+        "center": "Pívot (C)"
+      },
+      "futsal": {
+        "goalkeeper": "Portero",
+        "defender": "Cierre",
+        "winger": "Ala",
+        "pivot": "Pívot",
+        "universal": "Universal"
+      },
+      "volleyball": {
+        "setter": "Colocador",
+        "opposite": "Opuesto",
+        "outside_hitter": "Receptor",
+        "middle_blocker": "Central",
+        "libero": "Líbero"
+      },
+      "handball": {
+        "goalkeeper": "Portero",
+        "center": "Central",
+        "wingback": "Lateral",
+        "wing": "Extremo",
+        "pivot": "Pívot"
+      },
+      "waterpolo": {
+        "goalkeeper": "Portero",
+        "defender": "Defensa",
+        "hole_set": "Boya",
+        "wing": "Extremo",
+        "center": "Central"
+      },
+      "rugby": {
+        "prop": "Pilar",
+        "hooker": "Talonador",
+        "lock": "Segunda línea",
+        "flanker": "Flanker",
+        "number_eight": "Número 8",
+        "scrum_half": "Medio de melé",
+        "fly_half": "Apertura",
+        "centre": "Centro",
+        "wing": "Ala",
+        "fullback": "Zaguero"
+      },
+      "american_football": {
+        "quarterback": "Quarterback (QB)",
+        "running_back": "Running Back (RB)",
+        "wide_receiver": "Wide Receiver (WR)",
+        "tight_end": "Tight End (TE)",
+        "offensive_line": "Offensive Line (OL)",
+        "defensive_line": "Defensive Line (DL)",
+        "linebacker": "Linebacker (LB)",
+        "cornerback": "Cornerback (CB)",
+        "safety": "Safety (S)",
+        "kicker_punter": "Kicker / Punter"
+      },
+      "hockey": {
+        "goalkeeper": "Portero",
+        "defender": "Defensa",
+        "midfielder": "Centrocampista",
+        "forward": "Delantero"
+      }
+    }
   }
 }

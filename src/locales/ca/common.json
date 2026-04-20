@@ -590,5 +590,147 @@
     "desc": "La teva subscripció s'ha activat correctament. Tens <1>30 dies de prova gratuïts</1>  el primer càrrec es farà quan finalitzi el període. Pots cancel·lar en qualsevol moment des del panell de facturació.",
     "goToDashboard": "Anar al panell",
     "completeProfile": "Completar el meu perfil"
+  },
+  "enums": {
+    "sport": {
+      "football": "Futbol 11",
+      "basketball": "Bàsquet",
+      "futsal": "Futbol Sala",
+      "volleyball": "Voleibol",
+      "handball": "Handbol",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tennis",
+      "rugby": "Rugbi",
+      "american_football": "Futbol Americà",
+      "hockey": "Hoquei",
+      "other": "Altres"
+    },
+    "role": {
+      "player": "Jugador",
+      "coach": "Entrenador",
+      "club": "Club",
+      "admin": "Administrador"
+    },
+    "gender": {
+      "male": "Masculí",
+      "female": "Femení",
+      "mixed": "Mixt"
+    },
+    "contractType": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Acadèmia",
+      "trial": "Prova"
+    },
+    "handedness": {
+      "left": "Esquerra",
+      "right": "Dreta",
+      "both": "Ambidextre"
+    },
+    "stickHand": {
+      "left": "Esquerra",
+      "right": "Dreta"
+    },
+    "backhandType": {
+      "one-hand": "A una mà",
+      "two-hand": "A dues mans"
+    },
+    "opportunityStatus": {
+      "open": "Oberta",
+      "closed": "Tancada"
+    },
+    "applicationStatus": {
+      "submitted": "Enviada",
+      "in_review": "En revisió",
+      "accepted": "Acceptada",
+      "rejected": "Rebutjada"
+    },
+    "plan": {
+      "trial": "Prova",
+      "premium": "Premium",
+      "pro": "Pro"
+    },
+    "subscriptionStatus": {
+      "trialing": "En prova",
+      "active": "Activa",
+      "canceled": "Cancel·lada",
+      "expired": "Expirada"
+    },
+    "position": {
+      "football": {
+        "goalkeeper": "Porter",
+        "defender": "Defensa",
+        "fullback": "Lateral",
+        "midfielder": "Migcampista",
+        "winger": "Extrem",
+        "forward": "Davanter"
+      },
+      "basketball": {
+        "point_guard": "Base (PG)",
+        "shooting_guard": "Escorta (SG)",
+        "small_forward": "Aler (SF)",
+        "power_forward": "Ala-Pivot (PF)",
+        "center": "Pivot (C)"
+      },
+      "futsal": {
+        "goalkeeper": "Porter",
+        "defender": "Tanca",
+        "winger": "Ala",
+        "pivot": "Pivot",
+        "universal": "Universal"
+      },
+      "volleyball": {
+        "setter": "Col·locador",
+        "opposite": "Oposat",
+        "outside_hitter": "Receptor",
+        "middle_blocker": "Central",
+        "libero": "Líbero"
+      },
+      "handball": {
+        "goalkeeper": "Porter",
+        "center": "Central",
+        "wingback": "Lateral",
+        "wing": "Extrem",
+        "pivot": "Pivot"
+      },
+      "waterpolo": {
+        "goalkeeper": "Porter",
+        "defender": "Defensa",
+        "hole_set": "Boia",
+        "wing": "Extrem",
+        "center": "Central"
+      },
+      "rugby": {
+        "prop": "Pilar",
+        "hooker": "Talonador",
+        "lock": "Segona línia",
+        "flanker": "Flanker",
+        "number_eight": "Número 8",
+        "scrum_half": "Mig de melé",
+        "fly_half": "Obertura",
+        "centre": "Centre",
+        "wing": "Ala",
+        "fullback": "Zaguer"
+      },
+      "american_football": {
+        "quarterback": "Quarterback (QB)",
+        "running_back": "Running Back (RB)",
+        "wide_receiver": "Wide Receiver (WR)",
+        "tight_end": "Tight End (TE)",
+        "offensive_line": "Offensive Line (OL)",
+        "defensive_line": "Defensive Line (DL)",
+        "linebacker": "Linebacker (LB)",
+        "cornerback": "Cornerback (CB)",
+        "safety": "Safety (S)",
+        "kicker_punter": "Kicker / Punter"
+      },
+      "hockey": {
+        "goalkeeper": "Porter",
+        "defender": "Defensa",
+        "midfielder": "Migcampista",
+        "forward": "Davanter"
+      }
+    }
   }
 }
