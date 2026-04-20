@@ -138,5 +138,69 @@
       "cancelAnytime": "Cancela cuando quieras. Sin permanencia."
     },
     "trustText": "Pago seguro gestionado por Stripe · Facturación en EUR · IVA incluido según corresponda"
+  },
+  "loginPage": {
+    "title": "Bienvenido de nuevo",
+    "subtitle": "Entra en tu cuenta de Global Play 360",
+    "errors": {
+      "invalidEmail": "Por favor, introduce un correo electrónico válido.",
+      "shortPassword": "La contraseña debe tener al menos 6 caracteres.",
+      "invalidCredentials": "Credenciales incorrectas o usuario no encontrado.",
+      "googleError": "Error al iniciar sesión con Google."
+    },
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Contraseña",
+    "forgotPassword": "¿La has olvidado?",
+    "loading": "Accediendo...",
+    "success": "¡Conectado!",
+    "submitButton": "Entrar a mi cuenta",
+    "orContinueWith": "O continúa con",
+    "googleButton": "Google",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "registerLink": "Crear cuenta nueva"
+  },
+  "registerPage": {
+    "title": "Desarrolla tu carrera deportiva",
+    "subtitle": "Crea tu cuenta en Global Play 360",
+    "roles": {
+      "jugador": "jugador",
+      "entrenador": "entrenador",
+      "club": "club"
+    },
+    "errors": {
+      "missingName": "Por favor, indica tu nombre completo.",
+      "invalidEmail": "Por favor, introduce un correo electrónico válido.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "weakPassword": "Por favor, indica una contraseña segura (mín. 8 caracteres, mayúsculas y símbolos).",
+      "registerError": "Ocurrió un error al crear la cuenta. Inténtalo más tarde.",
+      "googleError": "Error al registrarse con Google."
+    },
+    "passwordStrength": {
+      "veryWeak": "Muy débil",
+      "weak": "Débil",
+      "good": "Buena",
+      "strong": "Fuerte",
+      "label": "Nivel de seguridad"
+    },
+    "roleLabel": "Me uno como...",
+    "nameLabel": "Nombre y Apellidos",
+    "namePlaceholder": "E.g. Carlos Martínez",
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Mín. 8 caracteres, números y símbolos",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
+    "matchLabel": "Coincidencia",
+    "matchYes": "Las contraseñas coinciden",
+    "matchNo": "Las contraseñas no coinciden",
+    "loading": "Registrándote...",
+    "success": "¡Cuenta creada!",
+    "submitButton": "Crear mi cuenta gratis",
+    "orRegisterWith": "O regístrate con",
+    "googleButton": "Google",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "loginLink": "Iniciar sesión"
   }
 }

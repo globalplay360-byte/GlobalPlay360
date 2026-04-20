@@ -138,5 +138,69 @@
       "cancelAnytime": "Cancel anytime. No long-term commitments."
     },
     "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable"
+  },
+  "loginPage": {
+    "title": "Welcome back",
+    "subtitle": "Enter your Global Play 360 account",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address.",
+      "shortPassword": "Password must be at least 6 characters long.",
+      "invalidCredentials": "Incorrect credentials or user not found.",
+      "googleError": "Error logging in with Google."
+    },
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot it?",
+    "loading": "Logging in...",
+    "success": "Connected!",
+    "submitButton": "Log in to my account",
+    "orContinueWith": "Or continue with",
+    "googleButton": "Google",
+    "noAccount": "Don't have an account yet?",
+    "registerLink": "Create new account"
+  },
+  "registerPage": {
+    "title": "Develop your sports career",
+    "subtitle": "Create your Global Play 360 account",
+    "roles": {
+      "jugador": "player",
+      "entrenador": "coach",
+      "club": "club"
+    },
+    "errors": {
+      "missingName": "Please enter your full name.",
+      "invalidEmail": "Please enter a valid email address.",
+      "passwordMismatch": "Passwords do not match.",
+      "weakPassword": "Please enter a secure password (min. 8 characters, uppercase, and symbols).",
+      "registerError": "An error occurred while creating your account. Please try again later.",
+      "googleError": "Error registering with Google."
+    },
+    "passwordStrength": {
+      "veryWeak": "Very weak",
+      "weak": "Weak",
+      "good": "Good",
+      "strong": "Strong",
+      "label": "Security level"
+    },
+    "roleLabel": "I am joining as a...",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "E.g. Carlos Martínez",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Min. 8 characters, numbers, and symbols",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "matchLabel": "Match",
+    "matchYes": "Passwords match",
+    "matchNo": "Passwords do not match",
+    "loading": "Registering...",
+    "success": "Account created!",
+    "submitButton": "Create my free account",
+    "orRegisterWith": "Or sign up with",
+    "googleButton": "Google",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log in"
   }
 }

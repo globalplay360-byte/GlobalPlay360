@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import type { UserRole } from '@/types';
 
 const ROLE_MAP: Record<string, UserRole> = {
@@ -13,6 +14,7 @@ export default function RegisterPage() {
   const { register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
   const defaultRole = searchParams.get('type') || 'jugador';
 
   const [displayName, setDisplayName] = useState('');
@@ -39,13 +41,13 @@ export default function RegisterPage() {
     switch (score) {
       case 0:
       case 1:
-        return { score, text: 'Molt feble', color: 'bg-red-500', width: 'w-1/4' };
+        return { score, text: t('registerPage.passwordStrength.veryWeak'), color: 'bg-red-500', width: 'w-1/4' };
       case 2:
-        return { score, text: 'Feble', color: 'bg-orange-500', width: 'w-2/4' };
+        return { score, text: t('registerPage.passwordStrength.weak'), color: 'bg-orange-500', width: 'w-2/4' };
       case 3:
-        return { score, text: 'Bona', color: 'bg-yellow-400', width: 'w-3/4' };
+        return { score, text: t('registerPage.passwordStrength.good'), color: 'bg-yellow-400', width: 'w-3/4' };
       case 4:
-        return { score, text: 'Forta', color: 'bg-green-500', width: 'w-full' };
+        return { score, text: t('registerPage.passwordStrength.strong'), color: 'bg-green-500', width: 'w-full' };
       default:
         return { score: 0, text: '', color: 'bg-transparent', width: 'w-0' };
     }
@@ -58,22 +60,22 @@ export default function RegisterPage() {
     
     if (!displayName.trim()) {
       setStatus('error');
-      setErrorMessage('Por favor, indica tu nombre completo.');
+      setErrorMessage(t('registerPage.errors.missingName'));
       return;
     }
     if (!email || !email.includes('@')) {
       setStatus('error');
-      setErrorMessage('Por favor, introduce un correo electrónico válido.');
+      setErrorMessage(t('registerPage.errors.invalidEmail'));
       return;
     }
     if (password !== confirmPassword) {
       setStatus('error');
-      setErrorMessage('Las contraseñas no coinciden.');
+      setErrorMessage(t('registerPage.errors.passwordMismatch'));
       return;
     }
     if (password.length < 8 || strength.score < 3) {
       setStatus('error');
-      setErrorMessage('Por favor, indica una contraseña segura (mín. 8 caracteres, mayúsculas y símbolos).');
+      setErrorMessage(t('registerPage.errors.weakPassword'));
       return;
     }
 
@@ -86,7 +88,7 @@ export default function RegisterPage() {
     } catch (err) {
       console.error(err);
       setStatus('error');
-      setErrorMessage('Ocurrió un error al crear la cuenta. Inténtalo más tarde.');
+      setErrorMessage(t('registerPage.errors.registerError'));
     }
   };
 
@@ -98,7 +100,7 @@ export default function RegisterPage() {
       setTimeout(() => navigate('/dashboard'), 500);
     } catch {
       setStatus('error');
-      setErrorMessage('Error al registrarse con Google.');
+      setErrorMessage(t('registerPage.errors.googleError'));
     }
   };
 
@@ -112,8 +114,8 @@ export default function RegisterPage() {
           <Link to="/" className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#0F172A] border border-[#1F2937] mb-4 hover:border-[#3B82F6] transition-colors">
             <span className="text-2xl text-[#3B82F6]"></span>
           </Link>
-          <h1 className="text-2xl font-bold mb-2">Desarrolla tu carrera deportiva</h1>
-          <p className="text-[#9CA3AF] text-sm">Crea tu cuenta en Global Play 360</p>
+          <h1 className="text-2xl font-bold mb-2">{t('registerPage.title')}</h1>
+          <p className="text-[#9CA3AF] text-sm">{t('registerPage.subtitle')}</p>
         </div>
 
         {status === 'error' && (
@@ -125,7 +127,7 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-2">Me uno como...</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-2">{t('registerPage.roleLabel')}</label>
             <div className="grid grid-cols-3 gap-3">
               {['jugador', 'entrenador', 'club'].map((r) => (
                 <button
@@ -138,40 +140,40 @@ export default function RegisterPage() {
                       : 'bg-[#0F172A] border-[#1F2937] text-[#9CA3AF] hover:border-[#3B82F6]/50 hover:text-white'
                   }`}
                 >
-                  {r}
+                  {t(`registerPage.roles.${r}`)}
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="displayName">Nombre y Apellidos</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="displayName">{t('registerPage.nameLabel')}</label>
             <input 
               id="displayName"
               type="text" 
               value={displayName}
               onChange={(e) => { setDisplayName(e.target.value); if(status==='error') setStatus('idle'); }}
               className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-              placeholder="E.g. Carlos Martínez"
+              placeholder={t('registerPage.namePlaceholder')}
               disabled={status === 'loading' || status === 'success'}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="email">Correo ElectrónICO</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="email">{t('registerPage.emailLabel')}</label>
             <input 
               id="email"
               type="email" 
               value={email}
               onChange={(e) => { setEmail(e.target.value); if(status==='error') setStatus('idle'); }}
               className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-              placeholder="tu@email.com"
+              placeholder={t('registerPage.emailPlaceholder')}
               disabled={status === 'loading' || status === 'success'}
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="password">Contraseña</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="password">{t('registerPage.passwordLabel')}</label>
             <div className="relative">
               <input 
                 id="password"
@@ -179,7 +181,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); if(status==='error') setStatus('idle'); }}
                 className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-                placeholder="Mín. 8 caracteres, números y símbolos"
+                placeholder={t('registerPage.passwordPlaceholder')}
                 disabled={status === 'loading' || status === 'success'}
               />
               <button
@@ -218,7 +220,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="confirmPassword">Confirmar contraseña</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="confirmPassword">{t('registerPage.confirmPasswordLabel')}</label>
             <div className="relative">
               <input 
                 id="confirmPassword"
@@ -226,12 +228,12 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => { setConfirmPassword(e.target.value); if(status==='error') setStatus('idle'); }}
                 className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-                placeholder="Repite tu contraseña"
+                placeholder={t('registerPage.confirmPasswordPlaceholder')}
                 disabled={status === 'loading' || status === 'success'}
               />
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}    
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-white"
               >
                 {showConfirmPassword ? (
@@ -241,19 +243,19 @@ export default function RegisterPage() {
                 )}
               </button>
             </div>
-            
+
             {confirmPassword && (
               <div className="mt-2">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs text-[#9CA3AF]">Coincidencia</span>
+                <div className="flex justify-between items-center mb-1">        
+                  <span className="text-xs text-[#9CA3AF]">{t('registerPage.matchLabel')}</span>  
                   <span className={`text-xs font-semibold ${
                     password === confirmPassword ? 'text-green-500' : 'text-red-500'
                   }`}>
-                    {password === confirmPassword ? 'Coinciden' : 'No coinciden'}
+                    {password === confirmPassword ? t('registerPage.matchYes') : t('registerPage.matchNo')}
                   </span>
                 </div>
                 <div className="w-full bg-[#1F2937] rounded-full h-1.5 overflow-hidden">
-                  <div 
+                  <div
                     className={`h-full transition-all duration-300 ease-in-out ${
                       password === confirmPassword ? 'bg-green-500 w-full' : 'bg-red-500 w-full'
                     }`}
@@ -263,8 +265,8 @@ export default function RegisterPage() {
             )}
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={status === 'loading' || status === 'success'}
             className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-white font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
           >
@@ -274,15 +276,15 @@ export default function RegisterPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span>Registrándote...</span>
+                <span>{t('registerPage.loading')}</span>
               </>
             ) : status === 'success' ? (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
-                <span>¡Cuenta creada!</span>
+                <span>{t('registerPage.success')}</span>
               </>
             ) : (
-              'Crear mi cuenta gratis'
+              t('registerPage.submitButton')
             )}
           </button>
         </form>
@@ -292,16 +294,16 @@ export default function RegisterPage() {
             <div className="w-full border-t border-[#1F2937]"></div>
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[#111827] px-4 text-[#9CA3AF]">O regístrate con</span>
+            <span className="bg-[#111827] px-4 text-[#9CA3AF]">{t('registerPage.orRegisterWith')}</span>
           </div>
         </div>
 
         <div className="mt-6">
-          <button 
+          <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={status === 'loading' || status === 'success'}
-            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"   
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -309,15 +311,14 @@ export default function RegisterPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
             </svg>
-            Google
+            {t('registerPage.googleButton')}
           </button>
         </div>
 
         <div className="mt-8 text-center text-sm text-[#9CA3AF]">
-          ¿Ya tienes cuenta?{' '}
+          {t('registerPage.hasAccount')}{' '}
           <Link to="/login" className="text-[#3B82F6] hover:text-[#2563EB] font-medium transition-colors">
-            Iniciar sesión
-          </Link>
+            {t('registerPage.loginLink')}
         </div>
 
       </div>

@@ -136,5 +136,69 @@
       "cancelAnytime": "Cancel·la quan vulguis. Sense permanència."
     },
     "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui"
+  },
+  "loginPage": {
+    "title": "Benvingut de nou",
+    "subtitle": "Entra al teu compte de Global Play 360",
+    "errors": {
+      "invalidEmail": "Sisplau, introdueix un correu electrònic vàlid.",
+      "shortPassword": "La contrasenya ha de tenir almenys 6 caràcters.",
+      "invalidCredentials": "Credencials incorrectes o usuari no trobat.",
+      "googleError": "Error en iniciar sessió amb Google."
+    },
+    "emailLabel": "Correu Electrònic",
+    "emailPlaceholder": "el.teu@email.com",
+    "passwordLabel": "Contrasenya",
+    "forgotPassword": "L'has oblidat?",
+    "loading": "Accedint...",
+    "success": "Connectat!",
+    "submitButton": "Entrar al meu compte",
+    "orContinueWith": "O continua amb",
+    "googleButton": "Google",
+    "noAccount": "Encara no tens compte?",
+    "registerLink": "Crear compte nou"
+  },
+  "registerPage": {
+    "title": "Desenvolupa la teva carrera esportiva",
+    "subtitle": "Crea el teu compte a Global Play 360",
+    "roles": {
+      "jugador": "jugador",
+      "entrenador": "entrenador",
+      "club": "club"
+    },
+    "errors": {
+      "missingName": "Sisplau, indica el teu nom complet.",
+      "invalidEmail": "Sisplau, introdueix un correu electrònic vàlid.",
+      "passwordMismatch": "Les contrasenyes no coincideixen.",
+      "weakPassword": "Sisplau, indica una contrasenya segura (mín. 8 caràcters, majúscules i símbols).",
+      "registerError": "Hi ha hagut un error en crear el compte. Torna-ho a provar més tard.",
+      "googleError": "Error en registrar-se amb Google."
+    },
+    "passwordStrength": {
+      "veryWeak": "Molt feble",
+      "weak": "Feble",
+      "good": "Bona",
+      "strong": "Forta",
+      "label": "Nivell de seguretat"
+    },
+    "roleLabel": "M'uneixo com a...",
+    "nameLabel": "Nom i Cognoms",
+    "namePlaceholder": "Ex. Carlos Martínez",
+    "emailLabel": "Correu Electrònic",
+    "emailPlaceholder": "el.teu@email.com",
+    "passwordLabel": "Contrasenya",
+    "passwordPlaceholder": "Mín. 8 caràcters, nombres i símbols",
+    "confirmPasswordLabel": "Confirmar contrasenya",
+    "confirmPasswordPlaceholder": "Repeteix la contrasenya",
+    "matchLabel": "Coincidència",
+    "matchYes": "Les contrasenyes coincideixen",
+    "matchNo": "Les contrasenyes no coincideixen",
+    "loading": "Registrant-te...",
+    "success": "Compte creat!",
+    "submitButton": "Crear el meu compte gratis",
+    "orRegisterWith": "O registra't amb",
+    "googleButton": "Google",
+    "hasAccount": "Ja tens compte?",
+    "loginLink": "Inicia sessió"
   }
 }
