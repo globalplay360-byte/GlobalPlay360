@@ -3,5 +3,734 @@
   "login": "Login",
   "register": "Register",
   "home": "Home",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "homePage": {
+    "hero": {
+      "title": "Where Talent Meets \n Opportunity",
+      "subtitle": "Connect with players, coaches, and clubs around the world. Develop your sports career with Global Play 360.",
+      "btnPlayer": "I'm a Player",
+      "btnCoach": "I'm a Coach",
+      "btnClub": "I'm a Club"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Join thousands of athletes, coaches, and clubs who are already building their future.",
+      "step1": {
+        "title": "Create your Profile",
+        "desc": "Showcase your skills, stats, and highlight videos."
+      },
+      "step2": {
+        "title": "Discover Opportunities",
+        "desc": "Easily find club offers and compatible profiles."
+      },
+      "step3": {
+        "title": "Connect and Apply",
+        "desc": "Send direct messages and apply to open positions."
+      },
+      "step4": {
+        "title": "Level Up",
+        "desc": "Accelerate your professional career in the sports world."
+      }
+    },
+    "pricing": {
+      "title": "Free vs Premium",
+      "subtitle": "Choose the plan that fits your goals and accelerates your career.",
+      "month": "/month",
+      "free": {
+        "title": "Free Plan",
+        "desc": "Basic visibility for aspiring athletes",
+        "feat1": "Basic Profile",
+        "feat2": "Limited Search",
+        "feat3": "Unlimited Messaging",
+        "feat4": "Search Priority",
+        "feat5": "Video and PDF Tools",
+        "cta": "Sign Up Free"
+      },
+      "premium": {
+        "badge": "MOST POPULAR",
+        "title": "Premium Plan",
+        "desc": "Professional tools for serious careers",
+        "feat1": "Enhanced Profile",
+        "feat2": "Unlimited Search",
+        "feat3": "Unlimited Messaging",
+        "feat4": "Search Priority and Support",
+        "feat5": "Video and PDF Tools",
+        "cta": "Upgrade Now"
+      }
+    },
+    "social": {
+      "title": "Follow Us on Social Media",
+      "subtitle": "Join our community and stay up to date with the latest sports opportunities and news."
+    }
+  },
+  "navbar": {
+    "banner": {
+      "title": "Founding Members – Free Access",
+      "description": "Be one of the first 100 members to join and get free Premium access until July 1, 2026!",
+      "cta": "Claim Your Status"
+    },
+    "brand": "Global Play 360",
+    "home": "Home",
+    "about": "About Us",
+    "admin": "Dashboard",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Sign Up"
+  },
+  "footer": {
+    "description": "Global Play 360 is the leading platform connecting athletes, coaches, and sports organizations worldwide.",
+    "contact": "Contact",
+    "about": "About Us",
+    "pricing": "Pricing",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "2026 Global Play 360. All rights reserved.",
+    "followUs": "Follow Us"
+  },
+  "pricingPage": {
+    "title": "Choose your plan",
+    "subtitle1": "Start for free or unlock your full potential with Premium. Try it ",
+    "subtitleBold": "30 days risk-free",
+    "subtitle2": ".",
+    "cancelBanner": "The subscription was not completed. You can try again whenever you want.",
+    "errorPrice": "Error loading prices.",
+    "errorCheckout": "Could not start checkout.",
+    "noPremiumActive": "No active Premium product found.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "save": "Save €{{amount}}",
+    "free": {
+      "title": "Free",
+      "month": "/month",
+      "desc": "Basic visibility to get started.",
+      "features": {
+        "f1": "Basic profile",
+        "f2": "Limited opportunity search",
+        "f3": "1 application per week",
+        "f4": "Direct messaging",
+        "f5": "Unlimited applications",
+        "f6": "Search priority"
+      },
+      "cta": "Sign up for free"
+    },
+    "premium": {
+      "badge": "Recommended",
+      "title": "Premium",
+      "month": "/month",
+      "year": "/year",
+      "trial": "✓ 30-day free trial",
+      "desc": "Professional tools to accelerate your career.",
+      "features": {
+        "f1": "Featured profile with videos",
+        "f2": "Unlimited search",
+        "f3": "Direct messaging",
+        "f4": "Unlimited applications",
+        "f5": "Search priority",
+        "f6": "Priority support"
+      },
+      "active": "You already have Premium active →",
+      "redirecting": "Redirecting to Stripe...",
+      "loading": "Loading...",
+      "ctaLoggedIn": "Start 30-day trial",
+      "ctaLoggedOut": "Sign up to start",
+      "manage": "Manage your subscription from the dashboard.",
+      "cancelAnytime": "Cancel anytime. No long-term commitments."
+    },
+    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable"
+  },
+  "loginPage": {
+    "title": "Welcome back",
+    "subtitle": "Enter your Global Play 360 account",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address.",
+      "shortPassword": "Password must be at least 6 characters long.",
+      "invalidCredentials": "Incorrect credentials or user not found.",
+      "googleError": "Error logging in with Google."
+    },
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot it?",
+    "loading": "Logging in...",
+    "success": "Connected!",
+    "submitButton": "Log in to my account",
+    "orContinueWith": "Or continue with",
+    "googleButton": "Google",
+    "noAccount": "Don't have an account yet?",
+    "registerLink": "Create new account"
+  },
+  "registerPage": {
+    "title": "Develop your sports career",
+    "subtitle": "Create your Global Play 360 account",
+    "roles": {
+      "jugador": "player",
+      "entrenador": "coach",
+      "club": "club"
+    },
+    "errors": {
+      "missingName": "Please enter your full name.",
+      "invalidEmail": "Please enter a valid email address.",
+      "passwordMismatch": "Passwords do not match.",
+      "weakPassword": "Please enter a secure password (min. 8 characters, uppercase, and symbols).",
+      "registerError": "An error occurred while creating your account. Please try again later.",
+      "googleError": "Error registering with Google."
+    },
+    "passwordStrength": {
+      "veryWeak": "Very weak",
+      "weak": "Weak",
+      "good": "Good",
+      "strong": "Strong",
+      "label": "Security level"
+    },
+    "roleLabel": "I am joining as a...",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "E.g. Carlos Martínez",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Min. 8 characters, numbers, and symbols",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "matchLabel": "Match",
+    "matchYes": "Passwords match",
+    "matchNo": "Passwords do not match",
+    "loading": "Registering...",
+    "success": "Account created!",
+    "submitButton": "Create my free account",
+    "orRegisterWith": "Or sign up with",
+    "googleButton": "Google",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log in"
+  },
+  "sidebar": {
+    "nav": {
+      "overview": "Overview",
+      "profile": "My Profile",
+      "opportunities": "Opportunities",
+      "myOffers": "My Offers",
+      "applications": "Applications",
+      "messages": "Messages",
+      "analytics": "Analytics",
+      "billing": "Billing"
+    },
+    "mainMenu": "Main Menu",
+    "testUser": "User",
+    "playerRole": "Player",
+    "coachRole": "Coach",
+    "clubRole": "Club"
+  },
+  "topbar": {
+    "searchPlaceholder": "Search players, clubs, statistics...",
+    "logout": "Log out"
+  },
+  "dashboardLayout": {
+    "banner": {
+      "unverifiedText": "Your account is not verified. Please check your email.",
+      "sending": "Sending...",
+      "sent": "Verification email sent!",
+      "resend": "Resend email"
+    }
+  },
+  "overview": {
+    "sportsman": "Sportsman",
+    "hello": "Hello",
+    "planTag": "PLAN",
+    "clubDescription": "Manage your club's talent and analyze data.",
+    "coachDescription": "Your main dashboard for technical management and professional challenges.",
+    "playerDescription": "This is your sports operations center. Take a look.",
+    "publishOffer": "Publish Offer",
+    "completeProfile": "Complete Profile",
+    "stats": {
+      "club": {
+        "activeOffers": "Active Offers",
+        "applicationsReceived": "Received Applications",
+        "conversations": "Conversations",
+        "profileVisits": "Profile Visits"
+      },
+      "coachPlayer": {
+        "savedOffers": "Saved Offers",
+        "applications": "Applications",
+        "pendingMessages": "Pending Messages",
+        "profileStrength": "Profile Strength"
+      },
+      "trends": {
+        "thisMonth": "+1 this month",
+        "sinceYesterday": "+4 since yesterday",
+        "thisWeek": "+2 this week",
+        "activeRecently": "Active recently",
+        "highLevel": "High Level"
+      }
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "exploreOffers": "Explore offers",
+      "applications": "Applications",
+      "messages": "Messages",
+      "yourProfile": "Your Profile"
+    },
+    "recentApplicationsTitle": "Latest received applications",
+    "recommendedOffersTitle": "Recommended Opportunities (Mock)",
+    "seeMore": "See more",
+    "reviewCV": "Review CV",
+    "enter": "+ Enter",
+    "activePlan": {
+      "title": "Active Plan",
+      "description": "Enjoy priority positioning, full access to direct contacts, and exclusive offers.",
+      "manageButton": "Manage Subscription"
+    },
+    "upgrade": {
+      "title": "Upgrade to Premium",
+      "description": "Get up to <1>300% more</1> club impressions and send direct messages.",
+      "button": "View Plans"
+    },
+    "activity": {
+      "title": "Activity",
+      "last7Days": "Last 7 days",
+      "item1": {
+        "title": "New Message",
+        "desc": "You received a reply to your application.",
+        "time": "2 hours ago"
+      },
+      "item2": {
+        "title": "\"In Review\" Status",
+        "desc": "Your CV is being evaluated.",
+        "time": "Yesterday, 14:30"
+      },
+      "item3": {
+        "title": "3 New Offers",
+        "desc": "They match your filters.",
+        "time": "Tuesday, 09:15"
+      }
+    }
+  },
+  "profile": {
+    "notAuthenticated": "Not authenticated",
+    "loginToView": "Log in to view your profile.",
+    "editProfile": "Edit Profile",
+    "updateInfo": "Update your information to attract the best opportunities.",
+    "backToProfile": "Back to profile",
+    "uploadError": "Error uploading photo. Try again later.",
+    "changeAvatar": "Change",
+    "aboutEntity": "About the entity",
+    "aboutMe": "About me",
+    "emptyBio": "You haven't added a bio yet. Edit your profile to introduce yourself.",
+    "sportsData": "Sports Data",
+    "position": "Position",
+    "height": "Height",
+    "weight": "Weight",
+    "birthDate": "Date of Birth",
+    "location": "Location and Contact",
+    "city": "City",
+    "phone": "Phone",
+    "url": "Web/Link",
+    "noLocation": "No location or contact provided",
+    "sports": {
+      "football": "Football (Soccer)",
+      "basketball": "Basketball",
+      "futsal": "Futsal",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "waterpolo": "Waterpolo",
+      "tennis": "Tennis",
+      "rugby": "Rugby",
+      "american_football": "American Football",
+      "hockey": "Hockey",
+      "other": "Other"
+    },
+    "membershipStatus": "Membership Status",
+    "planName": "{{plan}} Plan",
+    "premiumAccess": "Full access enabled.",
+    "upgradeToContact": "Upgrade to contact directly.",
+    "manageSubscription": "Manage Subscription",
+    "upgradePlan": "Upgrade Plan",
+    "contactAndSocial": "Contact & Social",
+    "viewHighlights": "View highlights",
+    "memberSince": "Member since {{date}}"
+  },
+  "applications": {
+    "titleClub": "Received Applications",
+    "titlePlayer": "My Applications",
+    "descClub": "Manage the candidates who applied to your offers.",
+    "descPlayer": "Track the status of your applications.",
+    "errorChat": "Error creating chat.",
+    "errorUpdateStatus": "Error updating status.",
+    "errorLoading": "Error loading applications.",
+    "errorConnection": "Connection Error",
+    "retry": "Retry",
+    "appliedOn": "Applied on {{date}}",
+    "opportunityClosed": "Opportunity no longer available",
+    "candidateLabel": "Candidate: {{name}}",
+    "unknownUser": "Unknown User",
+    "unknownClub": "Unknown Club",
+    "viewDetail": "View Detail",
+    "contact": "Contact",
+    "startConversation": "Start Conversation",
+    "titleMarkInReview": "Mark as 'In Review'",
+    "markInReview": "M",
+    "titleAccept": "Accept Candidate",
+    "accept": "V",
+    "titleReject": "Reject Candidate",
+    "reject": "X",
+    "titleReopen": "Reopen for review",
+    "reopen": "O",
+    "emptyTitle": "No applications found",
+    "emptyDesc": "There are no applications to display yet."
+  },
+  "applications_old": {
+    "errorChat": "An error occurred while trying to open the chat.",
+    "errorUpdateStatus": "Error updating the application status.",
+    "errorLoading": "Error loading applications.",
+    "errorConnection": "Connection Error",
+    "retry": "Retry",
+    "titleClub": "Candidate Management",
+    "titlePlayer": "Applications",
+    "descClub": "These are the players and coaches who have applied to your opportunities.",
+    "descPlayer": "Tracking all your requests and active selection processes.",
+    "appliedOn": "Applied on {{date}}",
+    "opportunityClosed": "Closed Opportunity",
+    "candidateLabel": "Candidate: {{name}}",
+    "unknownUser": "Unknown User",
+    "unknownClub": "Unknown Club",
+    "viewDetail": "View Detail",
+    "contact": "Contact",
+    "startConversation": "Start conversation",
+    "markInReview": "In review",
+    "accept": "Accept",
+    "reject": "Reject",
+    "reopen": "Reopen",
+    "titleMarkInReview": "Mark as In Review",
+    "titleAccept": "Accept application",
+    "titleReject": "Reject application",
+    "titleReopen": "Reopen this application and set it back to In Review",
+    "emptyTitle": "You haven't applied to any opportunities yet",
+    "emptyDesc": "Explore the marketplace and send your first application to clubs or offers that fit your profile.",
+    "exploreMarketplace": "Explore Opportunities"
+  },
+  "myOpportunities": {
+    "errorLoading": "Error loading opportunities",
+    "errorToggling": "Error changing status",
+    "confirmDelete": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+    "errorDeleting": "Error deleting opportunity",
+    "restrictedTitle": "Restricted Access",
+    "restrictedDesc": "Only clubs can access this page.",
+    "pageTitle": "My Offers",
+    "publishNew": "Publish New Offer",
+    "emptyTitle": "You do not have any published offers",
+    "emptyDesc": "Go ahead and search for the players and coaches you need.",
+    "sport": "Sport",
+    "sector": "Sector",
+    "candidatesSummary": "Candidates Summary",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+    "statusUnknown": "Unknown Status",
+    "viewDetails": "View details",
+    "closeOffer": "Close Offer",
+    "reopenOffer": "Reopen Offer",
+    "processing": "Processing...",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "edit": "Edit"
+  },
+  "opportunityDetail": {
+    "backApplications": "Back to Applications",
+    "backMine": "Back to My Offers",
+    "backMarketplace": "Back to Marketplace",
+    "errorLoading": "Error loading opportunity",
+    "errorApply": "Error submitting application",
+    "errorChat": "Error trying to open direct chat.",
+    "connErrorTitle": "Connection Error",
+    "retry": "Retry",
+    "notFoundTitle": "Opportunity not found",
+    "notFoundDesc": "This opportunity might have been deleted or the ID is invalid.",
+    "location": "Location",
+    "contract": "Contract",
+    "gender": "Gender",
+    "published": "Published",
+    "aboutOpp": "About the Opportunity",
+    "requirements": "Requirements and Necessary Profile",
+    "clubCannotApply": "Clubs cannot apply to opportunities.",
+    "alreadyApplied": "You have already applied to this opportunity",
+    "sending": "Sending...",
+    "applyNow": "Apply Now",
+    "contactClub": "Contact Club",
+    "aboutClub": "About the Club",
+    "club": "Club",
+    "viewFullProfile": "View Full Profile"
+  },
+  "opportunities": {
+    "errorLoading": "Error loading opportunities",
+    "errorConnection": "Connection Error",
+    "retry": "Retry",
+    "marketplace": "Marketplace",
+    "discoverOpps": "Discover the latest opportunities around the world.",
+    "createOpportunity": "Create Opportunity",
+    "filters": {
+      "all": "All",
+      "football": "Football",
+      "basketball": "Basketball",
+      "proContracts": "Pro Contracts"
+    },
+    "emptyTitle": "No opportunities yet",
+    "emptyDesc": "No published opportunities found. Try again later or create the first one if you are a club.",
+    "status": {
+      "open": "open",
+      "closed": "closed",
+      "draft": "draft"
+    },
+    "keyRequirements": "Key Requirements",
+    "more": "more",
+    "published": "Published:",
+    "viewDetail": "View Detail",
+    "apply": "Apply"
+  },
+  "opportunityForm": {
+    "restricted": "Restricted access",
+    "onlyClubs": "Only clubs can publish opportunities.",
+    "notFoundTitle": "Opportunity not found",
+    "notFoundDesc": "This opportunity does not exist or has been deleted.",
+    "backBtn": "Back",
+    "onlyOwner": "Only the owner club can edit this opportunity.",
+    "backToMine": "Back to My Offers",
+    "backToMarketplace": "Back to Marketplace",
+    "createNewTitle": "Publish New Opportunity",
+    "createNewDesc": "Fill the form to publish a new offer in the marketplace.",
+    "editTitle": "Edit Opportunity",
+    "editDesc": "Modify details and requirements to keep the offer updated.",
+    "publishBtn": "Publish Opportunity",
+    "publishingBtn": "Publishing...",
+    "saveChangesBtn": "Save Changes",
+    "savingBtn": "Saving...",
+    "cancelBtn": "Cancel",
+    "genderLabel": "Gender *",
+    "contractLabel": "Contract Type *",
+    "salaryLabel": "Offered Salary / Compensation",
+    "locationLabel": "Location / City *",
+    "descLabel": "Description and Conditions *",
+    "requirementsLabel": "Add Key Requirements",
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "mixed": "Mixed"
+    },
+    "contractOptions": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Academy",
+      "trial": "Trials"
+    },
+    "errors": {
+      "titleRequired": "The title is mandatory.",
+      "locationRequired": "The location is mandatory.",
+      "descRequired": "The description is mandatory.",
+      "saveError": "Error saving opportunity."
+    },
+    "fields": {
+      "titleLabel": "Opportunity Title *",
+      "titlePlaceholder": "Ex: Center Forward for the First Team",
+      "sportLabel": "Sport *",
+      "salaryPlaceholder": "Ex: €15.000/year + accommodation",
+      "locationPlaceholder": "Ex: Barcelona, Spain",
+      "descPlaceholder": "Detail the responsibilities, team, goals, etc.",
+      "requirementsPlaceholder": "Ex: +2 years Professional experience..."
+    }
+  },
+  "premiumLock": {
+    "defaultTitle": "Exclusive for Premium users",
+    "defaultDesc": "Upgrade your plan to unlock this feature and interact directly with this profile.",
+    "upgrade": "Upgrade your Plan"
+  },
+  "status": {
+    "submitted": "Submitted",
+    "in_review": "In Review",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your subscription, payment methods, and invoices.",
+    "status": {
+      "trialing": "Trial Period",
+      "active": "Active",
+      "canceled": "Canceled",
+      "incomplete": "Incomplete",
+      "incomplete_expired": "Expired",
+      "past_due": "Past Due",
+      "unpaid": "Unpaid"
+    },
+    "nextEvent": {
+      "trialEnd": "End of Trial Period",
+      "nextBilling": "Next Billing"
+    },
+    "cancelBanner": {
+      "title": "Subscription Canceled",
+      "message1": "Your subscription is scheduled to end on",
+      "message2": "Until then, you can continue to enjoy all Premium features."
+    },
+    "card": {
+      "premiumPlan": "Premium Plan",
+      "gp360Sub": "GlobalPlay360 Subscription",
+      "billing": "Billing",
+      "managedByStripe": "Managed by Stripe"
+    },
+    "portal": {
+      "title": "Manage Subscription",
+      "desc": "Cancel, update payment method, or download invoices on Stripe's secure portal.",
+      "button": "Open Stripe Portal",
+      "loading": "Opening portal...",
+      "error": "Could not open portal.",
+      "note": "You will be redirected to a secure page hosted by Stripe. Once finished, you will automatically return here."
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Welcome to Premium!",
+    "desc": "Your subscription has been successfully activated. You have a <1>30-day free trial</1>  the first charge will be made when the period ends. You can cancel anytime from the billing panel.",
+    "goToDashboard": "Go to dashboard",
+    "completeProfile": "Complete my profile"
+  },
+  "enums": {
+    "sport": {
+      "football": "Football",
+      "basketball": "Basketball",
+      "futsal": "Futsal",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "waterpolo": "Water Polo",
+      "tennis": "Tennis",
+      "rugby": "Rugby",
+      "american_football": "American Football",
+      "hockey": "Hockey",
+      "other": "Other"
+    },
+    "role": {
+      "player": "Player",
+      "coach": "Coach",
+      "club": "Club",
+      "admin": "Admin"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "mixed": "Mixed"
+    },
+    "contractType": {
+      "pro": "Professional",
+      "semi-pro": "Semi-professional",
+      "amateur": "Amateur",
+      "academy": "Academy",
+      "trial": "Trial"
+    },
+    "handedness": {
+      "left": "Left",
+      "right": "Right",
+      "both": "Both"
+    },
+    "stickHand": {
+      "left": "Left",
+      "right": "Right"
+    },
+    "backhandType": {
+      "one-hand": "One-handed",
+      "two-hand": "Two-handed"
+    },
+    "opportunityStatus": {
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "applicationStatus": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "plan": {
+      "trial": "Trial",
+      "premium": "Premium",
+      "pro": "Pro"
+    },
+    "subscriptionStatus": {
+      "trialing": "Trial",
+      "active": "Active",
+      "canceled": "Canceled",
+      "expired": "Expired"
+    },
+    "position": {
+      "football": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "fullback": "Fullback",
+        "midfielder": "Midfielder",
+        "winger": "Winger",
+        "forward": "Forward"
+      },
+      "basketball": {
+        "point_guard": "Point Guard (PG)",
+        "shooting_guard": "Shooting Guard (SG)",
+        "small_forward": "Small Forward (SF)",
+        "power_forward": "Power Forward (PF)",
+        "center": "Center (C)"
+      },
+      "futsal": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "winger": "Winger",
+        "pivot": "Pivot",
+        "universal": "Universal"
+      },
+      "volleyball": {
+        "setter": "Setter",
+        "opposite": "Opposite",
+        "outside_hitter": "Outside Hitter",
+        "middle_blocker": "Middle Blocker",
+        "libero": "Libero"
+      },
+      "handball": {
+        "goalkeeper": "Goalkeeper",
+        "center": "Centre",
+        "wingback": "Wing Back",
+        "wing": "Wing",
+        "pivot": "Pivot"
+      },
+      "waterpolo": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "hole_set": "Hole Set",
+        "wing": "Wing",
+        "center": "Center"
+      },
+      "rugby": {
+        "prop": "Prop",
+        "hooker": "Hooker",
+        "lock": "Lock",
+        "flanker": "Flanker",
+        "number_eight": "Number 8",
+        "scrum_half": "Scrum Half",
+        "fly_half": "Fly Half",
+        "centre": "Centre",
+        "wing": "Wing",
+        "fullback": "Fullback"
+      },
+      "american_football": {
+        "quarterback": "Quarterback (QB)",
+        "running_back": "Running Back (RB)",
+        "wide_receiver": "Wide Receiver (WR)",
+        "tight_end": "Tight End (TE)",
+        "offensive_line": "Offensive Line (OL)",
+        "defensive_line": "Defensive Line (DL)",
+        "linebacker": "Linebacker (LB)",
+        "cornerback": "Cornerback (CB)",
+        "safety": "Safety (S)",
+        "kicker_punter": "Kicker / Punter"
+      },
+      "hockey": {
+        "goalkeeper": "Goalkeeper",
+        "defender": "Defender",
+        "midfielder": "Midfielder",
+        "forward": "Forward"
+      }
+    }
+  }
 }

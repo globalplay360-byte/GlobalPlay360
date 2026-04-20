@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import type { Opportunity } from '@/types';
 
@@ -45,6 +46,7 @@ export default function OpportunityForm({
   onCancel,
 }: OpportunityFormProps) {
   const [form, setForm] = useState<FormData>(initialData ?? INITIAL_FORM);
+  const { t } = useTranslation();
   const [requirementInput, setRequirementInput] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,16 +69,16 @@ export default function OpportunityForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.title.trim()) return setError('El títol és obligatori.');
-    if (!form.location.trim()) return setError('La ubicació és obligatòria.');
-    if (!form.description.trim()) return setError('La descripció és obligatòria.');
+    if (!form.title.trim()) return setError('t("opportunityForm.errors.titleRequired")');
+    if (!form.location.trim()) return setError('t("opportunityForm.errors.locationRequired")');
+    if (!form.description.trim()) return setError('t("opportunityForm.errors.descRequired")');
 
     try {
       setSubmitting(true);
       setError(null);
       await onSubmit(form);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desant la oportunitat.');
+      setError(err instanceof Error ? err.message : 't("opportunityForm.errors.saveError")');
     } finally {
       setSubmitting(false);
     }
@@ -90,11 +92,11 @@ export default function OpportunityForm({
       <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 space-y-5">
         {/* Títol */}
         <div>
-          <label className={labelClass}>Títol de l'Oportunitat *</label>
+          <label className={labelClass}>{t("opportunityForm.fields.titleLabel")}</label>
           <input
             type="text"
             className={inputClass}
-            placeholder="Ex: Davanter Centre per al Primer Equip"
+            placeholder={t("opportunityForm.fields.titlePlaceholder")}
             value={form.title}
             onChange={(e) => updateField('title', e.target.value)}
           />
@@ -103,21 +105,21 @@ export default function OpportunityForm({
         {/* Sport + Gender + Contract */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className={labelClass}>Esport *</label>
+            <label className={labelClass}>{t("opportunityForm.fields.sportLabel")}</label>
             <select className={inputClass} value={form.sport} onChange={(e) => updateField('sport', e.target.value)}>
-              {SPORT_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
+              {SPORT_OPTIONS.map((s) => <option key={s} value={s}>{t("profile.sports." + s.toLowerCase())}</option>)}
             </select>
           </div>
           <div>
-            <label className={labelClass}>Gènere *</label>
+            <label className={labelClass}>{t("opportunityForm.genderLabel")}</label>
             <select className={inputClass} value={form.gender} onChange={(e) => updateField('gender', e.target.value as Opportunity['gender'])}>
-              {GENDER_OPTIONS.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
+              {GENDER_OPTIONS.map((g) => <option key={g.value} value={g.value}>{t("opportunityForm.gender." + g.value)}</option>)}
             </select>
           </div>
           <div>
-            <label className={labelClass}>Tipus de Contracte *</label>
+            <label className={labelClass}>{t("opportunityForm.contractLabel")}</label>
             <select className={inputClass} value={form.contractType} onChange={(e) => updateField('contractType', e.target.value as Opportunity['contractType'])}>
-              {CONTRACT_OPTIONS.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+              {CONTRACT_OPTIONS.map((c) => <option key={c.value} value={c.value}>{t("opportunityForm.contractOptions." + c.value)}</option>)}
             </select>
           </div>
         </div>
@@ -195,7 +197,7 @@ export default function OpportunityForm({
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 pt-2">
-        <Button variant="outline" type="button" onClick={onCancel}>Cancel·lar</Button>
+        <Button variant="outline" type="button" onClick={onCancel}>{t("opportunityForm.cancelBtn")}</Button>
         <Button variant="primary" type="submit" disabled={submitting}>
           {submitting ? submittingLabel : submitLabel}
         </Button>
@@ -203,3 +205,8 @@ export default function OpportunityForm({
     </form>
   );
 }
+
+
+
+
+

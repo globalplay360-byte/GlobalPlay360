@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 import { mockApplications, mockOpportunities, mockConversations } from '../../services/mockData';
 import {
   BriefcaseIcon,
@@ -26,6 +27,7 @@ type BaseStats = {
 
 export default function OverviewPage() {
   const { user, activePlan } = useAuth();
+  const { t } = useTranslation();
 
   const isClub = user?.role === 'club';
   const isPremium = activePlan === 'premium';
@@ -37,54 +39,54 @@ export default function OverviewPage() {
   const stats: BaseStats[] = useMemo(() => {
     if (isClub) {
       return [
-        { label: 'Ofertes Actives', value: userOpportunities.length || 3, icon: BriefcaseIcon, trend: '+1 aquest mes', trendUp: true },
-        { label: 'Candidatures Rebudes', value: '24', icon: DocumentCheckIcon, trend: '+4 des d\'ahir', trendUp: true },
-        { label: 'Converses', value: userConversations.length || 5, icon: ChatBubbleLeftEllipsisIcon },
-        { label: 'Visites al Perfil', value: '1.204', icon: ChartBarIcon, trend: '+12%', trendUp: true },
+        { label: t('overview.stats.club.activeOffers'), value: userOpportunities.length || 3, icon: BriefcaseIcon, trend: t('overview.stats.trends.thisMonth'), trendUp: true },
+        { label: t('overview.stats.club.applicationsReceived'), value: '24', icon: DocumentCheckIcon, trend: t('overview.stats.trends.sinceYesterday'), trendUp: true },
+        { label: t('overview.stats.club.conversations'), value: userConversations.length || 5, icon: ChatBubbleLeftEllipsisIcon },
+        { label: t('overview.stats.club.profileVisits'), value: '1.204', icon: ChartBarIcon, trend: '+12%', trendUp: true },
       ];
     }
     return [
-      { label: 'Ofertes Guardades', value: '12', icon: StarIcon },
-      { label: 'Candidatures', value: userApplications.length || 2, icon: DocumentCheckIcon, trend: '+2 aquesta setmana', trendUp: true },
-      { label: 'Missatges Pendents', value: '3', icon: ChatBubbleLeftEllipsisIcon, trend: 'Actiu recentment', trendUp: true },
-      { label: 'Força del Perfil', value: '85%', icon: UserCircleIcon, trend: 'Nivell Alt', trendUp: true },
+      { label: t('overview.stats.coachPlayer.savedOffers'), value: '12', icon: StarIcon },
+      { label: t('overview.stats.coachPlayer.applications'), value: userApplications.length || 2, icon: DocumentCheckIcon, trend: t('overview.stats.trends.thisWeek'), trendUp: true },
+      { label: t('overview.stats.coachPlayer.pendingMessages'), value: '3', icon: ChatBubbleLeftEllipsisIcon, trend: t('overview.stats.trends.activeRecently'), trendUp: true },
+      { label: t('overview.stats.coachPlayer.profileStrength'), value: '85%', icon: UserCircleIcon, trend: t('overview.stats.trends.highLevel'), trendUp: true },
     ];
-  }, [isClub, userApplications.length, userOpportunities.length, userConversations.length]);
+  }, [isClub, userApplications.length, userOpportunities.length, userConversations.length, t]);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
-              Hola, {user?.displayName || 'Esportista'} 👋
+            <h1 className="text-3xl font-bold tracking-tight text-white">       
+              {t('overview.hello')}, {user?.displayName || t('overview.sportsman')} 👋
             </h1>
             <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border ${
-              isPremium 
-                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' 
+              isPremium
+                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
                 : 'bg-gray-800 text-gray-300 border-gray-700'
             }`}>
-              PLA {activePlan.toUpperCase()}
+              {t('overview.planTag')} {activePlan.toUpperCase()}
             </span>
           </div>
           <p className="text-gray-400 text-sm md:text-base">
-            {isClub 
-              ? 'Gestiona el talent del teu club i analitza les dades.' 
-              : user?.role === 'coach' 
-                ? 'El teu panell principal de gestió tècnica i reptes professionals.'
-                : 'Aquest és el teu centre d\'operacions esportiu. Dóna una ullada.'}
+            {isClub
+              ? t('overview.clubDescription')
+              : user?.role === 'coach'
+                ? t('overview.coachDescription')
+                : t('overview.playerDescription')}
           </p>
         </div>
-        
+
         {isClub ? (
           <Link to="/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
             <PlusCircleIcon className="w-5 h-5" />
-            Publicar Oferta
+            {t('overview.publishOffer')}
           </Link>
         ) : (
           <Link to="/profile" className="bg-[#111827] hover:bg-gray-800 text-white border border-gray-700 hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
             <UserCircleIcon className="w-5 h-5 text-gray-400" />
-            Completar Perfil
+            {t('overview.completeProfile')}
           </Link>
         )}
       </div>
@@ -116,15 +118,15 @@ export default function OverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-8">
           <section>
-            <h2 className="text-base font-semibold text-white mb-4">Accessos ràpids</h2>
+            <h2 className="text-base font-semibold text-white mb-4">{t('overview.quickActions.title')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <QuickAction href="/opportunities" icon={BriefcaseIcon} label="Explorar ofertes" />
-              <QuickAction href="/applications" icon={DocumentCheckIcon} label="Candidatures" />
-              <QuickAction href="/messages" icon={ChatBubbleLeftEllipsisIcon} label="Missatges" />
+              <QuickAction href="/opportunities" icon={BriefcaseIcon} label={t('overview.quickActions.exploreOffers')} />
+              <QuickAction href="/applications" icon={DocumentCheckIcon} label={t('overview.quickActions.applications')} />
+              <QuickAction href="/messages" icon={ChatBubbleLeftEllipsisIcon} label={t('overview.quickActions.messages')} />
               {isClub ? (
-                <QuickAction href="/profile" icon={BuildingOfficeIcon} label="El teus Perfil" />
+                <QuickAction href="/profile" icon={BuildingOfficeIcon} label={t('overview.quickActions.yourProfile')} />
               ) : (
-                <QuickAction href="/profile" icon={UserCircleIcon} label="El teu Perfil" />
+                <QuickAction href="/profile" icon={UserCircleIcon} label={t('overview.quickActions.yourProfile')} />
               )}
             </div>
           </section>
@@ -132,10 +134,10 @@ export default function OverviewPage() {
           <section className="bg-[#111827] border border-gray-800 rounded-xl overflow-hidden flex-1 shadow-sm">
             <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
               <h2 className="text-base font-semibold text-white">
-                {isClub ? 'Últimes candidatures rebudes' : 'Oportunitats recomanades (Mock)'}
+                {isClub ? t('overview.recentApplicationsTitle') : t('overview.recommendedOffersTitle')}
               </h2>
               <Link to={isClub ? "/applications" : "/opportunities"} className="text-sm font-medium text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors">
-                Veure més
+                {t('overview.seeMore')}
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
             </div>
@@ -157,7 +159,7 @@ export default function OverviewPage() {
                       </div>
                     </div>
                     <Link to="/applications" className="shrink-0 bg-[#0F172A] hover:bg-gray-800 transition-colors text-white text-xs font-semibold px-4 py-2 border border-gray-700 rounded-lg">
-                      Revisar CV
+                      {t('overview.reviewCV')}
                     </Link>
                   </div>
                 ))
@@ -174,7 +176,7 @@ export default function OverviewPage() {
                       </div>
                     </div>
                     <Link to="/opportunities" className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-colors text-xs font-semibold px-4 py-2 rounded-lg">
-                      + Entrar
+                      {t('overview.enter')}
                     </Link>
                   </div>
                 ))
@@ -195,10 +197,10 @@ export default function OverviewPage() {
                     <CheckCircleIcon className="w-5 h-5 text-blue-400" />
                     <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{activePlan}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Pla Actiu</h3>
-                  <p className="text-sm text-gray-400 mb-5 leading-relaxed">Gaudeix de posicionament prioritari i accés total a contactes directes i ofertes exclusives.</p>
+<h3 className="text-xl font-bold text-white mb-2">{t('overview.activePlan.title')}</h3>
+                  <p className="text-sm text-gray-400 mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
                   <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-gray-700 transition-colors">
-                    Gestionar Subscripció
+                    {t('overview.activePlan.manageButton')}
                   </Link>
                 </div>
               </div>
@@ -212,12 +214,14 @@ export default function OverviewPage() {
                      <SparklesIcon className="w-5 h-5 text-blue-400" />
                      <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">UPGRADE</span>
                    </div>
-                   <h3 className="text-xl font-bold text-white mb-2">Passa a Premium</h3>
-                   <p className="text-sm text-gray-400 mb-5 leading-relaxed">
-                     Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
+                   <h3 className="text-xl font-bold text-white mb-2">{t('overview.upgrade.title')}</h3>
+                   <p className="text-sm text-gray-400 mb-5 leading-relaxed">   
+                     <Trans i18nKey="overview.upgrade.description">
+                       Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
+                     </Trans>
                    </p>
                    <Link to="/pricing" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-colors w-full relative z-10">
-                     Veure Plans
+                     {t('overview.upgrade.button')}
                    </Link>
                  </div>
                </div>
@@ -226,33 +230,33 @@ export default function OverviewPage() {
 
           <section className="bg-[#111827] border border-gray-800 rounded-xl p-5 md:p-6 flex-1 shadow-sm">
             <h2 className="text-base font-semibold text-white mb-5 flex items-center justify-between">
-              Activitat
-              <span className="text-[11px] font-medium text-gray-500 bg-gray-800 px-2 py-0.5 rounded">Darrers 7 dies</span>
+              {t('overview.activity.title')}
+              <span className="text-[11px] font-medium text-gray-500 bg-gray-800 px-2 py-0.5 rounded">{t('overview.activity.last7Days')}</span>
             </h2>
             <div className="relative border-l border-gray-800 ml-3 space-y-6">
               <div className="relative pl-5">
                 <div className="absolute top-0.5 -left-[17px] bg-blue-500 p-1.5 rounded-full border-4 border-[#111827]">
                   <ChatBubbleLeftEllipsisIcon className="w-3 h-3 text-white" />
                 </div>
-                <p className="text-sm font-semibold text-white mb-0.5">Missatge Nou</p>
-                <p className="text-xs text-gray-400 mb-1">Has rebut resposta d'una candidatura.</p>
-                <span className="text-[10px] font-medium text-gray-500">Fa 2 hores</span>
+                <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item1.title')}</p>
+                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item1.desc')}</p>
+                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item1.time')}</span>
               </div>
               <div className="relative pl-5">
                 <div className="absolute top-0.5 -left-[17px] bg-gray-800 p-1.5 rounded-full border-4 border-[#111827]">
                   <DocumentCheckIcon className="w-3 h-3 text-gray-400" />
                 </div>
-                <p className="text-sm font-semibold text-white mb-0.5">Estat "En Revisió"</p>
-                <p className="text-xs text-gray-400 mb-1">El CV està sent valorat.</p>
-                <span className="text-[10px] font-medium text-gray-500">Ahir, 14:30</span>
+                <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item2.title')}</p>
+                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item2.desc')}</p>
+                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item2.time')}</span>
               </div>
               <div className="relative pl-5">
                 <div className="absolute top-0.5 -left-[17px] bg-gray-800 p-1.5 rounded-full border-4 border-[#111827]">
                   <BriefcaseIcon className="w-3 h-3 text-gray-400" />
                 </div>
-                <p className="text-sm font-semibold text-white mb-0.5">3 Noves Ofertes</p>
-                <p className="text-xs text-gray-400 mb-1">Encaixen amb els teus filtres.</p>
-                <span className="text-[10px] font-medium text-gray-500">Dimarts, 09:15</span>
+                <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item3.title')}</p>
+                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item3.desc')}</p>
+                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item3.time')}</span>
               </div>
             </div>
           </section>

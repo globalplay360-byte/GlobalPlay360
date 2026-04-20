@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { getOpportunitiesByField, toggleOpportunityStatus, deleteOpportunity } from '@/services/opportunities.service';
 import type { Opportunity } from '@/types';
@@ -10,6 +11,7 @@ import EmptyState from '@/components/ui/EmptyState';
 export default function MyOpportunitiesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +30,7 @@ export default function MyOpportunitiesPage() {
         const data = await getOpportunitiesByField('clubId', '==', user!.uid);
         if (!cancelled) setOpportunities(data);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant oportunitats');
+        if (!cancelled) setError(err instanceof Error ? err.message : t('myOpportunities.errorLoading'));
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -49,7 +51,7 @@ export default function MyOpportunitiesPage() {
         ),
       );
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Error canviant l\'estat');
+      alert(err instanceof Error ? err.message : t('myOpportunities.errorToggling'));
     } finally {
       setTogglingId(null);
     }
@@ -57,7 +59,7 @@ export default function MyOpportunitiesPage() {
 
   const handleDelete = async (opp: Opportunity) => {
     const confirmed = window.confirm(
-      `Segur que vols eliminar "${opp.title}"? Aquesta acció és irreversible.`
+      t("myOpportunities.confirmDelete", { title: opp.title })
     );
     if (!confirmed) return;
 
@@ -66,7 +68,7 @@ export default function MyOpportunitiesPage() {
       await deleteOpportunity(opp.id);
       setOpportunities((prev) => prev.filter((o) => o.id !== opp.id));
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Error eliminant l\'oportunitat');
+      alert(err instanceof Error ? err.message : t('myOpportunities.errorDeleting'));
     } finally {
       setDeletingId(null);
     }
@@ -214,3 +216,7 @@ export default function MyOpportunitiesPage() {
     </div>
   );
 }
+
+
+
+

@@ -20,7 +20,7 @@ i18n
   .init({
     resources,
     defaultNS: 'common',
-    fallbackLng: 'en', // Idioma per defecte si el detector falla o no tenim l'idioma
+    fallbackLng: 'ca', // Idioma per defecte si el detector falla o no tenim l'idioma
     supportedLngs: ['en', 'es', 'ca'],
     interpolation: {
       escapeValue: false, // React ja s'encarrega d'escapar el codi per evitar injeccions

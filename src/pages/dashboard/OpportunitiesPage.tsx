@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
@@ -11,6 +12,7 @@ import EmptyState from '@/components/ui/EmptyState';
 export default function OpportunitiesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +28,7 @@ export default function OpportunitiesPage() {
         const data = await getOpportunitiesByField('status', '==', 'open');
         if (!cancelled) setOpportunities(data);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Error carregant oportunitats');
+        if (!cancelled) setError(err instanceof Error ? err.message : t('opportunities.errorLoading'));
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -45,7 +47,7 @@ export default function OpportunitiesPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <EmptyState
-          title="Error de connexió"
+          title={t('opportunities.errorConnection')}
           description={error}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +56,7 @@ export default function OpportunitiesPage() {
           }
           action={
             <Button variant="primary" onClick={() => window.location.reload()}>
-              Reintentar
+              {t('opportunities.retry')}
             </Button>
           }
         />
@@ -67,22 +69,22 @@ export default function OpportunitiesPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">Marketplace</h1>
-          <p className="mt-2 text-gray-400">Descobreix les últimes oportunitats arreu del món.</p>
+          <h1 className="text-3xl font-bold text-white tracking-tight">{t('opportunities.marketplace')}</h1>
+          <p className="mt-2 text-gray-400">{t('opportunities.discoverOpps')}</p>
         </div>
         {user?.role === 'club' && (
           <div className="mt-4 md:mt-0">
-            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>Crear Oportunitat</Button>
+            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>{t('opportunities.createOpportunity')}</Button>
           </div>
         )}
       </div>
 
       {/* Filters (placeholder) */}
       <div className="bg-gray-900 border border-gray-800 p-4 rounded-xl flex gap-4 overflow-x-auto">
-        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm">Totes</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">Football</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">Basketball</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">Contractes Pro</Badge>
+        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm">{t('opportunities.filters.all')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.football')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.basketball')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.proContracts')}</Badge>
       </div>
 
       {/* ── Loading state ──────────────────────────────── */}
@@ -96,8 +98,8 @@ export default function OpportunitiesPage() {
       /* ── Empty state ───────────────────────────────── */
       ) : opportunities.length === 0 ? (
         <EmptyState
-          title="Encara no hi ha oportunitats"
-          description="No s'han trobat oportunitats publicades. Torna-ho a provar més tard o crea la primera si ets un club."
+          title={t('opportunities.emptyTitle')}
+          description={t('opportunities.emptyDesc')}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -115,7 +117,7 @@ export default function OpportunitiesPage() {
                   <h3 className="text-lg font-bold text-white">{opp.title}</h3>
                 </div>
                 <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px]">
-                  {opp.status}
+                  {t(`opportunities.status.${opp.status}`)}
                 </Badge>
               </CardHeader>
               <CardContent className="flex-1">
@@ -133,28 +135,28 @@ export default function OpportunitiesPage() {
                 <p className="text-gray-300 text-sm line-clamp-3 mb-6">{opp.description}</p>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Requisits Clau</h4>
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
                   <ul className="flex flex-wrap gap-2">
                     {opp.requirements.slice(0, 3).map((req, idx) => (
                       <Badge key={idx} variant="default" className="text-[11px] bg-gray-800/50 border-gray-700/50">{req}</Badge>
                     ))}
                     {opp.requirements.length > 3 && (
-                      <span className="text-xs text-gray-500 items-center flex">+{opp.requirements.length - 3} més</span>
+                      <span className="text-xs text-gray-500 items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
                     )}
                   </ul>
                 </div>
               </CardContent>
               <CardFooter className="justify-between">
                 <div className="text-xs text-gray-500 font-medium">
-                  Publicat: {formatDate(opp.createdAt)}
+                  {t('opportunities.published')} {formatDate(opp.createdAt)}
                 </div>
                 <div className="flex gap-3">
                   <Button variant="outline" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                    Veure Detall
+                    {t('opportunities.viewDetail')}
                   </Button>
                   {user?.role !== 'club' && (
                     <Button variant="primary" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                      Aplicar
+                      {t('opportunities.apply')}
                     </Button>
                   )}
                 </div>
