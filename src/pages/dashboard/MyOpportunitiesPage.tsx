@@ -119,7 +119,7 @@ export default function MyOpportunitiesPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Les Meves Ofertes</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">{t('myOpportunities.title', 'Les Meves Ofertes')}</h1>
           <p className="text-[#9CA3AF] mt-1 text-sm">
             Gestiona les oportunitats que has publicat. Les ofertes <span className="text-emerald-400 font-medium">obertes</span> són visibles al marketplace i accepten candidatures. Les ofertes <span className="text-[#6B7280] font-medium">tancades</span> deixen de ser visibles.
           </p>

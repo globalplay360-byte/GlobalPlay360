@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { resetPassword } from '@/services/auth.service';
 import { Button } from '@/components/ui/Button';
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -93,7 +95,7 @@ export default function ForgotPasswordPage() {
 
             <div className="text-center">
               <Link to="/login" className="text-sm text-[#9CA3AF] hover:text-white transition-colors">
-                Recordes la contrasenya? <span className="text-[#3B82F6]">Inicia sessió</span>
+                Recordes la contrasenya? <span className="text-[#3B82F6]">{t('forgotPassword.loginLink', 'Inicia sessió')}</span>
               </Link>
             </div>
           </form>

@@ -1,4 +1,5 @@
 import type { User, Handedness } from '@/types';
+import { useTranslation } from 'react-i18next';
 import { Field, Select } from '../fields/FormControls';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 const POSITIONS = ['Porter', 'Central', 'Lateral', 'Extrem', 'Pivot'];
 
 export default function HandballPlayerFields({ formData, onChange, disabled }: Props) {
+  const { t } = useTranslation();
   return (
     <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-5">
       <div className="flex items-center gap-2">
@@ -18,14 +20,14 @@ export default function HandballPlayerFields({ formData, onChange, disabled }: P
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label="Posició">
+        <Field label={t('profileEdit.fields.position', 'Posició')}>
           <Select
             value={formData.position || ''}
             onChange={(e) => onChange({ position: e.target.value || undefined })}
             disabled={disabled}
           >
-            <option value="">Selecciona...</option>
-            {POSITIONS.map((p) => <option key={p} value={p}>{p}</option>)}
+            <option value="">{t('profileEdit.fields.selectPlaceholder', 'Selecciona...')}</option>
+            {POSITIONS.map((p) => <option key={p} value={p}>{t(`sports.positions.${p.toLowerCase().replace(/ /g, '')}`, p)}</option>)}
           </Select>
         </Field>
 
@@ -35,9 +37,9 @@ export default function HandballPlayerFields({ formData, onChange, disabled }: P
             onChange={(e) => onChange({ preferredHand: (e.target.value || undefined) as Handedness | undefined })}
             disabled={disabled}
           >
-            <option value="">Selecciona...</option>
-            <option value="right">Dreta</option>
-            <option value="left">Esquerra</option>
+            <option value="">{t('profileEdit.fields.selectPlaceholder', 'Selecciona...')}</option>
+            <option value="right">{t('profileEdit.fields.right', 'Dreta')}</option>
+            <option value="left">{t('profileEdit.fields.left', 'Esquerra')}</option>
             <option value="both">Ambidextra</option>
           </Select>
         </Field>

@@ -27,7 +27,7 @@ export default function ProfilePage() {
       await refreshUser();
     } catch (err) {
       console.error(err);
-      alert(t('profile.uploadError'));
+      alert(t('profile.uploadError', 'Error pujant l\'avatar.'));
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -38,8 +38,8 @@ export default function ProfilePage() {
     return (
       <div className="p-6 max-w-5xl mx-auto w-full">
         <EmptyState
-          title={t('profile.notAuthenticated')}
-          description={t('profile.loginToView')}
+          title={t('profile.notAuthenticated', 'No estàs autenticat')}
+          description={t('profile.loginToView', 'Fes login per veure el perfil')}
         />
       </div>
     );
@@ -53,13 +53,13 @@ export default function ProfilePage() {
       <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-6">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">{t('profile.editProfile')}</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
             <p className="text-[#9CA3AF] text-sm mt-1">
-              {t('profile.updateInfo')}
+              {t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
             </p>
           </div>
           <Button variant="outline" onClick={() => setMode('view')}>
-            {t('profile.backToProfile')}
+            {t('profile.backToProfile', 'Tornar al perfil')}
           </Button>
         </header>
 
@@ -106,7 +106,7 @@ export default function ProfilePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    {t('profile.changeAvatar')}
+                    {t('profile.changeAvatar', 'Canviar imatge')}
                   </div>
                 )}
               </div>
@@ -136,7 +136,7 @@ export default function ProfilePage() {
                 {user.sport && (
                   <>
                     <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-[#374151]"></span>
-                    <span>{t(`profile.sports.${user.sport}`)}</span>
+                    <span>{t(`profile.sports.${user.sport}`, user.sport || '')}</span>
                   </>
                 )}
                 {user.country && (
@@ -151,7 +151,7 @@ export default function ProfilePage() {
 
           <div className="flex items-center gap-3 w-full md:w-auto pt-4 md:pt-0">
             <Button variant="primary" onClick={() => setMode('edit')} className="flex-1 md:flex-none">
-              {t('profile.editProfile')}
+              {t('profile.editProfile', 'Editar Perfil')}
             </Button>
           </div>
         </div>
@@ -162,23 +162,23 @@ export default function ProfilePage() {
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
             <h2 className="text-lg font-bold text-white mb-4">
-              {user.role === 'club' ? t('profile.aboutEntity') : t('profile.aboutMe')}
+              {user.role === 'club' ? t('profile.aboutEntity', 'Sobre l\'entitat') : t('profile.aboutMe', 'Sobre mi')}
             </h2>
             <p className="text-[#9CA3AF] leading-relaxed whitespace-pre-wrap">
-              {user.bio || t('profile.emptyBio')}
+              {user.bio || t('profile.emptyBio', 'No hi ha biografia.')}
             </p>
           </div>
 
           {user.role === 'player' && (user.height || user.weight || user.position || user.dateOfBirth) && (
             <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6">
-              <h2 className="text-lg font-bold text-white mb-4">{t('profile.sportsData')}</h2>
+              <h2 className="text-lg font-bold text-white mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {user.position && <StatCell label={t('profile.position')} value={user.position} />}
-                {user.height && <StatCell label={t('profile.height')} value={`${user.height} cm`} />}
-                {user.weight && <StatCell label={t('profile.weight')} value={`${user.weight} kg`} />}
+                {user.position && <StatCell label={t('profile.position', 'Posició')} value={user.position} />}
+                {user.height && <StatCell label={t('profile.height', 'Alçada')} value={`${user.height} cm`} />}
+                {user.weight && <StatCell label={t('profile.weight', 'Pes')} value={`${user.weight} kg`} />}
                 {user.dateOfBirth && (
                   <StatCell
-                    label={t('profile.birthDate')}
+                    label={t('profile.birthDate', 'Naixement')}
                     value={new Date(user.dateOfBirth).toLocaleDateString('ca-ES')}
                   />
                 )}
@@ -189,7 +189,7 @@ export default function ProfilePage() {
 
         <div className="flex flex-col gap-6">
           <div className={`rounded-xl p-6 border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
-            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">{t('profile.membershipStatus')}</h3>
+            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">{t('profile.membershipStatus', 'Subscripció')}</h3>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isPremium ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,9 +197,9 @@ export default function ProfilePage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-white font-bold tracking-tight capitalize">{t('profile.planName', { plan: activePlan })}</p>
+                <p className="text-white font-bold tracking-tight capitalize">{t('profile.planName', 'Pla {{plan}}', { plan: activePlan })}</p>
                 <p className="text-xs text-[#9CA3AF]">
-                  {isPremium ? t('profile.premiumAccess') : t('profile.upgradeToContact')}
+                  {isPremium ? t('profile.premiumAccess', 'Accés Premium') : t('profile.upgradeToContact', 'Millora per contactar')}
                 </p>
               </div>
             </div>
@@ -208,23 +208,23 @@ export default function ProfilePage() {
                 className="w-full mt-4 bg-[#0F172A] hover:bg-gray-800 text-white border border-gray-700 transition-colors"
                 onClick={() => navigate('/dashboard/billing')}
               >
-                {t('profile.manageSubscription')}
+                {t('profile.manageSubscription', 'Gestionar subscripció')}
               </Button>
             ) : (
               <Button
                 className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all"
                 onClick={() => navigate('/pricing')}
               >
-                {t('profile.upgradePlan')}
+                {t('profile.upgradePlan', 'Millorar Pla')}
               </Button>
             )}
           </div>
 
           {(user.phone || user.instagram || user.youtubeVideoUrl) && (
             <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-3">
-              <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial')}</h3>
-              {user.phone && <InfoRow label={t('profile.phone')} value={user.phone} />}
-              {user.instagram && <InfoRow label="Instagram" value={user.instagram} />}
+              <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial', 'Contacte i Xarxes')}</h3>
+              {user.phone && <InfoRow label={t('profile.phone', 'Telèfon')} value={user.phone} />}
+              {user.instagram && <InfoRow label={t('profile.instagram', 'Instagram')} value={user.instagram} />}
               {user.youtubeVideoUrl && (
                 <a
                   href={user.youtubeVideoUrl}
@@ -232,7 +232,7 @@ export default function ProfilePage() {
                   rel="noreferrer"
                   className="text-sm text-[#3B82F6] hover:underline truncate"
                 >
-                  {t('profile.viewHighlights')}
+                  {t('profile.viewHighlights', 'Veure Highlights')}
                 </a>
               )}
             </div>
@@ -240,7 +240,7 @@ export default function ProfilePage() {
 
           <div className="text-center">
             <span className="text-xs text-[#4B5563]">
-              {t('profile.memberSince', { date: new Date(user.createdAt).toLocaleDateString('ca-ES') })}
+              {t('profile.memberSince', 'Membre des de {{date}}', { date: new Date(user.createdAt).toLocaleDateString('ca-ES') })}
             </span>
           </div>
         </div>

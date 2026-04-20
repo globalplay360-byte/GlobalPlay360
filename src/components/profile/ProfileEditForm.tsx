@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { FormEvent } from 'react';
 import type { User } from '@/types';
 import { useProfileForm } from '@/hooks/useProfileForm';
@@ -11,8 +12,7 @@ interface Props {
   onSaved: () => void | Promise<void>;
 }
 
-export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {
-  const { formData, handleChange, handleSubmit, reset, status, error, isDirty } = useProfileForm(user);
+export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  const { t } = useTranslation();  const { formData, handleChange, handleSubmit, reset, status, error, isDirty } = useProfileForm(user);
   const saving = status === 'saving';
 
   const onSubmit = async (e: FormEvent) => {
@@ -33,20 +33,20 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {
 
       {user.role === 'coach' && (
         <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 text-sm text-[#9CA3AF]">
-          Secció <span className="text-white font-semibold">Coach</span> en desenvolupament.
+          {t('profileEdit.coachDev', 'Secció Coach en desenvolupament.')}
         </section>
       )}
 
       {user.role === 'club' && (
         <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 text-sm text-[#9CA3AF]">
-          Secció <span className="text-white font-semibold">Club</span> en desenvolupament.
+          {t('profileEdit.clubDev', 'Secció Club en desenvolupament.')}
         </section>
       )}
 
       {/* Missatge d'estat */}
       {status === 'success' && (
         <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm rounded-lg px-4 py-3">
-          Perfil actualitzat correctament.
+          {t('profileEdit.success', 'Perfil actualitzat correctament.')}
         </div>
       )}
       {status === 'error' && error && (
@@ -58,7 +58,7 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {
       {/* Accions */}
       <div className="sticky bottom-0 bg-[#0B1120]/95 backdrop-blur-sm border-t border-[#1F2937] -mx-6 px-6 py-4 flex items-center justify-between gap-3">
         <div className="text-xs text-[#6B7280]">
-          {isDirty ? 'Hi ha canvis sense desar.' : 'Sense canvis pendents.'}
+          {isDirty ? t('profileEdit.unsavedChanges', 'Hi ha canvis sense desar.') : t('profileEdit.noChanges', 'Sense canvis pendents.')}  
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -70,10 +70,10 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {
             }}
             disabled={saving}
           >
-            Cancel·lar
+            {t('profileEdit.cancel', 'Cancel·lar')}
           </Button>
           <Button type="submit" variant="primary" disabled={saving || !isDirty}>
-            {saving ? 'Desant…' : 'Desar canvis'}
+            {saving ? t('profileEdit.saving', 'Desant...') : t('profileEdit.save', 'Desar canvis')}
           </Button>
         </div>
       </div>

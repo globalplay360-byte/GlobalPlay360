@@ -101,8 +101,8 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
               <CheckCircleIcon className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <h2 className="font-bold text-white">Pla Premium</h2>
-              <p className="text-xs text-gray-400">Subscripció GlobalPlay360</p>
+              <h2 className="font-bold text-white">{t('billing.card.premiumPlan', 'Pla Premium')}</h2>
+              <p className="text-xs text-gray-400">{t('billing.card.globalPlaySub', 'Subscripció GlobalPlay360')}</p>
             </div>
           </div>
           <span className={`px-3 py-1 rounded-full text-xs font-bold border ${status.className}`}>
@@ -122,8 +122,8 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
           <div className="flex items-start gap-3">
             <CreditCardIcon className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Facturació</p>
-              <p className="text-sm font-semibold text-white">Gestionada per Stripe</p>
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{t('billing.card.billing', 'Facturació')}</p>
+              <p className="text-sm font-semibold text-white">{t('billing.card.managedByStripe', 'Gestionada per Stripe')}</p>
             </div>
           </div>
         </div>
@@ -132,10 +132,8 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
       {/* Bot\u00f3 portal */}
       <div className="bg-[#111827] border border-gray-800 rounded-xl p-6 space-y-4">
         <div>
-          <h2 className="font-semibold text-white mb-1">Gestionar subscripció</h2>
-          <p className="text-sm text-gray-400">
-            Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.
-          </p>
+          <h2 className="font-semibold text-white mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
+          <p className="text-sm text-gray-400">{t('billing.portal.description', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>
         </div>
 
         <button
@@ -144,9 +142,9 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
           disabled={portalLoading}
           className="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors shadow-[0_0_15px_rgba(59,130,246,0.2)] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
         >
-          {portalLoading ? 'Obrint portal...' : (
+          {portalLoading ? t('billing.portal.opening', 'Obrint portal...') : (
             <>
-              Obrir portal de Stripe
+              {t('billing.portal.button', 'Obrir portal de Stripe')}
               <ArrowTopRightOnSquareIcon className="w-4 h-4" />
             </>
           )}
@@ -158,9 +156,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
           </div>
         )}
 
-        <p className="text-xs text-gray-500">
-          Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament.
-        </p>
+        <p className="text-xs text-gray-500">{t('billing.portal.redirectNotice', 'Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament.')}</p>
       </div>
     </div>
   );

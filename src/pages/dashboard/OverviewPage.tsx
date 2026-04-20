@@ -150,9 +150,9 @@ export default function OverviewPage() {
                         <UserCircleIcon className="w-6 h-6 text-gray-400" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white mb-0.5">Jugador Pro {i + 1} (Mock)</p>
+                        <p className="text-sm font-semibold text-white mb-0.5">{t('overview.mock.proPlayer', 'Jugador Pro')} {i + 1} (Mock)</p>
                         <p className="text-xs text-gray-400 flex items-center gap-2">
-                          <span className="text-gray-300">Davanter Centre</span>
+                          <span className="text-gray-300">{t('overview.mock.striker', 'Davanter Centre')}</span>
                           <span className="w-1 h-1 rounded-full bg-gray-700"></span>
                           Europa
                         </p>
@@ -171,8 +171,8 @@ export default function OverviewPage() {
                         <BuildingOfficeIcon className="w-6 h-6 text-gray-400" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white mb-0.5">Equip de Primera {i + 1} (Mock)</p>
-                        <p className="text-xs text-gray-400">Busca: {user?.role === 'coach' ? 'Entrenador Pro' : 'Davanter Ràpid'} • Contracte Pro</p>
+                        <p className="text-sm font-semibold text-white mb-0.5">{t('overview.mock.firstTeam', 'Equip de Primera')} {i + 1} (Mock)</p>
+                        <p className="text-xs text-gray-400">{t('overview.mock.lookingFor', 'Busca:')} {user?.role === 'coach' ? t('overview.mock.proCoach', 'Entrenador Pro') : t('overview.mock.fastStriker', 'Davanter Ràpid')} • {t('overview.mock.proContract', 'Contracte Pro')}</p>
                       </div>
                     </div>
                     <Link to="/opportunities" className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-colors text-xs font-semibold px-4 py-2 rounded-lg">
