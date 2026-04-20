@@ -3,7 +3,8 @@
   "login": "Iniciar sessió",
   "register": "Registrar-se",
   "home": "Inici",
-  "dashboard": "Tauler",  "homePage": {
+  "dashboard": "Tauler",
+  "homePage": {
     "hero": {
       "title": "On el Talent Troba la \n Oportunitat",
       "subtitle": "Connecta amb jugadors, entrenadors i clubs de tot el món. Desenvolupa la teva carrera esportiva amb Global Play 360.",
@@ -61,7 +62,8 @@
       "title": "Segueix-nos a les Xarxes Socials",
       "subtitle": "Uneix-te a la nostra comunitat i mantén-te al dia amb les últimes oportunitats i notícies esportives."
     }
-  },  "navbar": {
+  },
+  "navbar": {
     "banner": {
       "title": "Membres Fundadors – Accés Gratuït",
       "description": "Sigues un dels primers 100 membres en unir-te i obtén accés Premium gratuït fins al 1 de juliol de 2026!",
@@ -347,6 +349,35 @@
     "memberSince": "Membre des de {{date}}"
   },
   "applications": {
+    "titleClub": "Candidatures Rebudes",
+    "titlePlayer": "Les Meves Candidatures",
+    "descClub": "Gestiona els candidats que han aplicat a les teves ofertes.",
+    "descPlayer": "Fes seguiment de l'estat de les teves candidatures.",
+    "errorChat": "Error creant el xat.",
+    "errorUpdateStatus": "Error actualitzant l'estat.",
+    "errorLoading": "Error carregant les candidatures.",
+    "errorConnection": "Error de connexió",
+    "retry": "Reintentar",
+    "appliedOn": "Aplicat el {{date}}",
+    "opportunityClosed": "L'oportunitat ja no està disponible",
+    "candidateLabel": "Candidat: {{name}}",
+    "unknownUser": "Usuari Desconegut",
+    "unknownClub": "Club Desconegut",
+    "viewDetail": "Veure Detall",
+    "contact": "Contactar",
+    "startConversation": "Iniciar Conversa",
+    "titleMarkInReview": "Marcar com a 'En Revisió'",
+    "markInReview": "M",
+    "titleAccept": "Acceptar el candidat",
+    "accept": "V",
+    "titleReject": "Rebutjar el candidat",
+    "reject": "X",
+    "titleReopen": "Reobrir per a nova revisió",
+    "reopen": "O",
+    "emptyTitle": "Cap candidatura trobada",
+    "emptyDesc": "Encara no hi ha candidatures per mostrar."
+  },
+  "applications_old": {
     "errorChat": "S'ha produït un error en intentar obrir el xat.",
     "errorUpdateStatus": "Error actualitzant l'estat de la candidatura",
     "errorLoading": "Error carregant candidatures",
@@ -376,7 +407,7 @@
     "emptyDesc": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
     "exploreMarketplace": "Explorar Oportunitats"
   },
-    "myOpportunities": {
+  "myOpportunities": {
     "errorLoading": "Error carregant oportunitats",
     "errorToggling": "Error canviant l'estat",
     "confirmDelete": "Segur que vols eliminar \"{{title}}\"? Aquesta acció és irreversible.",
@@ -401,7 +432,7 @@
     "deleting": "S'està eliminant...",
     "edit": "Editar"
   },
-    "opportunityDetail": {
+  "opportunityDetail": {
     "backApplications": "Tornar a Candidatures",
     "backMine": "Tornar a Les Meves Ofertes",
     "backMarketplace": "Tornar al Marketplace",
@@ -461,7 +492,6 @@
     "backBtn": "Tornar",
     "onlyOwner": "Només el club propietari pot editar aquesta oportunitat.",
     "backToMine": "Tornar a Les Meves Ofertes",
-    
     "backToMarketplace": "Tornar al Marketplace",
     "createNewTitle": "Publicar Nova Oportunitat",
     "createNewDesc": "Omple el formulari per publicar una oferta al marketplace.",
@@ -505,11 +535,60 @@
       "descPlaceholder": "Detalla les responsabilitats, l'equip, els objectius, etc.",
       "requirementsPlaceholder": "Ex: +2 anys experiència Professional..."
     }
+  },
+  "premiumLock": {
+    "defaultTitle": "Exclusiu per a usuaris Premium",
+    "defaultDesc": "Actualitza el teu pla per desbloquejar aquesta funcionalitat i interactuar directament amb aquest perfil.",
+    "upgrade": "Millora el teu Pla"
+  },
+  "status": {
+    "submitted": "Enviat",
+    "in_review": "En Revisió",
+    "accepted": "Acceptat",
+    "rejected": "Rebutjat",
+    "open": "Oberta",
+    "closed": "Tancada"
+  },
+  "billing": {
+    "title": "Facturació",
+    "subtitle": "Gestiona la teva subscripció, mètodes de pagament i factures.",
+    "status": {
+      "trialing": "En període de prova",
+      "active": "Activa",
+      "canceled": "Cancel·lada",
+      "incomplete": "Incompleta",
+      "incomplete_expired": "Expirada",
+      "past_due": "Pagament pendent",
+      "unpaid": "No pagada"
+    },
+    "nextEvent": {
+      "trialEnd": "Fi del període de prova",
+      "nextBilling": "Propera facturació"
+    },
+    "cancelBanner": {
+      "title": "Subscripció cancel·lada",
+      "message1": "La teva subscripció està programada per finalitzar el",
+      "message2": "Fins aleshores pots continuar gaudint de totes les funcions Premium."
+    },
+    "card": {
+      "premiumPlan": "Pla Premium",
+      "gp360Sub": "Subscripció GlobalPlay360",
+      "billing": "Facturació",
+      "managedByStripe": "Gestionada per Stripe"
+    },
+    "portal": {
+      "title": "Gestionar subscripció",
+      "desc": "Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.",
+      "button": "Obrir portal de Stripe",
+      "loading": "Obrint portal...",
+      "error": "No s'ha pogut obrir el portal.",
+      "note": "Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament."
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Benvingut/da a Premium!",
+    "desc": "La teva subscripció s'ha activat correctament. Tens <1>30 dies de prova gratuïts</1>  el primer càrrec es farà quan finalitzi el període. Pots cancel·lar en qualsevol moment des del panell de facturació.",
+    "goToDashboard": "Anar al panell",
+    "completeProfile": "Completar el meu perfil"
   }
 }
-
-
-
-
-
-

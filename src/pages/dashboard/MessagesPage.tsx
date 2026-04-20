@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { subscribeToUserConversations } from '@/services/messages.service';
 import { getUserDoc } from '@/services/auth.service';
 import type { Conversation, User } from '@/types';
@@ -13,12 +14,13 @@ interface ConversationExtended extends Conversation {
 
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
 function ConversationListItem({ conv, currentUserId }: { conv: ConversationExtended; currentUserId: string }) {
+  const { t, i18n } = useTranslation();
   const isLocked = false;
   const unread = conv.unreadCount?.[currentUserId] ?? 0;
   const hasUnread = unread > 0;
 
-  const displayDate = new Date(conv.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
-  const time = new Date(conv.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const displayDate = new Date(conv.updatedAt).toLocaleDateString(i18n.language === 'ca' ? 'ca-ES' : i18n.language === 'es' ? 'es-ES' : 'en-US', { month: 'short', day: 'numeric' });
+  const time = new Date(conv.updatedAt).toLocaleTimeString(i18n.language === 'ca' ? 'ca-ES' : i18n.language === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <Link
@@ -38,7 +40,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
           <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-white font-bold' : 'text-white font-bold'}`}>
-            {conv.otherParticipant?.displayName || 'Usuari desconegut'}
+            {conv.otherParticipant?.displayName || t('messages.unknownUser')}
             {isLocked && (
               <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
@@ -51,7 +53,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
         </div>
 
         <p className={`text-sm truncate ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-white font-medium' : 'text-[#9CA3AF] group-hover:text-white transition-colors'}`}>
-          {isLocked ? "Missatge protegit per restricció premium. Actualitza el teu pla per llegir-lo." : conv.lastMessage || 'Nova conversa.'}
+          {isLocked ? t('messages.protectedMessage') : conv.lastMessage || t('messages.newConversation')}
         </p>
       </div>
 
@@ -78,6 +80,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
 }
 
 export default function MessagesPage() {
+  const { t } = useTranslation();
   const { user, activePlan, subscriptionLoading } = useAuth();
   const [conversations, setConversations] = useState<ConversationExtended[]>([]);
   const [loading, setLoading] = useState(true);
@@ -116,15 +119,15 @@ export default function MessagesPage() {
     return (
       <div className="p-6 max-w-2xl mx-auto w-full">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-tight">Missatges</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle')}</h1>
           <p className="text-[#9CA3AF] mt-1 text-sm">
             Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.
           </p>
         </div>
 
         <PremiumLockCard
-          title="Desbloqueja la missatgeria directa"
-          description="Amb Premium pots iniciar converses amb clubs i entrenadors, llegir missatges sense límits i rebre respostes prioritàries. Comença la prova de 30 dies gratuïts."
+          title={t("messages.unlockTitle")}
+          description={t("messages.unlockDesc")}
         />
       </div>
     );
@@ -133,7 +136,7 @@ export default function MessagesPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto w-full">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Missatges</h1>
+        <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle')}</h1>
         <p className="text-[#9CA3AF] mt-1 text-sm">
           Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.
         </p>
@@ -151,8 +154,8 @@ export default function MessagesPage() {
         </div>
       ) : (
         <EmptyState
-          title="No tens cap conversa activa encara"
-          description="Aplica a oportunitats o espera que un club contacti amb tu per iniciar una conversa."
+          title={t("messages.emptyTitle")}
+          description={t("messages.emptyDesc")}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />

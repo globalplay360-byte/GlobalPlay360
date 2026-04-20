@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { getOpportunitiesByField, toggleOpportunityStatus, deleteOpportunity } from '@/services/opportunities.service';
 import type { Opportunity } from '@/types';
@@ -10,6 +11,7 @@ import EmptyState from '@/components/ui/EmptyState';
 export default function MyOpportunitiesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -214,4 +216,7 @@ export default function MyOpportunitiesPage() {
     </div>
   );
 }
+
+
+
 

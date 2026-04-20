@@ -349,6 +349,35 @@
     "memberSince": "Miembro desde {{date}}"
   },
   "applications": {
+    "titleClub": "Candidaturas Recibidas",
+    "titlePlayer": "Mis Candidaturas",
+    "descClub": "Gestiona los candidatos que han aplicado a tus ofertas.",
+    "descPlayer": "Haz seguimiento del estado de tus candidaturas.",
+    "errorChat": "Error creando el chat.",
+    "errorUpdateStatus": "Error actualizando el estado.",
+    "errorLoading": "Error cargando las candidaturas.",
+    "errorConnection": "Error de conexión",
+    "retry": "Reintentar",
+    "appliedOn": "Aplicado el {{date}}",
+    "opportunityClosed": "Oportunidad no disponible",
+    "candidateLabel": "Candidato: {{name}}",
+    "unknownUser": "Usuario Desconocido",
+    "unknownClub": "Club Desconocido",
+    "viewDetail": "Ver Detalle",
+    "contact": "Contactar",
+    "startConversation": "Iniciar Conversación",
+    "titleMarkInReview": "Marcar en revisión",
+    "markInReview": "M",
+    "titleAccept": "Aceptar candidato",
+    "accept": "V",
+    "titleReject": "Rechazar candidato",
+    "reject": "X",
+    "titleReopen": "Reabrir para revisión",
+    "reopen": "O",
+    "emptyTitle": "Ninguna candidatura encontrada",
+    "emptyDesc": "Aún no hay candidaturas para mostrar."
+  },
+  "applications_old": {
     "errorChat": "Se ha producido un error al intentar abrir el chat.",
     "errorUpdateStatus": "Error actualizando el estado de la candidatura.",
     "errorLoading": "Error cargando candidaturas",
@@ -378,7 +407,7 @@
     "emptyDesc": "Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.",
     "exploreMarketplace": "Explorar Oportunidades"
   },
-    "myOpportunities": {
+  "myOpportunities": {
     "errorLoading": "Error cargando oportunidades",
     "errorToggling": "Error cambiando el estado",
     "confirmDelete": "¿Seguro que quieres eliminar \"{{title}}\"? Esta acción es irreversible.",
@@ -403,7 +432,7 @@
     "deleting": "Eliminando...",
     "edit": "Editar"
   },
-    "opportunityDetail": {
+  "opportunityDetail": {
     "backApplications": "Volver a Candidaturas",
     "backMine": "Volver a Mis Ofertas",
     "backMarketplace": "Volver al Marketplace",
@@ -463,7 +492,6 @@
     "backBtn": "Volver",
     "onlyOwner": "Solo el club propietario puede editar esta oportunidad.",
     "backToMine": "Volver a Mis Ofertas",
-    
     "backToMarketplace": "Volver al Marketplace",
     "createNewTitle": "Publicar Nueva Oportunidad",
     "createNewDesc": "Rellena el formulario para publicar una oferta en el marketplace.",
@@ -507,9 +535,60 @@
       "descPlaceholder": "Detalla las responsabilidades, el equipo, los objetivos, etc.",
       "requirementsPlaceholder": "Ej: +2 años experiencia Profesional..."
     }
+  },
+  "premiumLock": {
+    "defaultTitle": "Exclusivo para usuarios Premium",
+    "defaultDesc": "Actualiza tu plan para desbloquear esta funcionalidad e interactuar directamente con este perfil.",
+    "upgrade": "Mejora tu Plan"
+  },
+  "status": {
+    "submitted": "Enviado",
+    "in_review": "En Revisión",
+    "accepted": "Aceptado",
+    "rejected": "Rechazado",
+    "open": "Abierta",
+    "closed": "Cerrada"
+  },
+  "billing": {
+    "title": "Facturación",
+    "subtitle": "Gestiona tu suscripción, métodos de pago y facturas.",
+    "status": {
+      "trialing": "En período de prueba",
+      "active": "Activa",
+      "canceled": "Cancelada",
+      "incomplete": "Incompleta",
+      "incomplete_expired": "Expirada",
+      "past_due": "Pago pendiente",
+      "unpaid": "No pagada"
+    },
+    "nextEvent": {
+      "trialEnd": "Fin del período de prueba",
+      "nextBilling": "Próxima facturación"
+    },
+    "cancelBanner": {
+      "title": "Suscripción cancelada",
+      "message1": "Tu suscripción está programada para finalizar el",
+      "message2": "Hasta entonces puedes seguir disfrutando de todas las funciones Premium."
+    },
+    "card": {
+      "premiumPlan": "Plan Premium",
+      "gp360Sub": "Suscripción GlobalPlay360",
+      "billing": "Facturación",
+      "managedByStripe": "Gestionada por Stripe"
+    },
+    "portal": {
+      "title": "Gestionar suscripción",
+      "desc": "Cancela, actualiza el método de pago o descarga facturas en el portal seguro de Stripe.",
+      "button": "Abrir portal de Stripe",
+      "loading": "Abriendo portal...",
+      "error": "No se pudo abrir el portal.",
+      "note": "Serás redirigido a una página segura alojada por Stripe. Una vez termines, volverás aquí automáticamente."
+    }
+  },
+  "checkoutSuccess": {
+    "title": "¡Bienvenido/a a Premium!",
+    "desc": "Tu suscripción se ha activado correctamente. Tienes <1>30 días de prueba gratuitos</1>  el primer cargo se hará cuando finalice el período. Puedes cancelar en cualquier momento desde el panel de facturación.",
+    "goToDashboard": "Ir al panel",
+    "completeProfile": "Completar mi perfil"
   }
 }
-
-
-
-

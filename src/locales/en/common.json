@@ -349,6 +349,35 @@
     "memberSince": "Member since {{date}}"
   },
   "applications": {
+    "titleClub": "Received Applications",
+    "titlePlayer": "My Applications",
+    "descClub": "Manage the candidates who applied to your offers.",
+    "descPlayer": "Track the status of your applications.",
+    "errorChat": "Error creating chat.",
+    "errorUpdateStatus": "Error updating status.",
+    "errorLoading": "Error loading applications.",
+    "errorConnection": "Connection Error",
+    "retry": "Retry",
+    "appliedOn": "Applied on {{date}}",
+    "opportunityClosed": "Opportunity no longer available",
+    "candidateLabel": "Candidate: {{name}}",
+    "unknownUser": "Unknown User",
+    "unknownClub": "Unknown Club",
+    "viewDetail": "View Detail",
+    "contact": "Contact",
+    "startConversation": "Start Conversation",
+    "titleMarkInReview": "Mark as 'In Review'",
+    "markInReview": "M",
+    "titleAccept": "Accept Candidate",
+    "accept": "V",
+    "titleReject": "Reject Candidate",
+    "reject": "X",
+    "titleReopen": "Reopen for review",
+    "reopen": "O",
+    "emptyTitle": "No applications found",
+    "emptyDesc": "There are no applications to display yet."
+  },
+  "applications_old": {
     "errorChat": "An error occurred while trying to open the chat.",
     "errorUpdateStatus": "Error updating the application status.",
     "errorLoading": "Error loading applications.",
@@ -378,7 +407,7 @@
     "emptyDesc": "Explore the marketplace and send your first application to clubs or offers that fit your profile.",
     "exploreMarketplace": "Explore Opportunities"
   },
-    "myOpportunities": {
+  "myOpportunities": {
     "errorLoading": "Error loading opportunities",
     "errorToggling": "Error changing status",
     "confirmDelete": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
@@ -403,7 +432,7 @@
     "deleting": "Deleting...",
     "edit": "Edit"
   },
-    "opportunityDetail": {
+  "opportunityDetail": {
     "backApplications": "Back to Applications",
     "backMine": "Back to My Offers",
     "backMarketplace": "Back to Marketplace",
@@ -463,7 +492,6 @@
     "backBtn": "Back",
     "onlyOwner": "Only the owner club can edit this opportunity.",
     "backToMine": "Back to My Offers",
-    
     "backToMarketplace": "Back to Marketplace",
     "createNewTitle": "Publish New Opportunity",
     "createNewDesc": "Fill the form to publish a new offer in the marketplace.",
@@ -507,9 +535,60 @@
       "descPlaceholder": "Detail the responsibilities, team, goals, etc.",
       "requirementsPlaceholder": "Ex: +2 years Professional experience..."
     }
+  },
+  "premiumLock": {
+    "defaultTitle": "Exclusive for Premium users",
+    "defaultDesc": "Upgrade your plan to unlock this feature and interact directly with this profile.",
+    "upgrade": "Upgrade your Plan"
+  },
+  "status": {
+    "submitted": "Submitted",
+    "in_review": "In Review",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your subscription, payment methods, and invoices.",
+    "status": {
+      "trialing": "Trial Period",
+      "active": "Active",
+      "canceled": "Canceled",
+      "incomplete": "Incomplete",
+      "incomplete_expired": "Expired",
+      "past_due": "Past Due",
+      "unpaid": "Unpaid"
+    },
+    "nextEvent": {
+      "trialEnd": "End of Trial Period",
+      "nextBilling": "Next Billing"
+    },
+    "cancelBanner": {
+      "title": "Subscription Canceled",
+      "message1": "Your subscription is scheduled to end on",
+      "message2": "Until then, you can continue to enjoy all Premium features."
+    },
+    "card": {
+      "premiumPlan": "Premium Plan",
+      "gp360Sub": "GlobalPlay360 Subscription",
+      "billing": "Billing",
+      "managedByStripe": "Managed by Stripe"
+    },
+    "portal": {
+      "title": "Manage Subscription",
+      "desc": "Cancel, update payment method, or download invoices on Stripe's secure portal.",
+      "button": "Open Stripe Portal",
+      "loading": "Opening portal...",
+      "error": "Could not open portal.",
+      "note": "You will be redirected to a secure page hosted by Stripe. Once finished, you will automatically return here."
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Welcome to Premium!",
+    "desc": "Your subscription has been successfully activated. You have a <1>30-day free trial</1>  the first charge will be made when the period ends. You can cancel anytime from the billing panel.",
+    "goToDashboard": "Go to dashboard",
+    "completeProfile": "Complete my profile"
   }
 }
-
-
-
-

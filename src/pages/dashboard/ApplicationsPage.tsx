@@ -413,7 +413,7 @@ export default function ApplicationsPage() {
                 to="/dashboard/opportunities"
                 className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-white hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
               >
-                Buscar Oportunitats
+                {t('common.searchOpportunities', 'Buscar Oportunitats')}
               </Link>
             }
           />
