@@ -70,7 +70,7 @@ export default function OpportunitiesPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight">{t('opportunities.marketplace')}</h1>
-          <p className="mt-2 text-gray-400">{t('opportunities.discoverOpps')}</p>
+          <p className="mt-2 text-[#9CA3AF]">{t('opportunities.discoverOpps')}</p>
         </div>
         {user?.role === 'club' && (
           <div className="mt-4 md:mt-0">
@@ -80,18 +80,18 @@ export default function OpportunitiesPage() {
       </div>
 
       {/* Filters (placeholder) */}
-      <div className="bg-gray-900 border border-gray-800 p-4 rounded-xl flex gap-4 overflow-x-auto">
+      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto">
         <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm">{t('opportunities.filters.all')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.football')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.basketball')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-gray-800 px-4 py-2 text-sm">{t('opportunities.filters.proContracts')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.football')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.basketball')}</Badge>
+        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.proContracts')}</Badge>
       </div>
 
       {/* ── Loading state ──────────────────────────────── */}
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-64 rounded-xl bg-gray-900 border border-gray-800 animate-pulse" />
+            <div key={n} className="h-64 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse" />
           ))}
         </div>
 
@@ -111,7 +111,7 @@ export default function OpportunitiesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {opportunities.map((opp) => (
-            <Card key={opp.id} className="flex flex-col hover:border-gray-700 transition-colors">
+            <Card key={opp.id} className="flex flex-col hover:border-[#374151] transition-colors">
               <CardHeader className="flex justify-between items-start">
                 <div>
                   <h3 className="text-lg font-bold text-white">{opp.title}</h3>
@@ -121,7 +121,7 @@ export default function OpportunitiesPage() {
                 </Badge>
               </CardHeader>
               <CardContent className="flex-1">
-                <div className="flex gap-2 mb-4 text-xs font-medium text-gray-400">
+                <div className="flex gap-2 mb-4 text-xs font-medium text-[#9CA3AF]">
                   <div className="flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-blue-500/50" />
                     {opp.sport}
@@ -132,22 +132,22 @@ export default function OpportunitiesPage() {
                   <div className="capitalize">{opp.contractType.replace('-', ' ')}</div>
                 </div>
 
-                <p className="text-gray-300 text-sm line-clamp-3 mb-6">{opp.description}</p>
+                <p className="text-[#6B7280] text-sm line-clamp-3 mb-6">{opp.description}</p>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
+                  <h4 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
                   <ul className="flex flex-wrap gap-2">
                     {opp.requirements.slice(0, 3).map((req, idx) => (
-                      <Badge key={idx} variant="default" className="text-[11px] bg-gray-800/50 border-gray-700/50">{req}</Badge>
+                      <Badge key={idx} variant="default" className="text-[11px] bg-[#1F2937]/50 border-[#374151]/50">{req}</Badge>
                     ))}
                     {opp.requirements.length > 3 && (
-                      <span className="text-xs text-gray-500 items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
+                      <span className="text-xs text-[#6B7280] items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
                     )}
                   </ul>
                 </div>
               </CardContent>
               <CardFooter className="justify-between">
-                <div className="text-xs text-gray-500 font-medium">
+                <div className="text-xs text-[#6B7280] font-medium">
                   {t('opportunities.published')} {formatDate(opp.createdAt)}
                 </div>
                 <div className="flex gap-3">
@@ -168,3 +168,4 @@ export default function OpportunitiesPage() {
     </div>
   );
 }
+

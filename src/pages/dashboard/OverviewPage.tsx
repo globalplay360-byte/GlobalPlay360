@@ -64,12 +64,12 @@ export default function OverviewPage() {
             <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border ${
               isPremium
                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                : 'bg-gray-800 text-gray-300 border-gray-700'
+                : 'bg-[#1F2937] text-[#6B7280] border-[#374151]'
             }`}>
               {t('overview.planTag')} {activePlan.toUpperCase()}
             </span>
           </div>
-          <p className="text-gray-400 text-sm md:text-base">
+          <p className="text-[#9CA3AF] text-sm md:text-base">
             {isClub
               ? t('overview.clubDescription')
               : user?.role === 'coach'
@@ -84,8 +84,8 @@ export default function OverviewPage() {
             {t('overview.publishOffer')}
           </Link>
         ) : (
-          <Link to="/profile" className="bg-[#111827] hover:bg-gray-800 text-white border border-gray-700 hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
-            <UserCircleIcon className="w-5 h-5 text-gray-400" />
+          <Link to="/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+            <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
             {t('overview.completeProfile')}
           </Link>
         )}
@@ -93,15 +93,15 @@ export default function OverviewPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-[#111827] border border-gray-800 rounded-xl p-5 flex flex-col relative overflow-hidden group transition-colors hover:border-gray-700">
+          <div key={i} className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col relative overflow-hidden group transition-colors hover:border-[#374151]">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="flex items-start justify-between mb-4 relative z-10">
-              <div className="bg-gray-800 p-2.5 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+              <div className="bg-[#1F2937] p-2.5 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
                 <stat.icon className="w-6 h-6" />
               </div>
               {stat.trend && (
                 <span className={`text-[11px] font-bold px-2 py-1 rounded-md ${
-                  stat.trendUp ? 'text-green-400 bg-green-400/10 border border-green-500/10' : 'text-gray-400 bg-gray-800 border border-gray-700'
+                  stat.trendUp ? 'text-green-400 bg-green-400/10 border border-green-500/10' : 'text-[#9CA3AF] bg-[#1F2937] border border-[#374151]'
                 }`}>
                   {stat.trend}
                 </span>
@@ -109,7 +109,7 @@ export default function OverviewPage() {
             </div>
             <div className="relative z-10">
               <h3 className="text-3xl font-extrabold text-white tracking-tight mb-1">{stat.value}</h3>
-              <p className="text-sm text-gray-400 font-medium">{stat.label}</p>
+              <p className="text-sm text-[#9CA3AF] font-medium">{stat.label}</p>
             </div>
           </div>
         ))}
@@ -131,8 +131,8 @@ export default function OverviewPage() {
             </div>
           </section>
 
-          <section className="bg-[#111827] border border-gray-800 rounded-xl overflow-hidden flex-1 shadow-sm">
-            <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+          <section className="bg-[#111827] border border-[#1F2937] rounded-xl overflow-hidden flex-1 shadow-sm">
+            <div className="px-5 py-4 border-b border-[#1F2937] flex items-center justify-between">
               <h2 className="text-base font-semibold text-white">
                 {isClub ? t('overview.recentApplicationsTitle') : t('overview.recommendedOffersTitle')}
               </h2>
@@ -141,38 +141,38 @@ export default function OverviewPage() {
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
             </div>
-            <div className="divide-y divide-gray-800 h-full">
+            <div className="divide-y divide-[#1F2937] h-full">
               {isClub ? (
                 [1, 2, 3].map((_, i) => (
-                  <div key={i} className="p-5 hover:bg-gray-800/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center shrink-0 border border-gray-700">
-                        <UserCircleIcon className="w-6 h-6 text-gray-400" />
+                      <div className="w-12 h-12 rounded-full bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151]">
+                        <UserCircleIcon className="w-6 h-6 text-[#9CA3AF]" />
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-white mb-0.5">{t('overview.mock.proPlayer', 'Jugador Pro')} {i + 1} (Mock)</p>
-                        <p className="text-xs text-gray-400 flex items-center gap-2">
-                          <span className="text-gray-300">{t('overview.mock.striker', 'Davanter Centre')}</span>
-                          <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                        <p className="text-xs text-[#9CA3AF] flex items-center gap-2">
+                          <span className="text-[#6B7280]">{t('overview.mock.striker', 'Davanter Centre')}</span>
+                          <span className="w-1 h-1 rounded-full bg-[#374151]"></span>
                           Europa
                         </p>
                       </div>
                     </div>
-                    <Link to="/applications" className="shrink-0 bg-[#0F172A] hover:bg-gray-800 transition-colors text-white text-xs font-semibold px-4 py-2 border border-gray-700 rounded-lg">
+                    <Link to="/applications" className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-colors text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
                       {t('overview.reviewCV')}
                     </Link>
                   </div>
                 ))
               ) : (
                 [1, 2, 3].map((_, i) => (
-                  <div key={i} className="p-5 hover:bg-gray-800/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center shrink-0 border border-gray-700 shadow-sm">
-                        <BuildingOfficeIcon className="w-6 h-6 text-gray-400" />
+                      <div className="w-12 h-12 rounded-xl bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151] shadow-sm">
+                        <BuildingOfficeIcon className="w-6 h-6 text-[#9CA3AF]" />
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-white mb-0.5">{t('overview.mock.firstTeam', 'Equip de Primera')} {i + 1} (Mock)</p>
-                        <p className="text-xs text-gray-400">{t('overview.mock.lookingFor', 'Busca:')} {user?.role === 'coach' ? t('overview.mock.proCoach', 'Entrenador Pro') : t('overview.mock.fastStriker', 'Davanter Ràpid')} • {t('overview.mock.proContract', 'Contracte Pro')}</p>
+                        <p className="text-xs text-[#9CA3AF]">{t('overview.mock.lookingFor', 'Busca:')} {user?.role === 'coach' ? t('overview.mock.proCoach', 'Entrenador Pro') : t('overview.mock.fastStriker', 'Davanter Ràpid')} • {t('overview.mock.proContract', 'Contracte Pro')}</p>
                       </div>
                     </div>
                     <Link to="/opportunities" className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-colors text-xs font-semibold px-4 py-2 rounded-lg">
@@ -198,8 +198,8 @@ export default function OverviewPage() {
                     <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{activePlan}</span>
                   </div>
 <h3 className="text-xl font-bold text-white mb-2">{t('overview.activePlan.title')}</h3>
-                  <p className="text-sm text-gray-400 mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
-                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-gray-700 transition-colors">
+                  <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
+                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-colors">
                     {t('overview.activePlan.manageButton')}
                   </Link>
                 </div>
@@ -215,7 +215,7 @@ export default function OverviewPage() {
                      <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">UPGRADE</span>
                    </div>
                    <h3 className="text-xl font-bold text-white mb-2">{t('overview.upgrade.title')}</h3>
-                   <p className="text-sm text-gray-400 mb-5 leading-relaxed">   
+                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">   
                      <Trans i18nKey="overview.upgrade.description">
                        Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
                      </Trans>
@@ -228,35 +228,35 @@ export default function OverviewPage() {
             )}
           </section>
 
-          <section className="bg-[#111827] border border-gray-800 rounded-xl p-5 md:p-6 flex-1 shadow-sm">
+          <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 md:p-6 flex-1 shadow-sm">
             <h2 className="text-base font-semibold text-white mb-5 flex items-center justify-between">
               {t('overview.activity.title')}
-              <span className="text-[11px] font-medium text-gray-500 bg-gray-800 px-2 py-0.5 rounded">{t('overview.activity.last7Days')}</span>
+              <span className="text-[11px] font-medium text-[#6B7280] bg-[#1F2937] px-2 py-0.5 rounded">{t('overview.activity.last7Days')}</span>
             </h2>
-            <div className="relative border-l border-gray-800 ml-3 space-y-6">
+            <div className="relative border-l border-[#1F2937] ml-3 space-y-6">
               <div className="relative pl-5">
                 <div className="absolute top-0.5 -left-[17px] bg-blue-500 p-1.5 rounded-full border-4 border-[#111827]">
                   <ChatBubbleLeftEllipsisIcon className="w-3 h-3 text-white" />
                 </div>
                 <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item1.title')}</p>
-                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item1.desc')}</p>
-                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item1.time')}</span>
+                <p className="text-xs text-[#9CA3AF] mb-1">{t('overview.activity.item1.desc')}</p>
+                <span className="text-[10px] font-medium text-[#6B7280]">{t('overview.activity.item1.time')}</span>
               </div>
               <div className="relative pl-5">
-                <div className="absolute top-0.5 -left-[17px] bg-gray-800 p-1.5 rounded-full border-4 border-[#111827]">
-                  <DocumentCheckIcon className="w-3 h-3 text-gray-400" />
+                <div className="absolute top-0.5 -left-[17px] bg-[#1F2937] p-1.5 rounded-full border-4 border-[#111827]">
+                  <DocumentCheckIcon className="w-3 h-3 text-[#9CA3AF]" />
                 </div>
                 <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item2.title')}</p>
-                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item2.desc')}</p>
-                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item2.time')}</span>
+                <p className="text-xs text-[#9CA3AF] mb-1">{t('overview.activity.item2.desc')}</p>
+                <span className="text-[10px] font-medium text-[#6B7280]">{t('overview.activity.item2.time')}</span>
               </div>
               <div className="relative pl-5">
-                <div className="absolute top-0.5 -left-[17px] bg-gray-800 p-1.5 rounded-full border-4 border-[#111827]">
-                  <BriefcaseIcon className="w-3 h-3 text-gray-400" />
+                <div className="absolute top-0.5 -left-[17px] bg-[#1F2937] p-1.5 rounded-full border-4 border-[#111827]">
+                  <BriefcaseIcon className="w-3 h-3 text-[#9CA3AF]" />
                 </div>
                 <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item3.title')}</p>
-                <p className="text-xs text-gray-400 mb-1">{t('overview.activity.item3.desc')}</p>
-                <span className="text-[10px] font-medium text-gray-500">{t('overview.activity.item3.time')}</span>
+                <p className="text-xs text-[#9CA3AF] mb-1">{t('overview.activity.item3.desc')}</p>
+                <span className="text-[10px] font-medium text-[#6B7280]">{t('overview.activity.item3.time')}</span>
               </div>
             </div>
           </section>
@@ -270,11 +270,12 @@ function QuickAction({ href, icon: Icon, label }: { href: string; icon: React.El
   return (
     <Link 
       to={href}
-      className="bg-[#111827] hover:bg-gray-800 border border-gray-800 hover:border-gray-700 transition-all duration-300 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
-      <div className="bg-gray-800 group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-white p-3 rounded-lg transition-all duration-300 transform group-hover:scale-110">
+      className="bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] hover:border-[#374151] transition-all duration-300 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
+      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-white p-3 rounded-lg transition-all duration-300 transform group-hover:scale-110">
         <Icon className="w-5 h-5" />
       </div>
-      <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors">{label}</span>
+      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-white transition-colors">{label}</span>
     </Link>
   );
 }
+

@@ -165,7 +165,7 @@ export default function ApplicationsPage() {
   if (isLoading) {
     return (
       <div className="p-6 max-w-6xl mx-auto w-full">
-        <div className="h-8 w-48 bg-gray-800 rounded mb-6 animate-pulse" />
+        <div className="h-8 w-48 bg-[#1F2937] rounded mb-6 animate-pulse" />
         <div className="flex flex-col gap-4">
           {[1, 2, 3].map((n) => (
             <div
@@ -422,5 +422,6 @@ export default function ApplicationsPage() {
     </div>
   );
 }
+
 
 

@@ -133,9 +133,9 @@ const handleMessage = async () => {
   if (isLoading) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse space-y-6">
-        <div className="h-6 w-32 bg-gray-800 rounded" />
-        <div className="h-64 bg-gray-900 rounded-xl" />
-        <div className="h-40 bg-gray-900 rounded-xl" />
+        <div className="h-6 w-32 bg-[#1F2937] rounded" />
+        <div className="h-64 bg-[#111827] rounded-xl" />
+        <div className="h-40 bg-[#111827] rounded-xl" />
       </div>
     );
   }
@@ -188,7 +188,7 @@ const handleMessage = async () => {
       <div>
         <button
           onClick={() => navigate(backTarget.url)}
-          className="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
+          className="flex items-center text-sm text-[#9CA3AF] hover:text-white transition-colors"
         >
           <ArrowLeftIcon className="w-4 h-4 mr-2" />
           {backTarget.label}
@@ -198,7 +198,7 @@ const handleMessage = async () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-8">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight text-white mb-2">{opportunity.title}</h1>
@@ -210,27 +210,27 @@ const handleMessage = async () => {
             </div>
 
             {/* Quick Summary Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-gray-800 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-[#1F2937] mb-8">
               <div>
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
+                <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <MapPinIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.location")}
                 </div>
                 <div className="font-medium text-white">{opportunity.location}</div>
               </div>
               <div>
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
+                <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <BriefcaseIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.contract")}
                 </div>
                 <div className="font-medium text-white capitalize">{opportunity.contractType.replace('-', ' ')}</div>
               </div>
               <div>
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
+                <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <UserGroupIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.gender")}
                 </div>
                 <div className="font-medium text-white capitalize">{opportunity.gender}</div>
               </div>
               <div>
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1 flex items-center">
+                <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <CalendarIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.published")}
                 </div>
                 <div className="font-medium text-white">{formatDate(opportunity.createdAt)}</div>
@@ -240,7 +240,7 @@ const handleMessage = async () => {
             {/* Description */}
             <div className="mb-10">
               <h2 className="text-xl font-semibold mb-4 text-white">Sobre l'Oportunitat</h2>
-              <div className="text-gray-300 leading-relaxed space-y-4 whitespace-pre-wrap">
+              <div className="text-[#6B7280] leading-relaxed space-y-4 whitespace-pre-wrap">
                 {opportunity.description}
               </div>
             </div>
@@ -252,7 +252,7 @@ const handleMessage = async () => {
                 {opportunity.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start">
                     <span className="text-blue-500 mr-3 mt-1">•</span>
-                    <span className="text-gray-300">{req}</span>
+                    <span className="text-[#6B7280]">{req}</span>
                   </li>
                 ))}
               </ul>
@@ -266,7 +266,7 @@ const handleMessage = async () => {
           <Card className="border-blue-900/30 shadow-lg shadow-blue-900/10">
             <CardContent className="p-6">
               {user?.role === t('opportunityDetail.club') ? (
-                <div className="text-center text-gray-400 p-4">
+                <div className="text-center text-[#9CA3AF] p-4">
                   Els clubs no poden aplicar a oportunitats.
                 </div>
               ) : (
@@ -306,7 +306,7 @@ const handleMessage = async () => {
             <CardContent className="p-6 space-y-4 text-sm">
               <h3 className="font-semibold text-white">{t('opportunityDetail.aboutClub')}</h3>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-xl font-bold text-gray-400 overflow-hidden">
+                <div className="w-12 h-12 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-[#9CA3AF] overflow-hidden">
                   {clubName?.charAt(0) || 'C'}
                 </div>
                 <div>
@@ -326,4 +326,5 @@ const handleMessage = async () => {
     </div>
   );
 }
+
 
