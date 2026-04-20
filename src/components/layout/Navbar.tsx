@@ -20,14 +20,14 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center text-xs sm:text-sm font-medium gap-2 text-center">
           <span className="flex items-center gap-2">
             <span>👑</span> 
-            <strong>{t('navbar.banner.title')}</strong>
+            <strong>{t('navbar.banner.title', 'Membres Fundadors – Accés Gratuït')}</strong>
             <span className="hidden md:inline text-black/50">•</span>
           </span>
           <span className="md:ml-2 font-medium">
-            {t('navbar.banner.description')}
+            {t('navbar.banner.description', 'Sigues un dels primers 100 membres en unir-te i obtén accés Premium gratuït fins al 1 de juliol de 2026!')}
           </span>
           <Link to="/register" className="ml-0 md:ml-4 bg-[#0A192F] text-white px-4 py-1.5 rounded-full text-xs hover:bg-[#172A45] transition-colors whitespace-nowrap mt-2 md:mt-0">
-            {t('navbar.banner.cta')}
+            {t('navbar.banner.cta', 'Reclama el teu Estatus')}
           </Link>
         </div>
       </div>
@@ -38,15 +38,15 @@ export default function Navbar() {
             {/* Logo y Links Izquierda */}
             <div className="flex items-center gap-10">
               <Link to="/" className="flex items-center gap-3 text-xl font-bold text-white">
-                <span className="text-[#0070F3] text-2xl">🏆</span> {t('navbar.brand')}
+                <span className="text-[#0070F3] text-2xl">🏆</span> {t('navbar.brand', 'Global Play 360')}
               </Link>
 
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-                  {t('navbar.home')}
+                  {t('navbar.home', 'Inici')}
                 </Link>
                 <Link to="/about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-                  {t('navbar.about')}
+                  {t('navbar.about', 'Sobre Nosaltres')}
                 </Link>
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function Navbar() {
                       to="/admin"
                       className="text-sm text-white/70 hover:text-[#FFC107] transition-colors"
                     >
-                      {t('navbar.admin')}
+                      {t('navbar.admin', 'Panell')}
                     </Link>
                   )}
                   <span className="text-sm font-medium text-white">{user.displayName}</span>
@@ -72,7 +72,7 @@ export default function Navbar() {
                     onClick={handleLogout}
                     className="text-sm font-medium text-white/50 hover:text-red-400 transition-colors cursor-pointer"
                   >
-                    {t('navbar.logout')}
+                    {t('navbar.logout', 'Tancar Sessió')}
                   </button>
                 </div>
               ) : (
@@ -81,13 +81,13 @@ export default function Navbar() {
                     to="/login"
                     className="text-sm font-medium text-white/80 hover:text-white transition-colors"
                   >
-                    {t('navbar.login')}
+                    {t('navbar.login', 'Iniciar Sessió')}
                   </Link>
                   <Link
                     to="/register"
                     className="text-sm font-medium px-5 py-2 bg-[#0070F3] text-white rounded hover:bg-[#0051B3] transition-colors"
                   >
-                    {t('navbar.register')}
+                    {t('navbar.register', 'Registre')}
                   </Link>
                 </div>
               )}

@@ -305,17 +305,17 @@
     }
   },
   "profile": {
-    "notAuthenticated": "No autenticat",
-    "loginToView": "Inicia sessió per veure el teu perfil.",
+    "notAuthenticated": "No estàs autenticat",
+    "loginToView": "Fes login per veure el perfil",
     "editProfile": "Editar Perfil",
-    "updateInfo": "Actualitza la teva informació per atraure les millors oportunitats.",
+    "updateInfo": "Actualitza la teva informació personal i perfil públic.",
     "backToProfile": "Tornar al perfil",
-    "uploadError": "Error en pujar la foto. Intenta-ho més tard.",
-    "changeAvatar": "Canviar",
+    "uploadError": "Error pujant l'avatar.",
+    "changeAvatar": "Canviar imatge",
     "aboutEntity": "Sobre l'entitat",
     "aboutMe": "Sobre mi",
-    "emptyBio": "Encara no has afegit cap biografia. Edita el perfil per donar-te a conèixer.",
-    "sportsData": "Dades esportives",
+    "emptyBio": "No hi ha biografia.",
+    "sportsData": "Dades Esportives",
     "position": "Posició",
     "height": "Alçada",
     "weight": "Pes",
@@ -338,15 +338,16 @@
       "hockey": "Hoquei",
       "other": "Altres"
     },
-    "membershipStatus": "Estat de Membresia",
+    "membershipStatus": "Subscripció",
     "planName": "Pla {{plan}}",
-    "premiumAccess": "Accés total habilitat.",
-    "upgradeToContact": "Actualitza per contactar directament.",
-    "manageSubscription": "Gestionar Subscripció",
+    "premiumAccess": "Accés Premium",
+    "upgradeToContact": "Millora per contactar",
+    "manageSubscription": "Gestionar subscripció",
     "upgradePlan": "Millorar Pla",
-    "contactAndSocial": "Contacte & Social",
-    "viewHighlights": "Veure highlights",
-    "memberSince": "Membre des de {{date}}"
+    "contactAndSocial": "Contacte i Xarxes",
+    "viewHighlights": "Veure Highlights",
+    "memberSince": "Membre des de {{date}}",
+    "instagram": "Instagram"
   },
   "applications": {
     "titleClub": "Candidatures Rebudes",
@@ -408,29 +409,31 @@
     "exploreMarketplace": "Explorar Oportunitats"
   },
   "myOpportunities": {
-    "errorLoading": "Error carregant oportunitats",
-    "errorToggling": "Error canviant l'estat",
-    "confirmDelete": "Segur que vols eliminar \"{{title}}\"? Aquesta acció és irreversible.",
-    "errorDeleting": "Error eliminant l'oportunitat",
-    "restrictedTitle": "Accés restringit",
-    "restrictedDesc": "Només els clubs poden accedir a aquesta pàgina.",
-    "pageTitle": "Les Meves Ofertes",
-    "publishNew": "Publicar Nova Oferta",
-    "emptyTitle": "No tens cap oferta publicada",
-    "emptyDesc": "Anima't a buscar els jugadors i entrenadors que necessites.",
-    "sport": "Esport",
-    "sector": "Sector",
-    "candidatesSummary": "Resum de Candidats",
+    "title": "Les Meves Ofertes",
+    "subtitle1": "Gestiona les oportunitats que has publicat. Les ofertes",
+    "openStatus": "obertes",
+    "subtitle2": "són visibles al marketplace i accepten candidatures. Les ofertes",
+    "closedStatus": "tancades",
+    "subtitle3": "deixen de ser visibles.",
+    "newOpportunity": "Nova Oportunitat",
+    "emptyTitle": "Encara no has publicat cap oportunitat",
+    "emptyDesc": "Crea la teva primera oferta per començar a rebre candidatures.",
+    "createOpportunity": "Crear Oportunitat",
     "statusOpen": "Oberta",
     "statusClosed": "Tancada",
-    "statusUnknown": "Sense Estat",
-    "viewDetails": "Veure detalls",
-    "closeOffer": "Tancar Oferta",
-    "reopenOffer": "Reobrir Oferta",
-    "processing": "Processant...",
-    "delete": "Eliminar",
-    "deleting": "S'està eliminant...",
-    "edit": "Editar"
+    "btnView": "Veure",
+    "btnEdit": "Editar",
+    "closeTooltip": "Tancar: deixa de ser visible",
+    "openTooltip": "Reobrir: torna a ser visible",
+    "btnClose": "Tancar",
+    "btnReopen": "Reobrir",
+    "deleteTooltip": "Eliminar permanentment aquesta oferta",
+    "btnDelete": "Eliminar",
+    "restrictedTitle": "Accés restringit",
+    "restrictedDesc": "Aquesta vista és exclusiva per a clubs.",
+    "backToMarketplace": "Tornar al Marketplace",
+    "connectionError": "Error de connexió",
+    "retry": "Reintentar"
   },
   "opportunityDetail": {
     "backApplications": "Tornar a Candidatures",
@@ -534,12 +537,13 @@
       "locationPlaceholder": "Ex: Barcelona, Espanya",
       "descPlaceholder": "Detalla les responsabilitats, l'equip, els objectius, etc.",
       "requirementsPlaceholder": "Ex: +2 anys experiència Professional..."
-    }
+    },
+    "addBtn": "Afegir"
   },
   "premiumLock": {
-    "defaultTitle": "Exclusiu per a usuaris Premium",
-    "defaultDesc": "Actualitza el teu pla per desbloquejar aquesta funcionalitat i interactuar directament amb aquest perfil.",
-    "upgrade": "Millora el teu Pla"
+    "defaultTitle": "Això és un contingut Premium",
+    "defaultDesc": "Aquest contingut és exclusiu. Millora el teu pla per tenir-hi accés.",
+    "upgradeButton": "Millora el teu Pla"
   },
   "status": {
     "submitted": "Enviat",
@@ -590,5 +594,49 @@
     "desc": "La teva subscripció s'ha activat correctament. Tens <1>30 dies de prova gratuïts</1>  el primer càrrec es farà quan finalitzi el període. Pots cancel·lar en qualsevol moment des del panell de facturació.",
     "goToDashboard": "Anar al panell",
     "completeProfile": "Completar el meu perfil"
+  },
+  "messages": {
+    "pageTitle": "Missatges Directes",
+    "pageSubtitle": "Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.",
+    "unlockTitle": "Mantingues converses en temps real amb els clubs",
+    "unlockDesc": "Aconsegueix accés directe a organitzacions i clubs d'elit i respon de manera immediata. L'eina definitiva per a tancar fitxatges.",
+    "emptyTitle": "No tens missatges encara",
+    "emptyDesc": "Cerca oportunitats o inicia converses per començar a parlar amb clubs de tot el món.",
+    "unknownUser": "Usuari desconegut",
+    "protectedMessage": "Missatge protegit",
+    "newConversation": "Nova conversa"
+  },
+  "profileEdit": {
+    "coachDev": "Secció Coach en desenvolupament.",
+    "clubDev": "Secció Club en desenvolupament.",
+    "success": "Perfil actualitzat correctament.",
+    "unsavedChanges": "Hi ha canvis sense desar.",
+    "noChanges": "Sense canvis pendents.",
+    "cancel": "Cancel·lar",
+    "saving": "Desant...",
+    "save": "Desar canvis",
+    "fields": {
+      "generalInfo": "Informació general",
+      "displayName": "Nom mostrat",
+      "country": "País",
+      "bio": "Biografia",
+      "phone": "Telèfon",
+      "instagram": "Instagram",
+      "youtube": "Vídeo Highlights"
+    },
+    "placeholders": {
+      "displayName": "El teu nom públic",
+      "country": "Ex: Espanya",
+      "bio": "Comparteix la teva història amb clubs i scouts...",
+      "phone": "+34 600 000 000",
+      "instagram": "@elteucompte",
+      "youtube": "https://youtube.com/watch?v=..."
+    },
+    "hints": {
+      "bio": "Descriu la teva trajectòria, objectius i experiència.",
+      "phone": "Visible per clubs premium.",
+      "instagram": "Handle o URL del perfil.",
+      "youtube": "URL de YouTube amb la teva reel."
+    }
   }
 }

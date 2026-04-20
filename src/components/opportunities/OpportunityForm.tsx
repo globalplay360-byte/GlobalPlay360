@@ -130,11 +130,11 @@ export default function OpportunityForm({
 
         {/* Ubicació */}
         <div>
-          <label className={labelClass}>Ubicació *</label>
+          <label className={labelClass}>{t("opportunityForm.locationLabel", "Ubicació *")}</label>
           <input
             type="text"
             className={inputClass}
-            placeholder="Ex: Barcelona, Spain"
+            placeholder={t("opportunityForm.fields.locationPlaceholder", "Ex: Barcelona, Spain")}
             value={form.location}
             onChange={(e) => updateField('location', e.target.value)}
           />
@@ -142,10 +142,10 @@ export default function OpportunityForm({
 
         {/* Descripció */}
         <div>
-          <label className={labelClass}>Descripció *</label>
+          <label className={labelClass}>{t("opportunityForm.descLabel", "Descripció *")}</label>
           <textarea
             className={`${inputClass} min-h-[120px] resize-y`}
-            placeholder="Descriu l'oportunitat en detall: què busques, què ofereixes, condicions..."
+            placeholder={t("opportunityForm.fields.descPlaceholder", "Descriu l'oportunitat en detall: què busques, què ofereixes, condicions...")}
             value={form.description}
             onChange={(e) => updateField('description', e.target.value)}
             rows={5}
@@ -155,12 +155,12 @@ export default function OpportunityForm({
 
       {/* Requisits */}
       <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 space-y-4">
-        <label className={labelClass}>Requisits</label>
+        <label className={labelClass}>{t("opportunityForm.requirementsLabel", "Requisits")}</label>
         <div className="flex gap-2">
           <input
             type="text"
             className={`${inputClass} flex-1`}
-            placeholder="Ex: Menor de 23 anys"
+            placeholder={t("opportunityForm.fields.requirementsPlaceholder", "Ex: Menor de 23 anys")}
             value={requirementInput}
             onChange={(e) => setRequirementInput(e.target.value)}
             onKeyDown={(e) => {
@@ -172,7 +172,7 @@ export default function OpportunityForm({
             onClick={addRequirement}
             className="px-4 py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-colors border border-[#374151]"
           >
-            Afegir
+            {t("opportunityForm.addBtn", "Afegir")}
           </button>
         </div>
 

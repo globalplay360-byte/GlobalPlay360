@@ -23,7 +23,7 @@ export default function Topbar() {
         </div>
         <input 
           type="text" 
-          placeholder={t('topbar.searchPlaceholder')}
+          placeholder={t('topbar.searchPlaceholder', 'Cerca jugadors, clubs, estadístiques...')}
           className="w-full bg-[#111827] text-white border border-[#1F2937] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[#3B82F6] transition-colors"
         />
       </div>
@@ -41,7 +41,7 @@ export default function Topbar() {
           className="text-sm font-medium text-[#9CA3AF] hover:text-[#EF4444] transition-colors flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-          {t('topbar.logout')}
+          {t('topbar.logout', 'Sortir')}
         </button>
       </div>
     </header>

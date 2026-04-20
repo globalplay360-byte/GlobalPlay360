@@ -11,7 +11,7 @@ import EmptyState from '@/components/ui/EmptyState';
 export default function MyOpportunitiesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,8 +74,9 @@ export default function MyOpportunitiesPage() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('ca-ES', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
+const formatDate = (dateString: string) => {
+    const localeStr = i18n.language === 'ca' ? 'ca-ES' : i18n.language === 'es' ? 'es-ES' : 'en-US';
+    return new Intl.DateTimeFormat(localeStr, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
   };
 
   // Guard: only clubs
@@ -83,9 +84,13 @@ export default function MyOpportunitiesPage() {
     return (
       <div className="p-6 max-w-5xl mx-auto">
         <EmptyState
-          title="Accés restringit"
-          description="Aquesta vista és exclusiva per a clubs."
-          action={<Button variant="primary" onClick={() => navigate('/dashboard/opportunities')}>Tornar al Marketplace</Button>}
+          title={t('myOpportunities.restrictedTitle', 'Accés restringit')}
+          description={t('myOpportunities.restrictedDesc', 'Aquesta vista és exclusiva per a clubs.')}
+          action={
+            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities')}>
+              {t('myOpportunities.backToMarketplace', 'Tornar al Marketplace')}
+            </Button>
+          }
         />
       </div>
     );
@@ -95,9 +100,13 @@ export default function MyOpportunitiesPage() {
     return (
       <div className="p-6 max-w-5xl mx-auto">
         <EmptyState
-          title="Error de connexió"
+          title={t('myOpportunities.connectionError', 'Error de connexió')}
           description={error}
-          action={<Button variant="primary" onClick={() => window.location.reload()}>Reintentar</Button>}
+          action={
+            <Button variant="primary" onClick={() => window.location.reload()}>
+              {t('myOpportunities.retry', 'Reintentar')}
+            </Button>
+          }
         />
       </div>
     );
@@ -121,18 +130,18 @@ export default function MyOpportunitiesPage() {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight">{t('myOpportunities.title', 'Les Meves Ofertes')}</h1>
           <p className="text-[#9CA3AF] mt-1 text-sm">
-            Gestiona les oportunitats que has publicat. Les ofertes <span className="text-emerald-400 font-medium">obertes</span> són visibles al marketplace i accepten candidatures. Les ofertes <span className="text-[#6B7280] font-medium">tancades</span> deixen de ser visibles.
+            {t('myOpportunities.subtitle1', 'Gestiona les oportunitats que has publicat. Les ofertes')} <span className="text-emerald-400 font-medium">{t('myOpportunities.openStatus', 'obertes')}</span> {t('myOpportunities.subtitle2', 'són visibles al marketplace i accepten candidatures. Les ofertes')} <span className="text-[#6B7280] font-medium">{t('myOpportunities.closedStatus', 'tancades')}</span> {t('myOpportunities.subtitle3', 'deixen de ser visibles.')}
           </p>
         </div>
         <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>
-          Nova Oportunitat
+          {t('myOpportunities.newOpportunity', 'Nova Oportunitat')}
         </Button>
       </div>
 
       {opportunities.length === 0 ? (
         <EmptyState
-          title="Encara no has publicat cap oportunitat"
-          description="Crea la teva primera oferta per començar a rebre candidatures."
+          title={t('myOpportunities.emptyTitle', 'Encara no has publicat cap oportunitat')}
+          description={t('myOpportunities.emptyDesc', 'Crea la teva primera oferta per començar a rebre candidatures.')}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -140,7 +149,7 @@ export default function MyOpportunitiesPage() {
           }
           action={
             <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>
-              Crear Oportunitat
+              {t('myOpportunities.createOpportunity', 'Crear Oportunitat')}
             </Button>
           }
         />
@@ -156,11 +165,11 @@ export default function MyOpportunitiesPage() {
                 <div className="flex items-center gap-3 mb-1">
                   <h3 className="text-white font-bold text-base truncate">{opp.title}</h3>
                   <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] shrink-0">
-                    {opp.status === 'open' ? 'Oberta' : 'Tancada'}
+                    {opp.status === 'open' ? t('myOpportunities.statusOpen', 'Oberta') : t('myOpportunities.statusClosed', 'Tancada')}
                   </Badge>
                 </div>
                 <div className="flex flex-wrap gap-3 text-sm text-[#9CA3AF]">
-                  <span>{opp.sport}</span>
+                  <span>{t(`sports.${opp.sport}`, opp.sport)}</span>
                   <span>•</span>
                   <span>{opp.location}</span>
                   <span>•</span>
@@ -177,19 +186,19 @@ export default function MyOpportunitiesPage() {
                   size="sm"
                   onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'mine' } })}
                 >
-                  Veure
+                  {t('myOpportunities.btnView', 'Veure')}
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => navigate(`/dashboard/opportunities/${opp.id}/edit`)}
                 >
-                  Editar
+                  {t('myOpportunities.btnEdit', 'Editar')}
                 </Button>
                 <button
                   onClick={() => handleToggleStatus(opp)}
                   disabled={togglingId === opp.id}
-                  title={opp.status === 'open' ? 'Tancar: deixa de ser visible al marketplace' : 'Reobrir: torna a ser visible al marketplace'}
+                  title={opp.status === 'open' ? t('myOpportunities.closeTooltip', 'Tancar: deixa de ser visible') : t('myOpportunities.openTooltip', 'Reobrir: torna a ser visible')}
                   className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                     opp.status === 'open'
                       ? 'border-red-500/30 text-red-400 hover:bg-red-500/10'
@@ -198,15 +207,15 @@ export default function MyOpportunitiesPage() {
                 >
                   {togglingId === opp.id
                     ? '...'
-                    : opp.status === 'open' ? 'Tancar' : 'Reobrir'}
+                    : opp.status === 'open' ? t('myOpportunities.btnClose', 'Tancar') : t('myOpportunities.btnReopen', 'Reobrir')}
                 </button>
                 <button
                   onClick={() => handleDelete(opp)}
                   disabled={deletingId === opp.id}
-                  title="Eliminar permanentment aquesta oferta"
+                  title={t('myOpportunities.deleteTooltip', 'Eliminar permanentment aquesta oferta')}
                   className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/20 text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition-colors disabled:opacity-50"
                 >
-                  {deletingId === opp.id ? '...' : 'Eliminar'}
+                  {deletingId === opp.id ? '...' : t('myOpportunities.btnDelete', 'Eliminar')}
                 </button>
               </div>
             </div>

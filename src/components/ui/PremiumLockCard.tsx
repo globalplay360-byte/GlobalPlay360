@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface PremiumLockCardProps {
   title?: string;
@@ -13,8 +13,8 @@ export default function PremiumLockCard({
   className = ""
 }: PremiumLockCardProps) {
   const { t } = useTranslation();
-  const finalTitle = title || t('premiumLock.defaultTitle');
-  const finalDescription = description || t('premiumLock.defaultDesc'); 
+  const finalTitle = title || t('premiumLock.defaultTitle', 'Això és un contingut Premium');
+  const finalDescription = description || t('premiumLock.defaultDesc', 'Aquest contingut és exclusiu. Millora el teu pla per tenir-hi accés.');
 
   return (
     <div className={`flex flex-col items-center justify-center p-8 bg-[#111827] border border-[#1F2937] rounded-xl text-center shadow-lg relative overflow-hidden group ${className}`}>
@@ -34,7 +34,7 @@ export default function PremiumLockCard({
         to="/pricing"
         className="z-10 inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:from-[#2563EB] hover:to-[#1D4ED8] text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20"
       >
-        Millora el teu Pla
+        {t('premiumLock.upgradeButton', 'Millora el teu Pla')}
       </Link>
     </div>
   );

@@ -53,7 +53,7 @@ export default function Sidebar() {
 
       <div className="p-4">
         <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2 px-3">
-          {t('sidebar.mainMenu')}
+          {t('sidebar.mainMenu', 'Menú Principal')}
         </p>
         <nav className="flex flex-col space-y-1">
           {navItems.map((item) => {
@@ -84,8 +84,10 @@ export default function Sidebar() {
             {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{user?.displayName || t('sidebar.testUser')}</p>
-            <p className="text-xs text-[#6B7280] truncate capitalize">{user?.role ? t(`sidebar.${user.role}Role`) : t('sidebar.playerRole')}</p>
+            <p className="text-sm font-medium text-white truncate">{user?.displayName || t('sidebar.testUser', 'Usuari')}</p>
+            <p className="text-xs text-[#6B7280] truncate capitalize">
+              {user?.role ? t(`sidebar.${user.role}Role`, user.role === 'club' ? 'Club' : user.role === 'coach' ? 'Entrenador' : 'Jugador') : t('sidebar.playerRole', 'Jugador')}
+            </p>
           </div>
         </div>
       </div>

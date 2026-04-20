@@ -306,15 +306,15 @@
   },
   "profile": {
     "notAuthenticated": "Not authenticated",
-    "loginToView": "Log in to view your profile.",
+    "loginToView": "Login to view profile",
     "editProfile": "Edit Profile",
     "updateInfo": "Update your information to attract the best opportunities.",
     "backToProfile": "Back to profile",
-    "uploadError": "Error uploading photo. Try again later.",
-    "changeAvatar": "Change",
+    "uploadError": "Error uploading avatar.",
+    "changeAvatar": "Change image",
     "aboutEntity": "About the entity",
     "aboutMe": "About me",
-    "emptyBio": "You haven't added a bio yet. Edit your profile to introduce yourself.",
+    "emptyBio": "No biography.",
     "sportsData": "Sports Data",
     "position": "Position",
     "height": "Height",
@@ -338,15 +338,16 @@
       "hockey": "Hockey",
       "other": "Other"
     },
-    "membershipStatus": "Membership Status",
-    "planName": "{{plan}} Plan",
-    "premiumAccess": "Full access enabled.",
-    "upgradeToContact": "Upgrade to contact directly.",
-    "manageSubscription": "Manage Subscription",
+    "membershipStatus": "Subscription",
+    "planName": "Plan {{plan}}",
+    "premiumAccess": "Premium Access",
+    "upgradeToContact": "Upgrade to contact",
+    "manageSubscription": "Manage subscription",
     "upgradePlan": "Upgrade Plan",
     "contactAndSocial": "Contact & Social",
-    "viewHighlights": "View highlights",
-    "memberSince": "Member since {{date}}"
+    "viewHighlights": "View Highlights",
+    "memberSince": "Member since {{date}}",
+    "instagram": "Instagram"
   },
   "applications": {
     "titleClub": "Received Applications",
@@ -408,29 +409,31 @@
     "exploreMarketplace": "Explore Opportunities"
   },
   "myOpportunities": {
-    "errorLoading": "Error loading opportunities",
-    "errorToggling": "Error changing status",
-    "confirmDelete": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
-    "errorDeleting": "Error deleting opportunity",
-    "restrictedTitle": "Restricted Access",
-    "restrictedDesc": "Only clubs can access this page.",
-    "pageTitle": "My Offers",
-    "publishNew": "Publish New Offer",
-    "emptyTitle": "You do not have any published offers",
-    "emptyDesc": "Go ahead and search for the players and coaches you need.",
-    "sport": "Sport",
-    "sector": "Sector",
-    "candidatesSummary": "Candidates Summary",
+    "title": "My Offers",
+    "subtitle1": "Manage the opportunities you have published. The",
+    "openStatus": "open",
+    "subtitle2": "offers are visible in the marketplace and accept applications. The",
+    "closedStatus": "closed",
+    "subtitle3": "offers are no longer visible.",
+    "newOpportunity": "New Opportunity",
+    "emptyTitle": "You haven't published any opportunities yet",
+    "emptyDesc": "Create your first offer to start receiving applications.",
+    "createOpportunity": "Create Opportunity",
     "statusOpen": "Open",
     "statusClosed": "Closed",
-    "statusUnknown": "Unknown Status",
-    "viewDetails": "View details",
-    "closeOffer": "Close Offer",
-    "reopenOffer": "Reopen Offer",
-    "processing": "Processing...",
-    "delete": "Delete",
-    "deleting": "Deleting...",
-    "edit": "Edit"
+    "btnView": "View",
+    "btnEdit": "Edit",
+    "closeTooltip": "Close: hide from marketplace",
+    "openTooltip": "Reopen: show on marketplace again",
+    "btnClose": "Close",
+    "btnReopen": "Reopen",
+    "deleteTooltip": "Permanently delete this offer",
+    "btnDelete": "Delete",
+    "restrictedTitle": "Restricted access",
+    "restrictedDesc": "This view is exclusive to clubs.",
+    "backToMarketplace": "Back to Marketplace",
+    "connectionError": "Connection error",
+    "retry": "Retry"
   },
   "opportunityDetail": {
     "backApplications": "Back to Applications",
@@ -534,12 +537,13 @@
       "locationPlaceholder": "Ex: Barcelona, Spain",
       "descPlaceholder": "Detail the responsibilities, team, goals, etc.",
       "requirementsPlaceholder": "Ex: +2 years Professional experience..."
-    }
+    },
+    "addBtn": "Add"
   },
   "premiumLock": {
-    "defaultTitle": "Exclusive for Premium users",
-    "defaultDesc": "Upgrade your plan to unlock this feature and interact directly with this profile.",
-    "upgrade": "Upgrade your Plan"
+    "defaultTitle": "This is Premium content",
+    "defaultDesc": "This content is exclusive. Upgrade your plan to unlock it.",
+    "upgradeButton": "Upgrade Your Plan"
   },
   "status": {
     "submitted": "Submitted",
@@ -590,5 +594,49 @@
     "desc": "Your subscription has been successfully activated. You have a <1>30-day free trial</1>  the first charge will be made when the period ends. You can cancel anytime from the billing panel.",
     "goToDashboard": "Go to dashboard",
     "completeProfile": "Complete my profile"
+  },
+  "messages": {
+    "pageTitle": "Direct Messages",
+    "pageSubtitle": "Communicate with clubs and coaches to manage your opportunities.",
+    "unlockTitle": "Have real-time conversations with clubs",
+    "unlockDesc": "Get direct access to elite organizations and clubs and respond immediately. The ultimate tool for closing signings.",
+    "emptyTitle": "You have no messages yet",
+    "emptyDesc": "Search for opportunities or start conversations to begin talking with clubs worldwide.",
+    "unknownUser": "Unknown user",
+    "protectedMessage": "Protected message",
+    "newConversation": "New conversation"
+  },
+  "profileEdit": {
+    "coachDev": "Coach section in development.",
+    "clubDev": "Club section in development.",
+    "success": "Profile updated successfully.",
+    "unsavedChanges": "There are unsaved changes.",
+    "noChanges": "No pending changes.",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "save": "Save changes",
+    "fields": {
+      "generalInfo": "General information",
+      "displayName": "Display name",
+      "country": "Country",
+      "bio": "Biography",
+      "phone": "Phone",
+      "instagram": "Instagram",
+      "youtube": "Video Highlights"
+    },
+    "placeholders": {
+      "displayName": "Your public name",
+      "country": "Ex: Spain",
+      "bio": "Share your story with clubs and scouts...",
+      "phone": "+34 600 000 000",
+      "instagram": "@youraccount",
+      "youtube": "https://youtube.com/watch?v=..."
+    },
+    "hints": {
+      "bio": "Describe your career, goals, and experience.",
+      "phone": "Visible to premium clubs.",
+      "instagram": "Handle or profile URL.",
+      "youtube": "YouTube URL with your reel."
+    }
   }
 }

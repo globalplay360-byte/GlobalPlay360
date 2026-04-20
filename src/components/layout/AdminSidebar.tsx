@@ -1,16 +1,19 @@
 import { NavLink } from 'react-router-dom';
-
-const navItems = [
-  { to: '/admin', label: 'Dashboard', icon: '📊' },
-  { to: '/admin/products', label: 'Products', icon: '📦' },
-  { to: '/admin/orders', label: 'Orders', icon: '🧾' },
-  { to: '/admin/users', label: 'Users', icon: '👥' },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function AdminSidebar() {
+  const { t } = useTranslation();
+
+  const navItems = [
+    { to: '/admin', label: t('adminSidebar.dashboard', 'Tauler'), icon: '📊' },
+    { to: '/admin/products', label: t('adminSidebar.products', 'Productes'), icon: '📦' },
+    { to: '/admin/orders', label: t('adminSidebar.orders', 'Comandes'), icon: '🧾' },
+    { to: '/admin/users', label: t('adminSidebar.users', 'Usuaris'), icon: '👥' },
+  ];
+
   return (
     <aside className="w-64 bg-gray-900 text-gray-300 min-h-[calc(100svh-4rem)] p-4">
-      <h2 className="text-white font-bold text-lg mb-6 px-3">Admin Panel</h2>
+      <h2 className="text-white font-bold text-lg mb-6 px-3">{t('adminSidebar.panel', 'Panell d\'Administració')}</h2>
       <nav className="space-y-1">
         {navItems.map((item) => (
           <NavLink

@@ -40,7 +40,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
           <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-white font-bold' : 'text-white font-bold'}`}>
-            {conv.otherParticipant?.displayName || t('messages.unknownUser')}
+            {conv.otherParticipant?.displayName || t('messages.unknownUser', 'Usuari desconegut')}   
             {isLocked && (
               <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
@@ -53,7 +53,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
         </div>
 
         <p className={`text-sm truncate ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-white font-medium' : 'text-[#9CA3AF] group-hover:text-white transition-colors'}`}>
-          {isLocked ? t('messages.protectedMessage') : conv.lastMessage || t('messages.newConversation')}
+          {isLocked ? t('messages.protectedMessage', 'Missatge protegit') : conv.lastMessage || t('messages.newConversation', 'Nova conversa')}
         </p>
       </div>
 
@@ -119,15 +119,15 @@ export default function MessagesPage() {
     return (
       <div className="p-6 max-w-2xl mx-auto w-full">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle')}</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
           <p className="text-[#9CA3AF] mt-1 text-sm">
-            Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.
+            {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
           </p>
         </div>
 
         <PremiumLockCard
-          title={t("messages.unlockTitle")}
-          description={t("messages.unlockDesc")}
+          title={t("messages.unlockTitle", "Mantingues converses en temps real amb els clubs")}
+          description={t("messages.unlockDesc", "Aconsegueix accés directe a organitzacions i clubs d'elit i respon de manera immediata. L'eina definitiva per a tancar fitxatges.")}
         />
       </div>
     );
@@ -136,9 +136,9 @@ export default function MessagesPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto w-full">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle')}</h1>
+        <h1 className="text-2xl font-bold text-white tracking-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
         <p className="text-[#9CA3AF] mt-1 text-sm">
-          Comunica't amb els clubs i entrenadors per gestionar les teves oportunitats.
+          {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
         </p>
       </div>
 
@@ -154,8 +154,8 @@ export default function MessagesPage() {
         </div>
       ) : (
         <EmptyState
-          title={t("messages.emptyTitle")}
-          description={t("messages.emptyDesc")}
+          title={t("messages.emptyTitle", "No tens missatges encara")}
+          description={t("messages.emptyDesc", "Cerca oportunitats o inicia converses per començar a parlar amb clubs de tot el món.")}
           icon={
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
