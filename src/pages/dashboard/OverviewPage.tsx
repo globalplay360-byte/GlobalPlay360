@@ -15,6 +15,7 @@ import {
   ChartBarIcon
 } from '@heroicons/react/24/outline';
 import { SparklesIcon } from '@heroicons/react/24/solid';
+import { motion } from 'framer-motion';
 import PageHeader from '@/components/ui/PageHeader';
 
 import { getUserApplications, getClubApplications } from '../../services/applications.service';
@@ -228,7 +229,7 @@ export default function OverviewPage() {
       <PageHeader
         title={
           <div className="flex items-center gap-3">
-            <span>{t('overview.hello')}, {user?.displayName || t('overview.sportsman')} 👋</span>
+            <span>{t('overview.hello')}, {user?.displayName || t('overview.sportsman')}</span>
             <span className={"px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border " + (
               isPremium
                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
@@ -260,35 +261,47 @@ export default function OverviewPage() {
         }
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 mb-4">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-[#1F2937] border-2 border-[#374151] hover:border-blue-500/50 rounded-full w-full aspect-square max-w-[220px] flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] hover:-translate-y-1 p-4 sm:p-6 mx-auto">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
-            
-            <div className="relative z-10 mb-2">
-               <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-500 group-hover:text-blue-400 transition-colors" />
-            </div>
-            
-            <div className="relative z-10 flex flex-col items-center justify-center mb-2">
-              {loading ? (
-                 <div className="h-8 w-14 bg-[#374151] animate-pulse rounded-md mb-1"></div>
-              ) : (
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-blue-500 tracking-tight leading-none mb-1.5">{stat.value}</h3>
-              )}
-              <p className="text-[10px] sm:text-xs text-blue-400 font-bold uppercase tracking-wider leading-tight px-1 text-center">{stat.label}</p>
-            </div>
+      <div className="relative mb-4">
+        {/* Animated Connecting Line (Desktop) */}
+        <div className="hidden md:block absolute top-1/2 left-[12.5%] right-[12.5%] h-[1px] bg-[#374151]/30 -translate-y-1/2 z-0 overflow-hidden rounded-full">
+          <motion.div 
+            className="w-[120px] h-full bg-gradient-to-r from-transparent via-yellow-500 to-transparent"
+            animate={{ left: ['-10%', '110%'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            style={{ position: 'absolute', top: 0 }}
+          />
+        </div>
 
-            {stat.trend && (
-              <div className="relative z-10 mt-1 opacity-90 group-hover:opacity-100 transition-opacity">
-                <span className={"text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap " + (
-                  stat.trendUp ? 'text-green-400 bg-green-400/10 border border-green-500/20' : 'text-[#9CA3AF] bg-[#374151] border border-[#4B5563]'
-                )}>
-                  {stat.trend}
-                </span>
+        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 relative z-10 pointer-events-none">
+          {stats.map((stat, i) => (
+            <div key={i} className="bg-[#0B1120] p-1 sm:p-2 rounded-full w-full max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
+              <div className="bg-[#374151] border border-yellow-500/80 hover:border-yellow-400 rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
+                
+                <div className="relative z-10 mb-2">
+                   <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
+                </div>
+                
+                <div className="relative z-10 flex flex-col items-center justify-center mb-2">
+                  {loading ? (
+                     <div className="h-8 w-14 bg-[#4B5563] animate-pulse rounded-md mb-1"></div>
+                  ) : (
+                    <h3 className="text-3xl sm:text-4xl font-extrabold text-yellow-500 tracking-tight leading-none mb-1.5">{stat.value}</h3>
+                  )}
+                  <p className="text-[10px] sm:text-xs text-[#9CA3AF] font-bold uppercase tracking-wider leading-tight px-1 text-center">{stat.label}</p>
+                </div>
+
+                {stat.trend && (
+                  <div className="relative z-10 mt-1 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap text-[#D1D5DB] bg-[#1F2937]/50 border border-[#4B5563]/50">
+                      {stat.trend}
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6 sm:p-8">
