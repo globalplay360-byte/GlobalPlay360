@@ -114,6 +114,119 @@
       "gdpr": "GDPR"
     }
   },
+  "aboutPage": {
+    "hero": {
+      "titleL1": "Revolutionizing the",
+      "titleL2": "Business of Sports",
+      "subtitle": "Global Play 360 is the premier platform connecting athletes, coaches, and sports organizations worldwide. Our mission is to democratize access to sports opportunities and empower professionals to reach their full potential.",
+      "ctaPrimary": "Get Started",
+      "ctaSecondary": "Back to Home"
+    },
+    "serve": {
+      "kicker": "Professional sports office",
+      "title": "Who We Serve",
+      "subtitle": "Our platform is designed to meet the unique needs of every participant in the sports ecosystem.",
+      "players": {
+        "title": "For Players",
+        "desc": "Showcase your skills with a professional profile, find open trials, connect with clubs directly, and take the next big step in your sporting career."
+      },
+      "coaches": {
+        "title": "For Coaches",
+        "desc": "Discover new coaching opportunities, build your professional network, and connect with organizations looking for your specific expertise and tactical vision."
+      },
+      "clubs": {
+        "title": "For Clubs",
+        "desc": "Post open positions, scout verified talent globally, manage incoming applications efficiently, and build your championship-winning team."
+      }
+    },
+    "metrics": {
+      "kicker": "Live from Firestore",
+      "title": "Real numbers, real momentum",
+      "subtitle": "Not placeholders. These figures update in real time as our community grows.",
+      "players": "Players",
+      "coaches": "Coaches",
+      "clubs": "Clubs",
+      "opportunities": "Opportunities"
+    },
+    "stack": {
+      "kicker": "Engineered with care",
+      "title": "Built on a modern stack",
+      "subtitle": "No shortcuts. Every piece of the stack is picked for scale, speed and developer experience.",
+      "react": "UI Framework",
+      "typescript": "Type Safety",
+      "vite": "Build Tool",
+      "tailwind": "Styling",
+      "auth": "Authentication",
+      "firestore": "Real-time DB",
+      "functions": "Serverless Logic",
+      "storage": "Media Files",
+      "stripe": "Payments",
+      "motion": "Animations",
+      "i18n": "Multi-language",
+      "router": "Navigation"
+    },
+    "arch": {
+      "kicker": "Under the hood",
+      "title": "Architecture & Security",
+      "subtitle": "We take infrastructure seriously so you can focus on sport.",
+      "stripe": {
+        "title": "Stripe-grade payments",
+        "desc": "Built on the same infrastructure that powers Zoom and Shopify. We never store card data on our servers."
+      },
+      "auth": {
+        "title": "Enterprise-grade authentication",
+        "desc": "Firebase Auth with email verification, secure password reset and Google Sign-in. Sessions handled server-side."
+      },
+      "gdpr": {
+        "title": "GDPR-first by design",
+        "desc": "Data hosted in europe-west1. Right to erasure implemented via Cloud Functions. Transparent privacy controls."
+      },
+      "realtime": {
+        "title": "Real-time synchronization",
+        "desc": "Firestore listeners and Stripe webhooks keep every subscription, chat and application in sync across devices instantly."
+      }
+    },
+    "roadmap": {
+      "kicker": "Radical transparency",
+      "title": "Our public roadmap",
+      "subtitle": "What we have shipped, what we are building and what is coming next.",
+      "shippedLabel": "Shipped",
+      "progressLabel": "In progress",
+      "comingLabel": "Coming soon",
+      "shipped": {
+        "1": "Multi-sport player profiles",
+        "2": "Opportunities marketplace",
+        "3": "Real-time chat with paywalls",
+        "4": "Stripe Premium subscriptions",
+        "5": "Custom password reset & email verify",
+        "6": "Full i18n — EN / ES / CA"
+      },
+      "progress": {
+        "1": "Club verification badges",
+        "2": "Profile analytics dashboard",
+        "3": "Email notifications on applications"
+      },
+      "coming": {
+        "1": "Native mobile apps (iOS / Android)",
+        "2": "Video highlights & AI tagging",
+        "3": "Smart matchmaking",
+        "4": "Advanced club scouting tools"
+      }
+    },
+    "founding": {
+      "badge": "Founding Members · Free until July 1, 2026",
+      "title": "Be one of the first 100",
+      "subtitle": "Join GlobalPlay360 as a Founding Member: unlimited Premium access, private roadmap input and early-bird pricing for life.",
+      "placeholder": "Your email address",
+      "cta": "Claim my status",
+      "success": "Claimed ✓",
+      "privacy": "No spam. Unsubscribe anytime. Pure sports community."
+    },
+    "closing": {
+      "title": "Partnerships, press or a bold idea?",
+      "subtitle": "We read every email. If GlobalPlay360 resonates with your organization, let’s build something."
+    }
+  },
   "pricingPage": {
     "title": "Choose your plan",
     "subtitle1": "Start for free or unlock your full potential with Premium. Try it ",
@@ -145,8 +258,7 @@
       "title": "Premium",
       "month": "/month",
       "year": "/year",
-      "trial": "✓ 30-day free trial",
-      "desc": "Professional tools to accelerate your career.",
+      "trial": "✓ 30-day free trial",      "saveToday": "You save €{{amount}} today",      "desc": "Professional tools to accelerate your career.",
       "features": {
         "f1": "Featured profile with videos",
         "f2": "Unlimited search",
