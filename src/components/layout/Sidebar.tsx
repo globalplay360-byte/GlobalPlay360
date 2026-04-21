@@ -1,6 +1,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Logo } from '@/components/ui/Logo';
 
 export default function Sidebar() {
   const { user, activePlan } = useAuth();
@@ -44,14 +45,22 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-[#0B1120] border-r border-[#1F2937] flex-shrink-0 flex flex-col hidden lg:flex">
-      <div className="h-16 flex items-center px-6 border-b border-[#1F2937]">
-        <Link to="/dashboard" className="flex items-center gap-2">
-          <span className="text-2xl text-[#3B82F6]">🏆</span>
-          <span className="text-lg font-bold text-white tracking-tight">GP<span className="text-[#3B82F6]">360</span></span>
+      {/* 
+        Ajustat per donar més "respiració" (SaaS spacing):
+        - Altura h-20 (mateixa que el Navbar)
+        - Logo responsive h-6, objecte interactiu net sense ombres
+      */}
+      <div className="h-20 flex items-center px-6 border-b border-[#1F2937]">
+        <Link 
+          to="/dashboard" 
+          className="flex items-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120] focus-visible:ring-[#3B82F6] rounded-sm"
+          aria-label="Anar al panell d'Inici"
+        >
+          <Logo className="h-6 w-auto text-white" />
         </Link>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 mt-2">
         <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2 px-3">
           {t('sidebar.mainMenu', 'Menú Principal')}
         </p>
