@@ -113,7 +113,7 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingInterval('month')}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
+                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-fast ease-out active:scale-[0.98] ${
                   interval === 'month'
                     ? 'bg-[#0070F3] text-white'
                     : 'text-[#8892B0] hover:text-white'
@@ -124,7 +124,7 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingInterval('year')}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${
+                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 ${
                   interval === 'year'
                     ? 'bg-[#0070F3] text-white'
                     : 'text-[#8892B0] hover:text-white'
@@ -143,7 +143,7 @@ export default function PricingPage() {
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             {/* Free */}
-            <div className="bg-[#0A192F] rounded-2xl p-8 border border-white/10 flex flex-col">
+            <div className="bg-[#0A192F] rounded-2xl p-8 border border-white/10 flex flex-col hover:-translate-y-0.5 transition-transform duration-base ease-out">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{t('pricingPage.free.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
@@ -164,7 +164,7 @@ export default function PricingPage() {
 
               <Link
                 to="/register"
-                className="block w-full py-3 px-4 text-center rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold transition-colors"
+                className="block w-full py-3 px-4 text-center rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
               >
                 {t('pricingPage.free.cta')}
               </Link>
@@ -206,7 +206,7 @@ export default function PricingPage() {
               {isAlreadyPremium ? (
                 <Link
                   to="/dashboard"
-                  className="w-full py-3 px-4 text-center rounded-lg bg-[#10B981] hover:bg-[#0E9F6E] text-white font-semibold transition-colors shadow-lg block"
+                  className="w-full py-3 px-4 text-center rounded-lg bg-[#10B981] hover:bg-[#0E9F6E] text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] shadow-lg block"
                 >
                   {t('pricingPage.premium.active')}
                 </Link>
@@ -215,7 +215,7 @@ export default function PricingPage() {
                   type="button"
                   onClick={handleSubscribe}
                   disabled={loading || checkoutLoading || subscriptionLoading || !prices[interval]}
-                  className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] disabled:active:scale-100 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading
                     ? t('pricingPage.premium.redirecting')
