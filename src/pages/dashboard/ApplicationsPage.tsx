@@ -182,14 +182,14 @@ export default function ApplicationsPage() {
     <div className="p-6 max-w-6xl mx-auto w-full">
       <div className="flex flex-col gap-4 sm:p-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
               {currentUserRole === "club"
                 ? t('applications.titleClub')
                 : t('applications.titlePlayer')}
             </h1>
-            <p className="text-[#9CA3AF] mt-1 text-sm">
+            <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
               {currentUserRole === "club"
                 ? t('applications.descClub')
                 : t('applications.descPlayer')}
@@ -202,22 +202,22 @@ export default function ApplicationsPage() {
             {applications.map((app) => (
               <div
                 key={app.id}
-                className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 transition-colors group flex flex-col md:flex-row p-5 gap-6 mb-4 relative overflow-hidden"
+                className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 shadow-sm hover:shadow-[#3B82F6]/10 hover:-translate-y-0.5 transition-all duration-base group flex flex-col md:flex-row p-5 sm:p-6 gap-6 mb-2 relative overflow-hidden"
               >
                 {/* Línia superior de status */}
                 <div
-                  className={`absolute top-0 left-0 h-1 w-full
-                  ${app.status === "accepted" ? "bg-emerald-500" : ""}
-                  ${app.status === "rejected" ? "bg-red-500" : ""}
-                  ${app.status === "in_review" ? "bg-purple-500" : ""}
-                  ${app.status === "submitted" ? "bg-blue-500" : ""}
+                  className={`absolute top-0 left-0 h-1.5 w-full
+                  ${app.status === "accepted" ? "bg-emerald-500 shadow-sm shadow-emerald-500/50" : ""}
+                  ${app.status === "rejected" ? "bg-red-500 shadow-sm shadow-red-500/50" : ""}
+                  ${app.status === "in_review" ? "bg-purple-500 shadow-sm shadow-purple-500/50" : ""}
+                  ${app.status === "submitted" ? "bg-blue-500 shadow-sm shadow-blue-500/50" : ""}
                 `}
                 />
 
                 {/* Info Principal */}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 pt-1">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[#9CA3AF] text-sm font-medium">
+                    <span className="text-[#9CA3AF] text-xs font-bold uppercase tracking-wider">
                       {t('applications.appliedOn', { date: new Date(app.createdAt).toLocaleDateString("ca-ES") })}
                     </span>
                     <div className="block md:hidden">
@@ -225,10 +225,10 @@ export default function ApplicationsPage() {
                     </div>
                   </div>
 
-                  <h2 className="text-lg font-bold text-white mb-1 truncate">
+                  <h2 className="text-xl font-extrabold text-white mb-1.5 tracking-tight truncate group-hover:text-[#3B82F6] transition-colors">
                     {app.opportunity?.title || t('applications.opportunityClosed')}
                   </h2>
-                  <p className="text-[#3B82F6] font-medium text-sm mb-4">
+                  <p className="text-[#3B82F6] font-bold text-sm mb-4 tracking-wide">
                     {currentUserRole === "club"
                       ? t('applications.candidateLabel', { name: app.candidate?.displayName || t('applications.unknownUser') })
                       : app.club?.displayName || t('applications.unknownClub')}
@@ -280,8 +280,8 @@ export default function ApplicationsPage() {
                   </div>
 
                   {app.message && (
-                    <div className="mt-4 p-3 bg-[#0F172A] border border-[#1F2937] rounded-lg">
-                      <p className="text-sm text-[#9CA3AF] italic line-clamp-2">
+                    <div className="mt-4 p-3 bg-[#0F172A] border border-[#1F2937] rounded-lg shadow-inner">
+                      <p className="text-sm text-[#9CA3AF] italic leading-relaxed line-clamp-2">
                         "{app.message}"
                       </p>
                     </div>
@@ -289,18 +289,18 @@ export default function ApplicationsPage() {
                 </div>
 
                 {/* Accions i Estat */}
-                <div className="flex flex-col justify-between items-start md:items-end gap-4 min-w-[160px] border-t border-[#1F2937] md:border-t-0 pt-4 md:pt-0">
-                  <div className="hidden md:block">
+                <div className="flex flex-col justify-between items-start md:items-end gap-5 min-w-[160px] border-t border-[#1F2937] md:border-t-0 pt-4 md:pt-0">
+                  <div className="hidden md:block mt-1">
                     <StatusBadge
                       status={app.status}
-                      className="text-sm px-3 py-1"
+                      className="text-xs px-3 py-1 font-bold uppercase tracking-wider"
                     />
                   </div>
-                  <div className="flex flex-col sm:flex-row w-full gap-2">
+                  <div className="flex flex-col sm:flex-row w-full gap-2.5">
                     <Link
                       to={`/dashboard/opportunities/${app.opportunityId}`}
                       state={{ from: 'applications' }}
-                      className="w-full sm:w-auto px-4 py-2 border border-[#1F2937] text-white hover:bg-[#1F2937] text-sm font-medium rounded-lg transition-colors text-center"
+                      className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-white hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
                     >
                       {t('applications.viewDetail')}
                     </Link>
@@ -310,12 +310,12 @@ export default function ApplicationsPage() {
                       (app.status === "accepted" || app.status === "in_review") && (
                         <Button
                           variant="primary"
-                          className="w-full sm:w-auto px-4 py-2 text-sm inline-flex items-center justify-center gap-1.5"
+                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide inline-flex items-center justify-center gap-1.5 shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
                           onClick={() => handleStartConversation(app.candidate!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
+                            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
                           {t('applications.contact')}
@@ -327,12 +327,12 @@ export default function ApplicationsPage() {
                       app.club && (
                         <Button
                           variant="primary"
-                          className="w-full sm:w-auto px-4 py-2 text-sm inline-flex items-center justify-center gap-1.5"
+                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide inline-flex items-center justify-center gap-1.5 shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
                           onClick={() => handleStartConversation(app.club!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
+                            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
                           {t('applications.startConversation')}
