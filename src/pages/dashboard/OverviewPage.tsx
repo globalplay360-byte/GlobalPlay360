@@ -151,7 +151,7 @@ export default function OverviewPage() {
       },
       { 
         label: t('overview.stats.coachPlayer.profileStrength'), 
-        value: '100%', // Placeholder, es pot connectar al Profile context
+        value: '100%', // TODO(Feature): Ancorar a un sistema de progrés basat en el context/dades de l'usuari (Profile) per calcular un % real de completesa.
         icon: UserCircleIcon, 
         trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
         trendUp: true 
