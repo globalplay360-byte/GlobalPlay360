@@ -80,15 +80,29 @@ export default function PricingPage() {
       : null;
 
   return (
-    <div className="bg-[#0B1120] text-white min-h-screen">
-      <section className="py-20 px-4">
+    <div className="relative min-h-screen text-white overflow-hidden bg-[#0B1120]">
+      {/* Video Background amb Overlay fosc per no perdre llegibilitat */}
+      <div className="absolute inset-0 z-0 select-none pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-40 object-center"
+        >
+          <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/globalHome.mp4?alt=media&token=239272b5-8d5d-4e1b-a347-05fe2bb94710" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/40 via-[#0B1120]/70 to-[#0B1120]"></div>
+      </div>
+
+      <section className="relative z-10 py-20 px-4">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('pricingPage.title')}</h1>
-            <p className="text-[#8892B0] text-lg max-w-2xl mx-auto">
+          <div className="text-center mb-14">
+            <h1 className="text-3xl md:text-4xl font-medium text-white/90 tracking-normal mb-4">{t('pricingPage.title')}</h1>
+            <p className="text-base md:text-lg text-[#9CA3AF] max-w-xl mx-auto leading-relaxed">
               {t('pricingPage.subtitle1')}
-              <strong className="text-white">{t('pricingPage.subtitleBold')}</strong>
+              <strong className="text-white font-medium mx-1">{t('pricingPage.subtitleBold')}</strong>
               {t('pricingPage.subtitle2')}
             </p>
           </div>
@@ -108,15 +122,15 @@ export default function PricingPage() {
           )}
 
           {/* Interval toggle */}
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex bg-[#0A192F] border border-white/10 rounded-full p-1">
+          <div className="flex justify-center mb-16 relative mt-4">
+            <div className="inline-flex bg-[#111827] border border-[#1F2937] rounded-full p-1.5 shadow-inner relative">
               <button
                 type="button"
                 onClick={() => setBillingInterval('month')}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-fast ease-out active:scale-[0.98] ${
+                className={`relative z-10 px-8 py-2.5 rounded-full text-sm font-medium transition-all duration-300 w-32 sm:w-36 ${
                   interval === 'month'
-                    ? 'bg-[#0070F3] text-white'
-                    : 'text-[#8892B0] hover:text-white'
+                    ? 'bg-[#3B82F6] text-white shadow-md'
+                    : 'text-[#9CA3AF] hover:text-white'
                 }`}
               >
                 {t('pricingPage.monthly')}
@@ -124,18 +138,13 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingInterval('year')}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 ${
+                className={`relative z-10 px-8 py-2.5 rounded-full text-sm font-medium transition-all duration-300 w-32 sm:w-36 ${
                   interval === 'year'
-                    ? 'bg-[#0070F3] text-white'
-                    : 'text-[#8892B0] hover:text-white'
+                    ? 'bg-[#3B82F6] text-white shadow-md'
+                    : 'text-[#9CA3AF] hover:text-white'
                 }`}
               >
                 {t('pricingPage.annual')}
-                {monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 && (
-                  <span className="text-xs bg-[#FFC107] text-[#020C1B] px-2 py-0.5 rounded-full">
-                    {t('pricingPage.save', { amount: monthlyTotalIfAnnual.toFixed(0) })}
-                  </span>
-                )}
               </button>
             </div>
           </div>
@@ -143,17 +152,17 @@ export default function PricingPage() {
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             {/* Free */}
-            <div className="bg-[#0A192F] rounded-2xl p-8 border border-white/10 flex flex-col hover:-translate-y-0.5 transition-transform duration-base ease-out">
+            <div className="bg-[#111827] rounded-2xl p-8 border border-[#1F2937] flex flex-col hover:-translate-y-0.5 transition-transform duration-base ease-out shadow-sm">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">{t('pricingPage.free.title')}</h3>
+                <h3 className="text-2xl font-semibold text-white/90 mb-2 tracking-normal">{t('pricingPage.free.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-5xl font-extrabold text-white">0€</span>
-                  <span className="text-[#8892B0]">{t('pricingPage.free.month')}</span>
+                  <span className="text-5xl font-medium text-white tracking-tight">0€</span>
+                  <span className="text-[#9CA3AF] font-medium tracking-wide uppercase text-sm">{t('pricingPage.free.month')}</span>
                 </div>
-                <p className="text-[#8892B0] text-sm">{t('pricingPage.free.desc')}</p>
+                <p className="text-[#9CA3AF] text-sm leading-relaxed">{t('pricingPage.free.desc')}</p>
               </div>
 
-              <ul className="space-y-3 mb-8 text-sm text-[#E2E8F0] flex-1">
+              <ul className="space-y-4 mb-8 text-sm text-[#E2E8F0] flex-1">
                 <FeatureRow included>{t('pricingPage.free.features.f1')}</FeatureRow>
                 <FeatureRow included>{t('pricingPage.free.features.f2')}</FeatureRow>
                 <FeatureRow included>{t('pricingPage.free.features.f3')}</FeatureRow>
@@ -164,37 +173,55 @@ export default function PricingPage() {
 
               <Link
                 to="/register"
-                className="block w-full py-3 px-4 text-center rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
+                className="block w-full py-3.5 px-4 text-center rounded-xl border border-[#374151] text-white hover:bg-[#1F2937] font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
               >
                 {t('pricingPage.free.cta')}
               </Link>
             </div>
 
             {/* Premium */}
-            <div className="bg-gradient-to-b from-[#112240] to-[#0A192F] rounded-2xl p-8 border-2 border-[#0070F3] shadow-[0_0_30px_rgba(0,112,243,0.15)] relative flex flex-col">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0070F3] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            <div className="bg-gradient-to-b from-[#111827] to-[#0B1120] rounded-2xl p-8 border border-[#3B82F6]/50 ring-1 ring-[#3B82F6]/20 relative flex flex-col shadow-lg shadow-[#3B82F6]/10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-[#3B82F6] to-blue-600 text-white px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest shadow-md">
                 {t('pricingPage.premium.badge')}
               </div>
 
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">{t('pricingPage.premium.title')}</h3>
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-5xl font-extrabold text-[#0070F3]">
+                <h3 className="text-2xl font-semibold text-white/90 mb-2 tracking-normal">{t('pricingPage.premium.title')}</h3>
+                <div className="flex items-baseline gap-2 mb-3">
+                  {interval === 'year' && prices.month && (
+                    <span className="text-2xl sm:text-3xl font-medium text-[#6B7280] line-through decoration-2 decoration-[#6B7280] mr-1">
+                      {((prices.month.unit_amount * 12) / 100).toFixed(0)}€
+                    </span>
+                  )}
+                  <span className="text-5xl font-medium text-[#3B82F6] tracking-tight">
                     {loading ? '...' : priceLabel(prices[interval])}
                   </span>
-                  <span className="text-[#8892B0]">
+                  <span className="text-[#9CA3AF] font-medium tracking-wide uppercase text-sm">
                     {interval === 'month' ? t('pricingPage.premium.month') : t('pricingPage.premium.year')}
                   </span>
                 </div>
-                <p className="text-sm text-[#FFC107] font-medium mb-2">
-                  {t('pricingPage.premium.trial')}
-                </p>
-                <p className="text-[#8892B0] text-sm">
+                
+                {interval === 'year' && monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 ? (
+                  <div className="flex flex-col gap-1.5 mb-2">
+                    <span className="inline-block w-fit bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 text-xs font-semibold px-2.5 py-1 rounded-md mb-1">
+                      T'estalvies {monthlyTotalIfAnnual.toFixed(0)}€ avui
+                    </span>
+                    <p className="text-sm text-[#9CA3AF] font-medium tracking-wide">
+                      {t('pricingPage.premium.trial')}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#9CA3AF] font-medium mb-3 tracking-wide">
+                    {t('pricingPage.premium.trial')}
+                  </p>
+                )}
+                
+                <p className="text-[#9CA3AF] text-sm leading-relaxed mt-3">
                   {t('pricingPage.premium.desc')}
                 </p>
               </div>
 
-              <ul className="space-y-3 mb-8 text-sm text-[#E2E8F0] flex-1">
+              <ul className="space-y-4 mb-8 text-sm text-[#E2E8F0] flex-1">
                 <FeatureRow included>{t('pricingPage.premium.features.f1')}</FeatureRow>
                 <FeatureRow included>{t('pricingPage.premium.features.f2')}</FeatureRow>
                 <FeatureRow included>{t('pricingPage.premium.features.f3')}</FeatureRow>
@@ -206,7 +233,7 @@ export default function PricingPage() {
               {isAlreadyPremium ? (
                 <Link
                   to="/dashboard"
-                  className="w-full py-3 px-4 text-center rounded-lg bg-[#10B981] hover:bg-[#0E9F6E] text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] shadow-lg block"
+                  className="w-full py-3.5 px-4 text-center rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] shadow-lg shadow-[#3B82F6]/20 block"
                 >
                   {t('pricingPage.premium.active')}
                 </Link>
@@ -215,7 +242,7 @@ export default function PricingPage() {
                   type="button"
                   onClick={handleSubscribe}
                   disabled={loading || checkoutLoading || subscriptionLoading || !prices[interval]}
-                  className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] disabled:active:scale-100 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] disabled:active:scale-100 shadow-lg shadow-[#3B82F6]/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading
                     ? t('pricingPage.premium.redirecting')
@@ -226,7 +253,7 @@ export default function PricingPage() {
                         : t('pricingPage.premium.ctaLoggedOut')}
                 </button>
               )}
-              <p className="text-xs text-[#8892B0] text-center mt-3">
+              <p className="text-xs text-[#9CA3AF] text-center mt-4">
                 {isAlreadyPremium
                   ? t('pricingPage.premium.manage')
                   : t('pricingPage.premium.cancelAnytime')}
@@ -235,7 +262,7 @@ export default function PricingPage() {
           </div>
 
           {/* Trust row */}
-          <div className="mt-12 text-center text-xs text-[#8892B0]">
+          <div className="mt-12 text-center text-sm font-medium text-[#6B7280]">
             {t('pricingPage.trustText')}
           </div>
         </div>

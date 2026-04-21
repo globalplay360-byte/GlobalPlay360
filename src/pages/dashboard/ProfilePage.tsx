@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
+import PageHeader from '@/components/ui/PageHeader';
 import ProfileEditForm from '@/components/profile/ProfileEditForm';
 import { uploadAvatar, updateUserProfile } from '@/services/profile.service';   
 
@@ -51,18 +52,16 @@ export default function ProfilePage() {
   if (mode === 'edit') {
     return (
       <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-4 sm:p-6">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
-            <p className="text-[#9CA3AF] text-sm mt-2 leading-relaxed">
-              {t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
-            </p>
-          </div>
-          <Button variant="outline" onClick={() => setMode('view')} className="transition-all duration-fast active:scale-[0.98] group">
-            <span className="inline-block transition-transform duration-fast group-hover:-translate-x-1 mr-1">←</span>
-            {t('profile.backToProfile', 'Tornar')}
-          </Button>
-        </header>
+        <PageHeader
+          title={t('profile.editProfile', 'Editar Perfil')}
+          description={t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
+          action={
+            <Button variant="outline" onClick={() => setMode('view')} className="transition-all duration-fast active:scale-[0.98] group">
+              <span className="inline-block transition-transform duration-fast group-hover:-translate-x-1 mr-1">←</span>
+              {t('profile.backToProfile', 'Tornar')}
+            </Button>
+          }
+        />
 
         <ProfileEditForm
           user={user}
@@ -131,8 +130,8 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex flex-col gap-1 md:pb-2">
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{user.displayName}</h1>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 mt-1.5 text-[#9CA3AF] text-sm">
+              <h1 className="text-2xl sm:text-3xl font-medium text-white/90 tracking-normal">{user.displayName}</h1>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 mt-1text-[#9CA3AF] text-sm">
                 <span className="uppercase tracking-wider font-semibold text-[#3B82F6]">{user.role}</span>
                 {user.sport && (
                   <>
@@ -162,17 +161,17 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 pt-4">
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 shadow-sm">
-            <h2 className="text-xl font-extrabold text-white tracking-tight mb-4">
+            <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">
               {user.role === 'club' ? t('profile.aboutEntity', 'Sobre l\'entitat') : t('profile.aboutMe', 'Sobre mi')}
             </h2>
-            <p className="text-[#9CA3AF] leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm text-[#9CA3AF] leading-relaxed whitespace-pre-wrap">
               {user.bio || t('profile.emptyBio', 'No hi ha biografia.')}
             </p>
           </div>
 
           {user.role === 'player' && (user.height || user.weight || user.position || user.dateOfBirth) && (
             <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 shadow-sm">
-              <h2 className="text-xl font-extrabold text-white tracking-tight mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
+              <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {user.position && <StatCell label={t('profile.position', 'Posició')} value={user.position} />}
                 {user.height && <StatCell label={t('profile.height', 'Alçada')} value={`${user.height} cm`} />}
@@ -198,8 +197,8 @@ export default function ProfilePage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-lg text-white font-extrabold tracking-tight capitalize leading-tight">{t('profile.planName', 'Pla {{plan}}', { plan: activePlan })}</p>
-                <p className="text-sm text-[#9CA3AF] mt-0.5">
+                <p className="text-lg text-white/90 font-medium tracking-normal capitalize leading-tight">{t('profile.planName', 'Pla {{plan}}', { plan: activePlan })}</p>
+                <p className="text-xs text-[#9CA3AF] mt-1">
                   {isPremium ? t('profile.premiumAccess', 'Accés Premium') : t('profile.upgradeToContact', 'Millora per contactar')}
                 </p>
               </div>
@@ -258,7 +257,7 @@ export default function ProfilePage() {
 function StatCell({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-[#0F172A] p-4 rounded-xl border border-[#1F2937] flex flex-col items-center justify-center text-center shadow-inner">
-      <span className="text-xl font-extrabold text-white mb-1.5 tracking-tight">{value}</span>
+      <span className="text-xl font-medium text-white/90 mb-1.5 tracking-normal">{value}</span>
       <span className="text-[11px] text-[#9CA3AF] uppercase tracking-widest font-semibold">{label}</span>
     </div>
   );

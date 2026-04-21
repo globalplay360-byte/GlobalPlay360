@@ -201,8 +201,8 @@ const handleMessage = async () => {
           <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 sm:p-8 md:p-10 shadow-sm relative overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-2 leading-tight">{opportunity.title}</h1>
-                {clubName && <p className="text-[#3B82F6] font-semibold text-lg">{clubName}</p>}
+                <h1 className="text-2xl sm:text-3xl font-medium text-white/90 mb-2 tracking-normal leading-tight">{opportunity.title}</h1>
+                {clubName && <p className="text-[#3B82F6] font-medium text-base">{clubName}</p>}
               </div>
               <Badge variant={opportunity.status === 'open' ? 'success' : 'default'} className="w-fit uppercase tracking-wider font-semibold">
                 {opportunity.status}
@@ -239,15 +239,15 @@ const handleMessage = async () => {
 
             {/* Description */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold mb-4 text-white">Sobre l'Oportunitat</h2>
-              <div className="text-[#6B7280] leading-relaxed space-y-4 whitespace-pre-wrap">
+              <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">Sobre l'Oportunitat</h2>
+              <div className="text-sm text-[#9CA3AF] leading-relaxed space-y-4 whitespace-pre-wrap">
                 {opportunity.description}
               </div>
             </div>
 
             {/* Requirements */}
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-white">{t("opportunityDetail.requirements")}</h2>
+              <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">{t("opportunityDetail.requirements")}</h2>
               <ul className="space-y-3">
                 {opportunity.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start">

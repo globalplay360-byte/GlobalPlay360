@@ -16,6 +16,7 @@ import {
   ChartBarIcon
 } from '@heroicons/react/24/outline';
 import { SparklesIcon } from '@heroicons/react/24/solid';
+import PageHeader from '@/components/ui/PageHeader';
 
 type BaseStats = {
   label: string;
@@ -55,12 +56,10 @@ export default function OverviewPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold tracking-tight text-white">       
-              {t('overview.hello')}, {user?.displayName || t('overview.sportsman')} 👋
-            </h1>
+      <PageHeader
+        title={
+          <div className="flex items-center gap-3">
+            <span>{t('overview.hello')}, {user?.displayName || t('overview.sportsman')} 👋</span>
             <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border ${
               isPremium
                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
@@ -69,27 +68,28 @@ export default function OverviewPage() {
               {t('overview.planTag')} {activePlan.toUpperCase()}
             </span>
           </div>
-          <p className="text-[#9CA3AF] text-sm md:text-base">
-            {isClub
-              ? t('overview.clubDescription')
-              : user?.role === 'coach'
-                ? t('overview.coachDescription')
-                : t('overview.playerDescription')}
-          </p>
-        </div>
-
-        {isClub ? (
-          <Link to="/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-            <PlusCircleIcon className="w-5 h-5" />
-            {t('overview.publishOffer')}
-          </Link>
-        ) : (
-          <Link to="/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
-            <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
-            {t('overview.completeProfile')}
-          </Link>
-        )}
-      </div>
+        }
+        description={
+          isClub
+            ? t('overview.clubDescription')
+            : user?.role === 'coach'
+              ? t('overview.coachDescription')
+              : t('overview.playerDescription')
+        }
+        action={
+          isClub ? (
+            <Link to="/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+              <PlusCircleIcon className="w-5 h-5" />
+              {t('overview.publishOffer')}
+            </Link>
+          ) : (
+            <Link to="/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
+              <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
+              {t('overview.completeProfile')}
+            </Link>
+          )
+        }
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 sm:p-6">
         {stats.map((stat, i) => (

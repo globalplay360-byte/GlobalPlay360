@@ -7,6 +7,7 @@ import { getUserDoc } from '@/services/auth.service';
 import type { Conversation, User } from '@/types';
 import EmptyState from '@/components/ui/EmptyState';
 import PremiumLockCard from '@/components/ui/PremiumLockCard';
+import PageHeader from '@/components/ui/PageHeader';
 
 interface ConversationExtended extends Conversation {
   otherParticipant?: User;
@@ -118,12 +119,10 @@ export default function MessagesPage() {
   if (activePlan === 'free') {
     return (
       <div className="p-6 max-w-2xl mx-auto w-full">
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
-          <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
-            {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
-          </p>
-        </div>
+        <PageHeader
+          title={t('messages.pageTitle', 'Missatges Directes')}
+          description={t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
+        />
 
         <PremiumLockCard
           title={t("messages.unlockTitle", "Mantingues converses en temps real amb els clubs")}
@@ -135,12 +134,10 @@ export default function MessagesPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto w-full">
-      <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
-        <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
-          {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
-        </p>
-      </div>
+      <PageHeader
+        title={t('messages.pageTitle', 'Missatges Directes')}
+        description={t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
+      />
 
       {conversations.length > 0 ? (
         <div className="flex flex-col gap-3.5">
