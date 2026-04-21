@@ -27,8 +27,8 @@ export default function PremiumLockCard({
         </svg>
       </div>
       
-      <h3 className="text-2xl font-extrabold text-white tracking-tight mb-3 z-10">{finalTitle}</h3>
-      <p className="text-[#9CA3AF] mb-6 max-w-md z-10 leading-relaxed">{finalDescription}</p>
+      <h3 className="text-xl sm:text-2xl font-medium text-white/90 tracking-normal mb-3 z-10">{finalTitle}</h3>
+      <p className="text-sm text-[#9CA3AF] mb-6 max-w-md z-10 leading-relaxed">{finalDescription}</p>
       
       <Link
         to="/pricing"

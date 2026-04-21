@@ -119,8 +119,8 @@ export default function MessagesPage() {
     return (
       <div className="p-6 max-w-2xl mx-auto w-full">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
-          <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
+          <h1 className="text-xl sm:text-2xl font-medium text-white/90 tracking-normal">{t('messages.pageTitle', 'Missatges Directes')}</h1>
+          <p className="text-sm text-[#9CA3AF] mt-1.5 leading-relaxed">
             {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
           </p>
         </div>
@@ -136,8 +136,8 @@ export default function MessagesPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto w-full">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">{t('messages.pageTitle', 'Missatges Directes')}</h1>
-        <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
+        <h1 className="text-xl sm:text-2xl font-medium text-white/90 tracking-normal">{t('messages.pageTitle', 'Missatges Directes')}</h1>
+        <p className="text-sm text-[#9CA3AF] mt-1.5 leading-relaxed">
           {t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
         </p>
       </div>
