@@ -15,6 +15,7 @@ import type { Application, Opportunity, User } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
+import PageHeader from "@/components/ui/PageHeader";
 
 interface ApplicationExtended extends Application {
   opportunity?: Opportunity;
@@ -182,20 +183,18 @@ export default function ApplicationsPage() {
     <div className="p-6 max-w-6xl mx-auto w-full">
       <div className="flex flex-col gap-4 sm:p-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-              {currentUserRole === "club"
-                ? t('applications.titleClub')
-                : t('applications.titlePlayer')}
-            </h1>
-            <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
-              {currentUserRole === "club"
-                ? t('applications.descClub')
-                : t('applications.descPlayer')}
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          title={
+            currentUserRole === "club"
+              ? t('applications.titleClub')
+              : t('applications.titlePlayer')
+          }
+          description={
+            currentUserRole === "club"
+              ? t('applications.descClub')
+              : t('applications.descPlayer')
+          }
+        />
 
         {applications.length > 0 ? (
           <div className="flex flex-col gap-4">

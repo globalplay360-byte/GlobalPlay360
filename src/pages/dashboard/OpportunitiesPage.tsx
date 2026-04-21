@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import EmptyState from '@/components/ui/EmptyState';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function OpportunitiesPage() {
   const { user } = useAuth();
@@ -67,19 +68,17 @@ export default function OpportunitiesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{t('opportunities.marketplace')}</h1>
-          <p className="mt-2 text-[#9CA3AF] text-sm leading-relaxed">{t('opportunities.discoverOpps')}</p>
-        </div>
-        {user?.role === 'club' && (
-          <div className="mt-4 md:mt-0">
+      <PageHeader
+        title={t('opportunities.marketplace')}
+        description={t('opportunities.discoverOpps')}
+        action={
+          user?.role === 'club' && (
             <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
               {t('opportunities.createOpportunity')}
             </Button>
-          </div>
-        )}
-      </div>
+          )
+        }
+      />
 
       {/* Filters (placeholder) */}
       <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto shadow-sm">

@@ -7,6 +7,7 @@ import type { Opportunity } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function MyOpportunitiesPage() {
   const { user } = useAuth();
@@ -126,17 +127,19 @@ const formatDate = (dateString: string) => {
   return (
     <div className="p-6 max-w-5xl mx-auto w-full">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight">{t('myOpportunities.title', 'Les Meves Ofertes')}</h1>
-          <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
+      <PageHeader
+        title={t('myOpportunities.title', 'Les Meves Ofertes')}
+        description={
+          <>
             {t('myOpportunities.subtitle1', 'Gestiona les oportunitats que has publicat. Les ofertes')} <span className="text-[#10B981] font-semibold">{t('myOpportunities.openStatus', 'obertes')}</span> {t('myOpportunities.subtitle2', 'són visibles al marketplace i accepten candidatures. Les ofertes')} <span className="text-[#6B7280] font-semibold">{t('myOpportunities.closedStatus', 'tancades')}</span> {t('myOpportunities.subtitle3', 'deixen de ser visibles.')}
-          </p>
-        </div>
-        <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="active:scale-[0.98] shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base">
-          {t('myOpportunities.newOpportunity', 'Nova Oportunitat')}
-        </Button>
-      </div>
+          </>
+        }
+        action={
+          <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="active:scale-[0.98] shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base">
+            {t('myOpportunities.newOpportunity', 'Nova Oportunitat')}
+          </Button>
+        }
+      />
 
       {opportunities.length === 0 ? (
         <EmptyState

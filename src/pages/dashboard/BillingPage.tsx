@@ -10,6 +10,7 @@ import {
   ExclamationTriangleIcon,
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function BillingPage() {  const { t, i18n } = useTranslation();  const { user, subscription, activePlan, subscriptionLoading } = useAuth();
   const navigate = useNavigate();
@@ -74,10 +75,10 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 text-white">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">{t('billing.title', 'Facturació')}</h1>
-        <p className="text-gray-400 text-sm">{t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}</p>
-      </div>
+      <PageHeader
+        title={t('billing.title', 'Facturació')}
+        description={t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}
+      />
 
       {/* Banner cancel·lació programada */}
       {subscription.cancel_at_period_end && (
