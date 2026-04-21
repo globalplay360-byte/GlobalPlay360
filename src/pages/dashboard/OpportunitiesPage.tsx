@@ -69,22 +69,24 @@ export default function OpportunitiesPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">{t('opportunities.marketplace')}</h1>
-          <p className="mt-2 text-[#9CA3AF]">{t('opportunities.discoverOpps')}</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{t('opportunities.marketplace')}</h1>
+          <p className="mt-2 text-[#9CA3AF] text-sm leading-relaxed">{t('opportunities.discoverOpps')}</p>
         </div>
         {user?.role === 'club' && (
           <div className="mt-4 md:mt-0">
-            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>{t('opportunities.createOpportunity')}</Button>
+            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
+              {t('opportunities.createOpportunity')}
+            </Button>
           </div>
         )}
       </div>
 
       {/* Filters (placeholder) */}
-      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto">
-        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm">{t('opportunities.filters.all')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.football')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.basketball')}</Badge>
-        <Badge variant="default" className="cursor-pointer hover:bg-[#1F2937] px-4 py-2 text-sm">{t('opportunities.filters.proContracts')}</Badge>
+      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto shadow-sm">
+        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out active:scale-[0.98] hover:shadow-md hover:shadow-[#3B82F6]/10">{t('opportunities.filters.all')}</Badge>
+        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.football')}</Badge>
+        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.basketball')}</Badge>
+        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.proContracts')}</Badge>
       </div>
 
       {/* ── Loading state ──────────────────────────────── */}
@@ -111,12 +113,12 @@ export default function OpportunitiesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
           {opportunities.map((opp) => (
-            <Card key={opp.id} className="flex flex-col hover:border-[#374151] transition-colors">
+            <Card key={opp.id} className="flex flex-col hover:border-[#3B82F6]/50 group">
               <CardHeader className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-lg font-bold text-white">{opp.title}</h3>
+                  <h3 className="text-lg font-bold text-white group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
                 </div>
-                <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px]">
+                <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold">
                   {t(`opportunities.status.${opp.status}`)}
                 </Badge>
               </CardHeader>
@@ -151,11 +153,11 @@ export default function OpportunitiesPage() {
                   {t('opportunities.published')} {formatDate(opp.createdAt)}
                 </div>
                 <div className="flex gap-3">
-                  <Button variant="outline" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
+                  <Button variant="outline" size="sm" className="transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
                     {t('opportunities.viewDetail')}
                   </Button>
                   {user?.role !== 'club' && (
-                    <Button variant="primary" size="sm" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
+                    <Button variant="primary" size="sm" className="shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
                       {t('opportunities.apply')}
                     </Button>
                   )}

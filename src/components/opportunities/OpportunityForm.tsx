@@ -88,8 +88,8 @@ export default function OpportunityForm({
     }
   };
 
-  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-white text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-colors';
-  const labelClass = 'block text-sm font-medium text-[#9CA3AF] mb-1.5';
+  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-white text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] hover:border-[#374151] transition-all duration-fast ease-out shadow-sm';
+  const labelClass = 'block text-sm font-semibold text-[#9CA3AF] mb-1.5 tracking-wide';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -170,7 +170,7 @@ export default function OpportunityForm({
           <button
             type="button"
             onClick={addRequirement}
-            className="px-3 py-2.5 sm:px-4 sm:py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-colors border border-[#374151]"
+            className="px-3 py-2.5 sm:px-4 sm:py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-all duration-fast ease-out active:scale-[0.98] border border-[#374151] shadow-sm"
           >
             {t("opportunityForm.addBtn", "Afegir")}
           </button>
@@ -201,8 +201,10 @@ export default function OpportunityForm({
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 pt-2">
-        <Button variant="outline" type="button" onClick={onCancel}>{t("opportunityForm.cancelBtn")}</Button>
-        <Button variant="primary" type="submit" disabled={submitting}>
+        <Button variant="outline" type="button" onClick={onCancel} className="transition-all duration-fast active:scale-[0.98]">
+          {t("opportunityForm.cancelBtn")}
+        </Button>
+        <Button variant="primary" type="submit" disabled={submitting} className="shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
           {submitting ? submittingLabel : submitLabel}
         </Button>
       </div>

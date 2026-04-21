@@ -185,32 +185,32 @@ const handleMessage = async () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white space-y-6">
       {/* Top Nav */}
-      <div>
+      <div className="mb-6">
         <button
           onClick={() => navigate(backTarget.url)}
-          className="flex items-center text-sm text-[#9CA3AF] hover:text-white transition-colors"
+          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-white transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1"
         >
           <ArrowLeftIcon className="w-4 h-4 mr-2" />
           {backTarget.label}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 sm:p-8">
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 sm:p-8 md:p-10 shadow-sm relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight text-white mb-2">{opportunity.title}</h1>
-                {clubName && <p className="text-blue-400 font-medium text-lg">{clubName}</p>}
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-2 leading-tight">{opportunity.title}</h1>
+                {clubName && <p className="text-[#3B82F6] font-semibold text-lg">{clubName}</p>}
               </div>
-              <Badge variant={opportunity.status === 'open' ? 'success' : 'default'} className="w-fit">
-                {opportunity.status.toUpperCase()}
+              <Badge variant={opportunity.status === 'open' ? 'success' : 'default'} className="w-fit uppercase tracking-wider font-semibold">
+                {opportunity.status}
               </Badge>
             </div>
 
             {/* Quick Summary Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-[#1F2937] mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 border-y border-[#1F2937] mb-10">
               <div>
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <MapPinIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.location")}
@@ -263,23 +263,25 @@ const handleMessage = async () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Action Card */}
-          <Card className="border-blue-900/30 shadow-lg shadow-blue-900/10">
-            <CardContent className="p-4 sm:p-6">
+          <Card className="border-[#3B82F6]/30 shadow-lg shadow-[#3B82F6]/10 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-[#3B82F6]/5 to-transparent pointer-events-none" />
+            <CardContent className="p-6 sm:p-8 relative z-10">
               {user?.role === t('opportunityDetail.club') ? (
-                <div className="text-center text-[#9CA3AF] p-4">
+                <div className="text-center text-[#9CA3AF] p-4 text-sm font-medium">
                   Els clubs no poden aplicar a oportunitats.
                 </div>
               ) : (
                 <div className="space-y-4">
                   {alreadyApplied ? (
-                    <div className="text-center p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                      <span className="text-emerald-400 font-semibold text-sm">{t('opportunityDetail.alreadyApplied')}</span>
+                    <div className="text-center p-4 bg-[#10B981]/10 border border-[#10B981]/20 rounded-lg">
+                      <span className="text-[#10B981] font-semibold text-sm tracking-wide">{t('opportunityDetail.alreadyApplied')}</span>
                     </div>
                   ) : (
                     <Button
                       variant="primary"
                       size="lg"
                       fullWidth
+                      className="text-base font-bold tracking-wide shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all duration-base ease-out active:scale-[0.98]"
                       onClick={handleApply}
                       disabled={applying}
                     >
@@ -288,12 +290,12 @@ const handleMessage = async () => {
                   )}
 
                   {applyError && (
-                    <div className="text-center text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2 rounded-lg">
+                    <div className="text-center text-xs font-semibold text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/20 p-3 rounded-lg">
                       {applyError}
                     </div>
                   )}
 
-                  <Button variant="secondary" size="lg" fullWidth onClick={handleMessage}>
+                  <Button variant="secondary" size="lg" fullWidth onClick={handleMessage} className="font-semibold transition-all duration-fast ease-out active:scale-[0.98]">
                     Contactar Club
                   </Button>
                 </div>
@@ -303,20 +305,20 @@ const handleMessage = async () => {
 
           {/* Club Info Card */}
           <Card>
-            <CardContent className="p-6 space-y-4 text-sm">
-              <h3 className="font-semibold text-white">{t('opportunityDetail.aboutClub')}</h3>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-[#9CA3AF] overflow-hidden">
+            <CardContent className="p-6 space-y-5 text-sm">
+              <h3 className="font-bold text-white tracking-wide">{t('opportunityDetail.aboutClub')}</h3>
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-white overflow-hidden shadow-inner uppercase">
                   {clubName?.charAt(0) || 'C'}
                 </div>
                 <div>
-                  <div className="font-bold text-white text-base">{clubName || t('opportunityDetail.club')}</div>
-                  {clubEmail && <div className="text-blue-400">{clubEmail}</div>}
+                  <div className="font-bold text-white text-base leading-tight">{clubName || t('opportunityDetail.club')}</div>
+                  {clubEmail && <div className="text-[#3B82F6] font-medium mt-0.5">{clubEmail}</div>}
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button variant="outline" size="sm" fullWidth>
+            <CardFooter className="pt-0 pb-6 px-6">
+              <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast ease-out active:scale-[0.98]">
                 Veure Perfil Complet
               </Button>
             </CardFooter>
