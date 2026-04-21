@@ -11,6 +11,8 @@ import { getOpportunityById } from "@/services/opportunities.service";
 import { getUserDoc } from "@/services/auth.service";
 import { getOrCreateConversation } from "@/services/messages.service";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import type { Application, Opportunity, User } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
@@ -179,6 +181,19 @@ export default function ApplicationsPage() {
     );
   }
 
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+  };
+
   return (
     <div className="p-6 max-w-6xl mx-auto w-full">
       <div className="flex flex-col gap-4 sm:p-6">
@@ -197,9 +212,15 @@ export default function ApplicationsPage() {
         />
 
         {applications.length > 0 ? (
-          <div className="flex flex-col gap-4">
+          <motion.div 
+            className="flex flex-col gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
             {applications.map((app) => (
-              <div
+              <motion.div
+                variants={itemVariants}
                 key={app.id}
                 className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 shadow-sm hover:shadow-[#3B82F6]/10 hover:-translate-y-0.5 transition-all duration-base group flex flex-col md:flex-row p-5 sm:p-6 gap-6 mb-2 relative overflow-hidden"
               >
@@ -385,9 +406,9 @@ export default function ApplicationsPage() {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
           <EmptyState
             title={t('applications.emptyTitle')}
