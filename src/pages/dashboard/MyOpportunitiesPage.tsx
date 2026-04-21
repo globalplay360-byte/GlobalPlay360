@@ -128,12 +128,12 @@ const formatDate = (dateString: string) => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">{t('myOpportunities.title', 'Les Meves Ofertes')}</h1>
-          <p className="text-[#9CA3AF] mt-1 text-sm">
-            {t('myOpportunities.subtitle1', 'Gestiona les oportunitats que has publicat. Les ofertes')} <span className="text-emerald-400 font-medium">{t('myOpportunities.openStatus', 'obertes')}</span> {t('myOpportunities.subtitle2', 'són visibles al marketplace i accepten candidatures. Les ofertes')} <span className="text-[#6B7280] font-medium">{t('myOpportunities.closedStatus', 'tancades')}</span> {t('myOpportunities.subtitle3', 'deixen de ser visibles.')}
+          <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight">{t('myOpportunities.title', 'Les Meves Ofertes')}</h1>
+          <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">
+            {t('myOpportunities.subtitle1', 'Gestiona les oportunitats que has publicat. Les ofertes')} <span className="text-[#10B981] font-semibold">{t('myOpportunities.openStatus', 'obertes')}</span> {t('myOpportunities.subtitle2', 'són visibles al marketplace i accepten candidatures. Les ofertes')} <span className="text-[#6B7280] font-semibold">{t('myOpportunities.closedStatus', 'tancades')}</span> {t('myOpportunities.subtitle3', 'deixen de ser visibles.')}
           </p>
         </div>
-        <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')}>
+        <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="active:scale-[0.98] shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base">
           {t('myOpportunities.newOpportunity', 'Nova Oportunitat')}
         </Button>
       </div>
@@ -158,23 +158,23 @@ const formatDate = (dateString: string) => {
           {opportunities.map((opp) => (
             <div
               key={opp.id}
-              className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col md:flex-row md:items-center gap-4 hover:border-[#3B82F6]/30 transition-colors"
+              className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col md:flex-row md:items-center gap-4 hover:border-[#3B82F6]/50 hover:-translate-y-0.5 transition-all duration-base ease-out group"
             >
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-white font-bold text-base truncate">{opp.title}</h3>
-                  <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] shrink-0">
+                <div className="flex items-center gap-3 mb-1.5">
+                  <h3 className="text-white font-bold text-lg truncate group-hover:text-[#3B82F6] transition-colors duration-fast ease-out">{opp.title}</h3>
+                  <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold shrink-0">
                     {opp.status === 'open' ? t('myOpportunities.statusOpen', 'Oberta') : t('myOpportunities.statusClosed', 'Tancada')}
                   </Badge>
                 </div>
-                <div className="flex flex-wrap gap-3 text-sm text-[#9CA3AF]">
+                <div className="flex flex-wrap gap-2.5 text-sm text-[#9CA3AF] font-medium">
                   <span>{t(`sports.${opp.sport}`, opp.sport)}</span>
-                  <span>•</span>
+                  <span className="text-[#1F2937]">•</span>
                   <span>{opp.location}</span>
-                  <span>•</span>
+                  <span className="text-[#1F2937]">•</span>
                   <span className="capitalize">{opp.contractType.replace('-', ' ')}</span>
-                  <span>•</span>
+                  <span className="text-[#1F2937]">•</span>
                   <span>{formatDate(opp.createdAt)}</span>
                 </div>
               </div>
@@ -184,6 +184,7 @@ const formatDate = (dateString: string) => {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="active:scale-[0.98] transition-all duration-fast"
                   onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'mine' } })}
                 >
                   {t('myOpportunities.btnView', 'Veure')}
@@ -191,6 +192,7 @@ const formatDate = (dateString: string) => {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="active:scale-[0.98] transition-all duration-fast"
                   onClick={() => navigate(`/dashboard/opportunities/${opp.id}/edit`)}
                 >
                   {t('myOpportunities.btnEdit', 'Editar')}
@@ -199,11 +201,11 @@ const formatDate = (dateString: string) => {
                   onClick={() => handleToggleStatus(opp)}
                   disabled={togglingId === opp.id}
                   title={opp.status === 'open' ? t('myOpportunities.closeTooltip', 'Tancar: deixa de ser visible') : t('myOpportunities.openTooltip', 'Reobrir: torna a ser visible')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-semibold tracking-wide rounded-lg border transition-all duration-fast ease-out active:scale-[0.98] ${
                     opp.status === 'open'
-                      ? 'border-red-500/30 text-red-400 hover:bg-red-500/10'
-                      : 'border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10'
-                  } disabled:opacity-50`}
+                      ? 'border-[#EF4444]/30 text-[#EF4444] hover:bg-[#EF4444]/10 hover:border-[#EF4444]/50'
+                      : 'border-[#10B981]/30 text-[#10B981] hover:bg-[#10B981]/10 hover:border-[#10B981]/50'
+                  } disabled:opacity-50 disabled:active:scale-100`}
                 >
                   {togglingId === opp.id
                     ? '...'
@@ -213,7 +215,7 @@ const formatDate = (dateString: string) => {
                   onClick={() => handleDelete(opp)}
                   disabled={deletingId === opp.id}
                   title={t('myOpportunities.deleteTooltip', 'Eliminar permanentment aquesta oferta')}
-                  className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/20 text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 text-xs font-semibold tracking-wide rounded-lg border border-[#EF4444]/20 text-[#EF4444]/70 hover:bg-[#EF4444]/10 hover:text-[#EF4444] hover:border-[#EF4444]/50 transition-all duration-fast ease-out active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
                 >
                   {deletingId === opp.id ? '...' : t('myOpportunities.btnDelete', 'Eliminar')}
                 </button>

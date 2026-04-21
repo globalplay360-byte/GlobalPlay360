@@ -102,15 +102,15 @@ export default function EditOpportunityPage() {
       <div className="mb-8">
         <button
           onClick={() => navigate(`/dashboard/opportunities/mine`)}
-          className="flex items-center text-sm text-[#9CA3AF] hover:text-white transition-colors mb-4"
+          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-white transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1 mb-4"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           Tornar a Les Meves Ofertes
         </button>
-        <h1 className="text-2xl font-bold text-white tracking-tight">{t("opportunityForm.editTitle")}</h1>
-        <p className="text-[#9CA3AF] mt-1 text-sm">Modifica els detalls de la teva oferta publicada.</p>
+        <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight">{t("opportunityForm.editTitle")}</h1>
+        <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">Modifica els detalls de la teva oferta publicada.</p>
       </div>
 
       <OpportunityForm
