@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
+import PageHeader from '@/components/ui/PageHeader';
 import ProfileEditForm from '@/components/profile/ProfileEditForm';
 import { uploadAvatar, updateUserProfile } from '@/services/profile.service';   
 
@@ -51,18 +52,16 @@ export default function ProfilePage() {
   if (mode === 'edit') {
     return (
       <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-4 sm:p-6">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
-            <p className="text-[#9CA3AF] text-sm mt-2 leading-relaxed">
-              {t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
-            </p>
-          </div>
-          <Button variant="outline" onClick={() => setMode('view')} className="transition-all duration-fast active:scale-[0.98] group">
-            <span className="inline-block transition-transform duration-fast group-hover:-translate-x-1 mr-1">←</span>
-            {t('profile.backToProfile', 'Tornar')}
-          </Button>
-        </header>
+        <PageHeader
+          title={t('profile.editProfile', 'Editar Perfil')}
+          description={t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
+          action={
+            <Button variant="outline" onClick={() => setMode('view')} className="transition-all duration-fast active:scale-[0.98] group">
+              <span className="inline-block transition-transform duration-fast group-hover:-translate-x-1 mr-1">←</span>
+              {t('profile.backToProfile', 'Tornar')}
+            </Button>
+          }
+        />
 
         <ProfileEditForm
           user={user}
