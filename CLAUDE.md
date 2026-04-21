@@ -67,11 +67,13 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - **Edició del Perfil (`ProfilePage.tsx`)**: Formularis dinàmics multi-esport connectats a Firestore, i suport de pujada d'imatges via Firebase Storage.
 - **Autenticació (Auth)**: S'ha creat de zero un flux complet de restabliment de contrasenyes i verificació de correus elèctronics customitzat amb el disseny Dark SaaS.
 - **Pagaments (Stripe)**: Integració de subscripcions completada per als plans Premium/Pro.
+- **Revisió 360 i UX/UI complet**: Unificat tot el codi de la plataforma (Dashboards, formularis, autenticació, components base) sota el sistema "Dark SaaS Navy", amb paddings globals, estructures consistents i responsive mobile-first rigorós.
 
 **🚧 Roadmap (Endavant):**
 
-1. **Revisió 360 i UX/UI complet**: [TASCA ACTUAL]. Un cop funcionen l'Autenticació, Base de Dades i Pagaments, toca passar el "pinzell de plata" a tota l'app per unificar marges, colors, components recurrents i comportament Mobile/Desktop segons el "Dark SaaS Navy".
-2. **Poliment d'Errors Menors (QA)**: Identificar i arreglar petites inconsistències abans del llançament final.
+1. **Poliment d'Errors Menors (QA) i Code Clean-up**: [FINALITZAT] Identificar i arreglar petites inconsistències de codi, warnings de consola (React `useEffect`, etc), i tipats abans de continuar.
+2. **Revolució Tipogràfica i Visual Premium**: [TASCA ACTUAL]. Execució i implementació d'una nova font moderna, micro-interaccions i detalls visuals d'alta qualitat basant-se en l'enfocament "Product Designer" SaaS.
+3. **Llançament (Deploy)**: Entorn de producció i tests finals en dispositius reals.
 
 ---
 
