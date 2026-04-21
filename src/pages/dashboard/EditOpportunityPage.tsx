@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { getOpportunityById, updateOpportunity } from '@/services/opportunities.service';
 import { Button } from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
+import PageHeader from '@/components/ui/PageHeader';
 import OpportunityForm from '@/components/opportunities/OpportunityForm';
 import type { Opportunity } from '@/types';
 
@@ -98,8 +99,8 @@ export default function EditOpportunityPage() {
   const { id: _id, createdAt: _ca, clubId: _cid, ...initialData } = opportunity;
 
   return (
-    <div className="p-4 sm:p-6 max-w-3xl mx-auto w-full">
-      <div className="mb-8">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full">
+      <div className="mb-6 lg:mb-8">
         <button
           onClick={() => navigate(`/dashboard/opportunities/mine`)}
           className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-white transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1 mb-4"
@@ -109,17 +110,21 @@ export default function EditOpportunityPage() {
           </svg>
           Tornar a Les Meves Ofertes
         </button>
-        <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight">{t("opportunityForm.editTitle")}</h1>
-        <p className="text-[#9CA3AF] mt-2 text-sm leading-relaxed">Modifica els detalls de la teva oferta publicada.</p>
+        <PageHeader 
+          title={t("opportunityForm.editTitle")}
+          description="Modifica els detalls de la teva oferta publicada."
+        />
       </div>
 
-      <OpportunityForm
-        initialData={initialData}
-        onSubmit={handleUpdate}
-        submitLabel={t("opportunityForm.saveChangesBtn")}
-        submittingLabel={t("opportunityForm.savingBtn")}
-        onCancel={() => navigate(`/dashboard/opportunities/mine`)}
-      />
+      <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 md:p-8 shadow-sm">
+        <OpportunityForm
+          initialData={initialData}
+          onSubmit={handleUpdate}
+          submitLabel={t("opportunityForm.saveChangesBtn")}
+          submittingLabel={t("opportunityForm.savingBtn")}
+          onCancel={() => navigate(`/dashboard/opportunities/mine`)}
+        />
+      </div>
     </div>
   );
 }
