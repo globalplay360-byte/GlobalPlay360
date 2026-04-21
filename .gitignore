@@ -28,3 +28,6 @@ build_output
 .env
 .env.*
 !.env.example
+
+# Personal reference docs (inspiration, notes, research)
+docs/*.pdf
