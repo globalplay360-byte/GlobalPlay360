@@ -88,21 +88,76 @@ export default function OverviewPage() {
   }, [user, isClub]);
 
   const stats: BaseStats[] = useMemo(() => {
+    const now = new Date().getTime();
+    const msInDay = 24 * 60 * 60 * 1000;
+    const msInWeek = 7 * msInDay;
+    const msInMonth = 30 * msInDay;
+
+    // Calculs basats en dades reals
+    const newAppsDay = applications.filter(a => a.createdAt && (now - new Date(a.createdAt).getTime() <= msInDay)).length;
+    const newAppsWeek = applications.filter(a => a.createdAt && (now - new Date(a.createdAt).getTime() <= msInWeek)).length;
+    const newOppsMonth = opportunities.filter(o => o.createdAt && (now - new Date(o.createdAt).getTime() <= msInMonth)).length;
+    
+    // Per a l'esportista/coach (activeRecently) 
+    const hasRecentConvs = conversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
+
     if (isClub) {
       return [
-        { label: t('overview.stats.club.activeOffers'), value: opportunities.length, icon: BriefcaseIcon, trend: t('overview.stats.trends.thisMonth'), trendUp: true },
-        { label: t('overview.stats.club.applicationsReceived'), value: applications.length, icon: DocumentCheckIcon, trend: t('overview.stats.trends.sinceYesterday'), trendUp: true },
-        { label: t('overview.stats.club.conversations'), value: conversations.length, icon: ChatBubbleLeftEllipsisIcon },
-        { label: t('overview.stats.club.profileVisits'), value: '---', icon: ChartBarIcon, trend: '+12%', trendUp: true },
+        { 
+          label: t('overview.stats.club.activeOffers'), 
+          value: opportunities.length, 
+          icon: BriefcaseIcon, 
+          trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined, 
+          trendUp: true 
+        },
+        { 
+          label: t('overview.stats.club.applicationsReceived'), 
+          value: applications.length, 
+          icon: DocumentCheckIcon, 
+          trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined, 
+          trendUp: true 
+        },
+        { 
+          label: t('overview.stats.club.conversations'), 
+          value: conversations.length, 
+          icon: ChatBubbleLeftEllipsisIcon 
+        },
+        { 
+          label: t('overview.stats.club.profileVisits'), 
+          value: '---', // TODO: Implementar visibilitat de perfil o treure card en un futur.
+          icon: ChartBarIcon 
+        },
       ];
     }
     return [
-      { label: t('overview.stats.coachPlayer.savedOffers'), value: opportunities.length, icon: StarIcon },
-      { label: t('overview.stats.coachPlayer.applications'), value: applications.length, icon: DocumentCheckIcon, trend: t('overview.stats.trends.thisWeek'), trendUp: true },
-      { label: t('overview.stats.coachPlayer.pendingMessages'), value: conversations.length, icon: ChatBubbleLeftEllipsisIcon, trend: t('overview.stats.trends.activeRecently'), trendUp: true },
-      { label: t('overview.stats.coachPlayer.profileStrength'), value: '100%', icon: UserCircleIcon, trend: t('overview.stats.trends.highLevel'), trendUp: true },
+      { 
+        label: t('overview.stats.coachPlayer.savedOffers'), 
+        value: opportunities.length, 
+        icon: StarIcon 
+      },
+      { 
+        label: t('overview.stats.coachPlayer.applications'), 
+        value: applications.length, 
+        icon: DocumentCheckIcon, 
+        trend: newAppsWeek > 0 ? `+${newAppsWeek} ${t('overview.stats.trends.thisWeek', 'aquesta setmana')}` : undefined, 
+        trendUp: true 
+      },
+      { 
+        label: t('overview.stats.coachPlayer.pendingMessages'), 
+        value: conversations.length, 
+        icon: ChatBubbleLeftEllipsisIcon, 
+        trend: hasRecentConvs ? t('overview.stats.trends.activeRecently', 'Actiu recentment') : undefined, 
+        trendUp: true 
+      },
+      { 
+        label: t('overview.stats.coachPlayer.profileStrength'), 
+        value: '100%', // Placeholder, es pot connectar al Profile context
+        icon: UserCircleIcon, 
+        trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
+        trendUp: true 
+      },
     ];
-  }, [isClub, applications.length, opportunities.length, conversations.length, t]);
+  }, [isClub, applications, opportunities, conversations, t]);
 
   const recentItems = isClub ? applications.slice(0, 3) : opportunities.slice(0, 3);
 

@@ -393,9 +393,9 @@
         "profileStrength": "Profile Strength"
       },
       "trends": {
-        "thisMonth": "+1 this month",
-        "sinceYesterday": "+4 since yesterday",
-        "thisWeek": "+2 this week",
+        "thisMonth": "this month",
+        "sinceYesterday": "since yesterday",
+        "thisWeek": "this week",
         "activeRecently": "Active recently",
         "highLevel": "High Level"
       }

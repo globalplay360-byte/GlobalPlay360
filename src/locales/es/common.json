@@ -393,9 +393,9 @@
         "profileStrength": "Fuerza del Perfil"
       },
       "trends": {
-        "thisMonth": "+1 este mes",
-        "sinceYesterday": "+4 desde ayer",
-        "thisWeek": "+2 esta semana",
+        "thisMonth": "este mes",
+        "sinceYesterday": "desde ayer",
+        "thisWeek": "esta semana",
         "activeRecently": "Activo recientemente",
         "highLevel": "Nivel Alto"
       }

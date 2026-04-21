@@ -395,9 +395,9 @@
         "profileStrength": "Força del Perfil"
       },
       "trends": {
-        "thisMonth": "+1 aquest mes",
-        "sinceYesterday": "+4 des d'ahir",
-        "thisWeek": "+2 aquesta setmana",
+        "thisMonth": "aquest mes",
+        "sinceYesterday": "des d'ahir",
+        "thisWeek": "aquesta setmana",
         "activeRecently": "Actiu recentment",
         "highLevel": "Nivell Alt"
       }
