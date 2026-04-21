@@ -54,7 +54,7 @@ export default function OverviewPage() {
   }, [isClub, userApplications.length, userOpportunities.length, userConversations.length, t]);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
@@ -79,12 +79,12 @@ export default function OverviewPage() {
         </div>
 
         {isClub ? (
-          <Link to="/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+          <Link to="/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
             <PlusCircleIcon className="w-5 h-5" />
             {t('overview.publishOffer')}
           </Link>
         ) : (
-          <Link to="/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+          <Link to="/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
             <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
             {t('overview.completeProfile')}
           </Link>
@@ -93,10 +93,10 @@ export default function OverviewPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 sm:p-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col relative overflow-hidden group transition-colors hover:border-[#374151]">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div key={i} className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col relative overflow-hidden group transition-all duration-base ease-out hover:border-[#374151] hover:-translate-y-0.5">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-base ease-out" />
             <div className="flex items-start justify-between mb-4 relative z-10">
-              <div className="bg-[#1F2937] p-2.5 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+              <div className="bg-[#1F2937] p-2.5 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-base ease-out">
                 <stat.icon className="w-6 h-6" />
               </div>
               {stat.trend && (
@@ -136,7 +136,7 @@ export default function OverviewPage() {
               <h2 className="text-base font-semibold text-white">
                 {isClub ? t('overview.recentApplicationsTitle') : t('overview.recommendedOffersTitle')}
               </h2>
-              <Link to={isClub ? "/applications" : "/opportunities"} className="text-sm font-medium text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors">
+              <Link to={isClub ? "/applications" : "/opportunities"} className="text-sm font-medium text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors duration-fast ease-out">
                 {t('overview.seeMore')}
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
@@ -144,7 +144,7 @@ export default function OverviewPage() {
             <div className="divide-y divide-[#1F2937] h-full">
               {isClub ? (
                 [1, 2, 3].map((_, i) => (
-                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151]">
                         <UserCircleIcon className="w-6 h-6 text-[#9CA3AF]" />
@@ -158,14 +158,14 @@ export default function OverviewPage() {
                         </p>
                       </div>
                     </div>
-                    <Link to="/applications" className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-colors text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
+                    <Link to="/applications" className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
                       {t('overview.reviewCV')}
                     </Link>
                   </div>
                 ))
               ) : (
                 [1, 2, 3].map((_, i) => (
-                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={i} className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151] shadow-sm">
                         <BuildingOfficeIcon className="w-6 h-6 text-[#9CA3AF]" />
@@ -175,7 +175,7 @@ export default function OverviewPage() {
                         <p className="text-xs text-[#9CA3AF]">{t('overview.mock.lookingFor', 'Busca:')} {user?.role === 'coach' ? t('overview.mock.proCoach', 'Entrenador Pro') : t('overview.mock.fastStriker', 'Davanter Ràpid')} • {t('overview.mock.proContract', 'Contracte Pro')}</p>
                       </div>
                     </div>
-                    <Link to="/opportunities" className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-colors text-xs font-semibold px-4 py-2 rounded-lg">
+                    <Link to="/opportunities" className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-all duration-fast ease-out active:scale-[0.98] text-xs font-semibold px-4 py-2 rounded-lg">
                       {t('overview.enter')}
                     </Link>
                   </div>
@@ -199,14 +199,14 @@ export default function OverviewPage() {
                   </div>
 <h3 className="text-xl font-bold text-white mb-2">{t('overview.activePlan.title')}</h3>
                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
-                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-colors">
+                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-all duration-fast ease-out active:scale-[0.98]">
                     {t('overview.activePlan.manageButton')}
                   </Link>
                 </div>
               </div>
             ) : (
                <div className="bg-gradient-to-br from-[#1E3A8A]/40 via-[#111827] to-[#111827] border border-blue-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-300">
+                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-base ease-out">
                    <SparklesIcon className="w-24 h-24 text-blue-500" />
                  </div>
                  <div className="relative z-10">
@@ -220,7 +220,7 @@ export default function OverviewPage() {
                        Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
                      </Trans>
                    </p>
-                   <Link to="/pricing" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-colors w-full relative z-10">
+                   <Link to="/pricing" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-fast ease-out active:scale-[0.98] w-full relative z-10">
                      {t('overview.upgrade.button')}
                    </Link>
                  </div>
@@ -270,11 +270,11 @@ function QuickAction({ href, icon: Icon, label }: { href: string; icon: React.El
   return (
     <Link 
       to={href}
-      className="bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] hover:border-[#374151] transition-all duration-300 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
-      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-white p-3 rounded-lg transition-all duration-300 transform group-hover:scale-110">
+      className="bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] hover:border-[#374151] transition-all duration-base ease-out hover:-translate-y-0.5 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
+      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-white p-3 rounded-lg transition-all duration-base ease-out transform group-hover:scale-110">
         <Icon className="w-5 h-5" />
       </div>
-      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-white transition-colors">{label}</span>
+      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-white transition-colors duration-fast ease-out">{label}</span>
     </Link>
   );
 }
