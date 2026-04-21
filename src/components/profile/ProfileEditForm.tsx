@@ -69,10 +69,11 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
               onCancel();
             }}
             disabled={saving}
+            className="transition-all duration-fast active:scale-[0.98]"
           >
             {t('profileEdit.cancel', 'Cancel·lar')}
           </Button>
-          <Button type="submit" variant="primary" disabled={saving || !isDirty}>
+          <Button type="submit" variant="primary" disabled={saving || !isDirty} className="shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
             {saving ? t('profileEdit.saving', 'Desant...') : t('profileEdit.save', 'Desar canvis')}
           </Button>
         </div>
