@@ -46,13 +46,13 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
 
   return (
     <>
-      <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 flex flex-col gap-4 sm:gap-5">
-        <div className="flex items-center gap-2">
-          <span className="w-1 h-5 rounded bg-emerald-500" />
-          <h2 className="text-base font-bold text-white">{t('profileEdit.fields.athleticData', 'Dades esportives')}</h2>
+      <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="w-1.5 h-6 rounded bg-emerald-500 shadow-sm shadow-emerald-500/50" />
+          <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">{t('profileEdit.fields.athleticData', 'Dades esportives')}</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <Field label={t('profileEdit.fields.mainSport', 'Esport principal')}>
             <Select value={formData.sport || ''} onChange={(e) => handleSportChange(e.target.value)} disabled={disabled}>
               <option value="">{t('profileEdit.fields.selectSport', 'Selecciona un esport')}</option>
@@ -75,7 +75,7 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
           </Field>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <Field label={t('profileEdit.fields.height', 'Alçada')} hint={t('profileEdit.hints.height', 'En centímetres.')}>
             <Input
               type="number"

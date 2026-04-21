@@ -1,7 +1,7 @@
 import type { ReactNode, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 
 const inputBase =
-  'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2 text-white text-sm placeholder-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-colors duration-fast ease-out disabled:opacity-50 disabled:cursor-not-allowed';
+  'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-white text-sm placeholder-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] hover:border-[#374151] shadow-sm transition-all duration-fast ease-out disabled:opacity-50 disabled:cursor-not-allowed';
 
 interface FieldProps {
   label: string;
@@ -12,10 +12,10 @@ interface FieldProps {
 
 export function Field({ label, hint, children, className = '' }: FieldProps) {
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
-      <label className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">{label}</label>
+    <div className={`flex flex-col gap-1.5 mt-1 ${className}`}>
+      <label className="text-xs font-bold text-[#9CA3AF] uppercase tracking-wider pl-1">{label}</label>
       {children}
-      {hint && <span className="text-[11px] text-[#6B7280]">{hint}</span>}
+      {hint && <span className="text-[11px] text-[#6B7280] font-medium leading-tight pl-1">{hint}</span>}
     </div>
   );
 }

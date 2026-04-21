@@ -13,13 +13,13 @@ const POSITIONS = ['Porter', 'Tanca', 'Ala', 'Pivot', 'Universal'];
 export default function FutsalPlayerFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
   return (
-    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 flex flex-col gap-5">
-      <div className="flex items-center gap-2">
-        <span className="w-1 h-5 rounded bg-orange-500" />
-        <h2 className="text-base font-bold text-white">{t('sports.details', 'Detalls de Futbol Sala')}</h2>
+    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="w-1.5 h-6 rounded bg-orange-500 shadow-sm shadow-orange-500/50" />
+        <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">{t('sports.details', 'Detalls de Futbol Sala')}</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <Field label={t('profileEdit.fields.position', 'Posició')}>
           <Select
             value={formData.position || ''}

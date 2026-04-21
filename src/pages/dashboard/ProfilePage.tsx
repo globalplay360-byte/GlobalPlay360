@@ -53,13 +53,14 @@ export default function ProfilePage() {
       <div className="p-6 max-w-4xl mx-auto w-full flex flex-col gap-4 sm:p-6">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
-            <p className="text-[#9CA3AF] text-sm mt-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">{t('profile.editProfile', 'Editar Perfil')}</h1>
+            <p className="text-[#9CA3AF] text-sm mt-2 leading-relaxed">
               {t('profile.updateInfo', 'Actualitza la teva informació personal i perfil públic.')}
             </p>
           </div>
-          <Button variant="outline" onClick={() => setMode('view')}>
-            {t('profile.backToProfile', 'Tornar al perfil')}
+          <Button variant="outline" onClick={() => setMode('view')} className="transition-all duration-fast active:scale-[0.98] group">
+            <span className="inline-block transition-transform duration-fast group-hover:-translate-x-1 mr-1">←</span>
+            {t('profile.backToProfile', 'Tornar')}
           </Button>
         </header>
 
@@ -130,8 +131,8 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex flex-col gap-1 md:pb-2">
-              <h1 className="text-3xl font-bold text-white tracking-tight">{user.displayName}</h1>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 mt-1 text-[#9CA3AF] text-sm">
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{user.displayName}</h1>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 mt-1.5 text-[#9CA3AF] text-sm">
                 <span className="uppercase tracking-wider font-semibold text-[#3B82F6]">{user.role}</span>
                 {user.sport && (
                   <>
@@ -150,7 +151,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto pt-4 md:pt-0">
-            <Button variant="primary" onClick={() => setMode('edit')} className="flex-1 md:flex-none">
+            <Button variant="primary" onClick={() => setMode('edit')} className="flex-1 md:flex-none shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
               {t('profile.editProfile', 'Editar Perfil')}
             </Button>
           </div>
@@ -158,10 +159,10 @@ export default function ProfilePage() {
       </div>
 
       {/* Contingut */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:p-6">
-        <div className="lg:col-span-2 flex flex-col gap-4 sm:p-6">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6">
-            <h2 className="text-lg font-bold text-white mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 pt-4">
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 shadow-sm">
+            <h2 className="text-xl font-extrabold text-white tracking-tight mb-4">
               {user.role === 'club' ? t('profile.aboutEntity', 'Sobre l\'entitat') : t('profile.aboutMe', 'Sobre mi')}
             </h2>
             <p className="text-[#9CA3AF] leading-relaxed whitespace-pre-wrap">
@@ -170,8 +171,8 @@ export default function ProfilePage() {
           </div>
 
           {user.role === 'player' && (user.height || user.weight || user.position || user.dateOfBirth) && (
-            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6">
-              <h2 className="text-lg font-bold text-white mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
+            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 shadow-sm">
+              <h2 className="text-xl font-extrabold text-white tracking-tight mb-4">{t('profile.sportsData', 'Dades Esportives')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {user.position && <StatCell label={t('profile.position', 'Posició')} value={user.position} />}
                 {user.height && <StatCell label={t('profile.height', 'Alçada')} value={`${user.height} cm`} />}
@@ -187,32 +188,32 @@ export default function ProfilePage() {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 sm:p-6">
-          <div className={`rounded-xl p-4 sm:p-6 border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
-            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-3">{t('profile.membershipStatus', 'Subscripció')}</h3>
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isPremium ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-800 text-gray-400'}`}>
+        <div className="flex flex-col gap-6">
+          <div className={`rounded-xl p-5 sm:p-7 shadow-sm border ${isPremium ? 'bg-gradient-to-b from-[#111827] to-[#1E293B] border-yellow-500/20' : 'bg-[#111827] border-[#1F2937]'}`}>
+            <h3 className="text-xs font-bold text-[#6B7280] uppercase tracking-wider mb-4">{t('profile.membershipStatus', 'Subscripció')}</h3>
+            <div className="flex items-center gap-4 mb-5">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-inner ${isPremium ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : 'bg-[#0F172A] text-gray-400 border border-[#1F2937]'}`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-white font-bold tracking-tight capitalize">{t('profile.planName', 'Pla {{plan}}', { plan: activePlan })}</p>
-                <p className="text-xs text-[#9CA3AF]">
+                <p className="text-lg text-white font-extrabold tracking-tight capitalize leading-tight">{t('profile.planName', 'Pla {{plan}}', { plan: activePlan })}</p>
+                <p className="text-sm text-[#9CA3AF] mt-0.5">
                   {isPremium ? t('profile.premiumAccess', 'Accés Premium') : t('profile.upgradeToContact', 'Millora per contactar')}
                 </p>
               </div>
             </div>
             {isPremium ? (
               <Button
-                className="w-full mt-4 bg-[#0F172A] hover:bg-gray-800 text-white border border-gray-700 transition-colors"
+                className="w-full bg-[#0F172A] hover:bg-gray-800 text-white border border-[#1F2937] hover:border-gray-600 transition-all duration-fast active:scale-[0.98] shadow-sm"
                 onClick={() => navigate('/dashboard/billing')}
               >
                 {t('profile.manageSubscription', 'Gestionar subscripció')}
               </Button>
             ) : (
               <Button
-                className="w-full mt-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border-0 transition-all"
+                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold border border-yellow-500/50 hover:border-yellow-400/50 shadow-md hover:shadow-yellow-500/20 transition-all duration-base active:scale-[0.98]"
                 onClick={() => navigate('/pricing')}
               >
                 {t('profile.upgradePlan', 'Millorar Pla')}
@@ -221,19 +222,24 @@ export default function ProfilePage() {
           </div>
 
           {(user.phone || user.instagram || user.youtubeVideoUrl) && (
-            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 flex flex-col gap-3">
-              <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial', 'Contacte i Xarxes')}</h3>
+            <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-4 shadow-sm">
+              <h3 className="text-xs font-bold text-[#6B7280] uppercase tracking-wider">{t('profile.contactAndSocial', 'Contacte i Xarxes')}</h3>
               {user.phone && <InfoRow label={t('profile.phone', 'Telèfon')} value={user.phone} />}
               {user.instagram && <InfoRow label={t('profile.instagram', 'Instagram')} value={user.instagram} />}
               {user.youtubeVideoUrl && (
-                <a
-                  href={user.youtubeVideoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm text-[#3B82F6] hover:underline truncate"
-                >
-                  {t('profile.viewHighlights', 'Veure Highlights')}
-                </a>
+                <div className="pt-2">
+                  <a
+                    href={user.youtubeVideoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center text-sm font-medium text-[#3B82F6] hover:text-blue-400 transition-colors group"
+                  >
+                    <span>{t('profile.viewHighlights', 'Veure Highlights')}</span>
+                    <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+                </div>
               )}
             </div>
           )}
@@ -251,18 +257,18 @@ export default function ProfilePage() {
 
 function StatCell({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-[#0F172A] p-4 rounded-lg border border-[#1F2937] flex flex-col items-center justify-center text-center">
-      <span className="text-lg font-bold text-white mb-1">{value}</span>
-      <span className="text-[11px] text-[#9CA3AF] uppercase tracking-wider font-medium">{label}</span>
+    <div className="bg-[#0F172A] p-4 rounded-xl border border-[#1F2937] flex flex-col items-center justify-center text-center shadow-inner">
+      <span className="text-xl font-extrabold text-white mb-1.5 tracking-tight">{value}</span>
+      <span className="text-[11px] text-[#9CA3AF] uppercase tracking-widest font-semibold">{label}</span>
     </div>
   );
 }
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-[#9CA3AF]">{label}</span>
-      <span className="text-white truncate ml-2">{value}</span>
+    <div className="flex items-center justify-between text-sm py-1 border-b border-[#1F2937]/50 last:border-0">
+      <span className="text-[#9CA3AF] font-medium">{label}</span>
+      <span className="text-white truncate ml-3 font-medium tracking-wide">{value}</span>
     </div>
   );
 }
