@@ -139,31 +139,26 @@
         "desc": "Publica vacantes, ficha talento verificado globalmente, gestiona candidaturas de forma eficiente y construye tu equipo campeón."
       }
     },
-    "metrics": {
-      "kicker": "En directo desde Firestore",
-      "title": "Números reales, momentum real",
-      "subtitle": "Nada de placeholders. Estas cifras se actualizan en tiempo real a medida que crece la comunidad.",
-      "players": "Jugadores",
-      "coaches": "Entrenadores",
-      "clubs": "Clubes",
-      "opportunities": "Oportunidades"
-    },
-    "stack": {
-      "kicker": "Construido con cuidado",
-      "title": "Sobre un stack moderno",
-      "subtitle": "Sin atajos. Cada pieza del stack está elegida por escalabilidad, velocidad y experiencia de desarrollo.",
-      "react": "UI Framework",
-      "typescript": "Tipado seguro",
-      "vite": "Build Tool",
-      "tailwind": "Estilos",
-      "auth": "Autenticación",
-      "firestore": "BD en tiempo real",
-      "functions": "Lógica serverless",
-      "storage": "Archivos y media",
-      "stripe": "Pagos",
-      "motion": "Animaciones",
-      "i18n": "Multi-idioma",
-      "router": "Navegación"
+    "milestones": {
+      "kicker": "Nuestros principios",
+      "title": "Construido sobre bases sólidas",
+      "subtitle": "Sin métricas infladas. Solo los principios que no pensamos comprometer — desde el primer día.",
+      "multisport": {
+        "title": "Plataforma multi-deporte",
+        "desc": "Pensada desde el primer día para soportar fútbol, baloncesto, tenis y más — con perfiles adaptados a cada disciplina."
+      },
+      "secure": {
+        "title": "Seguro por defecto",
+        "desc": "Firebase Auth con verificación por email, pagos gestionados por Stripe y reglas de Firestore que nunca confían en el cliente."
+      },
+      "multilingual": {
+        "title": "Multilingüe desde el día 1",
+        "desc": "Traducido íntegramente a catalán, español e inglés para que atletas y clubes se sientan como en casa en cualquier mercado."
+      },
+      "founding": {
+        "title": "Etapa Founding",
+        "desc": "Somos jóvenes y lo abrazamos. Cada funcionalidad nace del feedback de los Miembros Fundadores que modelan el roadmap."
+      }
     },
     "arch": {
       "kicker": "Bajo el capó",

@@ -139,31 +139,26 @@
         "desc": "Publica vacants, fitxa talent verificat arreu, gestiona candidatures amb eficiència i construeix el teu equip campió."
       }
     },
-    "metrics": {
-      "kicker": "En directe des de Firestore",
-      "title": "Números reals, moviment real",
-      "subtitle": "Res de placeholders. Aquestes xifres s'actualitzen en temps real a mesura que creix la comunitat.",
-      "players": "Jugadors",
-      "coaches": "Entrenadors",
-      "clubs": "Clubs",
-      "opportunities": "Oportunitats"
-    },
-    "stack": {
-      "kicker": "Construït amb cura",
-      "title": "Sobre un stack modern",
-      "subtitle": "Sense dreceres. Cada peça del stack és triada per escalabilitat, velocitat i experiència de desenvolupament.",
-      "react": "UI Framework",
-      "typescript": "Tipatge segur",
-      "vite": "Build Tool",
-      "tailwind": "Estils",
-      "auth": "Autenticació",
-      "firestore": "BD en temps real",
-      "functions": "Lògica serverless",
-      "storage": "Fitxers i media",
-      "stripe": "Pagaments",
-      "motion": "Animacions",
-      "i18n": "Multi-idioma",
-      "router": "Navegació"
+    "milestones": {
+      "kicker": "Els nostres principis",
+      "title": "Construït sobre bases sòlides",
+      "subtitle": "Res de mètriques inflades. Només els principis que no pensem comprometre — des del primer dia.",
+      "multisport": {
+        "title": "Plataforma multi-esport",
+        "desc": "Pensada des del primer dia per suportar futbol, bàsquet, tennis i més — amb perfils adaptats a cada disciplina."
+      },
+      "secure": {
+        "title": "Segur per defecte",
+        "desc": "Firebase Auth amb verificació per email, pagaments gestionats per Stripe i regles de Firestore que mai confien en el client."
+      },
+      "multilingual": {
+        "title": "Multilingüe des del dia 1",
+        "desc": "Traduït íntegrament a català, castellà i anglès perquè atletes i clubs se sentin com a casa, sigui quin sigui el mercat."
+      },
+      "founding": {
+        "title": "Etapa Founding",
+        "desc": "Som aviat i ho abracem. Cada funcionalitat neix del feedback dels Membres Fundadors que modelen el roadmap."
+      }
     },
     "arch": {
       "kicker": "Sota el capó",

@@ -139,31 +139,26 @@
         "desc": "Post open positions, scout verified talent globally, manage incoming applications efficiently, and build your championship-winning team."
       }
     },
-    "metrics": {
-      "kicker": "Live from Firestore",
-      "title": "Real numbers, real momentum",
-      "subtitle": "Not placeholders. These figures update in real time as our community grows.",
-      "players": "Players",
-      "coaches": "Coaches",
-      "clubs": "Clubs",
-      "opportunities": "Opportunities"
-    },
-    "stack": {
-      "kicker": "Engineered with care",
-      "title": "Built on a modern stack",
-      "subtitle": "No shortcuts. Every piece of the stack is picked for scale, speed and developer experience.",
-      "react": "UI Framework",
-      "typescript": "Type Safety",
-      "vite": "Build Tool",
-      "tailwind": "Styling",
-      "auth": "Authentication",
-      "firestore": "Real-time DB",
-      "functions": "Serverless Logic",
-      "storage": "Media Files",
-      "stripe": "Payments",
-      "motion": "Animations",
-      "i18n": "Multi-language",
-      "router": "Navigation"
+    "milestones": {
+      "kicker": "What we stand for",
+      "title": "Built on strong foundations",
+      "subtitle": "No inflated metrics. Just the principles we refuse to compromise on — from day one.",
+      "multisport": {
+        "title": "Multi-sport platform",
+        "desc": "Built from day one to support football, basketball, tennis and beyond — with profile schemas adapted to each discipline."
+      },
+      "secure": {
+        "title": "Secure by default",
+        "desc": "Firebase Auth with email verification, Stripe-managed payments and Firestore rules that never trust the client."
+      },
+      "multilingual": {
+        "title": "Multilingual from day one",
+        "desc": "Fully translated into English, Spanish and Catalan so athletes and clubs feel at home, whatever their market."
+      },
+      "founding": {
+        "title": "Founding stage",
+        "desc": "We are early and we embrace it. Every feature lands with feedback from real Founding Members shaping the roadmap."
+      }
     },
     "arch": {
       "kicker": "Under the hood",

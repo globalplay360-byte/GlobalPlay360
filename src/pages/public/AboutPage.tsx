@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
-import { collection, getCountFromServer, query, where } from 'firebase/firestore';
-import { db } from '@/services/firebase';
 
 const SectionContainer: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className = '' }) => (
   <div className={`w-full px-4 sm:px-8 lg:px-12 xl:px-16 ${className}`}>
@@ -201,11 +199,8 @@ const AboutPage: React.FC = () => {
          </SectionContainer>
       </section>
 
-      {/* --- LIVE METRICS SECTION --- */}
-      <LiveMetricsSection />
-
-      {/* --- TECH STACK SECTION --- */}
-      <TechStackSection />
+      {/* --- PLATFORM MILESTONES --- */}
+      <MilestonesSection />
 
       {/* --- ARCHITECTURE & SECURITY SECTION --- */}
       <ArchitectureSection />
@@ -223,153 +218,44 @@ const AboutPage: React.FC = () => {
 };
 
 // ───────────────────────────────────────────────
-// LIVE METRICS — comptadors reals des de Firestore
+// PLATFORM MILESTONES — qualitative pillars (honestos)
 // ───────────────────────────────────────────────
-type Counts = {
-  players: number | null;
-  coaches: number | null;
-  clubs: number | null;
-  opportunities: number | null;
-};
-
-function LiveMetricsSection() {
+function MilestonesSection() {
   const { t } = useTranslation();
-  const [counts, setCounts] = useState<Counts>({
-    players: null,
-    coaches: null,
-    clubs: null,
-    opportunities: null,
-  });
 
-  useEffect(() => {
-    let cancelled = false;
-    const fetchCounts = async () => {
-      try {
-        const usersCol = collection(db, 'users');
-        const [players, coaches, clubs, opportunities] = await Promise.all([
-          getCountFromServer(query(usersCol, where('role', '==', 'player'))),
-          getCountFromServer(query(usersCol, where('role', '==', 'coach'))),
-          getCountFromServer(query(usersCol, where('role', '==', 'club'))),
-          getCountFromServer(collection(db, 'opportunities')),
-        ]);
-        if (cancelled) return;
-        setCounts({
-          players: players.data().count,
-          coaches: coaches.data().count,
-          clubs: clubs.data().count,
-          opportunities: opportunities.data().count,
-        });
-      } catch {
-        if (!cancelled) setCounts({ players: 0, coaches: 0, clubs: 0, opportunities: 0 });
-      }
-    };
-    fetchCounts();
-    return () => { cancelled = true; };
-  }, []);
-
-  const metrics = [
-    { value: counts.players, label: t('aboutPage.metrics.players', 'Players') },
-    { value: counts.coaches, label: t('aboutPage.metrics.coaches', 'Coaches') },
-    { value: counts.clubs, label: t('aboutPage.metrics.clubs', 'Clubs') },
-    { value: counts.opportunities, label: t('aboutPage.metrics.opportunities', 'Opportunities') },
+  const pillars = [
+    {
+      title: t('aboutPage.milestones.multisport.title', 'Multi-sport platform'),
+      desc: t('aboutPage.milestones.multisport.desc', 'Built from day one to support football, basketball, tennis and beyond — with profile schemas adapted to each discipline.'),
+      iconPath: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+      accent: '#3B82F6',
+    },
+    {
+      title: t('aboutPage.milestones.secure.title', 'Secure by default'),
+      desc: t('aboutPage.milestones.secure.desc', 'Firebase Auth with email verification, Stripe-managed payments and Firestore rules that never trust the client.'),
+      iconPath: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+      accent: '#10B981',
+    },
+    {
+      title: t('aboutPage.milestones.multilingual.title', 'Multilingual from day one'),
+      desc: t('aboutPage.milestones.multilingual.desc', 'Fully translated into English, Spanish and Catalan so athletes and clubs feel at home, whatever their market.'),
+      iconPath: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129',
+      accent: '#FFC107',
+    },
+    {
+      title: t('aboutPage.milestones.founding.title', 'Founding stage'),
+      desc: t('aboutPage.milestones.founding.desc', 'We are early and we embrace it. Every feature lands with feedback from real Founding Members shaping the roadmap.'),
+      iconPath: 'M13 10V3L4 14h7v7l9-11h-7z',
+      accent: '#EC4899',
+    },
   ];
 
   return (
-    <section className="relative py-24 border-y border-white/5 bg-gradient-to-b from-[#0B1120] via-[#0A1628] to-[#0B1120]">
+    <section className="relative py-24 md:py-32 border-y border-white/5 bg-gradient-to-b from-[#0B1120] via-[#0A1628] to-[#0B1120]">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
 
-      <SectionContainer>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7 }}
-          className="text-center max-w-3xl mx-auto mb-14"
-        >
-          <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs mb-3 block">
-            {t('aboutPage.metrics.kicker', 'Live from Firestore')}
-          </span>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-4">
-            {t('aboutPage.metrics.title', 'Real numbers, real momentum')}
-          </h2>
-          <p className="text-white/70 text-base md:text-lg font-light">
-            {t('aboutPage.metrics.subtitle', 'Not placeholders. These figures update in real time as our community grows.')}
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 max-w-5xl mx-auto">
-          {metrics.map((m, i) => (
-            <motion.div
-              key={m.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-              className="relative bg-[#111827]/60 border border-[#1F2937] rounded-2xl p-6 md:p-8 text-center backdrop-blur-sm"
-            >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 tracking-tight tabular-nums">
-                <AnimatedCount value={m.value} />
-                <span className="text-[#3B82F6] text-2xl md:text-3xl ml-1 font-semibold">+</span>
-              </div>
-              <p className="text-white/60 text-xs md:text-sm uppercase tracking-wider font-medium">
-                {m.label}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </SectionContainer>
-    </section>
-  );
-}
-
-function AnimatedCount({ value }: { value: number | null }) {
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (value === null) return;
-    const duration = 1400;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.floor(eased * value));
-      if (progress < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [value]);
-
-  if (value === null) {
-    return <span className="inline-block w-20 h-10 bg-white/5 rounded-md animate-pulse" />;
-  }
-  return <>{display.toLocaleString('es-ES')}</>;
-}
-
-// ───────────────────────────────────────────────
-// TECH STACK — el stack modern que fa anar la plataforma
-// ───────────────────────────────────────────────
-function TechStackSection() {
-  const { t } = useTranslation();
-  const techs = [
-    { name: 'React 18', role: t('aboutPage.stack.react', 'UI Framework'), color: '#61DAFB' },
-    { name: 'TypeScript', role: t('aboutPage.stack.typescript', 'Type Safety'), color: '#3178C6' },
-    { name: 'Vite', role: t('aboutPage.stack.vite', 'Build Tool'), color: '#A855F7' },
-    { name: 'Tailwind CSS', role: t('aboutPage.stack.tailwind', 'Styling'), color: '#06B6D4' },
-    { name: 'Firebase Auth', role: t('aboutPage.stack.auth', 'Authentication'), color: '#FFA000' },
-    { name: 'Firestore', role: t('aboutPage.stack.firestore', 'Real-time DB'), color: '#FFA000' },
-    { name: 'Cloud Functions', role: t('aboutPage.stack.functions', 'Serverless Logic'), color: '#FFA000' },
-    { name: 'Firebase Storage', role: t('aboutPage.stack.storage', 'Media Files'), color: '#FFA000' },
-    { name: 'Stripe', role: t('aboutPage.stack.stripe', 'Payments'), color: '#635BFF' },
-    { name: 'Framer Motion', role: t('aboutPage.stack.motion', 'Animations'), color: '#EC4899' },
-    { name: 'i18next', role: t('aboutPage.stack.i18n', 'Multi-language'), color: '#10B981' },
-    { name: 'React Router', role: t('aboutPage.stack.router', 'Navigation'), color: '#F43F5E' },
-  ];
-
-  return (
-    <section className="py-24 md:py-32 relative">
-      <SectionContainer>
+      <SectionContainer className="relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -378,41 +264,40 @@ function TechStackSection() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs mb-3 block">
-            {t('aboutPage.stack.kicker', 'Engineered with care')}
+            {t('aboutPage.milestones.kicker', 'What we stand for')}
           </span>
           <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-4">
-            {t('aboutPage.stack.title', 'Built on a modern stack')}
+            {t('aboutPage.milestones.title', 'Built on strong foundations')}
           </h2>
           <p className="text-white/70 text-base md:text-lg font-light">
-            {t('aboutPage.stack.subtitle', 'No shortcuts. Every piece of the stack is picked for scale, speed and developer experience.')}
+            {t('aboutPage.milestones.subtitle', 'No inflated metrics. Just the principles we refuse to compromise on — from day one.')}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-          {techs.map((tech, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {pillars.map((p, i) => (
             <motion.div
-              key={tech.name}
-              initial={{ opacity: 0, y: 20 }}
+              key={p.title}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.04, ease: "easeOut" }}
-              whileHover={{ y: -4 }}
-              className="group relative bg-[#111827] border border-[#1F2937] hover:border-[#3B82F6]/40 rounded-xl p-5 overflow-hidden"
+              transition={{ duration: 0.6, delay: i * 0.08, ease: 'easeOut' as const }}
+              className="group relative bg-[#111827]/70 border border-[#1F2937] hover:border-[#3B82F6]/40 rounded-2xl p-7 backdrop-blur-sm overflow-hidden"
             >
               <div
-                className="absolute top-0 left-0 w-full h-0.5 opacity-40"
-                style={{ background: `linear-gradient(90deg, transparent, ${tech.color}, transparent)` }}
-              />
-              <div className="flex items-center gap-3">
-                <span
-                  className="w-2.5 h-2.5 rounded-full flex-shrink-0 shadow-lg"
-                  style={{ background: tech.color, boxShadow: `0 0 10px ${tech.color}80` }}
-                />
-                <div className="min-w-0">
-                  <p className="text-white font-semibold text-sm truncate">{tech.name}</p>
-                  <p className="text-white/50 text-xs truncate">{tech.role}</p>
-                </div>
+                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 border"
+                style={{
+                  background: `${p.accent}15`,
+                  borderColor: `${p.accent}30`,
+                  color: p.accent,
+                }}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={p.iconPath} />
+                </svg>
               </div>
+              <h3 className="text-lg font-semibold text-white mb-2.5 tracking-tight">{p.title}</h3>
+              <p className="text-white/65 leading-relaxed text-sm font-light">{p.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -691,20 +576,22 @@ function ClosingContactSection() {
   return (
     <section className="relative py-28 md:py-36 border-t border-white/5 overflow-hidden">
       {/* Background Video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/Newspaper.mp4?alt=media&token=ce8b574c-f399-4462-bc3f-2f69e59384d1" type="video/mp4" />
-      </video>
+      <div className="absolute inset-0 z-0 bg-[#0B1120]">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        >
+          <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/Newspaper.mp4?alt=media&token=ce8b574c-f399-4462-bc3f-2f69e59384d1" type="video/mp4" />
+        </video>
+      </div>
 
-      {/* Overlay molt suau (30%) i degradat elegant superior per fondre's amb la secció de dalt */}
-      <div className="absolute inset-0 bg-[#0B1120]/30 z-0" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/80 via-transparent to-transparent z-0" />
+      {/* Overlay groc per tenyir el clip */}
+      <div className="absolute inset-0 bg-yellow-500/20 mix-blend-color z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120] via-transparent to-[#0B1120]/80 z-0 pointer-events-none" />
 
       <SectionContainer className="relative z-10">
         <motion.div
@@ -717,16 +604,16 @@ function ClosingContactSection() {
           <h2 className="text-2xl md:text-4xl font-medium tracking-tight text-white mb-5">
             {t('aboutPage.closing.title', 'Partnerships, press or a bold idea?')}
           </h2>
-          <p className="text-white/70 mb-8 max-w-xl mx-auto font-light">
+          <p className="text-white/80 mb-8 max-w-xl mx-auto font-light">
             {t('aboutPage.closing.subtitle', 'We read every email. If GlobalPlay360 resonates with your organization, let’s build something.')}
           </p>
           <a
             href="mailto:hello@globalplay360.com"
-            className="inline-flex items-center gap-3 text-white hover:text-[#3B82F6] text-base md:text-lg font-medium transition-colors group"
+            className="inline-flex items-center justify-center gap-3 text-yellow-400 hover:text-yellow-300 text-base md:text-lg font-medium transition-colors group"
           >
             <span>hello@globalplay360.com</span>
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
         </motion.div>
