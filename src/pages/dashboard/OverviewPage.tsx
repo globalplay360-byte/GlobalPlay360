@@ -155,67 +155,70 @@ export default function OverviewPage() {
     const newAppsWeek = applications.filter(a => a.createdAt && (now - new Date(a.createdAt).getTime() <= msInWeek)).length;
     const newOppsMonth = opportunities.filter(o => o.createdAt && (now - new Date(o.createdAt).getTime() <= msInMonth)).length;
     
-    // Per a l'esportista/coach (activeRecently) 
-    const hasRecentConvs = conversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
+      // Obviar els canals creats buits on encara no hi ha missatges reals enviats
+      const activeConversations = conversations.filter(c => c.lastMessage && c.lastMessage.trim() !== '');
 
-    if (isClub) {
+      // Per a l'esportista/coach (activeRecently) 
+      const hasRecentConvs = activeConversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
+  
+      if (isClub) {
+        return [
+          { 
+            label: t('overview.stats.club.activeOffers'), 
+            value: opportunities.length, 
+            icon: BriefcaseIcon, 
+            trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined, 
+            trendUp: true 
+          },
+          { 
+            label: t('overview.stats.club.applicationsReceived'), 
+            value: applications.length, 
+            icon: DocumentCheckIcon, 
+            trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined, 
+            trendUp: true 
+          },
+          { 
+            label: t('overview.stats.club.conversations'), 
+            value: activeConversations.length, 
+            icon: ChatBubbleLeftEllipsisIcon 
+          },
+          { 
+            label: t('overview.stats.club.profileVisits'), 
+            value: '---', // TODO: Implementar visibilitat de perfil o treure card en un futur.
+            icon: ChartBarIcon 
+          },
+        ];
+      }
       return [
         { 
-          label: t('overview.stats.club.activeOffers'), 
+          label: t('overview.stats.coachPlayer.availableOffers'), 
           value: opportunities.length, 
-          icon: BriefcaseIcon, 
-          trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined, 
-          trendUp: true 
+          icon: StarIcon, 
+          trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined,
+          trendUp: true
         },
         { 
-          label: t('overview.stats.club.applicationsReceived'), 
+          label: t('overview.stats.coachPlayer.applications'), 
           value: applications.length, 
           icon: DocumentCheckIcon, 
-          trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined, 
+          trend: newAppsWeek > 0 ? `+${newAppsWeek} ${t('overview.stats.trends.thisWeek', 'aquesta setmana')}` : undefined, 
           trendUp: true 
         },
         { 
-          label: t('overview.stats.club.conversations'), 
-          value: conversations.length, 
-          icon: ChatBubbleLeftEllipsisIcon 
+          label: t('overview.stats.coachPlayer.pendingMessages'), 
+          value: activeConversations.length, 
+          icon: ChatBubbleLeftEllipsisIcon, 
+          trend: hasRecentConvs ? t('overview.stats.trends.activeRecently', 'Actiu recentment') : undefined, 
+          trendUp: true 
         },
         { 
-          label: t('overview.stats.club.profileVisits'), 
-          value: '---', // TODO: Implementar visibilitat de perfil o treure card en un futur.
-          icon: ChartBarIcon 
+          label: t('overview.stats.coachPlayer.profileStrength'), 
+          value: '100%',
+          icon: UserCircleIcon, 
+          trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
+          trendUp: true 
         },
       ];
-    }
-    return [
-      { 
-        label: t('overview.stats.coachPlayer.availableOffers'), 
-        value: opportunities.length, 
-        icon: StarIcon, 
-        trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined,
-        trendUp: true
-      },
-      { 
-        label: t('overview.stats.coachPlayer.applications'), 
-        value: applications.length, 
-        icon: DocumentCheckIcon, 
-        trend: newAppsWeek > 0 ? `+${newAppsWeek} ${t('overview.stats.trends.thisWeek', 'aquesta setmana')}` : undefined, 
-        trendUp: true 
-      },
-      { 
-        label: t('overview.stats.coachPlayer.pendingMessages'), 
-        value: conversations.length, 
-        icon: ChatBubbleLeftEllipsisIcon, 
-        trend: hasRecentConvs ? t('overview.stats.trends.activeRecently', 'Actiu recentment') : undefined, 
-        trendUp: true 
-      },
-      { 
-        label: t('overview.stats.coachPlayer.profileStrength'), 
-        value: '100%', // TODO(Feature): Ancorar a un sistema de progrés basat en el context/dades de l'usuari (Profile) per calcular un % real de completesa.
-        icon: UserCircleIcon, 
-        trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
-        trendUp: true 
-      },
-    ];
   }, [isClub, applications, opportunities, conversations, t]);
 
   const recentItems = isClub ? applications.slice(0, 3) : opportunities.slice(0, 3);
