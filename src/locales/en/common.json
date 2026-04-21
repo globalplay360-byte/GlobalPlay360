@@ -387,7 +387,7 @@
         "profileVisits": "Profile Visits"
       },
       "coachPlayer": {
-        "savedOffers": "Saved Offers",
+        "availableOffers": "Available Opportunities",
         "applications": "Applications",
         "pendingMessages": "Pending Messages",
         "profileStrength": "Profile Strength"
@@ -408,7 +408,7 @@
       "yourProfile": "Your Profile"
     },
     "recentApplicationsTitle": "Latest received applications",
-    "recommendedOffersTitle": "Recommended Opportunities (Mock)",
+    "recommendedOffersTitle": "Recommended Opportunities",
     "seeMore": "See more",
     "reviewCV": "Review CV",
     "enter": "+ Enter",

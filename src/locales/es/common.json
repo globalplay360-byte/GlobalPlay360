@@ -387,7 +387,7 @@
         "profileVisits": "Visitas al Perfil"
       },
       "coachPlayer": {
-        "savedOffers": "Ofertas Guardadas",
+        "availableOffers": "Oportunidades Disponibles",
         "applications": "Candidaturas",
         "pendingMessages": "Mensajes Pendientes",
         "profileStrength": "Fuerza del Perfil"
@@ -408,7 +408,7 @@
       "yourProfile": "Tu Perfil"
     },
     "recentApplicationsTitle": "Últimas candidaturas recibidas",
-    "recommendedOffersTitle": "Oportunidades recomendadas (Mock)",
+    "recommendedOffersTitle": "Oportunidades recomendadas",
     "seeMore": "Ver más",
     "reviewCV": "Revisar CV",
     "enter": "+ Entrar",

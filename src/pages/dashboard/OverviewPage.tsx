@@ -63,7 +63,18 @@ export default function OverviewPage() {
           const allOpps = await getOpportunities(); 
           if (isMounted) {
             setApplications(myApps);
-            setOpportunities(allOpps.filter(o => o.status === 'open'));
+            let openOpps = allOpps.filter(o => o.status === 'open');
+            // Sort: match sport first, then newest
+            if (user.sport) {
+              openOpps = openOpps.sort((a, b) => {
+                if (a.sport === user.sport && b.sport !== user.sport) return -1;
+                if (a.sport !== user.sport && b.sport === user.sport) return 1;
+                return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+              });
+            } else {
+              openOpps = openOpps.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+            }
+            setOpportunities(openOpps);
           }
         }
       } catch (err) {
@@ -131,9 +142,11 @@ export default function OverviewPage() {
     }
     return [
       { 
-        label: t('overview.stats.coachPlayer.savedOffers'), 
+        label: t('overview.stats.coachPlayer.availableOffers'), 
         value: opportunities.length, 
-        icon: StarIcon 
+        icon: StarIcon, 
+        trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined,
+        trendUp: true
       },
       { 
         label: t('overview.stats.coachPlayer.applications'), 
