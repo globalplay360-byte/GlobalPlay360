@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { useTranslation } from 'react-i18next';
+import { Logo } from '@/components/ui/Logo';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -33,12 +34,17 @@ export default function Navbar() {
       </div>
 
       <nav className="bg-[#020C1B] border-b border-white/5 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16">
+          <div className="flex justify-between items-center h-24">
             {/* Logo y Links Izquierda */}
-            <div className="flex items-center gap-10">
-              <Link to="/" className="flex items-center gap-3 text-xl font-bold text-white">
-                <span className="text-[#0070F3] text-2xl">🏆</span> {t('navbar.brand', 'Global Play 360')}
+            <div className="flex items-center gap-14 lg:gap-24">
+              <Link 
+                to="/" 
+                className="-ml-2 flex items-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#020C1B] focus-visible:ring-[#3B82F6] rounded-sm mr-4 md:mr-8"
+                aria-label="Tornar a l'inici"
+              >
+                {/* Punt exacte final d'equilibri per lletres visibles al SaaS */}
+                <Logo className="h-16 md:h-24 w-auto text-white transform scale-[1.45] origin-left" />
               </Link>
 
               <div className="hidden md:flex items-center gap-6">
