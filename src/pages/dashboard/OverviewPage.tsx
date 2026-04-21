@@ -229,7 +229,7 @@ export default function OverviewPage() {
       <PageHeader
         title={
           <div className="flex items-center gap-3">
-            <span>{t('overview.hello')}, {user?.displayName || t('overview.sportsman')}</span>
+            <span className="text-yellow-400/80">{t('overview.hello')}, {user?.displayName || t('overview.sportsman')}</span>
             <span className={"px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border " + (
               isPremium
                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
@@ -263,11 +263,12 @@ export default function OverviewPage() {
 
       <div className="relative mb-4">
         {/* Animated Connecting Line (Desktop) */}
-        <div className="hidden md:block absolute top-1/2 left-[12.5%] right-[12.5%] h-[1px] bg-[#374151]/30 -translate-y-1/2 z-0 overflow-hidden rounded-full">
+        <div className="hidden md:block absolute top-1/2 left-[12.5%] right-[12.5%] h-[2px] bg-transparent -translate-y-1/2 z-0 overflow-hidden rounded-full">
           <motion.div 
-            className="w-[120px] h-full bg-gradient-to-r from-transparent via-yellow-500 to-transparent"
-            animate={{ left: ['-10%', '110%'] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            className="w-[150px] h-full bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
+            initial={{ left: '-15%' }}
+            animate={{ left: ['-15%', '105%'] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             style={{ position: 'absolute', top: 0 }}
           />
         </div>
@@ -275,7 +276,7 @@ export default function OverviewPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 relative z-10 pointer-events-none">
           {stats.map((stat, i) => (
             <div key={i} className="bg-[#0B1120] p-1 sm:p-2 rounded-full w-full max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
-              <div className="bg-[#374151] border border-yellow-500/80 hover:border-yellow-400 rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4">
+              <div className="bg-[#374151]/50 border border-yellow-500/80 hover:border-yellow-400 rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
                 
                 <div className="relative z-10 mb-2">
