@@ -20,6 +20,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import { getUserApplications, getClubApplications } from '../../services/applications.service';
 import { getOpportunities, getOpportunitiesByField } from '../../services/opportunities.service';
 import { subscribeToUserConversations } from '../../services/messages.service';
+import { getUserDoc } from '../../services/auth.service';
 import type { Application, Opportunity, Conversation } from '@/types';
 
 type BaseStats = {
@@ -28,6 +29,51 @@ type BaseStats = {
   icon: React.ElementType;
   trend?: string;
   trendUp?: boolean;
+};
+
+const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getUserDoc(app.userId).then(u => {
+      if (mounted) setUserName(u?.displayName || t('overview.sportsman', 'Esportista'));
+    }).catch(() => {
+      if (mounted) setUserName(t('overview.sportsman', 'Esportista'));
+    });
+    return () => { mounted = false; };
+  }, [app.userId, t]);
+
+  return (
+    <div className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151]">
+          <UserCircleIcon className="w-6 h-6 text-[#9CA3AF]" />
+        </div>
+        <div>
+          {userName === null ? (
+             <div className="h-4 w-32 bg-[#374151] animate-pulse rounded mb-1"></div>
+          ) : (
+             <p className="text-sm font-semibold text-white mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-xs">{userName}</p>
+          )}
+          <p className="text-xs text-[#9CA3AF] flex items-center gap-2">
+            <span className={"capitalize font-medium " + (app.status === 'accepted' ? 'text-green-400' : app.status === 'rejected' ? 'text-red-400' : 'text-blue-400')}>
+              {app.status}
+            </span>
+            {app.createdAt && (
+               <>
+                 <span className="w-1 h-1 rounded-full bg-[#374151]"></span>
+                 <span>{new Date(app.createdAt).toLocaleDateString()}</span>
+               </>
+            )}
+          </p>
+        </div>
+      </div>
+      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
+        {t('overview.reviewCV', 'Revisar')}
+      </Link>
+    </div>
+  );
 };
 
 export default function OverviewPage() {
@@ -211,30 +257,33 @@ export default function OverviewPage() {
         }
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 sm:p-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 mb-4">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 flex flex-col relative overflow-hidden group transition-all duration-base ease-out hover:border-[#374151] hover:-translate-y-0.5">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-base ease-out" />
-            <div className="flex items-start justify-between mb-4 relative z-10">
-              <div className="bg-[#1F2937] p-2.5 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-base ease-out">
-                <stat.icon className="w-6 h-6" />
-              </div>
-              {stat.trend && (
-                <span className={"text-[11px] font-bold px-2 py-1 rounded-md " + (
-                  stat.trendUp ? 'text-green-400 bg-green-400/10 border border-green-500/10' : 'text-[#9CA3AF] bg-[#1F2937] border border-[#374151]'
+          <div key={i} className="bg-[#1F2937] border-2 border-[#374151] hover:border-blue-500/50 rounded-full w-full aspect-square max-w-[220px] flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] hover:-translate-y-1 p-4 sm:p-6 mx-auto">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
+            
+            <div className="relative z-10 mb-2">
+               <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-500 group-hover:text-blue-400 transition-colors" />
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center justify-center mb-2">
+              {loading ? (
+                 <div className="h-8 w-14 bg-[#374151] animate-pulse rounded-md mb-1"></div>
+              ) : (
+                <h3 className="text-3xl sm:text-4xl font-extrabold text-blue-500 tracking-tight leading-none mb-1.5">{stat.value}</h3>
+              )}
+              <p className="text-[10px] sm:text-xs text-blue-400 font-bold uppercase tracking-wider leading-tight px-1 text-center">{stat.label}</p>
+            </div>
+
+            {stat.trend && (
+              <div className="relative z-10 mt-1 opacity-90 group-hover:opacity-100 transition-opacity">
+                <span className={"text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap " + (
+                  stat.trendUp ? 'text-green-400 bg-green-400/10 border border-green-500/20' : 'text-[#9CA3AF] bg-[#374151] border border-[#4B5563]'
                 )}>
                   {stat.trend}
                 </span>
-              )}
-            </div>
-            <div className="relative z-10">
-              {loading ? (
-                 <div className="h-9 w-16 bg-[#1F2937] animate-pulse rounded my-1"></div>
-              ) : (
-                <h3 className="text-3xl font-extrabold text-white tracking-tight mb-1">{stat.value}</h3>
-              )}
-              <p className="text-sm text-[#9CA3AF] font-medium">{stat.label}</p>
-            </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -272,30 +321,7 @@ export default function OverviewPage() {
                  </div>
               ) : isClub ? (
                 (recentItems as Application[]).map((app) => (
-                  <div key={app.id} className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151]">
-                        <UserCircleIcon className="w-6 h-6 text-[#9CA3AF]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-white mb-0.5">Candidatura #{app.id ? app.id.slice(-4) : '...'}</p>
-                        <p className="text-xs text-[#9CA3AF] flex items-center gap-2">
-                          <span className={"capitalize font-medium " + (app.status === 'accepted' ? 'text-green-400' : app.status === 'rejected' ? 'text-red-400' : 'text-blue-400')}>
-                            {app.status}
-                          </span>
-                          {app.createdAt && (
-                             <>
-                               <span className="w-1 h-1 rounded-full bg-[#374151]"></span>
-                               <span>{new Date(app.createdAt).toLocaleDateString()}</span>
-                             </>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                    <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
-                      {t('overview.reviewCV', 'Revisar')}
-                    </Link>
-                  </div>
+                  <RecentApplicationItem key={app.id} app={app} t={t} />
                 ))
               ) : (
                 (recentItems as Opportunity[]).map((opp) => (
