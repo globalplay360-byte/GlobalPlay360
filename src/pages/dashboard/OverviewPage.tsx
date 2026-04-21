@@ -55,7 +55,7 @@ const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
           {userName === null ? (
              <div className="h-4 w-32 bg-[#374151] animate-pulse rounded mb-1"></div>
           ) : (
-             <p className="text-sm font-semibold text-white mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-xs">{userName}</p>
+             <p className="text-sm font-semibold text-gray-200 mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-xs">{userName}</p>
           )}
           <p className="text-xs text-[#9CA3AF] flex items-center gap-2">
             <span className={"capitalize font-medium " + (app.status === 'accepted' ? 'text-green-400' : app.status === 'rejected' ? 'text-red-400' : 'text-blue-400')}>
@@ -70,7 +70,7 @@ const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
           </p>
         </div>
       </div>
-      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
+      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-gray-300 hover:text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
         {t('overview.reviewCV', 'Revisar')}
       </Link>
     </div>
@@ -275,8 +275,13 @@ export default function OverviewPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 relative z-10 pointer-events-none">
           {stats.map((stat, i) => (
-            <div key={i} className="bg-[#0B1120] p-1 sm:p-2 rounded-full w-full max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
-              <div className="bg-[#374151]/50 border border-yellow-500/80 hover:border-yellow-400 rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4">
+            <div key={i} className="bg-[#0B1120] rounded-full w-full max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
+              <motion.div 
+                animate={{ borderColor: ['rgba(234,179,8,0.8)', 'rgba(234,179,8,0.2)', 'rgba(234,179,8,0.8)'] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+                whileHover={{ borderColor: 'rgba(250,204,21,1)', transition: { duration: 0.2 } }}
+                className="bg-[#374151]/50 border rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4"
+              >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
                 
                 <div className="relative z-10 mb-2">
@@ -299,7 +304,7 @@ export default function OverviewPage() {
                     </span>
                   </div>
                 )}
-              </div>
+              </motion.div>
             </div>
           ))}
         </div>
@@ -308,7 +313,7 @@ export default function OverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6 sm:p-8">
         <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-6 sm:p-8">
           <section>
-            <h2 className="text-base font-semibold text-white mb-4">{t('overview.quickActions.title')}</h2>
+            <h2 className="text-base font-semibold text-gray-200 mb-4">{t('overview.quickActions.title')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/dashboard/opportunities" icon={BriefcaseIcon} label={t('overview.quickActions.exploreOffers')} />
               <QuickAction href="/dashboard/applications" icon={DocumentCheckIcon} label={t('overview.quickActions.applications')} />
@@ -319,7 +324,7 @@ export default function OverviewPage() {
 
           <section className="bg-[#111827] border border-[#1F2937] rounded-xl overflow-hidden flex-1 shadow-sm h-full flex flex-col">
             <div className="px-5 py-4 border-b border-[#1F2937] flex items-center justify-between">
-              <h2 className="text-base font-semibold text-white">
+              <h2 className="text-base font-semibold text-gray-200">
                 {isClub ? t('overview.recentApplicationsTitle') : t('overview.recommendedOffersTitle')}
               </h2>
               <Link to={isClub ? "/dashboard/applications" : "/dashboard/opportunities"} className="text-sm font-medium text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors duration-fast ease-out">
@@ -348,7 +353,7 @@ export default function OverviewPage() {
                         <BuildingOfficeIcon className="w-6 h-6 text-[#9CA3AF]" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white mb-0.5">{opp.title}</p>
+                        <p className="text-sm font-semibold text-gray-200 mb-0.5">{opp.title}</p>
                         <p className="text-xs text-[#9CA3AF] capitalize">{opp.sport} • {opp.contractType} • {opp.location}</p>
                       </div>
                     </div>
@@ -382,14 +387,14 @@ export default function OverviewPage() {
                 </div>
               </div>
             ) : (
-               <div className="bg-gradient-to-br from-[#1E3A8A]/40 via-[#111827] to-[#111827] border border-blue-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden group">
+               <div className="bg-gradient-to-br from-yellow-600/20 via-[#111827] to-[#111827] border border-yellow-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden group">
                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-base ease-out">
-                   <SparklesIcon className="w-24 h-24 text-blue-500" />
+                   <SparklesIcon className="w-24 h-24 text-yellow-500" />
                  </div>
                  <div className="relative z-10">
                    <div className="flex items-center gap-2 mb-2">
-                     <SparklesIcon className="w-5 h-5 text-blue-400" />
-                     <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">UPGRADE</span>
+                     <SparklesIcon className="w-5 h-5 text-yellow-400" />
+                     <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">UPGRADE</span>
                    </div>
                    <h3 className="text-xl font-bold text-white mb-2">{t('overview.upgrade.title')}</h3>
                    <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">   
@@ -397,7 +402,7 @@ export default function OverviewPage() {
                        Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
                      </Trans>
                    </p>
-                   <Link to="/pricing" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-fast ease-out active:scale-[0.98] w-full relative z-10">
+                   <Link to="/pricing" className="bg-yellow-500 hover:bg-yellow-400 text-[#0B1120] text-sm font-bold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all duration-fast ease-out active:scale-[0.98] w-full relative z-10">
                      {t('overview.upgrade.button')}
                    </Link>
                  </div>
@@ -406,7 +411,7 @@ export default function OverviewPage() {
           </section>
 
           <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 md:p-6 flex-1 shadow-sm">
-            <h2 className="text-base font-semibold text-white mb-5 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-gray-200 mb-5 flex items-center justify-between">
               {t('overview.activity.title')}
               <span className="text-[11px] font-medium text-[#6B7280] bg-[#1F2937] px-2 py-0.5 rounded">{t('overview.activity.last7Days', 'Darrers 7 dies')}</span>
             </h2>
@@ -416,7 +421,7 @@ export default function OverviewPage() {
                 <div className="absolute top-0.5 -left-[17px] bg-[#1F2937] p-1.5 rounded-full border-4 border-[#111827]">
                   <CheckCircleIcon className="w-3 h-3 text-green-400" />
                 </div>
-                <p className="text-sm font-semibold text-white mb-0.5">{t('overview.activity.item1.title', 'Benvingut a GlobalPlay360!')}</p>
+                <p className="text-sm font-semibold text-gray-200 mb-0.5">{t('overview.activity.item1.title', 'Benvingut a GlobalPlay360!')}</p>
                 <p className="text-xs text-[#9CA3AF] mb-1">{t('overview.activity.item1.desc', 'Has iniciat sessió correctament al nou Dashboard.')}</p>
                 <span className="text-[10px] font-medium text-[#6B7280]">{new Date().toLocaleDateString()}</span>
               </div>
