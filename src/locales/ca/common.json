@@ -6,7 +6,7 @@
   "dashboard": "Tauler",
   "homePage": {
     "hero": {
-      "title": "On el Talent Troba la \n Oportunitat",
+      "title": "On el Talent Troba \n l'Oportunitat",
       "subtitle": "Connecta amb jugadors, entrenadors i clubs de tot el món. Desenvolupa la teva carrera esportiva amb Global Play 360.",
       "btnPlayer": "Sóc Jugador",
       "btnCoach": "Sóc Entrenador",
@@ -34,7 +34,7 @@
     },
     "pricing": {
       "title": "Gratis vs Premium",
-      "subtitle": "Tria el pla que s'adapti a les teves metes i accelera la teva carrera.",
+      "subtitle": "Tria el pla que s'adapti a les teves metes",
       "month": "/mes",
       "free": {
         "title": "Pla Gratuït",
@@ -86,7 +86,33 @@
     "privacy": "Política de Privacitat",
     "terms": "Termes de Servei",
     "rights": "2026 Global Play 360. Tots els drets reservats.",
-    "followUs": "Segueix-nos"
+    "rightsShort": "Tots els drets reservats.",
+    "followUs": "Segueix-nos",
+    "madeIn": "Fet amb",
+    "madeInLocation": "a Madrid",
+    "newsletter": {
+      "badge": "Membres Fundadors",
+      "title": "Uneix-te a la revolució esportiva global",
+      "subtitle": "Rep oportunitats exclusives, novetats i ofertes privades de GlobalPlay360 directament a la teva safata.",
+      "placeholder": "El teu correu electrònic",
+      "cta": "Subscriu-te",
+      "success": "Subscrit ✓",
+      "privacy": "Mai compartirem el teu correu. Pots donar-te de baixa quan vulguis."
+    },
+    "col": {
+      "platform": "Plataforma",
+      "opportunities": "Oportunitats",
+      "forYou": "Per a tu",
+      "players": "Jugadors",
+      "clubs": "Clubs",
+      "coaches": "Entrenadors",
+      "founder": "Membre Fundador",
+      "cookies": "Política de Cookies"
+    },
+    "trust": {
+      "stripe": "Pagaments per Stripe",
+      "gdpr": "GDPR"
+    }
   },
   "pricingPage": {
     "title": "Escull el teu pla",

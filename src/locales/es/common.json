@@ -86,7 +86,33 @@
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",
     "rights": "2026 Global Play 360. Todos los derechos reservados.",
-    "followUs": "Síguenos"
+    "rightsShort": "Todos los derechos reservados.",
+    "followUs": "Síguenos",
+    "madeIn": "Hecho con",
+    "madeInLocation": "en Madrid",
+    "newsletter": {
+      "badge": "Miembros Fundadores",
+      "title": "Únete a la revolución deportiva global",
+      "subtitle": "Recibe oportunidades exclusivas, novedades y ofertas privadas de GlobalPlay360 directamente en tu bandeja.",
+      "placeholder": "Tu correo electrónico",
+      "cta": "Suscribirme",
+      "success": "Suscrito ✓",
+      "privacy": "Nunca compartiremos tu correo. Puedes darte de baja cuando quieras."
+    },
+    "col": {
+      "platform": "Plataforma",
+      "opportunities": "Oportunidades",
+      "forYou": "Para ti",
+      "players": "Jugadores",
+      "clubs": "Clubes",
+      "coaches": "Entrenadores",
+      "founder": "Miembro Fundador",
+      "cookies": "Política de Cookies"
+    },
+    "trust": {
+      "stripe": "Pagos con Stripe",
+      "gdpr": "GDPR"
+    }
   },
   "pricingPage": {
     "title": "Elige tu plan",

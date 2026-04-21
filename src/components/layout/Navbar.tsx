@@ -64,21 +64,33 @@ export default function Navbar() {
               </div>
 
               {user ? (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 border-l border-white/10 pl-6 ml-2">
+                  <span className="hidden sm:inline-block text-sm font-medium text-white/70">
+                    Hola, {user.displayName}
+                  </span>
+                  
+                  <Link
+                    to="/dashboard"
+                    className="text-sm font-medium px-5 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
+                  >
+                    {t('navbar.dashboard', 'El Meu Panell')}
+                  </Link>
+
                   {user.role === 'admin' && (
                     <Link
                       to="/admin"
-                      className="text-sm text-white/70 hover:text-[#FFC107] transition-colors"
+                      className="text-sm px-3 py-1.5 border border-[#FFC107]/50 text-[#FFC107] rounded hover:bg-[#FFC107]/10 transition-colors"
                     >
-                      {t('navbar.admin', 'Panell')}
+                      {t('navbar.admin', 'Admin')}
                     </Link>
                   )}
-                  <span className="text-sm font-medium text-white">{user.displayName}</span>
+                  
                   <button
                     onClick={handleLogout}
-                    className="text-sm font-medium text-white/50 hover:text-red-400 transition-colors cursor-pointer"
+                    className="text-sm font-medium px-2 py-2 text-white/50 hover:text-red-400 transition-colors cursor-pointer"
+                    title={t('navbar.logout', 'Tancar Sessió')}
                   >
-                    {t('navbar.logout', 'Tancar Sessió')}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                   </button>
                 </div>
               ) : (
