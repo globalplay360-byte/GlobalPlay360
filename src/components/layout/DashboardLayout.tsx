@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import { auth } from '@/services/firebase';
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DashboardLayout() {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -69,7 +70,9 @@ export default function DashboardLayout() {
           </div>
         )}
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar">
-          <Outlet />
+          <div key={location.pathname} className="animate-fade-in">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
