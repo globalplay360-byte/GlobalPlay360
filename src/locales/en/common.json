@@ -86,7 +86,33 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "rights": "2026 Global Play 360. All rights reserved.",
-    "followUs": "Follow Us"
+    "rightsShort": "All rights reserved.",
+    "followUs": "Follow Us",
+    "madeIn": "Made with",
+    "madeInLocation": "in Madrid",
+    "newsletter": {
+      "badge": "Founding Members",
+      "title": "Join the global sports revolution",
+      "subtitle": "Get exclusive opportunities, updates and private offers from GlobalPlay360 delivered straight to your inbox.",
+      "placeholder": "Your email address",
+      "cta": "Subscribe",
+      "success": "Subscribed ✓",
+      "privacy": "We will never share your email. You can unsubscribe anytime."
+    },
+    "col": {
+      "platform": "Platform",
+      "opportunities": "Opportunities",
+      "forYou": "For you",
+      "players": "Players",
+      "clubs": "Clubs",
+      "coaches": "Coaches",
+      "founder": "Founding Member",
+      "cookies": "Cookie Policy"
+    },
+    "trust": {
+      "stripe": "Stripe Payments",
+      "gdpr": "GDPR"
+    }
   },
   "pricingPage": {
     "title": "Choose your plan",
