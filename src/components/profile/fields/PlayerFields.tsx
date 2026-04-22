@@ -48,7 +48,7 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
     <>
       <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
         <div className="flex items-center gap-2 mb-2">
-          <span className="w-1.5 h-6 rounded bg-emerald-500 shadow-sm shadow-emerald-500/50" />
+          <span className="w-1 h-5 rounded-md bg-[#FFC107] shadow-sm shadow-[#FFC107]/30" />
           <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">{t('profileEdit.fields.athleticData', 'Dades esportives')}</h2>
         </div>
 
@@ -95,6 +95,18 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
               value={formData.weight ?? ''}
               onChange={(e) => onChange({ weight: e.target.value ? Number(e.target.value) : undefined })}
               placeholder={t('profileEdit.placeholders.weight', 'Ex: 75')}
+              disabled={disabled}
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
+          <Field label={t('profileEdit.fields.currentClub', 'Equip Actual / Club')} hint={t('profileEdit.hints.currentClub', 'A quin equip jugues actualment? (Opcional)')}>
+            <Input
+              type="text"
+              value={formData.currentClub || ''}
+              onChange={(e) => onChange({ currentClub: e.target.value })}
+              placeholder={t('profileEdit.placeholders.currentClub', 'Ex: FC Barcelona')}
               disabled={disabled}
             />
           </Field>

@@ -1,23 +1,80 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import type { Opportunity } from '@/types';
+import Select from 'react-select';
+import { Country, State, City } from 'country-state-city';
 
 type FormData = Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>;
 
 const SPORT_OPTIONS = ['Football', 'Basketball', 'Tennis', 'Handball', 'Volleyball', 'Rugby', 'Swimming', 'Athletics'];
 
-
-
 export const INITIAL_FORM: FormData = {
   title: '',
   sport: 'Football',
   gender: 'male',
-  location: '',
+  country: '',
+  state: '',
+  city: '',
   contractType: 'pro',
   description: '',
   requirements: [],
   status: 'open',
+};
+
+const darkSelectStyles = {
+  control: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: '#0F172A',
+    borderColor: state.isFocused ? '#3B82F6' : '#1F2937',
+    '&:hover': {
+      borderColor: state.isFocused ? '#3B82F6' : '#374151',
+    },
+    boxShadow: state.isFocused ? '0 0 0 1px #3B82F6' : 'none',
+    borderRadius: '0.5rem',
+    minHeight: '44px',
+    cursor: state.isDisabled ? 'not-allowed' : 'pointer',
+    opacity: state.isDisabled ? 0.5 : 1,
+  }),
+  menu: (base: any) => ({
+    ...base,
+    backgroundColor: '#1F2937',
+    border: '1px solid #374151',
+    borderRadius: '0.5rem',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+    zIndex: 50,
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected 
+      ? '#3B82F6' 
+      : state.isFocused 
+        ? '#374151' 
+        : 'transparent',
+    color: state.isSelected ? '#ffffff' : '#D1D5DB',
+    cursor: 'pointer',
+    '&:active': {
+      backgroundColor: '#2563EB',
+    },
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: '#D1D5DB',
+    fontSize: '0.875rem'
+  }),
+  input: (base: any) => ({
+    ...base,
+    color: '#D1D5DB',
+  }),
+  placeholder: (base: any) => ({
+    ...base,
+    color: '#6B7280',
+    fontSize: '0.875rem'
+  }),
+  indicatorSeparator: (base: any) => ({
+    ...base,
+    backgroundColor: '#374151',
+  })
 };
 
 interface OpportunityFormProps {
@@ -55,6 +112,44 @@ export default function OpportunityForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const countryOptions = useMemo(() => {
+    return Country.getAllCountries().map((c) => ({
+      value: c.isoCode,
+      label: `${c.flag} ${c.name}`
+    }));
+  }, []);
+
+  const currentCountryObj = useMemo(() => {
+    if (!form.country) return null;
+    return countryOptions.find(o => o.value === form.country || o.label.includes(form.country!)) || null;
+  }, [form.country, countryOptions]);
+
+  const stateOptions = useMemo(() => {
+    if (!form.country) return [];
+    return State.getStatesOfCountry(form.country).map(s => ({
+      value: s.isoCode,
+      label: s.name
+    }));
+  }, [form.country]);
+
+  const currentStateObj = useMemo(() => {
+    if (!form.state || !stateOptions.length) return null;
+    return stateOptions.find(o => o.value === form.state) || null;
+  }, [form.state, stateOptions]);
+
+  const cityOptions = useMemo(() => {
+    if (!form.country || !form.state) return [];
+    return City.getCitiesOfState(form.country, form.state).map(c => ({
+      value: c.name,
+      label: c.name
+    }));
+  }, [form.country, form.state]);
+
+  const currentCityObj = useMemo(() => {
+    if (!form.city || !cityOptions.length) return null;
+    return cityOptions.find(o => o.value === form.city) || null;
+  }, [form.city, cityOptions]);
+
   const updateField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
@@ -73,16 +168,16 @@ export default function OpportunityForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.title.trim()) return setError('t("opportunityForm.errors.titleRequired")');
-    if (!form.location.trim()) return setError('t("opportunityForm.errors.locationRequired")');
-    if (!form.description.trim()) return setError('t("opportunityForm.errors.descRequired")');
+    if (!form.title.trim()) return setError(t("opportunityForm.errors.titleRequired", "El títol és obligatori"));
+    if (!form.country) return setError(t("opportunityForm.errors.locationRequired", "La ubicació és obligatòria"));
+    if (!form.description.trim()) return setError(t("opportunityForm.errors.descRequired", "La descripció és obligatòria"));
 
     try {
       setSubmitting(true);
       setError(null);
       await onSubmit(form);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 't("opportunityForm.errors.saveError")');
+      setError(err instanceof Error ? err.message : t("opportunityForm.errors.saveError", "Error al desar"));
     } finally {
       setSubmitting(false);
     }
@@ -129,15 +224,54 @@ export default function OpportunityForm({
         </div>
 
         {/* Ubicació */}
-        <div>
-          <label className={labelClass}>{t("opportunityForm.locationLabel", "Ubicació *")}</label>
-          <input
-            type="text"
-            className={inputClass}
-            placeholder={t("opportunityForm.fields.locationPlaceholder", "Ex: Barcelona, Spain")}
-            value={form.location}
-            onChange={(e) => updateField('location', e.target.value)}
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-50">
+          <div>
+            <label className={labelClass}>{t("opportunityForm.fields.country", "Country *")}</label>
+            <div className="relative">
+              <Select
+                styles={darkSelectStyles}
+                options={countryOptions}
+                value={currentCountryObj}
+                placeholder={t('opportunityForm.placeholders.country', 'Select country...')}
+                onChange={(selected: any) => {
+                  setForm(prev => ({
+                    ...prev,
+                    country: selected ? selected.value : '',
+                    state: '',
+                    city: ''
+                  }));
+                }}
+              />
+            </div>
+          </div>
+          <div>
+            <label className={labelClass}>{t("opportunityForm.fields.state", "State / Province")}</label>
+            <Select
+              styles={darkSelectStyles}
+              options={stateOptions}
+              value={currentStateObj}
+              placeholder={t('opportunityForm.placeholders.state', 'Select state...')}
+              onChange={(selected: any) => {
+                setForm(prev => ({
+                  ...prev,
+                  state: selected ? selected.value : '',
+                  city: ''
+                }));
+              }}
+              isDisabled={!form.country}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>{t("opportunityForm.fields.city", "City")}</label>
+            <Select
+              styles={darkSelectStyles}
+              options={cityOptions}
+              value={currentCityObj}
+              placeholder={t('opportunityForm.placeholders.city', 'Select city...')}
+              onChange={(selected: any) => updateField('city', selected ? selected.value : '')}
+              isDisabled={!form.state}
+            />
+          </div>
         </div>
 
         {/* Descripció */}

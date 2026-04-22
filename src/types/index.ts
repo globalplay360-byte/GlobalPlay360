@@ -34,6 +34,8 @@ export interface User {
 
   // ── Profile: Common (all roles) ──────────────────────
   country?: string;
+  state?: string;
+  city?: string;
   bio?: string;
   phone?: string;
   instagram?: string;
@@ -41,6 +43,7 @@ export interface User {
 
   // ── Profile: Player (core) ───────────────────────────
   sport?: Sport;
+  currentClub?: string;         // Equip on juga actualment
   dateOfBirth?: string;         // ISO date
   height?: number;              // cm
   weight?: number;              // kg
@@ -73,7 +76,9 @@ export interface Opportunity {
   title: string;
   sport: string;
   gender: 'male' | 'female' | 'mixed';
-  location: string;
+  country: string;
+  state?: string;
+  city?: string;
   contractType: 'pro' | 'semi-pro' | 'amateur' | 'academy' | 'trial';
   description: string;
   requirements: string[];

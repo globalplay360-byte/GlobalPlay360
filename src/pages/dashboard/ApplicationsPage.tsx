@@ -18,6 +18,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import PageHeader from "@/components/ui/PageHeader";
+import { formatLocation } from '@/utils/location';
 
 interface ApplicationExtended extends Application {
   opportunity?: Opportunity;
@@ -273,7 +274,7 @@ export default function ApplicationsPage() {
                         <span>{app.opportunity.sport}</span>
                       </div>
                     )}
-                    {app.opportunity?.location && (
+                    {app.opportunity?.country && (
                       <div className="flex items-center gap-1.5">
                         <svg
                           className="w-4 h-4"
@@ -294,7 +295,7 @@ export default function ApplicationsPage() {
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                           />
                         </svg>
-                        <span>{app.opportunity.location}</span>
+                        <span>{formatLocation(app.opportunity)}</span>
                       </div>
                     )}
                   </div>
@@ -442,6 +443,12 @@ export default function ApplicationsPage() {
     </div>
   );
 }
+
+
+
+
+
+
 
 
 

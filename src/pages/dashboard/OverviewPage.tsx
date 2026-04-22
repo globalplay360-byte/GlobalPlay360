@@ -16,6 +16,7 @@ import {
 import { SparklesIcon } from '@heroicons/react/24/solid';
 import { motion } from 'framer-motion';
 import PageHeader from '@/components/ui/PageHeader';
+import { formatLocation } from '@/utils/location';
 
 import { getUserApplications, getClubApplications } from '../../services/applications.service';
 import { getOpportunities, getOpportunitiesByField } from '../../services/opportunities.service';
@@ -348,7 +349,7 @@ export default function OverviewPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-gray-200 mb-0.5">{opp.title}</p>
-                        <p className="text-xs text-[#9CA3AF] capitalize">{opp.sport} • {opp.contractType} • {opp.location}</p>
+                        <p className="text-xs text-[#9CA3AF] capitalize">{opp.sport} • {opp.contractType} • {formatLocation(opp)}</p>
                       </div>
                     </div>
                     <Link to={`/dashboard/opportunities/${opp.id}`} className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-all duration-fast ease-out active:scale-[0.98] text-xs font-semibold px-4 py-2 rounded-lg">

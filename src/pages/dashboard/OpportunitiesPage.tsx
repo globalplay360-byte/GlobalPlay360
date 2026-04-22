@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import Select from 'react-select';
+import { Country, State, City } from 'country-state-city';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
@@ -11,6 +13,74 @@ import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
+import { formatLocation } from '@/utils/location';
+
+const darkSelectStyles = {
+  control: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: '#111827',
+    borderColor: state.isFocused ? '#3B82F6' : '#374151',
+    color: '#F3F4F6',
+    boxShadow: state.isFocused ? '0 0 0 1px #3B82F6' : 'none',
+    '&:hover': {
+      borderColor: '#4B5563'
+    },
+    minHeight: '42px',
+  }),
+  menu: (base: any) => ({
+    ...base,
+    backgroundColor: '#1F2937',
+    border: '1px solid #374151',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+    zIndex: 50,
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected ? '#3B82F6' : state.isFocused ? '#374151' : 'transparent',
+    color: state.isSelected ? '#FFFFFF' : '#F3F4F6',
+    cursor: 'pointer',
+    '&:active': {
+      backgroundColor: '#2563EB'
+    },
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: '#F3F4F6',
+  }),
+  placeholder: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+  }),
+  input: (base: any) => ({
+    ...base,
+    color: '#F3F4F6',
+  }),
+  indicatorSeparator: (base: any) => ({
+    ...base,
+    backgroundColor: '#374151',
+  }),
+  dropdownIndicator: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+    '&:hover': {
+      color: '#D1D5DB'
+    }
+  }),
+};
+
+const SPORT_OPTIONS = [
+  'football',
+  'basketball',
+  'futsal',
+  'volleyball',
+  'handball',
+  'waterpolo',
+  'tennis',
+  'rugby',
+  'american_football',
+  'hockey',
+  'other'
+];
 
 export default function OpportunitiesPage() {
   const { user } = useAuth();
@@ -20,6 +90,34 @@ export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [filters, setFilters] = useState({
+    sport: '',
+    country: '',
+    state: '',
+    city: ''
+  });
+
+  const countryOptions = useMemo(() => Country.getAllCountries().map(c => ({ value: c.isoCode, label: c.name })), []);
+  const stateOptions = useMemo(() => filters.country ? State.getStatesOfCountry(filters.country).map(s => ({ value: s.isoCode, label: s.name })) : [], [filters.country]);
+  const cityOptions = useMemo(() => filters.country && filters.state ? City.getCitiesOfState(filters.country, filters.state).map(c => ({ value: c.name, label: c.name })) : [], [filters.country, filters.state]);
+
+  const sportOptions = useMemo(() => {
+    return [
+      { value: '', label: t('opportunities.filters.all') },
+      ...SPORT_OPTIONS.map(s => ({ value: s, label: t(`profile.sports.${s}`) || s }))
+    ];
+  }, [t]);
+
+  const filteredOpportunities = useMemo(() => {
+    return opportunities.filter(opp => {
+      if (filters.sport && opp.sport !== filters.sport) return false;
+      if (filters.country && opp.country !== filters.country) return false;
+      if (filters.state && opp.state !== filters.state) return false;
+      if (filters.city && opp.city !== filters.city) return false;
+      return true;
+    });
+  }, [opportunities, filters]);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,12 +195,67 @@ export default function OpportunitiesPage() {
         }
       />
 
-      {/* Filters (placeholder) */}
-      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto shadow-sm">
-        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out active:scale-[0.98] hover:shadow-md hover:shadow-[#3B82F6]/10">{t('opportunities.filters.all')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.football')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.basketball')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.proContracts')}</Badge>
+      {/* Filters */}
+      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex flex-col md:flex-row gap-4 shadow-sm items-end z-10 relative">
+        <div className="flex-1 w-full relative z-40">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.sport')}</label>
+          <Select
+            {...{ id: 'sport-select', instanceId: 'sport-select' }}
+            styles={darkSelectStyles}
+            options={sportOptions}
+            value={sportOptions.find(o => o.value === filters.sport) || sportOptions[0]}
+            onChange={(selected: any) => setFilters(f => ({ ...f, sport: selected?.value || '' }))}
+            isClearable={false}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-30">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.country')}</label>
+          <Select
+            {...{ id: 'country-select', instanceId: 'country-select' }}
+            styles={darkSelectStyles}
+            options={countryOptions}
+            value={countryOptions.find(o => o.value === filters.country) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, country: selected?.value || '', state: '', city: '' }))}
+            isClearable
+            placeholder={t('profile.selectCountry')}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-20">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.state')}</label>
+          <Select
+            {...{ id: 'state-select', instanceId: 'state-select' }}
+            styles={darkSelectStyles}
+            options={stateOptions}
+            value={stateOptions.find(o => o.value === filters.state) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, state: selected?.value || '', city: '' }))}
+            isClearable
+            isDisabled={!filters.country}
+            placeholder={t('profile.selectState')}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-10">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.city')}</label>
+          <Select
+            {...{ id: 'city-select', instanceId: 'city-select' }}
+            styles={darkSelectStyles}
+            options={cityOptions}
+            value={cityOptions.find(o => o.value === filters.city) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, city: selected?.value || '' }))}
+            isClearable
+            isDisabled={!filters.state}
+            placeholder={t('profile.selectCity')}
+          />
+        </div>
+        <div className="w-full md:w-auto shrink-0 z-0">
+          <Button 
+            variant="outline" 
+            onClick={() => setFilters({ sport: '', country: '', state: '', city: '' })}
+            className="w-full h-[42px] border-[#374151] hover:bg-[#1F2937]"
+            disabled={!filters.sport && !filters.country && !filters.state && !filters.city}
+          >
+            {t('opportunities.clearFilters')}
+          </Button>
+        </div>
       </div>
 
       {/* ── Loading state ──────────────────────────────── */}
@@ -114,7 +267,7 @@ export default function OpportunitiesPage() {
         </div>
 
       /* ── Empty state ───────────────────────────────── */
-      ) : opportunities.length === 0 ? (
+      ) : filteredOpportunities.length === 0 ? (
         <EmptyState
           title={t('opportunities.emptyTitle')}
           description={t('opportunities.emptyDesc')}
@@ -133,7 +286,7 @@ export default function OpportunitiesPage() {
           initial="hidden"
           animate="show"
         >
-          {opportunities.map((opp) => (
+          {filteredOpportunities.map((opp) => (
             <motion.div key={opp.id} variants={itemVariants}>
               <Card className="flex flex-col hover:border-[#3B82F6]/50 group h-full">
                 <CardHeader className="flex justify-between items-start">
@@ -151,7 +304,7 @@ export default function OpportunitiesPage() {
                       {opp.sport}
                     </div>
                     <span>•</span>
-                    <div className="flex items-center gap-1">{opp.location}</div>
+                    <div className="flex items-center gap-1">{formatLocation(opp)}</div>
                     <span>•</span>
                     <div className="capitalize">{opp.contractType.replace('-', ' ')}</div>
                   </div>

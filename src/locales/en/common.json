@@ -253,7 +253,9 @@
       "title": "Premium",
       "month": "/month",
       "year": "/year",
-      "trial": "✓ 30-day free trial",      "saveToday": "You save €{{amount}} today",      "desc": "Professional tools to accelerate your career.",
+      "trial": "✓ 30-day free trial",
+      "saveToday": "You save €{{amount}} today",
+      "desc": "Professional tools to accelerate your career.",
       "features": {
         "f1": "Featured profile with videos",
         "f2": "Unlimited search",
@@ -478,7 +480,13 @@
     "contactAndSocial": "Contact & Social",
     "viewHighlights": "View Highlights",
     "memberSince": "Member since {{date}}",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "sport": "Sport",
+    "country": "Country",
+    "state": "State / Province",
+    "selectCountry": "Select country...",
+    "selectState": "Select state...",
+    "selectCity": "Select city..."
   },
   "applications": {
     "titleClub": "Received Applications",
@@ -590,7 +598,8 @@
     "contactClub": "Contact Club",
     "aboutClub": "About the Club",
     "club": "Club",
-    "viewFullProfile": "View Full Profile"
+    "viewFullProfile": "View Full Profile",
+    "ownOpportunity": "This is your opportunity."
   },
   "opportunities": {
     "errorLoading": "Error loading opportunities",
@@ -600,7 +609,7 @@
     "discoverOpps": "Discover the latest opportunities around the world.",
     "createOpportunity": "Create Opportunity",
     "filters": {
-      "all": "All",
+      "all": "All sports",
       "football": "Football",
       "basketball": "Basketball",
       "proContracts": "Pro Contracts"
@@ -616,7 +625,8 @@
     "more": "more",
     "published": "Published:",
     "viewDetail": "View Detail",
-    "apply": "Apply"
+    "apply": "Apply",
+    "clearFilters": "Clear Filters"
   },
   "opportunityForm": {
     "restricted": "Restricted access",
@@ -667,9 +677,19 @@
       "salaryPlaceholder": "Ex: €15.000/year + accommodation",
       "locationPlaceholder": "Ex: Barcelona, Spain",
       "descPlaceholder": "Detail the responsibilities, team, goals, etc.",
-      "requirementsPlaceholder": "Ex: +2 years Professional experience..."
+      "requirementsPlaceholder": "Ex: +2 years Professional experience...",
+      "countryBase": "Country",
+      "country": "Country *",
+      "state": "State / Province",
+      "city": "City"
     },
-    "addBtn": "Add"
+    "addBtn": "Add",
+    "placeholders": {
+      "countryBase": "Search country...",
+      "country": "Search country...",
+      "state": "Select state...",
+      "city": "Select city..."
+    }
   },
   "premiumLock": {
     "defaultTitle": "This is Premium content",
@@ -760,11 +780,14 @@
       "foundedYear": "Founded year",
       "website": "Official website",
       "venueName": "Main venue",
-      "venueCapacity": "Capacity"
+      "venueCapacity": "Capacity",
+      "state": "State / Province",
+      "city": "City",
+      "currentClub": "Current Team / Club"
     },
     "placeholders": {
       "displayName": "Your public name",
-      "country": "Ex: Spain",
+      "country": "Search country...",
       "bio": "Share your story with clubs and scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@youraccount",
@@ -775,7 +798,10 @@
       "foundedYear": "Ex: 1899",
       "website": "https://yourclub.com",
       "venueName": "Ex: Municipal Stadium",
-      "venueCapacity": "Ex: 5000"
+      "venueCapacity": "Ex: 5000",
+      "state": "Select state...",
+      "city": "Select city...",
+      "currentClub": "Ex: FC Barcelona"
     },
     "hints": {
       "bio": "Describe your career, goals, and experience.",
@@ -788,7 +814,8 @@
       "foundedYear": "Year the club was founded.",
       "website": "Public URL of the club.",
       "venueName": "Name of the stadium, arena, or sports complex.",
-      "venueCapacity": "Spectator capacity of the venue."
+      "venueCapacity": "Spectator capacity of the venue.",
+      "currentClub": "Which team are you currently playing for? (Optional)"
     }
   },
   "legal": {
@@ -798,9 +825,15 @@
       "title": "Document under review",
       "body": "This text is a draft based on standard GDPR and LSSI templates. It does not replace professional legal advice. Before production launch, this content must be reviewed and adapted by a specialist lawyer."
     },
-    "privacy": { "title": "Privacy Policy" },
-    "terms": { "title": "Terms of Service" },
-    "cookies": { "title": "Cookie Policy" }
+    "privacy": {
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "title": "Terms of Service"
+    },
+    "cookies": {
+      "title": "Cookie Policy"
+    }
   },
   "contact": {
     "title": "Let's talk",

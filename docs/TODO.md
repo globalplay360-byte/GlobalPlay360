@@ -18,3 +18,5 @@ Aquestes rutes tenien placeholders visibles a l'MVP. S'han retirat per no promet
   - **Dependència:** instrumentar rutes públiques de perfil (`/u/:id` encara no existeixen) amb `increment()` a Firestore.
 - [ ] **Consola admin `/admin/users`**: taula CRUD interna d'usuaris (veure, canviar rol, suspendre, impersonar).
   - **Quan?** Quan operativament la clienta ho necessiti. No demanada a l'MVP.
+
+- [ ] **Perfils Públics (Public Profile Page)**: Implementar la ruta \/dashboard/profile/:userId\ per veure la fitxa completa d'un Club, Jugador o Entrenador sense dret a edició. Actualment, el botó 'Veure Perfil Complet' a l'OpportunityDetailPage està deshabilitat com a 'Properament'.

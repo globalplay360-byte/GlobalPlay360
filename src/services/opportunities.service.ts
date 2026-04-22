@@ -98,7 +98,7 @@ const SEED_DATA: Omit<Opportunity, 'id'>[] = [
     title: 'Davanter Centre per al Primer Equip',
     sport: 'Football',
     gender: 'male',
-    location: 'Barcelona, Spain',
+    country: 'ES', state: 'CT', city: 'Barcelona',
     contractType: 'pro',
     description:
       'Busquem un davanter jove i letal de cara al gol per reforçar el primer equip. Instal·lacions d\'elit, allotjament i manutenció inclosos.\n\nEl candidat ideal té experiència professional i passaport europeu. Incorporació immediata.',
@@ -116,7 +116,7 @@ const SEED_DATA: Omit<Opportunity, 'id'>[] = [
     title: 'Entrenador de Porters — Sènior',
     sport: 'Football',
     gender: 'mixed',
-    location: 'Madrid, Spain',
+    country: 'ES', state: 'MD', city: 'Madrid',
     contractType: 'pro',
     description:
       'Necessitem urgentment un entrenador de porters amb experiència per als equips sènior masculí i femení.\n\nAlt nivell d\'intensitat, comprensió tàctica i capacitat per treballar amb professionals d\'elit.',
@@ -133,7 +133,7 @@ const SEED_DATA: Omit<Opportunity, 'id'>[] = [
     title: 'Lateral Dret — Acadèmia Sub-19',
     sport: 'Football',
     gender: 'male',
-    location: 'Valencia, Spain',
+    country: 'ES', state: 'VC', city: 'Valencia',
     contractType: 'academy',
     description:
       'L\'acadèmia del club cerca un lateral dret amb projecció ofensiva per completar la plantilla Sub-19.\n\nOferim beca esportiva completa, estudis compatibilitzats i seguiment personalitzat.',
@@ -150,7 +150,7 @@ const SEED_DATA: Omit<Opportunity, 'id'>[] = [
     title: 'Preparador Físic — Futbol Femení',
     sport: 'Football',
     gender: 'female',
-    location: 'Sevilla, Spain',
+    country: 'ES', state: 'AN', city: 'Sevilla',
     contractType: 'semi-pro',
     description:
       'Club de primera divisió femenina necessita un/a preparador/a físic/a per a la temporada 2026-27.\n\nEs valorarà experiència prèvia en futbol femení i coneixement de prevenció de lesions específiques.',
@@ -167,7 +167,7 @@ const SEED_DATA: Omit<Opportunity, 'id'>[] = [
     title: 'Proves Obertes — Temporada 2026/27',
     sport: 'Football',
     gender: 'mixed',
-    location: 'Lisbon, Portugal',
+    country: 'PT', state: '11', city: 'Lisbon',
     contractType: 'trial',
     description:
       'Organitzem unes jornades de proves obertes per a jugadors i jugadores que busquin equip de cara a la propera temporada.\n\nEls seleccionats podran optar a contracte semi-professional o acadèmic.',

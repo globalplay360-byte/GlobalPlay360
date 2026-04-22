@@ -480,7 +480,13 @@
     "contactAndSocial": "Contacte i Xarxes",
     "viewHighlights": "Veure Highlights",
     "memberSince": "Membre des de {{date}}",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "sport": "Esport",
+    "country": "País",
+    "state": "Província / Estat",
+    "selectCountry": "Selecciona el país...",
+    "selectState": "Selecciona l'estat...",
+    "selectCity": "Selecciona la ciutat..."
   },
   "applications": {
     "titleClub": "Candidatures Rebudes",
@@ -592,7 +598,8 @@
     "contactClub": "Contactar Club",
     "aboutClub": "Sobre el Club",
     "club": "Club",
-    "viewFullProfile": "Veure Perfil Complet"
+    "viewFullProfile": "Veure Perfil Complet",
+    "ownOpportunity": "Aquesta és la teva oportunitat."
   },
   "opportunities": {
     "errorLoading": "Error carregant oportunitats",
@@ -602,7 +609,7 @@
     "discoverOpps": "Descobreix les últimes oportunitats arreu del món.",
     "createOpportunity": "Crear Oportunitat",
     "filters": {
-      "all": "Totes",
+      "all": "Tots els esports",
       "football": "Futbol 11",
       "basketball": "Bàsquet",
       "proContracts": "Contractes Pro"
@@ -618,7 +625,8 @@
     "more": "més",
     "published": "Publicat:",
     "viewDetail": "Veure Detall",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "clearFilters": "Netejar Filtres"
   },
   "opportunityForm": {
     "restricted": "Accés restringit",
@@ -669,9 +677,19 @@
       "salaryPlaceholder": "Ex: 15.000€/any + allotjament",
       "locationPlaceholder": "Ex: Barcelona, Espanya",
       "descPlaceholder": "Detalla les responsabilitats, l'equip, els objectius, etc.",
-      "requirementsPlaceholder": "Ex: +2 anys experiència Professional..."
+      "requirementsPlaceholder": "Ex: +2 anys experiència Professional...",
+      "countryBase": "País",
+      "country": "País *",
+      "state": "Província / Estat",
+      "city": "Ciutat"
     },
-    "addBtn": "Afegir"
+    "addBtn": "Afegir",
+    "placeholders": {
+      "countryBase": "Cerca país...",
+      "country": "Cerca país...",
+      "state": "Selecciona estat...",
+      "city": "Selecciona ciutat..."
+    }
   },
   "premiumLock": {
     "defaultTitle": "Això és un contingut Premium",
@@ -762,11 +780,14 @@
       "foundedYear": "Any de fundació",
       "website": "Web oficial",
       "venueName": "Instal·lació principal",
-      "venueCapacity": "Aforament"
+      "venueCapacity": "Aforament",
+      "state": "Província / Estat",
+      "city": "Ciutat",
+      "currentClub": "Equip Actual / Club"
     },
     "placeholders": {
       "displayName": "El teu nom públic",
-      "country": "Ex: Espanya",
+      "country": "Cerca país...",
       "bio": "Comparteix la teva història amb clubs i scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@elteucompte",
@@ -777,7 +798,10 @@
       "foundedYear": "Ex: 1899",
       "website": "https://elteuclub.cat",
       "venueName": "Ex: Estadi Municipal",
-      "venueCapacity": "Ex: 5000"
+      "venueCapacity": "Ex: 5000",
+      "state": "Selecciona estat...",
+      "city": "Selecciona ciutat...",
+      "currentClub": "Ex: FC Barcelona"
     },
     "hints": {
       "bio": "Descriu la teva trajectòria, objectius i experiència.",
@@ -790,7 +814,8 @@
       "foundedYear": "Any en què es va fundar el club.",
       "website": "URL pública del club.",
       "venueName": "Nom de l'estadi, pavelló o complex esportiu.",
-      "venueCapacity": "Capacitat d'espectadors de la instal·lació."
+      "venueCapacity": "Capacitat d'espectadors de la instal·lació.",
+      "currentClub": "A quin equip jugues actualment? (Opcional)"
     }
   },
   "legal": {
@@ -800,9 +825,15 @@
       "title": "Document en revisió",
       "body": "Aquest text és un esborrany basat en plantilles estàndard del RGPD i la LSSI. No substitueix l'assessorament legal professional. Abans del llançament en producció, aquest contingut ha de ser revisat i adaptat per un advocat especialista."
     },
-    "privacy": { "title": "Política de privacitat" },
-    "terms": { "title": "Condicions d'ús" },
-    "cookies": { "title": "Política de cookies" }
+    "privacy": {
+      "title": "Política de privacitat"
+    },
+    "terms": {
+      "title": "Condicions d'ús"
+    },
+    "cookies": {
+      "title": "Política de cookies"
+    }
   },
   "contact": {
     "title": "Parlem",
