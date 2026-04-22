@@ -740,8 +740,6 @@
     "newConversation": "New conversation"
   },
   "profileEdit": {
-    "coachDev": "Coach section in development.",
-    "clubDev": "Club section in development.",
     "success": "Profile updated successfully.",
     "unsavedChanges": "There are unsaved changes.",
     "noChanges": "No pending changes.",
@@ -755,7 +753,16 @@
       "bio": "Biography",
       "phone": "Phone",
       "instagram": "Instagram",
-      "youtube": "Video Highlights"
+      "youtube": "Video Highlights",
+      "coachData": "Coach details",
+      "experienceYears": "Years of experience",
+      "specialization": "Specialization",
+      "certifications": "Certifications and qualifications",
+      "clubData": "Club details",
+      "foundedYear": "Founded year",
+      "website": "Official website",
+      "venueName": "Main venue",
+      "venueCapacity": "Capacity"
     },
     "placeholders": {
       "displayName": "Your public name",
@@ -763,13 +770,27 @@
       "bio": "Share your story with clubs and scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@youraccount",
-      "youtube": "https://youtube.com/watch?v=..."
+      "youtube": "https://youtube.com/watch?v=...",
+      "experienceYears": "Ex: 8",
+      "specialization": "Ex: Youth football, U19 squads",
+      "certifications": "UEFA B\nBSc in Sport Sciences",
+      "foundedYear": "Ex: 1899",
+      "website": "https://yourclub.com",
+      "venueName": "Ex: Municipal Stadium",
+      "venueCapacity": "Ex: 5000"
     },
     "hints": {
       "bio": "Describe your career, goals, and experience.",
       "phone": "Visible to premium clubs.",
       "instagram": "Handle or profile URL.",
-      "youtube": "YouTube URL with your reel."
+      "youtube": "YouTube URL with your reel.",
+      "experienceYears": "Total time as a professional or amateur coach.",
+      "specialization": "Category, age range, or main methodology.",
+      "certifications": "One per line. Ex: UEFA B, BSc Sport Sciences, Level 2 Coaching.",
+      "foundedYear": "Year the club was founded.",
+      "website": "Public URL of the club.",
+      "venueName": "Name of the stadium, arena, or sports complex.",
+      "venueCapacity": "Spectator capacity of the venue."
     }
   }
 }

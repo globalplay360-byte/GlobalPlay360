@@ -740,8 +740,6 @@
     "newConversation": "Nueva conversación"
   },
   "profileEdit": {
-    "coachDev": "Sección Coach en desarrollo.",
-    "clubDev": "Sección Club en desarrollo.",
     "success": "Perfil actualizado correctamente.",
     "unsavedChanges": "Hay cambios sin guardar.",
     "noChanges": "Sin cambios pendientes.",
@@ -755,7 +753,16 @@
       "bio": "Biografía",
       "phone": "Teléfono",
       "instagram": "Instagram",
-      "youtube": "Video Highlights"
+      "youtube": "Video Highlights",
+      "coachData": "Datos de entrenador",
+      "experienceYears": "Años de experiencia",
+      "specialization": "Especialización",
+      "certifications": "Certificaciones y titulaciones",
+      "clubData": "Datos del club",
+      "foundedYear": "Año de fundación",
+      "website": "Web oficial",
+      "venueName": "Instalación principal",
+      "venueCapacity": "Aforo"
     },
     "placeholders": {
       "displayName": "Tu nombre público",
@@ -763,13 +770,27 @@
       "bio": "Comparte tu historia con clubes y scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@tucuenta",
-      "youtube": "https://youtube.com/watch?v=..."
+      "youtube": "https://youtube.com/watch?v=...",
+      "experienceYears": "Ej: 8",
+      "specialization": "Ej: Fútbol base, categoría juvenil",
+      "certifications": "UEFA B\nGrado en Ciencias de la Actividad Física y del Deporte",
+      "foundedYear": "Ej: 1899",
+      "website": "https://tuclub.com",
+      "venueName": "Ej: Estadio Municipal",
+      "venueCapacity": "Ej: 5000"
     },
     "hints": {
       "bio": "Describe tu trayectoria, objetivos y experiencia.",
       "phone": "Visible para clubes premium.",
       "instagram": "Usuario o URL del perfil.",
-      "youtube": "URL de YouTube con tu reel."
+      "youtube": "URL de YouTube con tu reel.",
+      "experienceYears": "Tiempo total como entrenador profesional o amateur.",
+      "specialization": "Categoría, franja de edad o metodología principal.",
+      "certifications": "Una por línea. Ej: UEFA B, Grado en CAFD, Nivel 2 RFEF.",
+      "foundedYear": "Año en que se fundó el club.",
+      "website": "URL pública del club.",
+      "venueName": "Nombre del estadio, pabellón o complejo deportivo.",
+      "venueCapacity": "Capacidad de espectadores de la instalación."
     }
   }
 }

@@ -5,6 +5,8 @@ import { useProfileForm } from '@/hooks/useProfileForm';
 import { Button } from '@/components/ui/Button';
 import CommonFields from './fields/CommonFields';
 import PlayerFields from './fields/PlayerFields';
+import CoachFields from './fields/CoachFields';
+import ClubFields from './fields/ClubFields';
 
 interface Props {
   user: User;
@@ -32,15 +34,11 @@ export default function ProfileEditForm({ user, onCancel, onSaved }: Props) {  c
       )}
 
       {user.role === 'coach' && (
-        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 text-sm text-[#9CA3AF]">
-          {t('profileEdit.coachDev', 'Secció Coach en desenvolupament.')}
-        </section>
+        <CoachFields formData={formData} onChange={handleChange} disabled={saving} />
       )}
 
       {user.role === 'club' && (
-        <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 sm:p-6 text-sm text-[#9CA3AF]">
-          {t('profileEdit.clubDev', 'Secció Club en desenvolupament.')}
-        </section>
+        <ClubFields formData={formData} onChange={handleChange} disabled={saving} />
       )}
 
       {/* Missatge d'estat */}
