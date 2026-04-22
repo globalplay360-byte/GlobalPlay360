@@ -742,8 +742,6 @@
     "newConversation": "Nova conversa"
   },
   "profileEdit": {
-    "coachDev": "Secció Coach en desenvolupament.",
-    "clubDev": "Secció Club en desenvolupament.",
     "success": "Perfil actualitzat correctament.",
     "unsavedChanges": "Hi ha canvis sense desar.",
     "noChanges": "Sense canvis pendents.",
@@ -757,7 +755,16 @@
       "bio": "Biografia",
       "phone": "Telèfon",
       "instagram": "Instagram",
-      "youtube": "Vídeo Highlights"
+      "youtube": "Vídeo Highlights",
+      "coachData": "Dades d'entrenador",
+      "experienceYears": "Anys d'experiència",
+      "specialization": "Especialització",
+      "certifications": "Certificacions i titulacions",
+      "clubData": "Dades del club",
+      "foundedYear": "Any de fundació",
+      "website": "Web oficial",
+      "venueName": "Instal·lació principal",
+      "venueCapacity": "Aforament"
     },
     "placeholders": {
       "displayName": "El teu nom públic",
@@ -765,13 +772,27 @@
       "bio": "Comparteix la teva història amb clubs i scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@elteucompte",
-      "youtube": "https://youtube.com/watch?v=..."
+      "youtube": "https://youtube.com/watch?v=...",
+      "experienceYears": "Ex: 8",
+      "specialization": "Ex: Futbol base, categoria juvenil",
+      "certifications": "UEFA B\nGrau en Ciències de l'Activitat Física i de l'Esport",
+      "foundedYear": "Ex: 1899",
+      "website": "https://elteuclub.cat",
+      "venueName": "Ex: Estadi Municipal",
+      "venueCapacity": "Ex: 5000"
     },
     "hints": {
       "bio": "Descriu la teva trajectòria, objectius i experiència.",
       "phone": "Visible per clubs premium.",
       "instagram": "Handle o URL del perfil.",
-      "youtube": "URL de YouTube amb la teva reel."
+      "youtube": "URL de YouTube amb la teva reel.",
+      "experienceYears": "Temps total com a entrenador professional o amateur.",
+      "specialization": "Categoria, franja d'edat o metodologia principal.",
+      "certifications": "Una per línia. Ex: UEFA B, Grau en CAFE, Nivell 2 de la FCF.",
+      "foundedYear": "Any en què es va fundar el club.",
+      "website": "URL pública del club.",
+      "venueName": "Nom de l'estadi, pavelló o complex esportiu.",
+      "venueCapacity": "Capacitat d'espectadors de la instal·lació."
     }
   }
 }
