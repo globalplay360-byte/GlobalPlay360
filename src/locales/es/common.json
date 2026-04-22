@@ -114,6 +114,114 @@
       "gdpr": "GDPR"
     }
   },
+  "aboutPage": {
+    "hero": {
+      "titleL1": "Revolucionando el",
+      "titleL2": "Negocio del Deporte",
+      "subtitle": "Global Play 360 es la plataforma líder que conecta atletas, entrenadores y organizaciones deportivas en todo el mundo. Nuestra misión es democratizar el acceso a las oportunidades deportivas y empoderar a los profesionales para que alcancen su máximo potencial.",
+      "ctaPrimary": "Empieza ahora",
+      "ctaSecondary": "Volver al inicio"
+    },
+    "serve": {
+      "kicker": "Oficina deportiva profesional",
+      "title": "A quién servimos",
+      "subtitle": "Nuestra plataforma está diseñada para cubrir las necesidades únicas de cada participante del ecosistema deportivo.",
+      "players": {
+        "title": "Para Jugadores",
+        "desc": "Muestra tus habilidades con un perfil profesional, descubre pruebas abiertas, conecta directamente con clubes y da el siguiente gran paso en tu carrera deportiva."
+      },
+      "coaches": {
+        "title": "Para Entrenadores",
+        "desc": "Descubre nuevas oportunidades, amplía tu red profesional y conecta con organizaciones que buscan tu experiencia y visión táctica."
+      },
+      "clubs": {
+        "title": "Para Clubes",
+        "desc": "Publica vacantes, ficha talento verificado globalmente, gestiona candidaturas de forma eficiente y construye tu equipo campeón."
+      }
+    },
+    "milestones": {
+      "kicker": "Nuestros principios",
+      "title": "Construido sobre bases sólidas",
+      "subtitle": "Sin métricas infladas. Solo los principios que no pensamos comprometer — desde el primer día.",
+      "multisport": {
+        "title": "Plataforma multi-deporte",
+        "desc": "Pensada desde el primer día para soportar fútbol, baloncesto, tenis y más — con perfiles adaptados a cada disciplina."
+      },
+      "secure": {
+        "title": "Seguro por defecto",
+        "desc": "Firebase Auth con verificación por email, pagos gestionados por Stripe y reglas de Firestore que nunca confían en el cliente."
+      },
+      "multilingual": {
+        "title": "Multilingüe desde el día 1",
+        "desc": "Traducido íntegramente a catalán, español e inglés para que atletas y clubes se sientan como en casa en cualquier mercado."
+      },
+      "founding": {
+        "title": "Etapa Founding",
+        "desc": "Somos jóvenes y lo abrazamos. Cada funcionalidad nace del feedback de los Miembros Fundadores que modelan el roadmap."
+      }
+    },
+    "arch": {
+      "kicker": "Bajo el capó",
+      "title": "Arquitectura y Seguridad",
+      "subtitle": "Nos tomamos la infraestructura en serio para que tú te puedas centrar en el deporte.",
+      "stripe": {
+        "title": "Pagos a nivel Stripe",
+        "desc": "La misma infraestructura que usan Zoom y Shopify. Nunca almacenamos datos de tarjeta en nuestros servidores."
+      },
+      "auth": {
+        "title": "Autenticación profesional",
+        "desc": "Firebase Auth con verificación de email, restablecimiento seguro de contraseñas y Google Sign-in. Sesiones gestionadas en servidor."
+      },
+      "gdpr": {
+        "title": "GDPR desde el día uno",
+        "desc": "Datos alojados en europe-west1. Derecho al olvido implementado vía Cloud Functions. Controles de privacidad transparentes."
+      },
+      "realtime": {
+        "title": "Sincronización en tiempo real",
+        "desc": "Listeners de Firestore y webhooks de Stripe mantienen cada suscripción, chat y candidatura sincronizados al instante."
+      }
+    },
+    "roadmap": {
+      "kicker": "Transparencia radical",
+      "title": "Nuestro roadmap público",
+      "subtitle": "Qué hemos entregado, qué estamos construyendo y qué llegará próximamente.",
+      "shippedLabel": "Entregado",
+      "progressLabel": "En desarrollo",
+      "comingLabel": "Próximamente",
+      "shipped": {
+        "1": "Perfiles multi-deporte para jugadores",
+        "2": "Marketplace de oportunidades",
+        "3": "Chat en tiempo real con paywalls",
+        "4": "Suscripciones Premium con Stripe",
+        "5": "Restablecimiento y verificación de email a medida",
+        "6": "i18n completo — EN / ES / CA"
+      },
+      "progress": {
+        "1": "Badges de verificación para clubes",
+        "2": "Dashboard de analíticas de perfil",
+        "3": "Notificaciones por email en candidaturas"
+      },
+      "coming": {
+        "1": "Apps móviles nativas (iOS / Android)",
+        "2": "Vídeos destacados con etiquetado IA",
+        "3": "Matchmaking inteligente",
+        "4": "Herramientas avanzadas de scouting para clubes"
+      }
+    },
+    "founding": {
+      "badge": "Miembros Fundadores · Gratis hasta el 1 de julio de 2026",
+      "title": "Sé uno de los primeros 100",
+      "subtitle": "Únete a GlobalPlay360 como Miembro Fundador: acceso Premium ilimitado, voz privada en el roadmap y tarifa especial de por vida.",
+      "placeholder": "Tu correo electrónico",
+      "cta": "Reclamar mi estatus",
+      "success": "Reclamado ✓",
+      "privacy": "Cero spam. Puedes darte de baja cuando quieras. Solo comunidad deportiva."
+    },
+    "closing": {
+      "title": "¿Partnerships, prensa o una idea ambiciosa?",
+      "subtitle": "Leemos cada correo. Si GlobalPlay360 encaja con tu organización, construyamos algo juntos."
+    }
+  },
   "pricingPage": {
     "title": "Elige tu plan",
     "subtitle1": "Empieza gratis o desbloquea todo el potencial con Premium. Pruébalo ",
@@ -145,8 +253,7 @@
       "title": "Premium",
       "month": "/mes",
       "year": "/año",
-      "trial": "✓ 30 días de prueba gratuitos",
-      "desc": "Herramientas profesionales para acelerar tu carrera.",
+      "trial": "✓ 30 días de prueba gratuitos",      "saveToday": "Te ahorras {{amount}}€ hoy",      "desc": "Herramientas profesionales para acelerar tu carrera.",
       "features": {
         "f1": "Perfil destacado con vídeos",
         "f2": "Búsqueda ilimitada",
@@ -275,15 +382,15 @@
         "profileVisits": "Visitas al Perfil"
       },
       "coachPlayer": {
-        "savedOffers": "Ofertas Guardadas",
+        "availableOffers": "Oportunidades Disponibles",
         "applications": "Candidaturas",
         "pendingMessages": "Mensajes Pendientes",
         "profileStrength": "Fuerza del Perfil"
       },
       "trends": {
-        "thisMonth": "+1 este mes",
-        "sinceYesterday": "+4 desde ayer",
-        "thisWeek": "+2 esta semana",
+        "thisMonth": "este mes",
+        "sinceYesterday": "desde ayer",
+        "thisWeek": "esta semana",
         "activeRecently": "Activo recientemente",
         "highLevel": "Nivel Alto"
       }
@@ -296,7 +403,7 @@
       "yourProfile": "Tu Perfil"
     },
     "recentApplicationsTitle": "Últimas candidaturas recibidas",
-    "recommendedOffersTitle": "Oportunidades recomendadas (Mock)",
+    "recommendedOffersTitle": "Oportunidades recomendadas",
     "seeMore": "Ver más",
     "reviewCV": "Revisar CV",
     "enter": "+ Entrar",

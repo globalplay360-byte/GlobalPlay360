@@ -47,34 +47,34 @@ export default function Sidebar() {
     <aside className="w-64 bg-[#0B1120] border-r border-[#1F2937] flex-shrink-0 flex flex-col hidden lg:flex">
       {/* 
         Ajustat per donar més "respiració" (SaaS spacing):
-        - Altura h-20 (mateixa que el Navbar)
-        - Logo responsive h-6, objecte interactiu net sense ombres
+        - Marge superior i inferior ampli
+        - Logo manté l'escala daurada com a la homepage
       */}
-      <div className="h-20 flex items-center px-6 border-b border-[#1F2937]">
+      <div className="py-8 flex items-center justify-center border-b border-[#1F2937] px-4 overflow-hidden">
         <Link 
           to="/dashboard" 
-          className="flex items-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120] focus-visible:ring-[#3B82F6] rounded-sm"
+          className="flex items-center justify-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120] focus-visible:ring-[#3B82F6] rounded-sm"
           aria-label="Anar al panell d'Inici"
         >
-          <Logo className="h-6 w-auto text-white" />
+          <Logo className="h-16 md:h-24 w-auto text-yellow-500 transform scale-[1.45] origin-center" />
         </Link>
       </div>
 
-      <div className="p-4 mt-2">
-        <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2 px-3">
+      <div className="px-6 py-4 mt-2 flex-1">
+        <p className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider mb-4 px-2">
           {t('sidebar.mainMenu', 'Menú Principal')}
         </p>
-        <nav className="flex flex-col space-y-1">
+        <nav className="flex flex-col space-y-1.5">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-fast ease-out ${
+                className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-fast ease-out ${
                   isActive
-                    ? 'bg-[#3B82F6]/10 text-[#3B82F6]'
-                    : 'text-[#9CA3AF] hover:text-white hover:bg-[#1F2937]'
+                    ? 'bg-[#3B82F6]/10 text-[#3B82F6] shadow-sm transform scale-[1.02]'
+                    : 'text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] hover:translate-x-1'
                 }`}
               >
                 <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>

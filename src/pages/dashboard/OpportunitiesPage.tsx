@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
@@ -41,6 +43,21 @@ export default function OpportunitiesPage() {
 
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat('ca-ES', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
+  };
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
   };
 
   // ── Error state ───────────────────────────────────────
@@ -110,61 +127,68 @@ export default function OpportunitiesPage() {
 
       /* ── Data state ────────────────────────────────── */
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {opportunities.map((opp) => (
-            <Card key={opp.id} className="flex flex-col hover:border-[#3B82F6]/50 group">
-              <CardHeader className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
-                </div>
-                <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold">
-                  {t(`opportunities.status.${opp.status}`)}
-                </Badge>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="flex gap-2 mb-4 text-xs font-medium text-[#9CA3AF]">
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-blue-500/50" />
-                    {opp.sport}
+            <motion.div key={opp.id} variants={itemVariants}>
+              <Card className="flex flex-col hover:border-[#3B82F6]/50 group h-full">
+                <CardHeader className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-lg font-bold text-white group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
                   </div>
-                  <span>•</span>
-                  <div className="flex items-center gap-1">{opp.location}</div>
-                  <span>•</span>
-                  <div className="capitalize">{opp.contractType.replace('-', ' ')}</div>
-                </div>
+                  <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold">
+                    {t(`opportunities.status.${opp.status}`)}
+                  </Badge>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <div className="flex gap-2 mb-4 text-xs font-medium text-[#9CA3AF]">
+                    <div className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-blue-500/50" />
+                      {opp.sport}
+                    </div>
+                    <span>•</span>
+                    <div className="flex items-center gap-1">{opp.location}</div>
+                    <span>•</span>
+                    <div className="capitalize">{opp.contractType.replace('-', ' ')}</div>
+                  </div>
 
-                <p className="text-[#6B7280] text-sm line-clamp-3 mb-6">{opp.description}</p>
+                  <p className="text-[#6B7280] text-sm line-clamp-3 mb-6">{opp.description}</p>
 
-                <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
-                  <ul className="flex flex-wrap gap-2">
-                    {opp.requirements.slice(0, 3).map((req, idx) => (
-                      <Badge key={idx} variant="default" className="text-[11px] bg-[#1F2937]/50 border-[#374151]/50">{req}</Badge>
-                    ))}
-                    {opp.requirements.length > 3 && (
-                      <span className="text-xs text-[#6B7280] items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
-                    )}
-                  </ul>
-                </div>
-              </CardContent>
-              <CardFooter className="justify-between">
-                <div className="text-xs text-[#6B7280] font-medium">
-                  {t('opportunities.published')} {formatDate(opp.createdAt)}
-                </div>
-                <div className="flex gap-3">
-                  <Button variant="outline" size="sm" className="transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                    {t('opportunities.viewDetail')}
-                  </Button>
-                  {user?.role !== 'club' && (
-                    <Button variant="primary" size="sm" className="shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                      {t('opportunities.apply')}
+                  <div className="space-y-3 mt-auto">
+                    <h4 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
+                    <ul className="flex flex-wrap gap-2">
+                      {opp.requirements.slice(0, 3).map((req, idx) => (
+                        <Badge key={idx} variant="default" className="text-[11px] bg-[#1F2937]/50 border-[#374151]/50">{req}</Badge>
+                      ))}
+                      {opp.requirements.length > 3 && (
+                        <span className="text-xs text-[#6B7280] items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
+                      )}
+                    </ul>
+                  </div>
+                </CardContent>
+                <CardFooter className="justify-between mt-auto">
+                  <div className="text-xs text-[#6B7280] font-medium">
+                    {t('opportunities.published')} {formatDate(opp.createdAt)}
+                  </div>
+                  <div className="flex gap-3">
+                    <Button variant="outline" size="sm" className="transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
+                      {t('opportunities.viewDetail')}
                     </Button>
-                  )}
-                </div>
-              </CardFooter>
-            </Card>
+                    {user?.role !== 'club' && (
+                      <Button variant="primary" size="sm" className="shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
+                        {t('opportunities.apply')}
+                      </Button>
+                    )}
+                  </div>
+                </CardFooter>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

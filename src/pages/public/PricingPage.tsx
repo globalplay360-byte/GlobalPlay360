@@ -204,7 +204,7 @@ export default function PricingPage() {
                 {interval === 'year' && monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 ? (
                   <div className="flex flex-col gap-1.5 mb-2">
                     <span className="inline-block w-fit bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 text-xs font-semibold px-2.5 py-1 rounded-md mb-1">
-                      T'estalvies {monthlyTotalIfAnnual.toFixed(0)}€ avui
+                      {t('pricingPage.premium.saveToday', { amount: monthlyTotalIfAnnual.toFixed(0) })}
                     </span>
                     <p className="text-sm text-[#9CA3AF] font-medium tracking-wide">
                       {t('pricingPage.premium.trial')}

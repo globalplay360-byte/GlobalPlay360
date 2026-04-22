@@ -10,6 +10,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 // Public Pages
 import HomePage from './pages/public/HomePage';
 import PricingPage from './pages/public/PricingPage';
+import AboutPage from './pages/public/AboutPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -43,6 +44,9 @@ function App() {
             
             {/* Pricing (public) */}
             <Route path="/pricing" element={<PricingPage />} />
+            
+            {/* About (public) */}
+            <Route path="/about" element={<AboutPage />} />
 
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />

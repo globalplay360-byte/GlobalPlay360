@@ -114,6 +114,114 @@
       "gdpr": "GDPR"
     }
   },
+  "aboutPage": {
+    "hero": {
+      "titleL1": "Revolucionant el",
+      "titleL2": "Negoci de l'Esport",
+      "subtitle": "Global Play 360 és la plataforma líder que connecta atletes, entrenadors i organitzacions esportives de tot el món. La nostra missió és democratitzar l'accés a les oportunitats esportives i donar poder als professionals perquè arribin al seu màxim potencial.",
+      "ctaPrimary": "Comença ara",
+      "ctaSecondary": "Tornar a l'inici"
+    },
+    "serve": {
+      "kicker": "Oficina esportiva professional",
+      "title": "A qui servim",
+      "subtitle": "La nostra plataforma està dissenyada per cobrir les necessitats úniques de cada participant de l'ecosistema esportiu.",
+      "players": {
+        "title": "Per a Jugadors",
+        "desc": "Mostra les teves habilitats amb un perfil professional, descobreix proves obertes, connecta amb clubs directament i fes el següent gran pas a la teva carrera esportiva."
+      },
+      "coaches": {
+        "title": "Per a Entrenadors",
+        "desc": "Descobreix noves oportunitats, amplia la teva xarxa professional i connecta amb organitzacions que busquen la teva experiència i visió tàctica."
+      },
+      "clubs": {
+        "title": "Per a Clubs",
+        "desc": "Publica vacants, fitxa talent verificat arreu, gestiona candidatures amb eficiència i construeix el teu equip campió."
+      }
+    },
+    "milestones": {
+      "kicker": "Els nostres principis",
+      "title": "Construït sobre bases sòlides",
+      "subtitle": "Res de mètriques inflades. Només els principis que no pensem comprometre — des del primer dia.",
+      "multisport": {
+        "title": "Plataforma multi-esport",
+        "desc": "Pensada des del primer dia per suportar futbol, bàsquet, tennis i més — amb perfils adaptats a cada disciplina."
+      },
+      "secure": {
+        "title": "Segur per defecte",
+        "desc": "Firebase Auth amb verificació per email, pagaments gestionats per Stripe i regles de Firestore que mai confien en el client."
+      },
+      "multilingual": {
+        "title": "Multilingüe des del dia 1",
+        "desc": "Traduït íntegrament a català, castellà i anglès perquè atletes i clubs se sentin com a casa, sigui quin sigui el mercat."
+      },
+      "founding": {
+        "title": "Etapa Founding",
+        "desc": "Som aviat i ho abracem. Cada funcionalitat neix del feedback dels Membres Fundadors que modelen el roadmap."
+      }
+    },
+    "arch": {
+      "kicker": "Sota el capó",
+      "title": "Arquitectura i Seguretat",
+      "subtitle": "Ens prenem la infraestructura seriosament perquè tu et puguis centrar en l'esport.",
+      "stripe": {
+        "title": "Pagaments nivell Stripe",
+        "desc": "La mateixa infraestructura que utilitzen Zoom i Shopify. Mai emmagatzemem dades de targeta als nostres servidors."
+      },
+      "auth": {
+        "title": "Autenticació professional",
+        "desc": "Firebase Auth amb verificació d'email, restabliment segur de contrasenyes i Google Sign-in. Sessions gestionades al servidor."
+      },
+      "gdpr": {
+        "title": "GDPR des del primer dia",
+        "desc": "Dades allotjades a europe-west1. Dret a l'oblit implementat via Cloud Functions. Controls de privacitat transparents."
+      },
+      "realtime": {
+        "title": "Sincronització en temps real",
+        "desc": "Listeners de Firestore i webhooks de Stripe mantenen cada subscripció, xat i candidatura sincronitzats a l'instant."
+      }
+    },
+    "roadmap": {
+      "kicker": "Transparència radical",
+      "title": "El nostre roadmap públic",
+      "subtitle": "Què hem enviat, què estem construint i què arribarà properament.",
+      "shippedLabel": "Enviat",
+      "progressLabel": "En desenvolupament",
+      "comingLabel": "Properament",
+      "shipped": {
+        "1": "Perfils multi-esport per a jugadors",
+        "2": "Marketplace d'oportunitats",
+        "3": "Xat en temps real amb paywalls",
+        "4": "Subscripcions Premium amb Stripe",
+        "5": "Restabliment i verificació d'email a mida",
+        "6": "i18n complet — EN / ES / CA"
+      },
+      "progress": {
+        "1": "Badges de verificació per a clubs",
+        "2": "Dashboard d'analítiques de perfil",
+        "3": "Notificacions per email en candidatures"
+      },
+      "coming": {
+        "1": "Apps mòbils natives (iOS / Android)",
+        "2": "Vídeos destacats amb etiquetatge IA",
+        "3": "Matchmaking intel·ligent",
+        "4": "Eines avançades de scouting per a clubs"
+      }
+    },
+    "founding": {
+      "badge": "Membres Fundadors · Gratis fins a l'1 de juliol de 2026",
+      "title": "Sigues un dels primers 100",
+      "subtitle": "Uneix-te a GlobalPlay360 com a Membre Fundador: accés Premium il·limitat, veu privada al roadmap i tarifa especial per sempre.",
+      "placeholder": "El teu correu electrònic",
+      "cta": "Reclama el meu estatus",
+      "success": "Reclamat ✓",
+      "privacy": "Zero spam. Pots donar-te de baixa quan vulguis. Només comunitat esportiva."
+    },
+    "closing": {
+      "title": "Partnerships, premsa o una idea ambiciosa?",
+      "subtitle": "Llegim cada correu. Si GlobalPlay360 encaixa amb la teva organització, construïm alguna cosa junts."
+    }
+  },
   "pricingPage": {
     "title": "Escull el teu pla",
     "subtitle1": "Comença gratis o desbloqueja tot el potencial amb Premium. Prova-ho ",
@@ -146,6 +254,7 @@
       "month": "/mes",
       "year": "/any",
       "trial": "✓ 30 dies de prova gratuïts",
+      "saveToday": "T'estalvies {{amount}}€ avui",
       "desc": "Eines professionals per accelerar la teva carrera.",
       "features": {
         "f1": "Perfil destacat amb vídeos",
@@ -275,15 +384,15 @@
         "profileVisits": "Visites al Perfil"
       },
       "coachPlayer": {
-        "savedOffers": "Ofertes Guardades",
+        "availableOffers": "Oportunitats Disponibles",
         "applications": "Candidatures",
         "pendingMessages": "Missatges Pendents",
         "profileStrength": "Força del Perfil"
       },
       "trends": {
-        "thisMonth": "+1 aquest mes",
-        "sinceYesterday": "+4 des d'ahir",
-        "thisWeek": "+2 aquesta setmana",
+        "thisMonth": "aquest mes",
+        "sinceYesterday": "des d'ahir",
+        "thisWeek": "aquesta setmana",
         "activeRecently": "Actiu recentment",
         "highLevel": "Nivell Alt"
       }
@@ -296,7 +405,7 @@
       "yourProfile": "El teu Perfil"
     },
     "recentApplicationsTitle": "Últimes candidatures rebudes",
-    "recommendedOffersTitle": "Oportunitats recomanades (Mock)",
+    "recommendedOffersTitle": "Oportunitats recomanades",
     "seeMore": "Veure més",
     "reviewCV": "Revisar CV",
     "enter": "+ Entrar",
