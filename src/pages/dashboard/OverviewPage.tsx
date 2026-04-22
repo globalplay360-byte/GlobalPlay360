@@ -45,32 +45,38 @@ const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
     return () => { mounted = false; };
   }, [app.userId, t]);
 
+  const statusTone = app.status === 'accepted'
+    ? 'text-emerald-400'
+    : app.status === 'rejected'
+      ? 'text-red-400'
+      : 'text-[#60A5FA]';
+
   return (
-    <div className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-5 hover:bg-[#1F2937]/25 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151]">
-          <UserCircleIcon className="w-6 h-6 text-[#9CA3AF]" />
+        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#2A3447] to-[#1F2937] border border-[#2A3447]/70 flex items-center justify-center shrink-0 shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
+          <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
         </div>
         <div>
           {userName === null ? (
-             <div className="h-4 w-32 bg-[#374151] animate-pulse rounded mb-1"></div>
+             <div className="h-4 w-32 bg-[#2A3447] animate-pulse rounded mb-1"></div>
           ) : (
-             <p className="text-sm font-semibold text-gray-200 mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] sm:max-w-xs">{userName}</p>
+             <p className="text-sm font-semibold text-gray-100/90 mb-0.5 tracking-tight truncate max-w-[150px] sm:max-w-xs">{userName}</p>
           )}
           <p className="text-xs text-[#9CA3AF] flex items-center gap-2">
-            <span className={"capitalize font-medium " + (app.status === 'accepted' ? 'text-green-400' : app.status === 'rejected' ? 'text-red-400' : 'text-blue-400')}>
+            <span className={`capitalize font-semibold tracking-wide ${statusTone}`}>
               {app.status}
             </span>
             {app.createdAt && (
                <>
-                 <span className="w-1 h-1 rounded-full bg-[#374151]"></span>
+                 <span className="w-1 h-1 rounded-full bg-[#2A3447]"></span>
                  <span>{new Date(app.createdAt).toLocaleDateString()}</span>
                </>
             )}
           </p>
         </div>
       </div>
-      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-gray-300 hover:text-gray-100 text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
+      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A]/60 hover:bg-[#1F2937]/70 border border-[#2A3447]/70 hover:border-[#3B82F6]/40 text-gray-100/80 hover:text-gray-100/95 transition-all duration-fast ease-out active:scale-[0.98] text-[12px] font-semibold tracking-wide px-3.5 py-2 rounded-lg">
         {t('overview.reviewCV', 'Revisar')}
       </Link>
     </div>
@@ -220,15 +226,15 @@ export default function OverviewPage() {
   const recentItems = isClub ? applications.slice(0, 3) : opportunities.slice(0, 3);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <PageHeader
         title={
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="text-yellow-400/80">{t('overview.hello')}, {user?.displayName || t('overview.sportsman')}</span>
-            <span className={"px-3 py-1 rounded-full text-[11px] font-bold tracking-wider border " + (
+            <span className={"px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] uppercase border " + (
               isPremium
-                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                : 'bg-[#1F2937] text-[#6B7280] border-[#374151]'
+                ? 'bg-[#3B82F6]/10 text-[#60A5FA] border-[#3B82F6]/30'
+                : 'bg-[#1A2235] text-[#9CA3AF] border-[#2A3447]/70'
             )}>
               {t('overview.planTag')} {activePlan.toUpperCase()}
             </span>
@@ -243,23 +249,23 @@ export default function OverviewPage() {
         }
         action={
           isClub ? (
-            <Link to="/dashboard/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-gray-100 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-              <PlusCircleIcon className="w-5 h-5" />
+            <Link to="/dashboard/opportunities/new" className="bg-gradient-to-br from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] text-gray-100/95 text-[13px] font-semibold tracking-wide px-4 py-2.5 rounded-lg transition-all duration-base active:scale-[0.98] flex items-center gap-2 shadow-[0_6px_14px_-6px_rgba(59,130,246,0.5)]">
+              <PlusCircleIcon className="w-4 h-4" />
               {t('overview.publishOffer')}
             </Link>
           ) : (
-            <Link to="/dashboard/profile" className="bg-[#111827] hover:bg-[#1F2937] text-gray-100 border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
-              <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
+            <Link to="/dashboard/profile" className="bg-gradient-to-b from-[#1A2235] to-[#141C2E] hover:border-[#3B82F6]/40 text-gray-100/90 border border-[#2A3447]/70 text-[13px] font-semibold tracking-wide px-4 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset]">
+              <UserCircleIcon className="w-4 h-4 text-[#9CA3AF]" />
               {t('overview.completeProfile')}
             </Link>
           )
         }
       />
 
-      <div className="relative mb-4">
+      <div className="relative mb-2 md:mb-4">
         {/* Animated Connecting Line (Desktop) */}
         <div className="hidden md:block absolute top-1/2 left-[12.5%] right-[12.5%] h-[2px] bg-transparent -translate-y-1/2 z-0 overflow-hidden rounded-full">
-          <motion.div 
+          <motion.div
             className="w-[150px] h-full bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
             initial={{ left: '-15%' }}
             animate={{ left: ['-15%', '105%'] }}
@@ -268,33 +274,33 @@ export default function OverviewPage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 md:gap-6 lg:gap-8 justify-items-center py-4 sm:py-6 relative z-10 pointer-events-none">
+        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-3 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center py-2 sm:py-4 md:py-6 relative z-10 pointer-events-none">
           {stats.map((stat, i) => (
-            <div key={i} className="bg-[#0B1120] rounded-full w-full max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
-              <motion.div 
+            <div key={i} className="bg-[#0B1120] rounded-full w-full max-w-[160px] sm:max-w-[200px] md:max-w-[220px] aspect-square flex items-center justify-center relative pointer-events-auto">
+              <motion.div
                 animate={{ borderColor: ['rgba(234,179,8,0.8)', 'rgba(234,179,8,0.2)', 'rgba(234,179,8,0.8)'] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
                 whileHover={{ borderColor: 'rgba(250,204,21,1)', transition: { duration: 0.2 } }}
-                className="bg-[#374151]/50 border rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-3 sm:p-4"
+                className="bg-[#374151]/50 border rounded-full w-full h-full flex flex-col items-center justify-center relative group transition-all duration-500 ease-out fill-available hover:shadow-[0_0_30px_rgba(234,179,8,0.2)] hover:-translate-y-1 p-2.5 sm:p-3 md:p-4"
               >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
-                
-                <div className="relative z-10 mb-2">
-                   <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
+
+                <div className="relative z-10 mb-1.5 sm:mb-2">
+                   <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
                 </div>
-                
-                <div className="relative z-10 flex flex-col items-center justify-center mb-2">
+
+                <div className="relative z-10 flex flex-col items-center justify-center mb-1.5 sm:mb-2">
                   {loading ? (
-                     <div className="h-8 w-14 bg-[#4B5563] animate-pulse rounded-md mb-1"></div>
+                     <div className="h-7 sm:h-8 w-12 sm:w-14 bg-[#4B5563] animate-pulse rounded-md mb-1"></div>
                   ) : (
-                    <h3 className="text-3xl sm:text-4xl font-extrabold text-yellow-500 tracking-tight leading-none mb-1.5">{stat.value}</h3>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-yellow-500 tracking-tight leading-none mb-1 sm:mb-1.5">{stat.value}</h3>
                   )}
-                  <p className="text-[10px] sm:text-xs text-[#9CA3AF] font-bold uppercase tracking-wider leading-tight px-1 text-center">{stat.label}</p>
+                  <p className="text-[9px] sm:text-[10px] md:text-xs text-[#9CA3AF] font-bold uppercase tracking-wider leading-tight px-1 text-center">{stat.label}</p>
                 </div>
 
                 {stat.trend && (
-                  <div className="relative z-10 mt-1 opacity-90 group-hover:opacity-100 transition-opacity">
-                    <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap text-[#D1D5DB] bg-[#1F2937]/50 border border-[#4B5563]/50">
+                  <div className="relative z-10 mt-0.5 sm:mt-1 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap text-[#D1D5DB] bg-[#1F2937]/50 border border-[#4B5563]/50">
                       {stat.trend}
                     </span>
                   </div>
@@ -305,10 +311,10 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-6 sm:p-8">
-        <div className="lg:col-span-2 flex flex-col gap-6 lg:gap-6 sm:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 flex flex-col gap-6">
           <section>
-            <h2 className="text-base font-semibold text-gray-200 mb-4">{t('overview.quickActions.title')}</h2>
+            <h2 className="text-[10.5px] font-semibold text-[#6B7280] uppercase tracking-[0.14em] mb-4">{t('overview.quickActions.title')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/dashboard/opportunities" icon={BriefcaseIcon} label={t('overview.quickActions.exploreOffers')} />
               <QuickAction href="/dashboard/applications" icon={DocumentCheckIcon} label={t('overview.quickActions.applications')} />
@@ -317,24 +323,25 @@ export default function OverviewPage() {
             </div>
           </section>
 
-          <section className="bg-[#111827] border border-[#1F2937] rounded-xl overflow-hidden flex-1 shadow-sm h-full flex flex-col">
-            <div className="px-5 py-4 border-b border-[#1F2937] flex items-center justify-between">
-              <h2 className="text-base font-semibold text-gray-200">
+          <section className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 rounded-2xl overflow-hidden flex-1 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] h-full flex flex-col">
+            <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
+            <div className="px-5 py-4 border-b border-[#2A3447]/60 flex items-center justify-between">
+              <h2 className="text-[15px] font-semibold text-gray-100/90 tracking-tight">
                 {isClub ? t('overview.recentApplicationsTitle') : t('overview.recommendedOffersTitle')}
               </h2>
-              <Link to={isClub ? "/dashboard/applications" : "/dashboard/opportunities"} className="text-sm font-medium text-blue-500 hover:text-blue-400 flex items-center gap-1 transition-colors duration-fast ease-out">
+              <Link to={isClub ? "/dashboard/applications" : "/dashboard/opportunities"} className="text-[13px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] flex items-center gap-1 transition-colors duration-fast ease-out group">
                 {t('overview.seeMore')}
-                <ArrowRightIcon className="w-4 h-4" />
+                <ArrowRightIcon className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
-            <div className="divide-y divide-[#1F2937] flex-1">
+            <div className="divide-y divide-[#2A3447]/50 flex-1">
               {loading ? (
                 <div className="p-8 flex justify-center items-center h-48">
-                  <div className="animate-spin w-8 h-8 rounded-full border-b-2 border-blue-500"></div>
+                  <div className="animate-spin w-8 h-8 rounded-full border-b-2 border-[#3B82F6]"></div>
                 </div>
               ) : recentItems.length === 0 ? (
-                 <div className="p-8 text-center text-[#6B7280] text-sm h-48 flex items-center justify-center">
-                    {isClub ? 'No hi ha candidatures encara.' : 'No hi ha oportunitats recents.'}
+                 <div className="p-8 text-center text-[#6B7280] text-sm h-48 flex items-center justify-center italic">
+                    {isClub ? t('overview.noApplicationsYet', 'No hi ha candidatures encara.') : t('overview.noRecentOpportunities', 'No hi ha oportunitats recents.')}
                  </div>
               ) : isClub ? (
                 (recentItems as Application[]).map((app) => (
@@ -342,17 +349,17 @@ export default function OverviewPage() {
                 ))
               ) : (
                 (recentItems as Opportunity[]).map((opp) => (
-                  <div key={opp.id} className="p-5 hover:bg-[#1F2937]/30 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#1F2937] flex items-center justify-center shrink-0 border border-[#374151] shadow-sm">
-                        <BuildingOfficeIcon className="w-6 h-6 text-[#9CA3AF]" />
+                  <div key={opp.id} className="p-5 hover:bg-[#1F2937]/25 transition-colors duration-fast ease-out flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#2A3447] to-[#1F2937] flex items-center justify-center shrink-0 border border-[#2A3447]/70 shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
+                        <BuildingOfficeIcon className="w-5 h-5 text-[#9CA3AF]" />
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-200 mb-0.5">{opp.title}</p>
-                        <p className="text-xs text-[#9CA3AF] capitalize">{opp.sport} • {opp.contractType} • {formatLocation(opp)}</p>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-100/90 mb-0.5 tracking-tight truncate">{opp.title}</p>
+                        <p className="text-xs text-[#9CA3AF] capitalize truncate">{opp.sport} • {opp.contractType} • {formatLocation(opp)}</p>
                       </div>
                     </div>
-                    <Link to={`/dashboard/opportunities/${opp.id}`} className="shrink-0 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-500/20 transition-all duration-fast ease-out active:scale-[0.98] text-xs font-semibold px-4 py-2 rounded-lg">
+                    <Link to={`/dashboard/opportunities/${opp.id}`} className="shrink-0 bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 text-[#60A5FA] border border-[#3B82F6]/25 hover:border-[#3B82F6]/40 transition-all duration-fast ease-out active:scale-[0.98] text-[12px] font-semibold tracking-wide px-3.5 py-2 rounded-lg">
                       {t('overview.enter', 'Veure més')}
                     </Link>
                   </div>
@@ -362,42 +369,44 @@ export default function OverviewPage() {
           </section>
         </div>
 
-        <div className="flex flex-col gap-6 lg:gap-6 sm:p-8">
+        <div className="flex flex-col gap-6">
           <section>
             {isPremium ? (
-              <div className="bg-[#111827] border border-blue-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden shadow-lg shadow-blue-500/5">
-                <div className="absolute -top-4 -right-4 p-4 opacity-[0.03]">
-                  <SparklesIcon className="w-32 h-32 text-blue-500" />
+              <div className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#3B82F6]/30 rounded-2xl p-5 sm:p-6 overflow-hidden shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(59,130,246,0.3)]">
+                <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/20 to-transparent" />
+                <div className="absolute -top-4 -right-4 p-4 opacity-[0.05]">
+                  <SparklesIcon className="w-32 h-32 text-[#3B82F6]" />
                 </div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircleIcon className="w-5 h-5 text-blue-400" />
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{activePlan}</span>
+                    <CheckCircleIcon className="w-4 h-4 text-[#60A5FA]" />
+                    <span className="text-[10.5px] font-semibold text-[#60A5FA] uppercase tracking-[0.14em]">{activePlan}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-100 mb-2">{t('overview.activePlan.title')}</h3>
+                  <h3 className="text-lg font-semibold text-gray-100/90 mb-2 tracking-tight">{t('overview.activePlan.title')}</h3>
                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
-                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-gray-100 text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-all duration-fast ease-out active:scale-[0.98]">
+                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A]/60 hover:bg-[#1F2937]/70 text-gray-100/90 text-[13px] font-semibold tracking-wide px-4 py-2.5 rounded-lg border border-[#2A3447]/70 hover:border-[#3B82F6]/40 transition-all duration-fast ease-out active:scale-[0.98]">
                     {t('overview.activePlan.manageButton')}
                   </Link>
                 </div>
               </div>
             ) : (
-               <div className="bg-gradient-to-br from-yellow-600/20 via-[#111827] to-[#111827] border border-yellow-500/30 rounded-xl p-4 sm:p-6 relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-base ease-out">
-                   <SparklesIcon className="w-24 h-24 text-yellow-500" />
+               <div className="relative bg-gradient-to-br from-[#EAB308]/15 via-[#1A2235] to-[#141C2E] border border-[#EAB308]/30 rounded-2xl p-5 sm:p-6 overflow-hidden group shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(234,179,8,0.25)]">
+                 <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#EAB308]/25 to-transparent" />
+                 <div className="absolute top-0 right-0 p-4 opacity-[0.06] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-base ease-out">
+                   <SparklesIcon className="w-24 h-24 text-[#EAB308]" />
                  </div>
                  <div className="relative z-10">
                    <div className="flex items-center gap-2 mb-2">
-                     <SparklesIcon className="w-5 h-5 text-yellow-400" />
-                     <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">UPGRADE</span>
+                     <SparklesIcon className="w-4 h-4 text-[#EAB308]" />
+                     <span className="text-[10.5px] font-semibold text-[#EAB308] uppercase tracking-[0.14em]">UPGRADE</span>
                    </div>
-                   <h3 className="text-xl font-bold text-gray-100 mb-2">{t('overview.upgrade.title')}</h3>
-                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">   
+                   <h3 className="text-lg font-semibold text-gray-100/90 mb-2 tracking-tight">{t('overview.upgrade.title')}</h3>
+                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">
                      <Trans i18nKey="overview.upgrade.description">
-                       Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
+                       Rep fins a un <strong className="text-gray-100/90 font-semibold">300% més</strong> d'impressions de clubs i envia missatges directes.
                      </Trans>
                    </p>
-                   <Link to="/pricing" className="bg-yellow-500 hover:bg-yellow-400 text-[#0B1120] text-sm font-bold px-4 py-3 rounded-lg flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all duration-fast ease-out active:scale-[0.98] w-full relative z-10">
+                   <Link to="/pricing" className="bg-[#EAB308] hover:bg-[#F5C518] text-[#0B1220] text-[13px] font-semibold tracking-wide px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 shadow-[0_6px_14px_-6px_rgba(234,179,8,0.55)] transition-all duration-base active:scale-[0.98] w-full relative z-10">
                      {t('overview.upgrade.button')}
                    </Link>
                  </div>
@@ -405,20 +414,20 @@ export default function OverviewPage() {
             )}
           </section>
 
-          <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 md:p-6 flex-1 shadow-sm">
-            <h2 className="text-base font-semibold text-gray-200 mb-5 flex items-center justify-between">
+          <section className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 rounded-2xl p-5 md:p-6 flex-1 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)]">
+            <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
+            <h2 className="text-[15px] font-semibold text-gray-100/90 tracking-tight mb-5 flex items-center justify-between">
               {t('overview.activity.title')}
-              <span className="text-[11px] font-medium text-[#6B7280] bg-[#1F2937] px-2 py-0.5 rounded">{t('overview.activity.last7Days', 'Darrers 7 dies')}</span>
+              <span className="text-[10px] font-semibold text-[#6B7280] bg-[#0F172A]/60 border border-[#2A3447]/70 px-2 py-0.5 rounded uppercase tracking-[0.12em]">{t('overview.activity.last7Days', 'Darrers 7 dies')}</span>
             </h2>
-            <div className="relative border-l border-[#1F2937] ml-3 mt-4">
-               {/* Just symbolic activity, as we removed mock array */}
+            <div className="relative border-l border-[#2A3447]/60 ml-3 mt-4">
                <div className="relative pl-5 pb-6">
-                <div className="absolute top-0.5 -left-[17px] bg-[#1F2937] p-1.5 rounded-full border-4 border-[#111827]">
-                  <CheckCircleIcon className="w-3 h-3 text-green-400" />
+                <div className="absolute top-0.5 -left-[17px] bg-gradient-to-br from-[#2A3447] to-[#1F2937] p-1.5 rounded-full border-4 border-[#141C2E] shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
+                  <CheckCircleIcon className="w-3 h-3 text-emerald-400" />
                 </div>
-                <p className="text-sm font-semibold text-gray-200 mb-0.5">{t('overview.activity.item1.title', 'Benvingut a GlobalPlay360!')}</p>
-                <p className="text-xs text-[#9CA3AF] mb-1">{t('overview.activity.item1.desc', 'Has iniciat sessió correctament al nou Dashboard.')}</p>
-                <span className="text-[10px] font-medium text-[#6B7280]">{new Date().toLocaleDateString()}</span>
+                <p className="text-sm font-semibold text-gray-100/90 mb-0.5 tracking-tight">{t('overview.activity.item1.title', 'Benvingut a GlobalPlay360!')}</p>
+                <p className="text-xs text-[#9CA3AF] mb-1 leading-relaxed">{t('overview.activity.item1.desc', 'Has iniciat sessió correctament al nou Dashboard.')}</p>
+                <span className="text-[10px] font-medium text-[#6B7280] tracking-wide">{new Date().toLocaleDateString()}</span>
               </div>
             </div>
           </section>
@@ -431,13 +440,14 @@ export default function OverviewPage() {
 
 function QuickAction({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) {
   return (
-    <Link 
+    <Link
       to={href}
-      className="bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] hover:border-[#374151] transition-all duration-base ease-out hover:-translate-y-0.5 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
-      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-gray-100 p-3 rounded-lg transition-all duration-base ease-out transform group-hover:scale-110">
+      className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] hover:border-[#3B82F6]/40 border border-[#2A3447]/70 transition-all duration-base ease-out hover:-translate-y-0.5 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] hover:shadow-[0_1px_0_0_rgba(243,244,246,0.06)_inset,0_20px_50px_-20px_rgba(59,130,246,0.35)]">
+      <div className="pointer-events-none absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
+      <div className="bg-gradient-to-br from-[#2A3447] to-[#1F2937] group-hover:from-[#3B82F6] group-hover:to-[#2563EB] group-hover:shadow-[0_6px_14px_-6px_rgba(59,130,246,0.5)] text-[#60A5FA] group-hover:text-gray-100/95 p-2.5 rounded-lg transition-all duration-base ease-out transform group-hover:scale-105 border border-[#2A3447]/70 group-hover:border-[#3B82F6]/40">
         <Icon className="w-5 h-5" />
       </div>
-      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-gray-100 transition-colors duration-fast ease-out">{label}</span>
+      <span className="text-[12px] font-semibold tracking-wide text-[#9CA3AF] group-hover:text-gray-100/90 transition-colors duration-fast ease-out">{label}</span>
     </Link>
   );
 }

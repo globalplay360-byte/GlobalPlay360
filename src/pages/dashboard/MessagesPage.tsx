@@ -26,34 +26,37 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
   return (
     <Link
       to={`/dashboard/messages/${conv.id}`}
-      className={`group flex items-center gap-4 p-4 bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 shadow-sm hover:shadow-[#3B82F6]/10 hover:-translate-y-0.5 transition-all duration-fast ease-out relative overflow-hidden ${
-        isLocked ? 'hover:border-[#1F2937] cursor-pointer' : 'active:scale-[0.99]'
+      className={`relative group flex items-center gap-4 p-4 sm:p-5 rounded-2xl border border-[#2A3447]/70 bg-gradient-to-b from-[#1A2235] to-[#141C2E] shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] hover:border-[#3B82F6]/40 hover:-translate-y-0.5 hover:shadow-[0_1px_0_0_rgba(243,244,246,0.06)_inset,0_20px_50px_-20px_rgba(59,130,246,0.35)] transition-all duration-base ease-out ${
+        isLocked ? 'cursor-pointer' : 'active:scale-[0.99]'
       }`}
     >
-      {/* Icona o Avatar de l'altre participant */}
-      <div className="w-12 h-12 rounded-full bg-[#1F2937] text-gray-100 flex items-center justify-center font-extrabold text-lg shrink-0 relative shadow-inner">
+      {/* Inner top highlight */}
+      <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
+
+      {/* Avatar de l'altre participant */}
+      <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#2A3447] to-[#1F2937] border border-[#2A3447]/70 text-gray-100/90 flex items-center justify-center font-semibold text-lg shrink-0 shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
         {conv.otherParticipant?.displayName?.charAt(0) || '?'}
-        {/* Indicador d'estat fals (online placeholder) */}
-        <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#111827] rounded-full shadow-sm"></span>
+        {/* Indicador online */}
+        <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500/90 border-2 border-[#1A2235] rounded-full"></span>
       </div>
 
       {/* Contingut */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-1">
-          <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-gray-100 font-extrabold tracking-tight' : 'text-gray-100 font-bold tracking-tight'}`}>
-            {conv.otherParticipant?.displayName || t('messages.unknownUser', 'Usuari desconegut')}   
+        <div className="flex items-center justify-between gap-3 mb-1">
+          <h3 className={`truncate flex items-center gap-2 text-[15px] tracking-tight ${hasUnread ? 'text-gray-100/95 font-semibold' : 'text-gray-100/90 font-medium'}`}>
+            {conv.otherParticipant?.displayName || t('messages.unknownUser', 'Usuari desconegut')}
             {isLocked && (
-              <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#EAB308]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
               </svg>
             )}
           </h3>
-          <span className={`text-xs whitespace-nowrap ml-2 font-medium tracking-wide ${hasUnread ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
+          <span className={`text-[11px] whitespace-nowrap font-medium tracking-wide shrink-0 ${hasUnread ? 'text-[#60A5FA]' : 'text-[#6B7280]'}`}>
             {displayDate}, {time}
           </span>
         </div>
 
-        <p className={`text-sm truncate leading-relaxed ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-gray-100 font-medium drop-shadow-sm' : 'text-[#9CA3AF] group-hover:text-gray-300 transition-colors'}`}>
+        <p className={`text-sm truncate leading-relaxed ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-gray-300 font-medium' : 'text-[#9CA3AF] group-hover:text-gray-300 transition-colors duration-fast'}`}>
           {isLocked ? t('messages.protectedMessage', 'Missatge protegit') : conv.lastMessage || t('messages.newConversation', 'Nova conversa')}
         </p>
       </div>
@@ -61,17 +64,17 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       {/* Unread badge */}
       {hasUnread && (
         <span
-          className="ml-3 inline-flex items-center justify-center min-w-[24px] h-[24px] px-1.5 text-[11px] font-extrabold text-gray-100 bg-[#3B82F6] rounded-full shadow-[0_0_12px_rgba(59,130,246,0.6)] shrink-0"
+          className="ml-2 inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-[11px] font-semibold text-gray-100/95 bg-[#3B82F6] rounded-full shadow-[0_4px_12px_-2px_rgba(59,130,246,0.45)] shrink-0"
           aria-label={`${unread} missatge${unread > 1 ? 's' : ''} sense llegir`}
         >
           {unread > 9 ? '9+' : unread}
         </span>
       )}
 
-      {/* Angle right arrow for unlockeds */}
+      {/* Chevron */}
       {!isLocked && (
-        <div className="text-[#4B5563] group-hover:text-[#3B82F6] group-hover:translate-x-1 transition-all duration-fast ml-3 hidden sm:block">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-[#4B5563] group-hover:text-gray-300 group-hover:translate-x-0.5 transition-all duration-fast hidden sm:block shrink-0">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>
@@ -140,7 +143,7 @@ export default function MessagesPage() {
       />
 
       {conversations.length > 0 ? (
-        <div className="flex flex-col gap-3.5">
+        <div className="flex flex-col gap-4">
           {conversations.map(conv => (
             <ConversationListItem
               key={conv.id}

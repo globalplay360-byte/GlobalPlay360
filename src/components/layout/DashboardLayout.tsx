@@ -45,11 +45,13 @@ export default function DashboardLayout() {
     }
   };
 
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   return (
     <div className="flex h-screen bg-[#0B1120] font-sans overflow-hidden">
-      <Sidebar />
+      <Sidebar mobileOpen={mobileSidebarOpen} onMobileClose={() => setMobileSidebarOpen(false)} />
       <div className="flex flex-col flex-1 bg-[#0F172A] relative min-w-0">
-        <Topbar />
+        <Topbar onMobileMenuClick={() => setMobileSidebarOpen(true)} />
         
         {/* Banner Global de Verificació (sota de la Topbar, dins de l'espai visible del tauler) */}
         {!isVerified && (

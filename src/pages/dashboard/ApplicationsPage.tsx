@@ -185,11 +185,11 @@ export default function ApplicationsPage() {
     return (
       <div className="p-6 max-w-6xl mx-auto w-full">
         <div className="h-8 w-48 bg-[#1F2937] rounded mb-6 animate-pulse" />
-        <div className="flex flex-col gap-4">
-          {[1, 2, 3].map((n) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="h-40 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse"
+              className="h-56 rounded-2xl bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/60 animate-pulse"
             />
           ))}
         </div>
@@ -212,7 +212,7 @@ export default function ApplicationsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto w-full">
-      <div className="flex flex-col gap-4 sm:p-6">
+      <div className="flex flex-col gap-6">
         {/* Header */}
         <PageHeader
           title={
@@ -228,160 +228,133 @@ export default function ApplicationsPage() {
         />
 
         {applications.length > 0 ? (
-          <motion.div 
-            className="flex flex-col gap-4"
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-5"
             variants={containerVariants}
             initial="hidden"
             animate="show"
           >
             {applications.map((app) => (
-              <motion.div
+              <motion.article
                 variants={itemVariants}
                 key={app.id}
-                  className={`bg-[#111827] border border-[#1F2937] rounded-xl shadow-sm hover:-translate-y-0.5 transition-all duration-base group flex flex-col md:flex-row p-5 sm:p-6 gap-6 mb-2 relative overflow-hidden ${
-                    !app.opportunity ? 'opacity-60 grayscale-[50%]' : 'hover:border-[#3B82F6]/50 hover:shadow-[#3B82F6]/10'
-                  }`}
-                >
-                  {/* Línia superior de status */}
-                  <div
-                    className={`absolute top-0 left-0 h-1.5 w-full
-                    ${!app.opportunity ? 'bg-gray-600' : ''}
-                    ${app.opportunity && app.status === "accepted" ? "bg-emerald-500 shadow-sm shadow-emerald-500/50" : ""}
-                    ${app.opportunity && app.status === "rejected" ? "bg-red-500 shadow-sm shadow-red-500/50" : ""}
-                    ${app.opportunity && app.status === "in_review" ? "bg-purple-500 shadow-sm shadow-purple-500/50" : ""}
-                    ${app.opportunity && app.status === "submitted" ? "bg-blue-500 shadow-sm shadow-blue-500/50" : ""}
-                  `}
-                  />
+                className={`relative rounded-2xl border bg-gradient-to-b from-[#1A2235] to-[#141C2E] p-5 sm:p-6 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] transition-all duration-base ease-out group flex flex-col ${
+                  !app.opportunity
+                    ? 'opacity-70 border-[#2A3447]/50'
+                    : 'border-[#2A3447]/70 hover:border-[#3B82F6]/40 hover:-translate-y-0.5 hover:shadow-[0_1px_0_0_rgba(243,244,246,0.06)_inset,0_20px_50px_-20px_rgba(59,130,246,0.35)]'
+                }`}
+              >
+                {/* Inner top highlight — premium depth trick */}
+                <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
+                {/* Meta line: date + status */}
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#6B7280]">
+                    {t('applications.appliedOn', { date: new Date(app.createdAt).toLocaleDateString("ca-ES") })}
+                  </span>
+                  <StatusBadge status={app.status} />
+                </div>
 
-                <div className="flex-1 min-w-0 pt-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[#9CA3AF] text-xs font-bold uppercase tracking-wider">
-                      {t('applications.appliedOn', { date: new Date(app.createdAt).toLocaleDateString("ca-ES") })}
+                {/* Title */}
+                <h2 className="text-[1.2rem] sm:text-[1.3rem] font-semibold text-gray-100/90 tracking-tight leading-snug mb-1 group-hover:text-gray-100 transition-colors duration-fast line-clamp-2">
+                  {app.opportunity?.title || t('applications.opportunityClosed')}
+                </h2>
+
+                {/* Subject: candidate or club */}
+                <p className="text-sm text-[#9CA3AF] mb-4">
+                  {currentUserRole === "club" ? (
+                    <>
+                      <span className="text-[#6B7280]">{t('applications.candidateLabel', { name: '' })}</span>
+                      <span
+                        className="ml-1 text-gray-200 font-medium hover:text-[#3B82F6] cursor-pointer transition-colors duration-fast"
+                        onClick={() => app.candidate && navigate(`/dashboard/profile/${app.candidate.uid}`)}
+                      >
+                        {app.candidate?.displayName || t('applications.unknownUser')}
+                      </span>
+                    </>
+                  ) : (
+                    <span
+                      className="text-gray-200 font-medium hover:text-[#3B82F6] cursor-pointer transition-colors duration-fast"
+                      onClick={() => app.club?.uid && navigate(`/dashboard/profile/${app.club.uid}`)}
+                    >
+                      {app.club?.displayName || t('applications.unknownClub')}
                     </span>
-                    <div className="block md:hidden">
-                      <StatusBadge status={app.status} />
-                    </div>
-                  </div>
+                  )}
+                </p>
 
-                  <h2 className="text-xl font-extrabold text-gray-100 mb-1.5 tracking-tight truncate group-hover:text-[#3B82F6] transition-colors">
-                    {app.opportunity?.title || t('applications.opportunityClosed')}
-                  </h2>
-                  <p className="text-[#3B82F6] font-bold text-sm mb-4 tracking-wide">
-                    {currentUserRole === "club"
-                      ? (
-                        <>
-                          {t('applications.candidateLabel', { name: '' })}
-                          <span 
-                            className="hover:underline cursor-pointer transition-colors text-blue-400"
-                            onClick={() => app.candidate && navigate(`/dashboard/profile/${app.candidate.uid}`)}
-                          >
-                            {app.candidate?.displayName || t('applications.unknownUser')}
-                          </span>
-                        </>
-                      )
-                      : (
-                        <span 
-                          className="hover:underline cursor-pointer transition-colors text-blue-400"
-                          onClick={() => app.club?.uid && navigate(`/dashboard/profile/${app.club.uid}`)}
-                        >
-                          {app.club?.displayName || t('applications.unknownClub')}
-                        </span>
-                      )
-                    }
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
+                {/* Meta pills */}
+                {(app.opportunity?.sport || app.opportunity?.country) && (
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12.5px] text-[#9CA3AF] mb-4">
                     {app.opportunity?.sport && (
                       <div className="flex items-center gap-1.5">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
+                        <svg className="w-3.5 h-3.5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span>{app.opportunity.sport}</span>
+                        <span className="capitalize">{app.opportunity.sport}</span>
                       </div>
+                    )}
+                    {app.opportunity?.sport && app.opportunity?.country && (
+                      <span className="text-[#1F2937]">·</span>
                     )}
                     {app.opportunity?.country && (
                       <div className="flex items-center gap-1.5">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
+                        <svg className="w-3.5 h-3.5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         <span>{formatLocation(app.opportunity)}</span>
                       </div>
                     )}
                   </div>
+                )}
 
-                  {app.message && (
-                    <div className="mt-4 p-3 bg-[#0F172A] border border-[#1F2937] rounded-lg shadow-inner">
-                      <p className="text-sm text-[#9CA3AF] italic leading-relaxed line-clamp-2">
-                        "{app.message}"
-                      </p>
-                    </div>
-                  )}
-                </div>
+                {/* Message as editorial quote */}
+                {app.message && (
+                  <blockquote className="border-l-2 border-[#2A3447]/80 pl-4 mb-5">
+                    <p className="text-sm text-[#9CA3AF] italic leading-relaxed line-clamp-2">
+                      "{app.message}"
+                    </p>
+                  </blockquote>
+                )}
 
-                {/* Accions i Estat */}
-                <div className="flex flex-col justify-between items-start md:items-end gap-5 min-w-[160px] border-t border-[#1F2937] md:border-t-0 pt-4 md:pt-0">
-                  <div className="hidden md:block mt-1">
-                    <StatusBadge
-                      status={app.status}
-                      className="text-xs px-3 py-1 font-bold uppercase tracking-wider"
-                    />
-                  </div>
-                  <div className="flex flex-col sm:flex-row w-full gap-2.5">
-                      {app.opportunity ? (
-                        <Link
-                          to={`/dashboard/opportunities/${app.opportunityId}`}
-                          state={{ from: 'applications' }}
-                          className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-gray-100 hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
-                        >
-                          {t('applications.viewDetail')}
-                        </Link>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide text-[#EF4444] border-[#EF4444]/30 hover:bg-[#EF4444]/10 transition-all duration-fast"
-                          onClick={() => handleDeleteOrphaned(app.id)}
-                          disabled={deletingId === app.id}
-                        >
-                          {deletingId === app.id ? "Eliminant..." : t('applications.removeOrphaned', "Eliminar Registre")}
-                        </Button>
-                      )}
+                {/* Spacer pushes footer to bottom for grid alignment */}
+                <div className="flex-1" />
+
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-[#2A3447]/70 to-transparent mb-4" />
+
+                {/* Actions footer */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Primary actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {app.opportunity ? (
+                      <Link
+                        to={`/dashboard/opportunities/${app.opportunityId}`}
+                        state={{ from: 'applications' }}
+                        className="inline-flex items-center px-3.5 py-2 text-[13px] font-medium tracking-wide text-gray-200 bg-[#1F2937]/40 border border-[#1F2937] hover:bg-[#1F2937]/80 hover:border-[#374151] rounded-lg transition-all duration-fast active:scale-[0.98]"
+                      >
+                        {t('applications.viewDetail')}
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        className="px-3.5 py-2 text-[13px] font-medium tracking-wide text-[#EF4444]/90 border-[#EF4444]/25 hover:bg-[#EF4444]/10 hover:border-[#EF4444]/40 rounded-lg transition-all duration-fast"
+                        onClick={() => handleDeleteOrphaned(app.id)}
+                        disabled={deletingId === app.id}
+                      >
+                        {deletingId === app.id ? "Eliminant..." : t('applications.removeOrphaned', "Eliminar Registre")}
+                      </Button>
+                    )}
 
                     {currentUserRole === "club" &&
                       app.candidate &&
                       (app.status === "accepted" || app.status === "in_review") && (
                         <Button
                           variant="primary"
-                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide inline-flex items-center justify-center gap-1.5 shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
+                          className="px-3.5 py-2 text-[13px] font-semibold tracking-wide inline-flex items-center justify-center gap-1.5 rounded-lg shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
                           onClick={() => handleStartConversation(app.candidate!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-4 h-4 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
@@ -394,11 +367,11 @@ export default function ApplicationsPage() {
                       app.club && (
                         <Button
                           variant="primary"
-                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide inline-flex items-center justify-center gap-1.5 shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
+                          className="px-3.5 py-2 text-[13px] font-semibold tracking-wide inline-flex items-center justify-center gap-1.5 rounded-lg shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]"
                           onClick={() => handleStartConversation(app.club!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-4 h-4 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
@@ -407,15 +380,15 @@ export default function ApplicationsPage() {
                       )}
                   </div>
 
-                  {/* Accions de gestió d'estat (només club) */}
+                  {/* Status management (club only) */}
                   {currentUserRole === "club" && app.opportunity && (
-                    <div className="flex flex-wrap gap-2 w-full justify-end">
+                    <div className="flex flex-wrap items-center gap-1.5 ml-auto">
                       {app.status === "submitted" && (
                         <button
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
                           title={t('applications.titleMarkInReview')}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors disabled:opacity-50"
+                          className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-purple-500/20 text-purple-300/90 hover:bg-purple-500/10 hover:border-purple-500/40 transition-all duration-fast disabled:opacity-50"
                         >
                           {updatingId === app.id ? "..." : t('applications.markInReview')}
                         </button>
@@ -426,7 +399,7 @@ export default function ApplicationsPage() {
                             onClick={() => handleStatusChange(app, "accepted")}
                             disabled={updatingId === app.id}
                             title={t('applications.titleAccept')}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors disabled:opacity-50"
+                            className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-emerald-500/20 text-emerald-300/90 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all duration-fast disabled:opacity-50"
                           >
                             {updatingId === app.id ? "..." : t('applications.accept')}
                           </button>
@@ -434,7 +407,7 @@ export default function ApplicationsPage() {
                             onClick={() => handleStatusChange(app, "rejected")}
                             disabled={updatingId === app.id}
                             title={t('applications.titleReject')}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                            className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-red-500/20 text-red-300/90 hover:bg-red-500/10 hover:border-red-500/40 transition-all duration-fast disabled:opacity-50"
                           >
                             {updatingId === app.id ? "..." : t('applications.reject')}
                           </button>
@@ -445,7 +418,7 @@ export default function ApplicationsPage() {
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
                           title={t('applications.titleReopen')}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[#1F2937] text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] transition-colors disabled:opacity-50"
+                          className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-[#1F2937] text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937]/60 transition-all duration-fast disabled:opacity-50"
                         >
                           {updatingId === app.id ? "..." : t('applications.reopen')}
                         </button>
@@ -453,7 +426,7 @@ export default function ApplicationsPage() {
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </motion.div>
         ) : (
