@@ -346,7 +346,6 @@
       "myOffers": "Les Meves Ofertes",
       "applications": "Candidatures",
       "messages": "Missatges",
-      "analytics": "Analítiques",
       "billing": "Facturació"
     },
     "mainMenu": "Menú Principal",
@@ -380,8 +379,7 @@
       "club": {
         "activeOffers": "Ofertes Actives",
         "applicationsReceived": "Candidatures Rebudes",
-        "conversations": "Converses",
-        "profileVisits": "Visites al Perfil"
+        "conversations": "Converses"
       },
       "coachPlayer": {
         "availableOffers": "Oportunitats Disponibles",

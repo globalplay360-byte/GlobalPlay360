@@ -85,8 +85,6 @@ function App() {
                 <Route index element={<MessagesPage />} />
                 <Route path=":id" element={<MessageDetailPage />} />
               </Route>
-
-              <Route path="analytics" element={<div className="p-6 text-white">Analítiques (En construcció)</div>} />
             </Route>
           </Route>
 
@@ -94,7 +92,6 @@ function App() {
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="users" element={<div className="p-4"><p>Admin Users placeholder</p></div>} />
             </Route>
           </Route>
 
