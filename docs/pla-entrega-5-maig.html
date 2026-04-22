@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GlobalPlay360 · Pla d'entrega 5 maig 2026</title>
+<title>GlobalPlay360 · Pla d'entrega 5 maig 2026 — v2 (22 abr)</title>
 <style>
   :root {
     --bg: #0B1120;
@@ -27,10 +27,7 @@
     line-height: 1.65;
     padding: 40px 20px;
   }
-  .container {
-    max-width: 1080px;
-    margin: 0 auto;
-  }
+  .container { max-width: 1080px; margin: 0 auto; }
   header {
     background: linear-gradient(135deg, #111827 0%, #1E293B 100%);
     border: 1px solid var(--border);
@@ -47,15 +44,15 @@
     right: -20%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(16,185,129,0.14) 0%, transparent 70%);
     pointer-events: none;
   }
   .badge {
     display: inline-block;
     padding: 6px 14px;
-    background: rgba(59,130,246,0.15);
-    color: var(--blue);
-    border: 1px solid rgba(59,130,246,0.3);
+    background: rgba(16,185,129,0.15);
+    color: var(--green);
+    border: 1px solid rgba(16,185,129,0.3);
     border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
@@ -67,16 +64,12 @@
     font-size: 38px;
     font-weight: 800;
     margin-bottom: 12px;
-    background: linear-gradient(135deg, #fff 0%, #93C5FD 100%);
+    background: linear-gradient(135deg, #fff 0%, #6EE7B7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .subtitle {
-    color: var(--muted);
-    font-size: 17px;
-    max-width: 700px;
-  }
+  .subtitle { color: var(--muted); font-size: 17px; max-width: 720px; }
   .meta-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -96,14 +89,11 @@
     color: var(--muted);
     margin-bottom: 6px;
   }
-  .meta-value {
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
-  }
+  .meta-value { font-size: 22px; font-weight: 700; color: #fff; }
   .meta-value.blue { color: var(--blue); }
   .meta-value.green { color: var(--green); }
   .meta-value.amber { color: var(--amber); }
+  .meta-value.red { color: var(--red); }
   section {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -133,6 +123,8 @@
     font-size: 16px;
     font-weight: 700;
   }
+  h2 .num.done { background: rgba(16,185,129,0.15); color: var(--green); border-color: rgba(16,185,129,0.3); }
+  h2 .num.warn { background: rgba(255,193,7,0.15); color: var(--amber); border-color: rgba(255,193,7,0.3); }
   h2 .date {
     margin-left: auto;
     font-size: 13px;
@@ -148,11 +140,7 @@
     color: #fff;
     margin: 24px 0 10px;
   }
-  .section-intro {
-    color: var(--muted);
-    font-size: 15px;
-    margin-bottom: 24px;
-  }
+  .section-intro { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
   .pillars {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -165,20 +153,9 @@
     border-radius: 12px;
     padding: 20px;
   }
-  .pillar-title {
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 6px;
-    font-size: 15px;
-  }
-  .pillar-desc {
-    font-size: 13px;
-    color: var(--muted);
-  }
-  ul.clean {
-    list-style: none;
-    padding: 0;
-  }
+  .pillar-title { font-weight: 600; color: #fff; margin-bottom: 6px; font-size: 15px; }
+  .pillar-desc { font-size: 13px; color: var(--muted); }
+  ul.clean { list-style: none; padding: 0; }
   ul.clean li {
     padding: 10px 0 10px 28px;
     position: relative;
@@ -195,27 +172,22 @@
     color: var(--green);
     font-weight: 700;
   }
-  ul.todo li::before {
-    content: "○";
-    color: var(--muted);
-    font-size: 18px;
-    top: 8px;
-  }
-  ul.todo li.blocker::before {
-    content: "●";
-    color: var(--red);
-  }
+  ul.clean li.bonus::before { content: "★"; color: var(--amber); }
+  ul.todo li::before { content: "○"; color: var(--muted); font-size: 18px; top: 8px; }
+  ul.todo li.blocker::before { content: "●"; color: var(--red); }
   .gap-card {
     background: var(--bg-3);
-    border-left: 4px solid var(--amber);
+    border-left: 4px solid var(--green);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 16px;
   }
-  .gap-card.blocker {
-    border-left-color: var(--red);
-    background: rgba(239,68,68,0.05);
+  .gap-card.done {
+    border-left-color: var(--green);
+    background: rgba(16,185,129,0.05);
   }
+  .gap-card.warn { border-left-color: var(--amber); background: rgba(255,193,7,0.05); }
+  .gap-card.blocker { border-left-color: var(--red); background: rgba(239,68,68,0.05); }
   .gap-title {
     font-weight: 700;
     color: #fff;
@@ -224,6 +196,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
   }
   .gap-title .blocker-tag {
     background: rgba(239,68,68,0.15);
@@ -235,16 +208,19 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .gap-card p {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  .gap-card .fix {
+  .gap-title .done-tag {
+    background: rgba(16,185,129,0.15);
     color: var(--green);
-    font-weight: 600;
-    font-size: 14px;
+    border: 1px solid rgba(16,185,129,0.3);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
+  .gap-card p { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .gap-card .fix { color: var(--green); font-weight: 600; font-size: 14px; }
+  .commit-ref { color: var(--blue); font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; }
   code {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
     background: #0F172A;
@@ -254,11 +230,7 @@
     font-size: 13px;
     border: 1px solid var(--border);
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-  }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
   th, td {
     text-align: left;
     padding: 14px 16px;
@@ -273,20 +245,13 @@
     font-size: 11px;
     letter-spacing: 1px;
   }
-  td.day {
-    font-weight: 700;
-    color: var(--blue);
-    width: 60px;
-  }
-  td.date {
-    color: var(--muted);
-    width: 130px;
-  }
-  tr.blocker td.day { color: var(--red); }
+  td.day { font-weight: 700; color: var(--blue); width: 60px; }
+  td.date { color: var(--muted); width: 130px; }
+  tr.done td.day { color: var(--green); }
+  tr.done { background: rgba(16,185,129,0.04); }
   tr.critical { background: rgba(255,193,7,0.04); }
-  .priority-list {
-    counter-reset: prio;
-  }
+  tr.blocker td.day { color: var(--red); }
+  .priority-list { counter-reset: prio; }
   .priority-list .prio {
     background: var(--bg-3);
     border-radius: 12px;
@@ -312,22 +277,9 @@
     font-weight: 700;
     font-size: 15px;
   }
-  .priority-list .prio-title {
-    font-weight: 700;
-    color: #fff;
-    font-size: 17px;
-    margin-bottom: 6px;
-  }
-  .priority-list .prio-time {
-    color: var(--amber);
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .priority-list .prio-body {
-    color: var(--muted);
-    font-size: 14px;
-  }
+  .priority-list .prio-title { font-weight: 700; color: #fff; font-size: 17px; margin-bottom: 6px; }
+  .priority-list .prio-time { color: var(--amber); font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .priority-list .prio-body { color: var(--muted); font-size: 14px; }
   .callout {
     background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(59,130,246,0.05) 100%);
     border: 1px solid rgba(16,185,129,0.2);
@@ -338,14 +290,10 @@
     gap: 16px;
     align-items: flex-start;
   }
-  .callout .icon {
-    font-size: 22px;
-  }
+  .callout .icon { font-size: 22px; }
   .callout strong { color: #fff; }
-  .callout.warn {
-    background: rgba(239,68,68,0.06);
-    border-color: rgba(239,68,68,0.25);
-  }
+  .callout.warn { background: rgba(255,193,7,0.06); border-color: rgba(255,193,7,0.25); }
+  .callout.red { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.25); }
   .nav {
     position: sticky;
     top: 20px;
@@ -368,9 +316,18 @@
     border-radius: 6px;
     transition: all 0.15s;
   }
-  .nav a:hover {
-    color: #fff;
+  .nav a:hover { color: #fff; background: var(--bg-3); }
+  .progress-bar {
+    height: 8px;
     background: var(--bg-3);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green) 0%, #6EE7B7 100%);
+    border-radius: 999px;
   }
   footer {
     text-align: center;
@@ -397,282 +354,292 @@
 <div class="container">
 
 <header>
-  <span class="badge">Pla d'entrega · Client Aina</span>
-  <h1>GlobalPlay360<br>9 dies fins l'entrega</h1>
-  <p class="subtitle">Auditoria completa del projecte al 21 d'abril de 2026. Gaps reals detectats i full de ruta per al llançament el 5 de maig.</p>
+  <span class="badge">Update v2 · 22 abr 2026</span>
+  <h1>GlobalPlay360<br>8 dies fins l'entrega</h1>
+  <p class="subtitle">Dia 1 (22 abr) tancat: els 5 gaps crítics del pla original estan resolts i s'han sumat extres no planejats. Aquest document actualitza l'estat real i defineix el full de ruta de la recta final.</p>
   <div class="meta-grid">
     <div class="meta-card">
       <div class="meta-label">Data avui</div>
-      <div class="meta-value">21 abr 2026</div>
+      <div class="meta-value">22 abr 2026</div>
     </div>
     <div class="meta-card">
       <div class="meta-label">Entrega</div>
       <div class="meta-value amber">5 mai 2026</div>
     </div>
     <div class="meta-card">
-      <div class="meta-label">Dies laborables</div>
-      <div class="meta-value blue">9</div>
+      <div class="meta-label">Dies laborables restants</div>
+      <div class="meta-value blue">8</div>
     </div>
     <div class="meta-card">
-      <div class="meta-label">Blocs pendents</div>
-      <div class="meta-value green">8</div>
+      <div class="meta-label">Avenç global</div>
+      <div class="meta-value green">~75%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
     </div>
   </div>
 </header>
 
 <nav class="nav">
-  <a href="#assoliments">Assoliments</a>
-  <a href="#gaps">Gaps crítics</a>
-  <a href="#dia1">Dia 1 — Prioritats</a>
-  <a href="#blocs">Blocs 1-8</a>
+  <a href="#tancats">Què s'ha tancat</a>
+  <a href="#extres">Extres no planejats</a>
+  <a href="#pendents">Què queda</a>
+  <a href="#dia2">Dia 2 — Prioritats</a>
   <a href="#calendari">Calendari</a>
-  <a href="#priorització">Priorització</a>
+  <a href="#risc">Risc & priorització</a>
 </nav>
 
-<section id="assoliments">
-  <h2><span class="num">✓</span> El que ja està sòlid</h2>
-  <p class="section-intro">Base tècnica i funcional madura. Aquestes àrees no requereixen feina addicional llevat del polish final.</p>
+<section id="tancats">
+  <h2><span class="num done">✓</span> Dia 1 tancat: gaps crítics del pla v1</h2>
+  <p class="section-intro">Tot el Bloc 1 del full de ruta original s'ha implementat avui mateix. Revisió dels 5 gaps detectats a l'auditoria del 21 abril:</p>
 
-  <h3>Arquitectura & backend</h3>
-  <ul class="clean">
-    <li>Stack React 18 + TypeScript + Vite + Tailwind (Dark SaaS Navy)</li>
-    <li>Firebase integrat: Auth, Firestore en temps real, Storage, Cloud Functions (europe-west1)</li>
-    <li>Model de dades operatiu: users, opportunities, applications, chats, messages</li>
-    <li>Regles Firestore restrictives · Mock data eliminada al 100%</li>
-  </ul>
-
-  <h3>Autenticació & rols</h3>
-  <ul class="clean">
-    <li>Rols player / coach / club amb rutes protegides i UI condicional</li>
-    <li>Flux complet reset password i email verification amb pantalles custom</li>
-  </ul>
-
-  <h3>Pagaments (Stripe)</h3>
-  <ul class="clean">
-    <li>Plans free / premium / pro via firestore-stripe-payments</li>
-    <li>Trial 30 dies, Customer Portal, webhooks sincronitzats</li>
-    <li>Dashboard de facturació funcional</li>
-  </ul>
-
-  <h3>Producte</h3>
-  <ul class="clean">
-    <li>Dashboard multi-rol amb Overview, quick actions, stats reals</li>
-    <li>Profile: edició multi-esport amb pujada d'avatar a Storage</li>
-    <li>Opportunities: marketplace públic + detall + formulari clubs</li>
-    <li>Applications: vista dual jugador/club amb canvi d'estat i xat</li>
-    <li>Messages: xat en temps real amb paywall premium</li>
-    <li>Billing, Checkout Success, Pricing</li>
-    <li>Homepage, Auth, About Us, Footer 4 columnes amb trust badges</li>
-  </ul>
-
-  <h3>i18n & Visual</h3>
-  <ul class="clean">
-    <li>3 idiomes complets: Català / Espanyol / Anglès</li>
-    <li>Dark SaaS Navy unificat · Responsive mobile-first · Framer Motion</li>
-  </ul>
-</section>
-
-<section id="gaps">
-  <h2><span class="num">!</span> Gaps crítics detectats</h2>
-  <p class="section-intro">Auditoria de codi 2026-04-21. Tot això està pendent i s'ha de resoldre abans del go-live.</p>
-
-  <div class="gap-card">
-    <div class="gap-title">1. AnalyticsPage inexistent</div>
-    <p><code>/dashboard/analytics</code> és un <code>&lt;div&gt;Analítiques (En construcció)&lt;/div&gt;</code> inline a <code>src/App.tsx:89</code>. Apareix al Sidebar però no té contingut.</p>
-    <p class="fix">✓ Decisió: treure del Sidebar + router. Prometre analytics que no hi ha empitjora la percepció.</p>
+  <div class="gap-card done">
+    <div class="gap-title">
+      1. AnalyticsPage eliminada de la UI
+      <span class="done-tag">Resolt</span>
+    </div>
+    <p>S'ha retirat la ruta <code>/dashboard/analytics</code>, l'entrada del Sidebar i les claus i18n òrfenes. Documentat a <code>docs/TODO.md</code> com a feature Fase 2 (requereix col·lector d'esdeveniments).</p>
+    <p class="commit-ref">↳ commit e76c6ad · refactor: elimina placeholders no entregables per l'MVP</p>
   </div>
 
-  <div class="gap-card">
-    <div class="gap-title">2. Admin Users placeholder</div>
-    <p><code>src/App.tsx:97</code> té <code>&lt;p&gt;Admin Users placeholder&lt;/p&gt;</code>. Si la clienta no necessita administració avançada, treure la ruta.</p>
-    <p class="fix">✓ Decisió: eliminar del router abans de deploy.</p>
+  <div class="gap-card done">
+    <div class="gap-title">
+      2. Admin Users placeholder eliminat
+      <span class="done-tag">Resolt</span>
+    </div>
+    <p>Ruta <code>/admin/users</code> fora del router. Recuperable via git quan la clienta ho demani.</p>
+    <p class="commit-ref">↳ commit e76c6ad</p>
+  </div>
+
+  <div class="gap-card done">
+    <div class="gap-title">
+      3. ProfileEditForm Coach + Club implementat
+      <span class="done-tag">Resolt · Era bloquejant</span>
+    </div>
+    <p>Formularis reals amb camps específics per Coach (experiència, especialització, certificacions) i Club (any de fundació, web, instal·lació, aforament). Traduccions CA/ES/EN incloses. Ja no hi ha "Secció en desenvolupament".</p>
+    <p class="commit-ref">↳ commit 17964aa · feat(profile): afegeix edició de perfil per rols Coach i Club</p>
+  </div>
+
+  <div class="gap-card done">
+    <div class="gap-title">
+      4. Card "Profile visits" treta de l'Overview
+      <span class="done-tag">Resolt</span>
+    </div>
+    <p>Eliminada la card amb <code>value: '---'</code>. Documentada a TODO.md com a Fase 2.</p>
+    <p class="commit-ref">↳ commit e76c6ad</p>
+  </div>
+
+  <div class="gap-card done">
+    <div class="gap-title">
+      5. Pàgines legals públiques creades
+      <span class="done-tag">Resolt · Era bloquejant Stripe Live</span>
+    </div>
+    <p>Rutes <code>/privacy</code>, <code>/terms</code>, <code>/cookies</code>, <code>/contact</code> amb plantilla GDPR/LSSI traduïda a CA/ES/EN. Placeholders <code>[PENDENT_*]</code> marcant les dades fiscals que ha d'aportar la clienta.</p>
+    <p class="commit-ref">↳ commit 99cce8e · feat(legal): pàgines legals + polish visual global</p>
+  </div>
+</section>
+
+<section id="extres">
+  <h2><span class="num warn">★</span> Extres no planejats entregats avui</h2>
+  <p class="section-intro">Feina addicional fora del pla v1. Molt valuosa: tanca deute que hauria aparegut durant el QA i puja el sostre de qualitat de l'MVP.</p>
+
+  <ul class="clean">
+    <li class="bonus"><strong>Perfils públics</strong> (<code>/dashboard/profile/:userId</code>): fitxa completa de jugador/coach/club accessible des d'una oportunitat o candidatura. Marcat fet a TODO.md.</li>
+    <li class="bonus"><strong>Auditoria de rols</strong>: Clubs formalment bloquejats d'aplicar a ofertes. Gestió d'oportunitats "òrfenes" (esborrades pel club) des de l'historial de candidatures. <span class="commit-ref">commit e9fed13</span></li>
+    <li class="bonus"><strong>Firestore rules sanejades</strong>: regles actualitzades permeten neteja a petició de l'usuari sense trencar el contracte de seguretat.</li>
+    <li class="bonus"><strong>Filtres geogràfics en cascada</strong> a <code>OpportunitiesPage</code> (país → regió → ciutat) amb i18n. <span class="commit-ref">commit 3c7f71a</span></li>
+    <li class="bonus"><strong>Camp <code>currentClub</code> per a jugadors</strong> amb traduccions als tres idiomes.</li>
+    <li class="bonus"><strong>Polish visual global</strong> Dark SaaS Navy: paddings, espais, focus rings, micro-interaccions revisats a tot el dashboard + pàgines públiques. <span class="commit-ref">commit 69c589d dins #37</span></li>
+    <li class="bonus"><strong>Mobile drawer</strong> funcional al Sidebar (hamburguesa operativa amb overlay, Escape, body-lock i auto-close al navegar) + logo més gran en mòbil.</li>
+    <li class="bonus"><strong>BillingPage, OverviewPage i ProfileView</strong> refets amb targetes gradient chrome, tipografia editorial i ombres direccionals (coherents amb AboutPage).</li>
+    <li class="bonus"><strong>Checklist QA end-to-end</strong> estructurat per 8 blocs (rols, auth, paywalls, Stripe, rules, i18n, responsive, edge cases) a <code>docs/qa-checklist.md</code>. <span class="commit-ref">commit 21b7a61</span></li>
+  </ul>
+
+  <div class="callout">
+    <div class="icon">💡</div>
+    <div>L'import d'avui és que hem passat de "compleix els mínims" a "té acabats de producte sèrio". El QA de demà serà més còmode perquè pràcticament no hi ha placeholders ni zones mortes a fer front.</div>
+  </div>
+</section>
+
+<section id="pendents">
+  <h2><span class="num">!</span> Què queda realment per entregar</h2>
+  <p class="section-intro">Els 7 blocs restants del pla original (2 al 8). Les hores són estimacions pensades per entrar en un dia de feina real.</p>
+
+  <div class="gap-card warn">
+    <div class="gap-title">Bloc 2 — QA funcional end-to-end <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dj 23 abr · ~7h</span></div>
+    <p>El checklist ja existeix (<code>docs/qa-checklist.md</code>), però <strong>no s'ha executat</strong>. Aquí hem d'entrar amb 3 usuaris de test (player / coach / club) i recórrer tot el flux: registre → verificació → onboarding → publicar oferta → aplicar → canviar estat → xat. Casos de Stripe (trial → conversió → cancel·lació → reactivació via Portal). Rules Playground amb casos límit. Registre de bugs per severitat.</p>
+    <p class="fix">Sortida esperada: llista de bugs amb prioritat blocker/major/minor. Els blockers es resolen demà mateix; els majors es prioritzen al Bloc 5.</p>
+  </div>
+
+  <div class="gap-card warn">
+    <div class="gap-title">Bloc 3 — Performance, SEO & a11y <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dv 24 abr · ~6h · Retallable</span></div>
+    <ul class="clean todo">
+      <li>Meta tags OG + Twitter Card a Home, About, Pricing, Auth</li>
+      <li>Favicons + apple-touch-icon + manifest.webmanifest</li>
+      <li>Lazy loading de rutes pesades (<code>React.lazy</code> + <code>Suspense</code>)</li>
+      <li>Alt text + aria-label a botons icon-only + focus rings visibles</li>
+      <li>Optimitzar vídeos AboutPage (pes + poster fallback per a mòbils)</li>
+      <li>Lighthouse 90+ a les 4 públiques</li>
+    </ul>
+    <p class="fix">Mínim acceptable si anem justos: OG tags + favicons + alt text. La resta post-entrega.</p>
   </div>
 
   <div class="gap-card blocker">
     <div class="gap-title">
-      3. ProfileEditForm no suporta rols Coach / Club
+      Bloc 4 — Stripe Fase 8 go-live
       <span class="blocker-tag">Bloquejant</span>
+      <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dll 27 abr · ~5h</span>
     </div>
-    <p><code>src/components/profile/ProfileEditForm.tsx:36</code> i <code>:42</code>: mostren literalment "Secció Coach en desenvolupament" i "Secció Club en desenvolupament".</p>
-    <p>Un club <strong>no pot editar el seu perfil</strong>. Això és trencador per a la clienta — els clubs són el rol que paga.</p>
-    <p class="fix">✓ Fix mínim: reutilitzar <code>CommonFields</code> (displayName, bio, phone, country, url) per Coach i Club. Camps específics de club (fundació, stadium) opcionals.</p>
+    <ul class="clean todo">
+      <li class="blocker">Products + Prices en <strong>live mode</strong> (Premium Mensual 25 €, Premium Anual 250 €, trial 30 dies)</li>
+      <li class="blocker">Reconfigurar extensió <code>firestore-stripe-payments</code> amb <code>sk_live_...</code></li>
+      <li class="blocker">Webhook endpoint live amb <code>whsec_...</code> a la config de l'extensió</li>
+      <li>Restringir permisos restricted API key (Webhook Endpoints: Ninguno)</li>
+      <li>URLs legals reals al Customer Portal (ja tenim <code>/privacy</code> i <code>/terms</code> fetes)</li>
+      <li>Stripe Tax + OSS UE (requereix dades fiscals de l'Aina)</li>
+      <li>Branding Customer Portal amb logo + colors Dark SaaS Navy</li>
+      <li>Neteja Prices arxivats + cancel·lar subscripcions de test antigues</li>
+    </ul>
+    <p class="fix">Demanar avui a l'Aina les dades fiscals per poder activar Stripe Tax sense endarreriments el Dll 27.</p>
   </div>
 
-  <div class="gap-card">
-    <div class="gap-title">4. OverviewPage · "Profile visits" amb TODO</div>
-    <p><code>src/pages/dashboard/OverviewPage.tsx:188</code>: <code>value: '---'</code> amb comentari TODO d'implementar visibilitat de perfil.</p>
-    <p class="fix">✓ Decisió: treure la card. No implementar.</p>
+  <div class="gap-card warn">
+    <div class="gap-title">Bloc 5 — Code quality <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dm 28 abr · ~5h · Retallable</span></div>
+    <ul class="clean todo">
+      <li><code>npm run lint</code> net · <code>tsc --noEmit</code> sense errors ni warnings</li>
+      <li>Eliminar codi mort (<code>temp_old_profile.tsx</code>, <code>fix.cjs</code>, <code>fix_cards.js</code>, <code>temp_map.tsx</code> detectats a l'arrel), console.logs, TODOs òrfens</li>
+      <li>README polit: què és + instal·lació + scripts + arquitectura en 5 minuts</li>
+      <li><code>.env.example</code> complet amb avís que Stripe va via Firebase Extensions</li>
+      <li>Resoldre bugs <em>major</em> detectats al QA del Bloc 2</li>
+      <li><code>npm outdated</code> i actualitzar dependències no-trencadisses</li>
+    </ul>
+    <p class="fix">Mínim si anem justos: <code>tsc</code> net i arxius temporals eliminats. Lint i README poden ser post-entrega.</p>
   </div>
 
   <div class="gap-card blocker">
     <div class="gap-title">
-      5. Pàgines legals inexistents
-      <span class="blocker-tag">Bloquejant Stripe Live</span>
+      Bloc 6 — Deploy a producció
+      <span class="blocker-tag">Bloquejant</span>
+      <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dc 29 abr · ~4h</span>
     </div>
-    <p>El Footer enllaça a <code>/privacy</code>, <code>/terms</code>, <code>/cookies</code>, <code>/contact</code>. <strong>No existeixen rutes al router</strong> — 404 que cau al wildcard.</p>
-    <p>Stripe Customer Portal exigeix URLs reals de Privacy Policy + Terms of Service per live mode.</p>
-    <p class="fix">✓ Fix: 4 pàgines públiques amb text legal proporcionat per la clienta (o placeholder marcant "pendent clienta").</p>
+    <ul class="clean todo">
+      <li>Build producció (<code>npm run build</code>) i sanity check</li>
+      <li>Desplegar a Firebase Hosting (projecte live)</li>
+      <li>Configurar domini personalitzat + SSL</li>
+      <li>Verificar totes les vars d'entorn de producció</li>
+      <li>Test end-to-end sobre domini real amb pagament Stripe real (targeta 4242)</li>
+      <li>Google Analytics / Plausible si la clienta ho vol</li>
+    </ul>
+  </div>
+
+  <div class="gap-card warn">
+    <div class="gap-title">Bloc 7 — Portfoli & documentació clienta <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dj 30 + Dll 4 mai · ~10h · Retallable</span></div>
+    <ul class="clean todo">
+      <li>Case study al portfoli: problema, decisions, stack, reptes (Stripe trial, multi-rol, i18n), abans/després</li>
+      <li>Loom 60-90 s del flux complet per LinkedIn</li>
+      <li>Captures abans/després + scores Lighthouse</li>
+      <li><strong>Document d'entrega per a l'Aina</strong>: credencials admin, manual bàsic d'ús, com gestionar subscripcions Stripe</li>
+    </ul>
+    <p class="fix">El document d'entrega per a l'Aina NO és retallable — és part del lliurament oficial. El case study d'Anna sí que pot passar a la setmana post-entrega.</p>
+  </div>
+
+  <div class="gap-card blocker">
+    <div class="gap-title">
+      Bloc 8 — Entrega oficial
+      <span class="blocker-tag">Entrega</span>
+      <span style="color:var(--muted);font-weight:400;font-size:13px;">· Dm 5 mai · ~3h</span>
+    </div>
+    <ul class="clean todo">
+      <li>Reunió final amb l'Aina: demo guiada + entrega de credencials i documentació</li>
+      <li>Publicar case study al portfoli (si està fet)</li>
+      <li>Post LinkedIn amb el llançament (enllaç viu + Loom)</li>
+    </ul>
   </div>
 </section>
 
-<section id="dia1">
-  <h2><span class="num">1</span> Dia 1 — Prioritats <span class="date">Dc 22 abr</span></h2>
-  <p class="section-intro">Ordre de feina recomanat per al matí. Atacar directament sense re-exploració.</p>
+<section id="dia2">
+  <h2><span class="num">2</span> Dia 2 — Prioritats <span class="date">Dj 23 abr</span></h2>
+  <p class="section-intro">Demà entrem a QA. Ordre recomanat del matí:</p>
 
   <div class="priority-list">
     <div class="prio">
-      <div class="prio-title">ProfileEditForm Club / Coach</div>
-      <div class="prio-time">⏱ 2-3 hores</div>
-      <div class="prio-body">Únic gap que trenca el producte per a un rol. Reutilitzar <code>CommonFields</code> + 2-3 camps Club-específics (stadium, foundedYear).</div>
+      <div class="prio-title">Commit del polish mòbil pendent</div>
+      <div class="prio-time">⏱ 10 minuts</div>
+      <div class="prio-body">Hi ha canvis sense commitejar: <code>Sidebar</code>, <code>Topbar</code>, <code>DashboardLayout</code>, <code>BillingPage</code>, <code>OverviewPage</code>, <code>ProfileView</code>, <code>ProfilePage</code>, <code>ApplicationsPage</code>, <code>MessagesPage</code>, <code>MessageDetailPage</code>, <code>OpportunitiesPage</code>. Tancar-los en 1-2 commits semàntics abans d'entrar a QA.</div>
     </div>
     <div class="prio">
-      <div class="prio-title">Rutes legals públiques</div>
-      <div class="prio-time">⏱ 1-2 hores</div>
-      <div class="prio-body">Crear <code>PrivacyPage</code>, <code>TermsPage</code>, <code>CookiesPage</code>, <code>ContactPage</code> dins <code>&lt;PublicLayout&gt;</code>. Demanar textos oficials a Aina o placeholder marcant dependència. Reutilitzar <code>SectionContainer</code> + tipografia AboutPage.</div>
+      <div class="prio-title">Netejar arxius temporals a l'arrel</div>
+      <div class="prio-time">⏱ 5 minuts</div>
+      <div class="prio-body">Eliminar <code>fix.cjs</code>, <code>fix_cards.js</code>, <code>temp_map.tsx</code>, <code>temp_old_profile.tsx</code>. No haurien d'estar al repo.</div>
     </div>
     <div class="prio">
-      <div class="prio-title">Netejar placeholders</div>
-      <div class="prio-time">⏱ 30 minuts</div>
-      <div class="prio-body">Treure <code>/dashboard/analytics</code> del router i del Sidebar · Treure card "Profile visits" d'OverviewPage · Treure ruta <code>/admin/users</code> si no és necessària.</div>
+      <div class="prio-title">QA end-to-end 3 rols</div>
+      <div class="prio-time">⏱ 5-6 hores</div>
+      <div class="prio-body">Seguir el checklist de <code>docs/qa-checklist.md</code> en ordre. Registrar bugs amb severitat blocker/major/minor a mesura que apareguin — no arreglar res encara (evita context-switch). Al final del dia, triar blockers per al vespre i majors per al Bloc 5.</div>
+    </div>
+    <div class="prio">
+      <div class="prio-title">Demanar dades fiscals a l'Aina</div>
+      <div class="prio-time">⏱ 10 minuts (email)</div>
+      <div class="prio-body">Stripe Tax + OSS UE + dades per omplir els placeholders <code>[PENDENT_*]</code> de les pàgines legals. Sense aquestes dades el Bloc 4 (Dll 27) no podrà tancar-se.</div>
     </div>
   </div>
 
   <div class="callout warn">
     <div class="icon">⚠</div>
-    <div><strong>Què NO fer encara:</strong> Stripe live go-live va al Bloc 4 (Dll 27). Deploy va al Bloc 6 (Dc 29). Portfoli i case study, final de la setmana 2.</div>
+    <div><strong>Regla d'avui:</strong> al QA, registrar <em>tots</em> els bugs abans d'arreglar-ne cap. El context-switch entre testejar i implementar és el que més temps menja.</div>
   </div>
-</section>
-
-<section id="blocs">
-  <h2><span class="num">8</span> Els 8 blocs de feina</h2>
-  <p class="section-intro">Visió panoràmica del full de ruta complet.</p>
-
-  <h3>Bloc 1 — Funcionalitats incompletes <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 1 · Dc 22</span></h3>
-  <ul class="clean todo">
-    <li>AnalyticsPage: treure del router i Sidebar</li>
-    <li>Admin Users placeholder: eliminar ruta</li>
-    <li class="blocker">ProfileEditForm Coach + Club: implementar edició real</li>
-    <li>OverviewPage "Profile visits": eliminar card</li>
-    <li class="blocker">Rutes legals: /privacy, /terms, /cookies, /contact</li>
-  </ul>
-
-  <h3>Bloc 2 — QA funcional end-to-end <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 2 · Dj 23</span></h3>
-  <ul class="clean todo">
-    <li>Recorregut 3 rols: registre → verificació → onboarding → flux complet</li>
-    <li>Verificar paywalls Free vs Premium vs trial</li>
-    <li>Stripe: trial → conversió → cancel·lació → reactivació</li>
-    <li>Rules Playground amb casos límit</li>
-    <li>Validar UX Club (tornar + obert/tancat + delete)</li>
-  </ul>
-
-  <h3>Bloc 3 — Performance, SEO & a11y <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 3 · Dv 24</span></h3>
-  <ul class="clean todo">
-    <li>Lighthouse 90+ a Home, About, Pricing, Auth</li>
-    <li>Meta tags OG + Twitter Card per xarxes</li>
-    <li>Favicons complets + manifest.webmanifest</li>
-    <li>Alt text, aria-label, focus rings</li>
-    <li>Lazy loading amb React.lazy + Suspense</li>
-    <li>Optimitzar vídeos AboutPage amb fallback poster</li>
-  </ul>
-
-  <h3>Bloc 4 — Stripe Fase 8 go-live <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 4 · Dll 27</span></h3>
-  <div class="callout">
-    <div class="icon">ℹ</div>
-    <div><strong>Important:</strong> el <code>.env</code> del frontend NO necessita claus Stripe. La integració és via l'extensió <code>firestore-stripe-payments</code>, les claus viuen a Firebase Console.</div>
-  </div>
-  <ul class="clean todo">
-    <li class="blocker">Products + Prices en live mode (25€ mensual, 250€ anual, trial 30 dies)</li>
-    <li class="blocker">Reconfigurar extensió amb <code>sk_live_...</code></li>
-    <li class="blocker">Webhook endpoint en live mode amb <code>whsec_...</code></li>
-    <li>Restringir permisos restricted API key (Webhook Endpoints: Ninguno)</li>
-    <li>URLs legals reals al Customer Portal (depèn Bloc 1)</li>
-    <li>Stripe Tax activat amb OSS UE (requereix input clienta)</li>
-    <li>Branding Customer Portal amb logo Dark SaaS Navy</li>
-    <li>Neteja Prices arxivats + cancel·lar subscripcions de test</li>
-  </ul>
-
-  <h3>Bloc 5 — Code quality <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 5 · Dm 28</span></h3>
-  <ul class="clean todo">
-    <li><code>npm run lint</code> net · <code>tsc --noEmit</code> sense errors</li>
-    <li>Eliminar codi mort, console.logs, TODOs orfes</li>
-    <li>README polit: què és, instal·lació, scripts, arquitectura en 5 min</li>
-    <li><code>.env.example</code> complet amb avís Stripe via Firebase Extensions</li>
-    <li>Revisió <code>npm outdated</code></li>
-  </ul>
-
-  <h3>Bloc 6 — Deploy a producció <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 6 · Dc 29</span></h3>
-  <ul class="clean todo">
-    <li>Build producció i sanity check</li>
-    <li>Desplegar a Firebase Hosting (live mode)</li>
-    <li>Domini personalitzat + SSL</li>
-    <li>Verificar vars d'entorn producció</li>
-    <li>Test final 3 rols reals amb pagament Stripe</li>
-    <li>Google Analytics / Plausible opcional</li>
-  </ul>
-
-  <h3>Bloc 7 — Portfoli & comunicació <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dies 7-8 · Dj 30 + Dll 4</span></h3>
-  <ul class="clean todo">
-    <li>Case study al portfoli: problema, decisions, stack, reptes, abans/després</li>
-    <li>GIF / Loom 60-90 s per LinkedIn</li>
-    <li>Captures + scores Lighthouse</li>
-    <li>Document d'entrega per Aina amb credencials i manual</li>
-  </ul>
-
-  <h3>Bloc 8 — Entrega oficial <span style="color:var(--muted);font-weight:400;font-size:14px;">· Dia 9 · Dm 5 mai</span></h3>
-  <ul class="clean todo">
-    <li>Reunió final amb Aina: demo guiada + entrega</li>
-    <li>Publicar case study al portfoli</li>
-    <li>Post LinkedIn amb llançament (enllaç viu + Loom)</li>
-  </ul>
 </section>
 
 <section id="calendari">
-  <h2><span class="num">📅</span> Calendari dia a dia</h2>
+  <h2><span class="num">📅</span> Calendari dia a dia — actualitzat</h2>
   <table>
     <thead>
       <tr><th>Dia</th><th>Data</th><th>Bloc</th><th>Estat</th></tr>
     </thead>
     <tbody>
-      <tr class="critical"><td class="day">1</td><td class="date">Dc 22 abr</td><td>Funcionalitats incompletes</td><td>🔥 Crític</td></tr>
-      <tr><td class="day">2</td><td class="date">Dj 23 abr</td><td>QA end-to-end 3 rols</td><td>—</td></tr>
+      <tr class="done"><td class="day">1</td><td class="date">Dc 22 abr</td><td>Funcionalitats incompletes + extres</td><td>✓ Tancat</td></tr>
+      <tr class="critical"><td class="day">2</td><td class="date">Dj 23 abr</td><td>QA end-to-end 3 rols</td><td>🔥 Avui</td></tr>
       <tr><td class="day">3</td><td class="date">Dv 24 abr</td><td>Performance, SEO, a11y</td><td>Retallable</td></tr>
       <tr class="blocker critical"><td class="day">4</td><td class="date">Dll 27 abr</td><td>Stripe Fase 8 go-live</td><td>🔥 Bloquejant</td></tr>
-      <tr><td class="day">5</td><td class="date">Dm 28 abr</td><td>Code quality</td><td>Retallable</td></tr>
+      <tr><td class="day">5</td><td class="date">Dm 28 abr</td><td>Code quality + bugfix majors</td><td>Parcialment retallable</td></tr>
       <tr class="blocker"><td class="day">6</td><td class="date">Dc 29 abr</td><td>Deploy Firebase Hosting</td><td>🔥 Bloquejant</td></tr>
-      <tr><td class="day">7</td><td class="date">Dj 30 abr</td><td>Portfoli / case study</td><td>Retallable</td></tr>
-      <tr><td class="day">8</td><td class="date">Dll 4 mai</td><td>Portfoli / doc clienta</td><td>Retallable</td></tr>
+      <tr><td class="day">7</td><td class="date">Dj 30 abr</td><td>Doc clienta + case study</td><td>Mixt</td></tr>
+      <tr><td class="day">8</td><td class="date">Dll 4 mai</td><td>Portfoli / Loom / revisió final</td><td>Retallable</td></tr>
       <tr class="blocker critical"><td class="day">9</td><td class="date">Dm 5 mai</td><td>Entrega oficial</td><td>🎯 Entrega</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:16px;color:var(--muted);font-size:13px;">Saltant cap de setmana i festiu de l'1 de maig.</p>
+  <p style="margin-top:16px;color:var(--muted);font-size:13px;">Saltant cap de setmana (25-26 abr, 1-3 mai) i festiu de l'1 de maig.</p>
 </section>
 
-<section id="priorització">
-  <h2><span class="num">⚖</span> Priorització si va just el temps</h2>
+<section id="risc">
+  <h2><span class="num">⚖</span> Risc & priorització actualitzada</h2>
 
   <div class="pillars">
     <div class="pillar" style="border-left:4px solid var(--red);">
       <div class="pillar-title">Bloquejants (no retallables)</div>
-      <div class="pillar-desc">Bloc 1 (pàgines legals + ProfileEditForm Club) · Bloc 2 (QA) · Bloc 4 (Stripe live) · Bloc 6 (Deploy) · Bloc 8 (Entrega)</div>
+      <div class="pillar-desc">Bloc 2 (QA · cal executar-lo) · Bloc 4 (Stripe live) · Bloc 6 (Deploy) · Bloc 7 parcial (doc clienta) · Bloc 8 (Entrega)</div>
     </div>
     <div class="pillar" style="border-left:4px solid var(--amber);">
-      <div class="pillar-title">Retallables</div>
-      <div class="pillar-desc">Bloc 3 (SEO/a11y — mínim OG tags + favicons) · Bloc 5 (code quality — mínim tsc net) · Bloc 7 (portfoli — es pot fer post-entrega)</div>
+      <div class="pillar-title">Retallables parcialment</div>
+      <div class="pillar-desc">Bloc 3 (SEO/a11y — mínim OG + favicons + alt text) · Bloc 5 (code quality — mínim tsc net + arxius temporals fora) · Bloc 7 case study</div>
     </div>
     <div class="pillar" style="border-left:4px solid var(--blue);">
-      <div class="pillar-title">Si cal sacrificar</div>
-      <div class="pillar-desc">Sacrificar Bloc 7 (portfoli) abans que qualsevol altre. La clienta té prioritat absoluta sobre el portfoli d'Anna.</div>
+      <div class="pillar-title">Ordre de sacrifici</div>
+      <div class="pillar-desc">1r case study Anna · 2n Lighthouse 90+ (baixar a 80+) · 3r <code>npm outdated</code> · 4t README detallat. <strong>Mai sacrificar</strong>: QA, Stripe live, deploy, doc clienta.</div>
     </div>
   </div>
 
   <div class="callout">
     <div class="icon">🎯</div>
-    <div><strong>Regla d'or:</strong> demà al matí anar directament a ProfileEditForm Club/Coach. És l'únic canvi que <em>trenca</em> el producte per a un rol que paga.</div>
+    <div><strong>Dependència externa crítica:</strong> Stripe Tax del Bloc 4 requereix dades fiscals de l'Aina. <strong>Enviar avui</strong> el correu per no perdre el Dll 27. Sense això, la resta del Bloc 4 es pot fer igualment però el go-live queda parcial.</div>
+  </div>
+
+  <div class="callout warn">
+    <div class="icon">🧪</div>
+    <div><strong>Risc més probable:</strong> el QA de demà descobreix 1-2 bugs blocker que requereixen 2-4 hores extra de feina. Reservar el dissabte com a marge invisible si el Bloc 5 (Dm 28) es desborda.</div>
   </div>
 </section>
 
 <footer>
-  Document generat el 2026-04-21 · Font: <code>CLAUDE.md</code> + <code>project_next_session_start.md</code><br>
+  Document v2 generat el 2026-04-22 · Font: <code>git log</code> des de 2026-04-21 + <code>CLAUDE.md</code> + <code>docs/TODO.md</code> + <code>docs/qa-checklist.md</code><br>
   GlobalPlay360 · Entrega clienta Aina · 5 maig 2026
 </footer>
 
