@@ -93,7 +93,8 @@
 
 - [ ] Aplicar a +1 oferta (segons límit Free) → paywall amb CTA "Upgrade a Premium".
 - [ ] Intentar obrir xat amb club → `PremiumLockCard` visible.
-- [ ] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
+- [x] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
+- [x] **Perfils Públics**: Les rutes `/dashboard/profile/:id` mostren la fitxa sense editar.
 
 ### 3.2 Trial 30 dies
 

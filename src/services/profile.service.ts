@@ -1,4 +1,4 @@
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './firebase';
 import type { User } from '@/types';
@@ -42,5 +42,18 @@ export async function uploadAvatar(uid: string, file: File): Promise<string> {
   const downloadUrl = await getDownloadURL(storageRef);
   
   return downloadUrl;
+}
+
+/** 
+ * Fetch a user profile by ID from Firestore.
+ * Used for public profiles and checking other users' info.
+ */
+export async function getUserProfile(uid: string): Promise<User | null> {
+  const docRef = doc(db, 'users', uid);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { ...docSnap.data(), uid: docSnap.id } as User;
+  }
+  return null;
 }
 

@@ -449,6 +449,11 @@
     "aboutMe": "Sobre mí",
     "emptyBio": "No hay biografía.",
     "sportsData": "Datos Deportivos",
+    "playerStats": "Estadísticas",
+    "positions": "Posiciones",
+    "contactInfo": "Contacto",
+    "socialNetworks": "Redes Sociales",
+    "joined": "Miembro desde",
     "position": "Posición",
     "height": "Altura",
     "weight": "Peso",
@@ -855,6 +860,14 @@
       "pricing": "Planes y precios",
       "privacy": "Privacidad",
       "terms": "Condiciones"
+    },
+    "publicProfile": {
+      "lockedTitle": "Estadísticas y Contacto Protegidos",
+      "lockedDesc": "Los usuarios del Plan Free no tienen acceso completo a los perfiles de otros usuarios. Pásate a Premium para desbloquear sus estadísticas y abrir un chat directo.",
+      "hideDetails": "Datos de contacto ocultos para el Plan Free",
+      "notFound": "Perfil no encontrado",
+      "error": "Error cargando el perfil",
+      "sendMessage": "Enviar Mensaje"
     }
   }
 }

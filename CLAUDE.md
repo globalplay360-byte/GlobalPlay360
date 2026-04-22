@@ -201,3 +201,6 @@ Polish:
 ---
 
 **Claude:** Llegeix aquest document sempre abans d'iniciar tasques relacionades amb Git i per entendre en quin punt ens trobem del desenvolupament global. L'usuari compta amb tu per adquirir bons hàbits i avançar de forma estructurada!
+
+### 📝 Update 22/04/2026: Auditoria de lògica i rols completada
+S'ha auditat correctament l'accés a les ofertes (Clubs no poden aplicar a ofertes com si fossin candidats). S'ha assegurat el comportament en cas que una oportunitat sigui esborrada pel Club i quedi 'òrfena'. Aquesta funcionalitat permet a la resta de rols eliminar l'element de la BD correctament. S'ha assegurat i sanejat _firestore.rules_ assegurant-ho.

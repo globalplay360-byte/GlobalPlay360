@@ -6,6 +6,7 @@ import {
   getUserApplications,
   getClubApplications,
   updateApplicationStatus,
+  deleteApplication,
 } from "@/services/applications.service";
 import { getOpportunityById } from "@/services/opportunities.service";
 import { getUserDoc } from "@/services/auth.service";
@@ -37,6 +38,20 @@ export default function ApplicationsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDeleteOrphaned = async (appId: string) => {
+    if (!window.confirm("Vols amagar i eliminar aquesta candidatura de l'historial? (L'oportunitat ja no està disponible)")) return;
+    setDeletingId(appId);
+    try {
+      await deleteApplication(appId);
+      setApplications(prev => prev.filter(a => a.id !== appId));
+    } catch (err) {
+      alert("Error eliminant la candidatura.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const handleStartConversation = async (otherUserId: string) => {
     if (!user) return;
@@ -223,19 +238,21 @@ export default function ApplicationsPage() {
               <motion.div
                 variants={itemVariants}
                 key={app.id}
-                className="bg-[#111827] border border-[#1F2937] rounded-xl hover:border-[#3B82F6]/50 shadow-sm hover:shadow-[#3B82F6]/10 hover:-translate-y-0.5 transition-all duration-base group flex flex-col md:flex-row p-5 sm:p-6 gap-6 mb-2 relative overflow-hidden"
-              >
-                {/* Línia superior de status */}
-                <div
-                  className={`absolute top-0 left-0 h-1.5 w-full
-                  ${app.status === "accepted" ? "bg-emerald-500 shadow-sm shadow-emerald-500/50" : ""}
-                  ${app.status === "rejected" ? "bg-red-500 shadow-sm shadow-red-500/50" : ""}
-                  ${app.status === "in_review" ? "bg-purple-500 shadow-sm shadow-purple-500/50" : ""}
-                  ${app.status === "submitted" ? "bg-blue-500 shadow-sm shadow-blue-500/50" : ""}
-                `}
-                />
+                  className={`bg-[#111827] border border-[#1F2937] rounded-xl shadow-sm hover:-translate-y-0.5 transition-all duration-base group flex flex-col md:flex-row p-5 sm:p-6 gap-6 mb-2 relative overflow-hidden ${
+                    !app.opportunity ? 'opacity-60 grayscale-[50%]' : 'hover:border-[#3B82F6]/50 hover:shadow-[#3B82F6]/10'
+                  }`}
+                >
+                  {/* Línia superior de status */}
+                  <div
+                    className={`absolute top-0 left-0 h-1.5 w-full
+                    ${!app.opportunity ? 'bg-gray-600' : ''}
+                    ${app.opportunity && app.status === "accepted" ? "bg-emerald-500 shadow-sm shadow-emerald-500/50" : ""}
+                    ${app.opportunity && app.status === "rejected" ? "bg-red-500 shadow-sm shadow-red-500/50" : ""}
+                    ${app.opportunity && app.status === "in_review" ? "bg-purple-500 shadow-sm shadow-purple-500/50" : ""}
+                    ${app.opportunity && app.status === "submitted" ? "bg-blue-500 shadow-sm shadow-blue-500/50" : ""}
+                  `}
+                  />
 
-                {/* Info Principal */}
                 <div className="flex-1 min-w-0 pt-1">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[#9CA3AF] text-xs font-bold uppercase tracking-wider">
@@ -251,8 +268,26 @@ export default function ApplicationsPage() {
                   </h2>
                   <p className="text-[#3B82F6] font-bold text-sm mb-4 tracking-wide">
                     {currentUserRole === "club"
-                      ? t('applications.candidateLabel', { name: app.candidate?.displayName || t('applications.unknownUser') })
-                      : app.club?.displayName || t('applications.unknownClub')}
+                      ? (
+                        <>
+                          {t('applications.candidateLabel', { name: '' })}
+                          <span 
+                            className="hover:underline cursor-pointer transition-colors text-blue-400"
+                            onClick={() => app.candidate && navigate(`/dashboard/profile/${app.candidate.uid}`)}
+                          >
+                            {app.candidate?.displayName || t('applications.unknownUser')}
+                          </span>
+                        </>
+                      )
+                      : (
+                        <span 
+                          className="hover:underline cursor-pointer transition-colors text-blue-400"
+                          onClick={() => app.club?.uid && navigate(`/dashboard/profile/${app.club.uid}`)}
+                        >
+                          {app.club?.displayName || t('applications.unknownClub')}
+                        </span>
+                      )
+                    }
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
@@ -318,13 +353,24 @@ export default function ApplicationsPage() {
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row w-full gap-2.5">
-                    <Link
-                      to={`/dashboard/opportunities/${app.opportunityId}`}
-                      state={{ from: 'applications' }}
-                      className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-gray-100 hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
-                    >
-                      {t('applications.viewDetail')}
-                    </Link>
+                      {app.opportunity ? (
+                        <Link
+                          to={`/dashboard/opportunities/${app.opportunityId}`}
+                          state={{ from: 'applications' }}
+                          className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-gray-100 hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
+                        >
+                          {t('applications.viewDetail')}
+                        </Link>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="w-full sm:w-auto px-4 py-2 text-sm font-bold tracking-wide text-[#EF4444] border-[#EF4444]/30 hover:bg-[#EF4444]/10 transition-all duration-fast"
+                          onClick={() => handleDeleteOrphaned(app.id)}
+                          disabled={deletingId === app.id}
+                        >
+                          {deletingId === app.id ? "Eliminant..." : t('applications.removeOrphaned', "Eliminar Registre")}
+                        </Button>
+                      )}
 
                     {currentUserRole === "club" &&
                       app.candidate &&
@@ -362,7 +408,7 @@ export default function ApplicationsPage() {
                   </div>
 
                   {/* Accions de gestió d'estat (només club) */}
-                  {currentUserRole === "club" && (
+                  {currentUserRole === "club" && app.opportunity && (
                     <div className="flex flex-wrap gap-2 w-full justify-end">
                       {app.status === "submitted" && (
                         <button

@@ -449,6 +449,11 @@
     "aboutMe": "Sobre mi",
     "emptyBio": "No hi ha biografia.",
     "sportsData": "Dades Esportives",
+    "playerStats": "Estadístiques",
+    "positions": "Posicions",
+    "contactInfo": "Contacte",
+    "socialNetworks": "Xarxes Socials",
+    "joined": "Membre des de",
     "position": "Posició",
     "height": "Alçada",
     "weight": "Pes",
@@ -500,6 +505,8 @@
     "retry": "Reintentar",
     "appliedOn": "Aplicat el {{date}}",
     "opportunityClosed": "L'oportunitat ja no està disponible",
+    "orphanedExplanation": "El club ha eliminat aquesta oportunitat de la plataforma.",
+    "removeOrphaned": "Amagar Mida",
     "candidateLabel": "Candidat: {{name}}",
     "unknownUser": "Usuari Desconegut",
     "unknownClub": "Club Desconegut",
@@ -855,6 +862,14 @@
       "pricing": "Plans i preus",
       "privacy": "Privacitat",
       "terms": "Condicions"
+    },
+    "publicProfile": {
+      "lockedTitle": "Estadístiques i Contacte Protegits",
+      "lockedDesc": "Els usuaris del Pla Free no tenen accés complet als perfils d'altres usuaris. Passa't a Premium per desbloquejar les seves estadístiques i obrir el xat directe.",
+      "hideDetails": "Dades de contacte ocultes per al Pla Free",
+      "notFound": "Perfil no trobat",
+      "error": "Error carregant el perfil",
+      "sendMessage": "Enviar Missatge"
     }
   }
 }

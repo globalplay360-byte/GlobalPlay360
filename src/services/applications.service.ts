@@ -9,8 +9,10 @@ import {
   orderBy,
   serverTimestamp,
   limit,
+  deleteDoc,
 } from 'firebase/firestore';
 import { db } from './firebase';
+import { getUserDoc } from './auth.service';
 import type { Application } from '@/types';
 
 const COLLECTION = 'applications';
@@ -59,7 +61,11 @@ interface CreateApplicationInput {
 }
 
 /** Create a new application. Returns the document ID. Throws if duplicate. */
-export async function createApplication(data: CreateApplicationInput): Promise<string> {
+export async function createApplication(data: CreateApplicationInput): Promise<string> {    // Prevent clubs from applying
+    const currentUser = await getUserDoc(data.userId);
+    if (currentUser?.role === 'club') {
+      throw new Error('Els clubs no poden aplicar a oportunitats.');
+    }
   // Double-check for duplicates before writing
   const alreadyApplied = await hasUserApplied(data.userId, data.opportunityId);
   if (alreadyApplied) {
@@ -88,4 +94,9 @@ export async function updateApplicationStatus(
     status,
     _updatedAt: serverTimestamp(),
   });
+}
+
+/** Delete an application (e.g. if the opportunity was removed) */
+export async function deleteApplication(id: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTION, id));
 }

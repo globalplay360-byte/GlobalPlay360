@@ -11,12 +11,12 @@ Aquest document recopila tasques, funcionalitats futures o sistemes inacabats qu
 Aquestes rutes tenien placeholders visibles a l'MVP. S'han retirat per no prometre valor no entregat. Es poden recuperar del git (`git log --diff-filter=D`) i reimplementar quan hi hagi tracció i dades reals.
 
 - [ ] **Pàgina `/dashboard/analytics`**: dashboard de mètriques per rol.
-  - *Jugador/Coach*: visites al perfil, obertures per clubs, rati de resposta a candidatures, activitat setmanal.
-  - *Club*: impressions d'ofertes, CTR, candidatures per oferta, funnel de conversió, top països dels candidats.
+  - _Jugador/Coach_: visites al perfil, obertures per clubs, rati de resposta a candidatures, activitat setmanal.
+  - _Club_: impressions d'ofertes, CTR, candidatures per oferta, funnel de conversió, top països dels candidats.
   - **Dependència:** col·lector d'esdeveniments (col·lecció Firestore `events` o integració Plausible/PostHog) + agregacions backend.
 - [ ] **Card "Profile Visits" al Overview (club)**: comptador de visites al perfil públic.
   - **Dependència:** instrumentar rutes públiques de perfil (`/u/:id` encara no existeixen) amb `increment()` a Firestore.
 - [ ] **Consola admin `/admin/users`**: taula CRUD interna d'usuaris (veure, canviar rol, suspendre, impersonar).
   - **Quan?** Quan operativament la clienta ho necessiti. No demanada a l'MVP.
 
-- [ ] **Perfils Públics (Public Profile Page)**: Implementar la ruta \/dashboard/profile/:userId\ per veure la fitxa completa d'un Club, Jugador o Entrenador sense dret a edició. Actualment, el botó 'Veure Perfil Complet' a l'OpportunityDetailPage està deshabilitat com a 'Properament'.
+- [x] **Perfils Públics (Public Profile Page)**: Implementar la ruta `/dashboard/profile/:userId` per veure la fitxa completa d'un Club, Jugador o Entrenador sense dret a edició. Actualment, el botó 'Veure Perfil Complet' a l'OpportunityDetailPage està deshabilitat com a 'Properament'.

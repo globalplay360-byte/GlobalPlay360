@@ -449,6 +449,11 @@
     "aboutMe": "About me",
     "emptyBio": "No biography.",
     "sportsData": "Sports Data",
+    "playerStats": "Stats",
+    "positions": "Positions",
+    "contactInfo": "Contact",
+    "socialNetworks": "Social Networks",
+    "joined": "Joined",
     "position": "Position",
     "height": "Height",
     "weight": "Weight",
@@ -855,6 +860,14 @@
       "pricing": "Plans and pricing",
       "privacy": "Privacy",
       "terms": "Terms"
+    },
+    "publicProfile": {
+      "lockedTitle": "Statistics and Contact Protected",
+      "lockedDesc": "Free Plan users do not have full access to other users' profiles. Upgrade to Premium to unlock their statistics and open a direct chat.",
+      "hideDetails": "Contact details hidden for the Free Plan",
+      "notFound": "Profile not found",
+      "error": "Error loading profile",
+      "sendMessage": "Send Message"
     }
   }
 }

@@ -271,7 +271,12 @@ const handleMessage = async () => {
                 <div className="text-center text-[#9CA3AF] p-4 text-sm font-medium">
                   {t('opportunityDetail.ownOpportunity')}
                 </div>
-
+              ) : user?.role === 'club' ? (
+                <div className="text-center p-4 bg-transparent border border-[#3B82F6]/20 rounded-lg">
+                  <span className="text-[#3B82F6] font-semibold text-sm tracking-wide">
+                    {t('opportunityDetail.clubCannotApply', 'Els clubs no poden aplicar a oportunitats.')}
+                  </span>
+                </div>
               ) : (
                 <div className="space-y-4">
                   {alreadyApplied ? (
@@ -320,8 +325,8 @@ const handleMessage = async () => {
               </div>
             </CardContent>
             <CardFooter className="pt-0 pb-6 px-6">
-              <Button variant="outline" size="sm" fullWidth disabled={true} className="transition-all duration-fast ease-out opacity-60">
-                Veure Perfil Complet (Properament)
+              <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast" onClick={() => navigate(`/dashboard/profile/${opportunity.clubId}`)}>
+                {t('opportunities.viewFullProfile', 'Veure Perfil Complet')}
               </Button>
             </CardFooter>
           </Card>
