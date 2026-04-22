@@ -88,7 +88,7 @@ export default function OpportunityForm({
     }
   };
 
-  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-white text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] hover:border-[#374151] transition-all duration-fast ease-out shadow-sm';
+  const inputClass = 'w-full bg-[#0F172A] border border-[#1F2937] rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-gray-100 text-sm placeholder:text-[#6B7280] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] hover:border-[#374151] transition-all duration-fast ease-out shadow-sm';
   const labelClass = 'block text-sm font-semibold text-[#9CA3AF] mb-1.5 tracking-wide';
 
   return (
@@ -170,7 +170,7 @@ export default function OpportunityForm({
           <button
             type="button"
             onClick={addRequirement}
-            className="px-3 py-2.5 sm:px-4 sm:py-3 bg-[#1F2937] hover:bg-[#374151] text-white text-sm font-medium rounded-lg transition-all duration-fast ease-out active:scale-[0.98] border border-[#374151] shadow-sm"
+            className="px-3 py-2.5 sm:px-4 sm:py-3 bg-[#1F2937] hover:bg-[#374151] text-gray-100 text-sm font-medium rounded-lg transition-all duration-fast ease-out active:scale-[0.98] border border-[#374151] shadow-sm"
           >
             {t("opportunityForm.addBtn", "Afegir")}
           </button>

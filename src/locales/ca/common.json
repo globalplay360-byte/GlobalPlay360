@@ -792,5 +792,38 @@
       "venueName": "Nom de l'estadi, pavelló o complex esportiu.",
       "venueCapacity": "Capacitat d'espectadors de la instal·lació."
     }
+  },
+  "legal": {
+    "backHome": "Tornar a l'inici",
+    "lastUpdated": "Última actualització",
+    "disclaimer": {
+      "title": "Document en revisió",
+      "body": "Aquest text és un esborrany basat en plantilles estàndard del RGPD i la LSSI. No substitueix l'assessorament legal professional. Abans del llançament en producció, aquest contingut ha de ser revisat i adaptat per un advocat especialista."
+    },
+    "privacy": { "title": "Política de privacitat" },
+    "terms": { "title": "Condicions d'ús" },
+    "cookies": { "title": "Política de cookies" }
+  },
+  "contact": {
+    "title": "Parlem",
+    "subtitle": "Tens una pregunta, un suggeriment o vols col·laborar amb GlobalPlay360? Aquí tens totes les maneres d'arribar a nosaltres.",
+    "email": {
+      "title": "Correu directe",
+      "desc": "La manera més ràpida d'arribar-nos. Responem en menys de 48 hores laborables."
+    },
+    "legal": {
+      "title": "Consultes legals",
+      "desc": "Exercici de drets RGPD, protecció de dades o qualsevol requeriment formal.",
+      "emailLabel": "Email legal",
+      "address": "Adreça"
+    },
+    "quickLinks": {
+      "title": "Enllaços ràpids",
+      "desc": "Potser trobes ja la resposta en una d'aquestes pàgines:",
+      "about": "Qui som",
+      "pricing": "Plans i preus",
+      "privacy": "Privacitat",
+      "terms": "Condicions"
+    }
   }
 }

@@ -57,7 +57,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-[#FFFFFF]">
+    <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-gray-100">
       <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] shadow-xl p-6 sm:p-8 relative overflow-hidden">
         
         {/* Glow de decoració per donar toc SaaS */}
@@ -86,7 +86,7 @@ export default function LoginPage() {
               type="email" 
               value={email}
               onChange={(e) => { setEmail(e.target.value); if(status==='error') setStatus('idle'); }}
-              className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+              className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
               placeholder={t('loginPage.emailPlaceholder')}
               disabled={status === 'loading' || status === 'success'}
             />
@@ -102,7 +102,7 @@ export default function LoginPage() {
               type="password" 
               value={password}
               onChange={(e) => { setPassword(e.target.value); if(status==='error') setStatus('idle'); }}
-              className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+              className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
               placeholder=""
               disabled={status === 'loading' || status === 'success'}
             />
@@ -111,11 +111,11 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={status === 'loading' || status === 'success'}
-            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-white font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-gray-100 font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
           >
             {status === 'loading' ? (
               <>
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -146,7 +146,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={status === 'loading' || status === 'success'}
-            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-gray-100 font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

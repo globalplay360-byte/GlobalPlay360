@@ -16,7 +16,7 @@ export default function HockeyPlayerFields({ formData, onChange, disabled }: Pro
     <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
       <div className="flex items-center gap-2 mb-2">
         <span className="w-1.5 h-6 rounded bg-orange-500 shadow-sm shadow-orange-500/50" />
-        <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">Detalls d'Hoquei</h2>
+        <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">Detalls d'Hoquei</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">

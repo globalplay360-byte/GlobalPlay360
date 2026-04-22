@@ -245,7 +245,7 @@ export default function ApplicationsPage() {
                     </div>
                   </div>
 
-                  <h2 className="text-xl font-extrabold text-white mb-1.5 tracking-tight truncate group-hover:text-[#3B82F6] transition-colors">
+                  <h2 className="text-xl font-extrabold text-gray-100 mb-1.5 tracking-tight truncate group-hover:text-[#3B82F6] transition-colors">
                     {app.opportunity?.title || t('applications.opportunityClosed')}
                   </h2>
                   <p className="text-[#3B82F6] font-bold text-sm mb-4 tracking-wide">
@@ -320,7 +320,7 @@ export default function ApplicationsPage() {
                     <Link
                       to={`/dashboard/opportunities/${app.opportunityId}`}
                       state={{ from: 'applications' }}
-                      className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-white hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
+                      className="w-full sm:w-auto px-4 py-2 bg-[#1F2937]/50 border border-[#374151] text-gray-100 hover:bg-[#374151] text-sm font-bold tracking-wide rounded-lg transition-all duration-fast active:scale-[0.98] text-center"
                     >
                       {t('applications.viewDetail')}
                     </Link>
@@ -334,7 +334,7 @@ export default function ApplicationsPage() {
                           onClick={() => handleStartConversation(app.candidate!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
@@ -351,7 +351,7 @@ export default function ApplicationsPage() {
                           onClick={() => handleStartConversation(app.club!.uid)}
                         >
                           {isFree && (
-                            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-gray-100/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z" />
                             </svg>
                           )}
@@ -398,7 +398,7 @@ export default function ApplicationsPage() {
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
                           title={t('applications.titleReopen')}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[#1F2937] text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] transition-colors disabled:opacity-50"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-[#1F2937] text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] transition-colors disabled:opacity-50"
                         >
                           {updatingId === app.id ? "..." : t('applications.reopen')}
                         </button>
@@ -431,7 +431,7 @@ export default function ApplicationsPage() {
             action={
               <Link
                 to="/dashboard/opportunities"
-                className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-white hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
+                className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-gray-100 hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
               >
                 {t('common.searchOpportunities', 'Buscar Oportunitats')}
               </Link>

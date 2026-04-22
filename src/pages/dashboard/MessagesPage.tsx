@@ -31,7 +31,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       }`}
     >
       {/* Icona o Avatar de l'altre participant */}
-      <div className="w-12 h-12 rounded-full bg-[#1F2937] text-white flex items-center justify-center font-extrabold text-lg shrink-0 relative shadow-inner">
+      <div className="w-12 h-12 rounded-full bg-[#1F2937] text-gray-100 flex items-center justify-center font-extrabold text-lg shrink-0 relative shadow-inner">
         {conv.otherParticipant?.displayName?.charAt(0) || '?'}
         {/* Indicador d'estat fals (online placeholder) */}
         <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#111827] rounded-full shadow-sm"></span>
@@ -40,7 +40,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       {/* Contingut */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-white font-extrabold tracking-tight' : 'text-white font-bold tracking-tight'}`}>
+          <h3 className={`truncate flex items-center gap-2 text-base ${hasUnread ? 'text-gray-100 font-extrabold tracking-tight' : 'text-gray-100 font-bold tracking-tight'}`}>
             {conv.otherParticipant?.displayName || t('messages.unknownUser', 'Usuari desconegut')}   
             {isLocked && (
               <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
           </span>
         </div>
 
-        <p className={`text-sm truncate leading-relaxed ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-white font-medium drop-shadow-sm' : 'text-[#9CA3AF] group-hover:text-gray-300 transition-colors'}`}>
+        <p className={`text-sm truncate leading-relaxed ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-gray-100 font-medium drop-shadow-sm' : 'text-[#9CA3AF] group-hover:text-gray-300 transition-colors'}`}>
           {isLocked ? t('messages.protectedMessage', 'Missatge protegit') : conv.lastMessage || t('messages.newConversation', 'Nova conversa')}
         </p>
       </div>
@@ -61,7 +61,7 @@ function ConversationListItem({ conv, currentUserId }: { conv: ConversationExten
       {/* Unread badge */}
       {hasUnread && (
         <span
-          className="ml-3 inline-flex items-center justify-center min-w-[24px] h-[24px] px-1.5 text-[11px] font-extrabold text-white bg-[#3B82F6] rounded-full shadow-[0_0_12px_rgba(59,130,246,0.6)] shrink-0"
+          className="ml-3 inline-flex items-center justify-center min-w-[24px] h-[24px] px-1.5 text-[11px] font-extrabold text-gray-100 bg-[#3B82F6] rounded-full shadow-[0_0_12px_rgba(59,130,246,0.6)] shrink-0"
           aria-label={`${unread} missatge${unread > 1 ? 's' : ''} sense llegir`}
         >
           {unread > 9 ? '9+' : unread}

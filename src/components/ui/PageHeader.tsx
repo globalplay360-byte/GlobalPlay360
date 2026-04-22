@@ -16,7 +16,7 @@ export default function PageHeader({
   return (
     <div className={`mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 ${className}`}>
       <div>
-        <h1 className="text-xl sm:text-2xl font-medium text-white/90 tracking-normal">
+        <h1 className="text-xl sm:text-2xl font-medium text-gray-100/90 tracking-normal">
           {title}
         </h1>
         {description && (

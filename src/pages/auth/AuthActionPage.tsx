@@ -136,7 +136,7 @@ export default function AuthActionPage() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50 text-center">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-6">
+          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400 mb-6">
             Verificació
           </h2>
           
@@ -184,7 +184,7 @@ export default function AuthActionPage() {
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
             Nova Contrasenya
           </h2>
           <p className="mt-2 text-sm text-[#9CA3AF]">
@@ -222,7 +222,7 @@ export default function AuthActionPage() {
                   id="newPassword"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="w-full pl-4 pr-10 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-white placeholder:text-[#4B5563] focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                  className="w-full pl-4 pr-10 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-gray-100 placeholder:text-[#4B5563] focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Mínim 8 caràcters, lletres, majúscules i símbols"
@@ -231,7 +231,7 @@ export default function AuthActionPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-white"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
                 >
                   {showPassword ? (
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -272,7 +272,7 @@ export default function AuthActionPage() {
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
-                  className="w-full pl-4 pr-10 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-white placeholder:text-[#4B5563] focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                  className="w-full pl-4 pr-10 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-gray-100 placeholder:text-[#4B5563] focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Torna a escriure-la"
@@ -281,7 +281,7 @@ export default function AuthActionPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-white"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
                 >
                   {showConfirmPassword ? (
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>

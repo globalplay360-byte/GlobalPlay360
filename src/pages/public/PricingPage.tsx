@@ -80,7 +80,7 @@ export default function PricingPage() {
       : null;
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden bg-[#0B1120]">
+    <div className="relative min-h-screen text-gray-100 overflow-hidden bg-[#0B1120]">
       {/* Video Background amb Overlay fosc per no perdre llegibilitat */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
         <video
@@ -99,10 +99,10 @@ export default function PricingPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-14">
-            <h1 className="text-3xl md:text-4xl font-medium text-white/90 tracking-normal mb-4">{t('pricingPage.title')}</h1>
+            <h1 className="text-3xl md:text-4xl font-medium text-gray-100/90 tracking-normal mb-4">{t('pricingPage.title')}</h1>
             <p className="text-base md:text-lg text-[#9CA3AF] max-w-xl mx-auto leading-relaxed">
               {t('pricingPage.subtitle1')}
-              <strong className="text-white font-medium mx-1">{t('pricingPage.subtitleBold')}</strong>
+              <strong className="text-gray-100 font-medium mx-1">{t('pricingPage.subtitleBold')}</strong>
               {t('pricingPage.subtitle2')}
             </p>
           </div>
@@ -129,8 +129,8 @@ export default function PricingPage() {
                 onClick={() => setBillingInterval('month')}
                 className={`relative z-10 px-8 py-2.5 rounded-full text-sm font-medium transition-all duration-300 w-32 sm:w-36 ${
                   interval === 'month'
-                    ? 'bg-[#3B82F6] text-white shadow-md'
-                    : 'text-[#9CA3AF] hover:text-white'
+                    ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                    : 'text-[#9CA3AF] hover:text-gray-100'
                 }`}
               >
                 {t('pricingPage.monthly')}
@@ -140,8 +140,8 @@ export default function PricingPage() {
                 onClick={() => setBillingInterval('year')}
                 className={`relative z-10 px-8 py-2.5 rounded-full text-sm font-medium transition-all duration-300 w-32 sm:w-36 ${
                   interval === 'year'
-                    ? 'bg-[#3B82F6] text-white shadow-md'
-                    : 'text-[#9CA3AF] hover:text-white'
+                    ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                    : 'text-[#9CA3AF] hover:text-gray-100'
                 }`}
               >
                 {t('pricingPage.annual')}
@@ -154,9 +154,9 @@ export default function PricingPage() {
             {/* Free */}
             <div className="bg-[#111827] rounded-2xl p-8 border border-[#1F2937] flex flex-col hover:-translate-y-0.5 transition-transform duration-base ease-out shadow-sm">
               <div className="mb-6">
-                <h3 className="text-2xl font-semibold text-white/90 mb-2 tracking-normal">{t('pricingPage.free.title')}</h3>
+                <h3 className="text-2xl font-semibold text-gray-100/90 mb-2 tracking-normal">{t('pricingPage.free.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-5xl font-medium text-white tracking-tight">0€</span>
+                  <span className="text-5xl font-medium text-gray-100 tracking-tight">0€</span>
                   <span className="text-[#9CA3AF] font-medium tracking-wide uppercase text-sm">{t('pricingPage.free.month')}</span>
                 </div>
                 <p className="text-[#9CA3AF] text-sm leading-relaxed">{t('pricingPage.free.desc')}</p>
@@ -173,7 +173,7 @@ export default function PricingPage() {
 
               <Link
                 to="/register"
-                className="block w-full py-3.5 px-4 text-center rounded-xl border border-[#374151] text-white hover:bg-[#1F2937] font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
+                className="block w-full py-3.5 px-4 text-center rounded-xl border border-[#374151] text-gray-100 hover:bg-[#1F2937] font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
               >
                 {t('pricingPage.free.cta')}
               </Link>
@@ -181,12 +181,12 @@ export default function PricingPage() {
 
             {/* Premium */}
             <div className="bg-gradient-to-b from-[#111827] to-[#0B1120] rounded-2xl p-8 border border-[#3B82F6]/50 ring-1 ring-[#3B82F6]/20 relative flex flex-col shadow-lg shadow-[#3B82F6]/10">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-[#3B82F6] to-blue-600 text-white px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest shadow-md">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-[#3B82F6] to-blue-600 text-gray-100 px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest shadow-md">
                 {t('pricingPage.premium.badge')}
               </div>
 
               <div className="mb-6">
-                <h3 className="text-2xl font-semibold text-white/90 mb-2 tracking-normal">{t('pricingPage.premium.title')}</h3>
+                <h3 className="text-2xl font-semibold text-gray-100/90 mb-2 tracking-normal">{t('pricingPage.premium.title')}</h3>
                 <div className="flex items-baseline gap-2 mb-3">
                   {interval === 'year' && prices.month && (
                     <span className="text-2xl sm:text-3xl font-medium text-[#6B7280] line-through decoration-2 decoration-[#6B7280] mr-1">
@@ -233,7 +233,7 @@ export default function PricingPage() {
               {isAlreadyPremium ? (
                 <Link
                   to="/dashboard"
-                  className="w-full py-3.5 px-4 text-center rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] shadow-lg shadow-[#3B82F6]/20 block"
+                  className="w-full py-3.5 px-4 text-center rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-gray-100 font-semibold transition-all duration-fast ease-out active:scale-[0.98] shadow-lg shadow-[#3B82F6]/20 block"
                 >
                   {t('pricingPage.premium.active')}
                 </Link>
@@ -242,7 +242,7 @@ export default function PricingPage() {
                   type="button"
                   onClick={handleSubscribe}
                   disabled={loading || checkoutLoading || subscriptionLoading || !prices[interval]}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold transition-all duration-fast ease-out active:scale-[0.98] disabled:active:scale-100 shadow-lg shadow-[#3B82F6]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#3B82F6] hover:bg-blue-600 text-gray-100 font-semibold transition-all duration-fast ease-out active:scale-[0.98] disabled:active:scale-100 shadow-lg shadow-[#3B82F6]/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading
                     ? t('pricingPage.premium.redirecting')

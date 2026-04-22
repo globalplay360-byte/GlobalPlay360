@@ -83,7 +83,7 @@ export default function OpportunitiesPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-100 space-y-8">
       {/* Header */}
       <PageHeader
         title={t('opportunities.marketplace')}
@@ -138,7 +138,7 @@ export default function OpportunitiesPage() {
               <Card className="flex flex-col hover:border-[#3B82F6]/50 group h-full">
                 <CardHeader className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
+                    <h3 className="text-lg font-bold text-gray-100 group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
                   </div>
                   <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold">
                     {t(`opportunities.status.${opp.status}`)}

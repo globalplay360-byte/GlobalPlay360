@@ -71,7 +71,7 @@ export default function Sidebar() {
                 className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-fast ease-out ${
                   isActive
                     ? 'bg-[#3B82F6]/10 text-[#3B82F6] shadow-sm transform scale-[1.02]'
-                    : 'text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] hover:translate-x-1'
+                    : 'text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] hover:translate-x-1'
                 }`}
               >
                 <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
@@ -90,7 +90,7 @@ export default function Sidebar() {
             {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{user?.displayName || t('sidebar.testUser', 'Usuari')}</p>
+            <p className="text-sm font-medium text-gray-100 truncate">{user?.displayName || t('sidebar.testUser', 'Usuari')}</p>
             <p className="text-xs text-[#6B7280] truncate capitalize">
               {user?.role ? t(`sidebar.${user.role}Role`, user.role === 'club' ? 'Club' : user.role === 'coach' ? 'Entrenador' : 'Jugador') : t('sidebar.playerRole', 'Jugador')}
             </p>

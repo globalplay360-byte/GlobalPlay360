@@ -183,12 +183,12 @@ const handleMessage = async () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-100 space-y-6">
       {/* Top Nav */}
       <div className="mb-6">
         <button
           onClick={() => navigate(backTarget.url)}
-          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-white transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1"
+          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-gray-100 transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1"
         >
           <ArrowLeftIcon className="w-4 h-4 mr-2" />
           {backTarget.label}
@@ -201,7 +201,7 @@ const handleMessage = async () => {
           <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-6 sm:p-8 md:p-10 shadow-sm relative overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-medium text-white/90 mb-2 tracking-normal leading-tight">{opportunity.title}</h1>
+                <h1 className="text-2xl sm:text-3xl font-medium text-gray-100/90 mb-2 tracking-normal leading-tight">{opportunity.title}</h1>
                 {clubName && <p className="text-[#3B82F6] font-medium text-base">{clubName}</p>}
               </div>
               <Badge variant={opportunity.status === 'open' ? 'success' : 'default'} className="w-fit uppercase tracking-wider font-semibold">
@@ -215,31 +215,31 @@ const handleMessage = async () => {
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <MapPinIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.location")}
                 </div>
-                <div className="font-medium text-white">{opportunity.location}</div>
+                <div className="font-medium text-gray-100">{opportunity.location}</div>
               </div>
               <div>
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <BriefcaseIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.contract")}
                 </div>
-                <div className="font-medium text-white capitalize">{opportunity.contractType.replace('-', ' ')}</div>
+                <div className="font-medium text-gray-100 capitalize">{opportunity.contractType.replace('-', ' ')}</div>
               </div>
               <div>
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <UserGroupIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.gender")}
                 </div>
-                <div className="font-medium text-white capitalize">{opportunity.gender}</div>
+                <div className="font-medium text-gray-100 capitalize">{opportunity.gender}</div>
               </div>
               <div>
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <CalendarIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.published")}
                 </div>
-                <div className="font-medium text-white">{formatDate(opportunity.createdAt)}</div>
+                <div className="font-medium text-gray-100">{formatDate(opportunity.createdAt)}</div>
               </div>
             </div>
 
             {/* Description */}
             <div className="mb-10">
-              <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">Sobre l'Oportunitat</h2>
+              <h2 className="text-xl font-medium text-gray-100/90 tracking-normal mb-4">Sobre l'Oportunitat</h2>
               <div className="text-sm text-[#9CA3AF] leading-relaxed space-y-4 whitespace-pre-wrap">
                 {opportunity.description}
               </div>
@@ -247,7 +247,7 @@ const handleMessage = async () => {
 
             {/* Requirements */}
             <div>
-              <h2 className="text-xl font-medium text-white/90 tracking-normal mb-4">{t("opportunityDetail.requirements")}</h2>
+              <h2 className="text-xl font-medium text-gray-100/90 tracking-normal mb-4">{t("opportunityDetail.requirements")}</h2>
               <ul className="space-y-3">
                 {opportunity.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-start">
@@ -306,13 +306,13 @@ const handleMessage = async () => {
           {/* Club Info Card */}
           <Card>
             <CardContent className="p-6 space-y-5 text-sm">
-              <h3 className="font-bold text-white tracking-wide">{t('opportunityDetail.aboutClub')}</h3>
+              <h3 className="font-bold text-gray-100 tracking-wide">{t('opportunityDetail.aboutClub')}</h3>
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-white overflow-hidden shadow-inner uppercase">
+                <div className="w-14 h-14 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-gray-100 overflow-hidden shadow-inner uppercase">
                   {clubName?.charAt(0) || 'C'}
                 </div>
                 <div>
-                  <div className="font-bold text-white text-base leading-tight">{clubName || t('opportunityDetail.club')}</div>
+                  <div className="font-bold text-gray-100 text-base leading-tight">{clubName || t('opportunityDetail.club')}</div>
                   {clubEmail && <div className="text-[#3B82F6] font-medium mt-0.5">{clubEmail}</div>}
                 </div>
               </div>

@@ -17,7 +17,7 @@ export default function ClubFields({ formData, onChange, disabled }: Props) {
     <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
       <div className="flex items-center gap-2 mb-2">
         <span className="w-1.5 h-6 rounded bg-[#EC4899] shadow-sm shadow-[#EC4899]/50" />
-        <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+        <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">
           {t('profileEdit.fields.clubData', 'Dades del club')}
         </h2>
       </div>
