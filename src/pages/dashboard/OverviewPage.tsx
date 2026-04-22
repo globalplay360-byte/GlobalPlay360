@@ -11,8 +11,7 @@ import {
   UserCircleIcon,
   ArrowRightIcon,
   CheckCircleIcon,
-  BuildingOfficeIcon,
-  ChartBarIcon
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 import { SparklesIcon } from '@heroicons/react/24/solid';
 import { motion } from 'framer-motion';
@@ -178,15 +177,10 @@ export default function OverviewPage() {
             trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined, 
             trendUp: true 
           },
-          { 
-            label: t('overview.stats.club.conversations'), 
-            value: activeConversations.length, 
-            icon: ChatBubbleLeftEllipsisIcon 
-          },
-          { 
-            label: t('overview.stats.club.profileVisits'), 
-            value: '---', // TODO: Implementar visibilitat de perfil o treure card en un futur.
-            icon: ChartBarIcon 
+          {
+            label: t('overview.stats.club.conversations'),
+            value: activeConversations.length,
+            icon: ChatBubbleLeftEllipsisIcon
           },
         ];
       }

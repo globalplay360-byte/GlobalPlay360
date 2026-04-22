@@ -344,7 +344,6 @@
       "myOffers": "My Offers",
       "applications": "Applications",
       "messages": "Messages",
-      "analytics": "Analytics",
       "billing": "Billing"
     },
     "mainMenu": "Main Menu",
@@ -378,8 +377,7 @@
       "club": {
         "activeOffers": "Active Offers",
         "applicationsReceived": "Received Applications",
-        "conversations": "Conversations",
-        "profileVisits": "Profile Visits"
+        "conversations": "Conversations"
       },
       "coachPlayer": {
         "availableOffers": "Available Opportunities",
