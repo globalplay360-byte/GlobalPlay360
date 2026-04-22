@@ -790,5 +790,38 @@
       "venueName": "Nombre del estadio, pabellón o complejo deportivo.",
       "venueCapacity": "Capacidad de espectadores de la instalación."
     }
+  },
+  "legal": {
+    "backHome": "Volver al inicio",
+    "lastUpdated": "Última actualización",
+    "disclaimer": {
+      "title": "Documento en revisión",
+      "body": "Este texto es un borrador basado en plantillas estándar del RGPD y la LSSI. No sustituye el asesoramiento legal profesional. Antes del lanzamiento en producción, este contenido debe ser revisado y adaptado por un abogado especialista."
+    },
+    "privacy": { "title": "Política de privacidad" },
+    "terms": { "title": "Condiciones de uso" },
+    "cookies": { "title": "Política de cookies" }
+  },
+  "contact": {
+    "title": "Hablemos",
+    "subtitle": "¿Tienes una pregunta, una sugerencia o quieres colaborar con GlobalPlay360? Aquí tienes todas las formas de llegar a nosotros.",
+    "email": {
+      "title": "Correo directo",
+      "desc": "La forma más rápida de llegar a nosotros. Respondemos en menos de 48 horas laborables."
+    },
+    "legal": {
+      "title": "Consultas legales",
+      "desc": "Ejercicio de derechos RGPD, protección de datos o cualquier requerimiento formal.",
+      "emailLabel": "Email legal",
+      "address": "Dirección"
+    },
+    "quickLinks": {
+      "title": "Enlaces rápidos",
+      "desc": "Puede que encuentres la respuesta en una de estas páginas:",
+      "about": "Quiénes somos",
+      "pricing": "Planes y precios",
+      "privacy": "Privacidad",
+      "terms": "Condiciones"
+    }
   }
 }

@@ -790,5 +790,38 @@
       "venueName": "Name of the stadium, arena, or sports complex.",
       "venueCapacity": "Spectator capacity of the venue."
     }
+  },
+  "legal": {
+    "backHome": "Back to home",
+    "lastUpdated": "Last updated",
+    "disclaimer": {
+      "title": "Document under review",
+      "body": "This text is a draft based on standard GDPR and LSSI templates. It does not replace professional legal advice. Before production launch, this content must be reviewed and adapted by a specialist lawyer."
+    },
+    "privacy": { "title": "Privacy Policy" },
+    "terms": { "title": "Terms of Service" },
+    "cookies": { "title": "Cookie Policy" }
+  },
+  "contact": {
+    "title": "Let's talk",
+    "subtitle": "Do you have a question, a suggestion, or want to collaborate with GlobalPlay360? Here are all the ways to reach us.",
+    "email": {
+      "title": "Direct email",
+      "desc": "The fastest way to reach us. We reply within 48 business hours."
+    },
+    "legal": {
+      "title": "Legal inquiries",
+      "desc": "GDPR rights exercise, data protection or any formal request.",
+      "emailLabel": "Legal email",
+      "address": "Address"
+    },
+    "quickLinks": {
+      "title": "Quick links",
+      "desc": "You may find the answer on one of these pages:",
+      "about": "About us",
+      "pricing": "Plans and pricing",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
   }
 }

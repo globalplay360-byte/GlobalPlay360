@@ -11,6 +11,10 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import HomePage from './pages/public/HomePage';
 import PricingPage from './pages/public/PricingPage';
 import AboutPage from './pages/public/AboutPage';
+import PrivacyPage from './pages/public/PrivacyPage';
+import TermsPage from './pages/public/TermsPage';
+import CookiesPage from './pages/public/CookiesPage';
+import ContactPage from './pages/public/ContactPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -47,6 +51,12 @@ function App() {
             
             {/* About (public) */}
             <Route path="/about" element={<AboutPage />} />
+
+            {/* Legal (public) */}
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
