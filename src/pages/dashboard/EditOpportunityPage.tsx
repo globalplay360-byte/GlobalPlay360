@@ -103,7 +103,7 @@ export default function EditOpportunityPage() {
       <div className="mb-6 lg:mb-8">
         <button
           onClick={() => navigate(`/dashboard/opportunities/mine`)}
-          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-white transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1 mb-4"
+          className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-gray-100 transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1 mb-4"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

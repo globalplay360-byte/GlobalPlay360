@@ -29,7 +29,7 @@ export function LanguageSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 bg-[#0F172A] border border-[#1F2937] rounded-lg text-xs font-medium text-[#9CA3AF] hover:text-white hover:border-[#3B82F6]/50 transition-all focus:outline-none"
+        className="flex items-center gap-2 px-3 py-1.5 bg-[#0F172A] border border-[#1F2937] rounded-lg text-xs font-medium text-[#9CA3AF] hover:text-gray-100 hover:border-[#3B82F6]/50 transition-all focus:outline-none"
       >
         <span>{currentLang.label}</span>
         <svg 
@@ -54,7 +54,7 @@ export function LanguageSelector() {
               className={`w-full flex items-center gap-3 px-4 py-2 text-xs font-medium transition-colors ${
                 currentLang.code === lng.code 
                   ? 'bg-[#3B82F6]/10 text-[#3B82F6]' 
-                  : 'text-[#9CA3AF] hover:bg-[#1F2937] hover:text-white'
+                  : 'text-[#9CA3AF] hover:bg-[#1F2937] hover:text-gray-100'
               }`}
             >
               <span className="w-5 font-bold">{lng.label}</span>

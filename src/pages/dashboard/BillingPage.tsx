@@ -74,7 +74,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
     : { label: t('billing.nextEvent.nextBilling', 'Propera facturació'), date: subscription.current_period_end_seconds };
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 text-white">
+    <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 text-gray-100">
       <PageHeader
         title={t('billing.title', 'Facturació')}
         description={t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}
@@ -102,7 +102,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
               <CheckCircleIcon className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <h2 className="font-bold text-white">{t('billing.card.premiumPlan', 'Pla Premium')}</h2>
+              <h2 className="font-bold text-gray-100">{t('billing.card.premiumPlan', 'Pla Premium')}</h2>
               <p className="text-xs text-gray-400">{t('billing.card.globalPlaySub', 'Subscripció GlobalPlay360')}</p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
             <CalendarIcon className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{nextEvent.label}</p>
-              <p className="text-sm font-semibold text-white">{formatDate(nextEvent.date)}</p>
+              <p className="text-sm font-semibold text-gray-100">{formatDate(nextEvent.date)}</p>
             </div>
           </div>
 
@@ -124,7 +124,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
             <CreditCardIcon className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{t('billing.card.billing', 'Facturació')}</p>
-              <p className="text-sm font-semibold text-white">{t('billing.card.managedByStripe', 'Gestionada per Stripe')}</p>
+              <p className="text-sm font-semibold text-gray-100">{t('billing.card.managedByStripe', 'Gestionada per Stripe')}</p>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
       {/* Bot\u00f3 portal */}
       <div className="bg-[#111827] border border-gray-800 rounded-xl p-4 sm:p-6 space-y-4">
         <div>
-          <h2 className="font-semibold text-white mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
+          <h2 className="font-semibold text-gray-100 mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
           <p className="text-sm text-gray-400">{t('billing.portal.description', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>
         </div>
 
@@ -141,7 +141,7 @@ export default function BillingPage() {  const { t, i18n } = useTranslation();  
           type="button"
           onClick={handleOpenPortal}
           disabled={portalLoading}
-          className="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors shadow-[0_0_15px_rgba(59,130,246,0.2)] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+          className="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-gray-100 font-semibold transition-colors shadow-[0_0_15px_rgba(59,130,246,0.2)] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
         >
           {portalLoading ? t('billing.portal.opening', 'Obrint portal...') : (
             <>

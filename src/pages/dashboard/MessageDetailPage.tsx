@@ -19,18 +19,18 @@ function ChatHeader({ displayName, role }: ChatHeaderProps) {
     <div className="bg-[#111827] border-b border-[#1F2937] p-4 flex items-center gap-3 sticky top-0 z-10 shadow-sm">
       <Link
         to="/dashboard/messages"
-        className="p-2 -ml-2 text-[#9CA3AF] hover:text-white hover:bg-[#1F2937] rounded-lg transition-all duration-fast group"
+        className="p-2 -ml-2 text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] rounded-lg transition-all duration-fast group"
         aria-label="Tornar"
       >
         <svg className="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </Link>
-      <div className="w-10 h-10 rounded-full bg-[#1F2937] text-white flex items-center justify-center font-extrabold shadow-inner">
+      <div className="w-10 h-10 rounded-full bg-[#1F2937] text-gray-100 flex items-center justify-center font-extrabold shadow-inner">
         {displayName.charAt(0)}
       </div>
       <div className="min-w-0">
-        <h2 className="text-white font-extrabold text-base leading-tight tracking-tight truncate">{displayName}</h2>
+        <h2 className="text-gray-100 font-extrabold text-base leading-tight tracking-tight truncate">{displayName}</h2>
         <p className="text-[#3B82F6] text-xs font-bold uppercase tracking-widest">{role}</p>
       </div>
     </div>
@@ -43,7 +43,7 @@ function ChatMessageBubble({ text, isSender, timestamp }: { text: string, isSend
     <div className={`flex w-full ${isSender ? 'justify-end' : 'justify-start'} mb-4`}>
       <div className={`max-w-[80%] sm:max-w-[75%] px-4 py-3 rounded-2xl flex flex-col gap-1.5 shadow-sm transition-all duration-base hover:-translate-y-0.5 ${
         isSender 
-          ? 'bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-white rounded-br-sm shadow-[#3B82F6]/10' 
+          ? 'bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-gray-100 rounded-br-sm shadow-[#3B82F6]/10' 
           : 'bg-[#1F2937] text-gray-100 rounded-bl-sm border border-[#374151]'
       }`}>
         <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{text}</p>
@@ -78,7 +78,7 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
     <form onSubmit={handleSubmit} className="bg-[#111827] border-t border-[#1F2937] p-4 sm:p-5 mt-auto shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-10">
       <div className="max-w-4xl mx-auto flex items-end gap-3 bg-[#0F172A] border border-[#374151] rounded-2xl pl-5 pr-2 py-1 shadow-inner focus-within:border-[#3B82F6] focus-within:ring-2 focus-within:ring-[#3B82F6]/50 focus-within:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-fast">
         <textarea
-          className="flex-1 max-h-32 min-h-[44px] bg-transparent border-none text-white text-[15px] focus:ring-0 resize-none py-3 placeholder:text-[#6B7280] font-medium"
+          className="flex-1 max-h-32 min-h-[44px] bg-transparent border-none text-gray-100 text-[15px] focus:ring-0 resize-none py-3 placeholder:text-[#6B7280] font-medium"
           placeholder="Escriu el teu missatge..."
           rows={1}
           value={text}
@@ -95,10 +95,10 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
         <button 
           type="submit" 
           disabled={sending || !text.trim()}
-          className="p-3 text-white bg-gradient-to-br from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-all duration-fast active:scale-[0.95] flex-shrink-0 m-1 shadow-md shadow-[#3B82F6]/30 group"
+          className="p-3 text-gray-100 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-all duration-fast active:scale-[0.95] flex-shrink-0 m-1 shadow-md shadow-[#3B82F6]/30 group"
         >
           {sending ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-gray-100/30 border-t-gray-100 rounded-full animate-spin"></div>
           ) : (
             <svg className="w-5 h-5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -214,7 +214,7 @@ export default function MessageDetailPage() {
           title="Conversa no trobada"
           description="Aquest fil de missatges podria haver estat eliminat o no tens permisos."
           action={
-            <Link to="/dashboard/messages" className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-white hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors">
+            <Link to="/dashboard/messages" className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-gray-100 hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors">
               Tornar a Missatges
             </Link>
           }

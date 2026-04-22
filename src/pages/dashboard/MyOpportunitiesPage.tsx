@@ -166,7 +166,7 @@ const formatDate = (dateString: string) => {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-1.5">
-                  <h3 className="text-white font-bold text-lg truncate group-hover:text-[#3B82F6] transition-colors duration-fast ease-out">{opp.title}</h3>
+                  <h3 className="text-gray-100 font-bold text-lg truncate group-hover:text-[#3B82F6] transition-colors duration-fast ease-out">{opp.title}</h3>
                   <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold shrink-0">
                     {opp.status === 'open' ? t('myOpportunities.statusOpen', 'Oberta') : t('myOpportunities.statusClosed', 'Tancada')}
                   </Badge>

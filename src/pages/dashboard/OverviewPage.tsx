@@ -69,7 +69,7 @@ const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
           </p>
         </div>
       </div>
-      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-gray-300 hover:text-white text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
+      <Link to={`/dashboard/applications`} className="shrink-0 bg-[#0F172A] hover:bg-[#1F2937] transition-all duration-fast ease-out active:scale-[0.98] text-gray-300 hover:text-gray-100 text-xs font-semibold px-4 py-2 border border-[#374151] rounded-lg">
         {t('overview.reviewCV', 'Revisar')}
       </Link>
     </div>
@@ -242,12 +242,12 @@ export default function OverviewPage() {
         }
         action={
           isClub ? (
-            <Link to="/dashboard/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+            <Link to="/dashboard/opportunities/new" className="bg-blue-600 hover:bg-blue-500 text-gray-100 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
               <PlusCircleIcon className="w-5 h-5" />
               {t('overview.publishOffer')}
             </Link>
           ) : (
-            <Link to="/dashboard/profile" className="bg-[#111827] hover:bg-[#1F2937] text-white border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
+            <Link to="/dashboard/profile" className="bg-[#111827] hover:bg-[#1F2937] text-gray-100 border border-[#374151] hover:border-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-fast ease-out active:scale-[0.98] flex items-center gap-2">
               <UserCircleIcon className="w-5 h-5 text-[#9CA3AF]" />
               {t('overview.completeProfile')}
             </Link>
@@ -373,9 +373,9 @@ export default function OverviewPage() {
                     <CheckCircleIcon className="w-5 h-5 text-blue-400" />
                     <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{activePlan}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{t('overview.activePlan.title')}</h3>
+                  <h3 className="text-xl font-bold text-gray-100 mb-2">{t('overview.activePlan.title')}</h3>
                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>
-                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-white text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-all duration-fast ease-out active:scale-[0.98]">
+                  <Link to="/dashboard/billing" className="block w-full text-center bg-[#0F172A] hover:bg-[#1F2937] text-gray-100 text-sm font-semibold px-4 py-2.5 rounded-lg border border-[#374151] transition-all duration-fast ease-out active:scale-[0.98]">
                     {t('overview.activePlan.manageButton')}
                   </Link>
                 </div>
@@ -390,7 +390,7 @@ export default function OverviewPage() {
                      <SparklesIcon className="w-5 h-5 text-yellow-400" />
                      <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">UPGRADE</span>
                    </div>
-                   <h3 className="text-xl font-bold text-white mb-2">{t('overview.upgrade.title')}</h3>
+                   <h3 className="text-xl font-bold text-gray-100 mb-2">{t('overview.upgrade.title')}</h3>
                    <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">   
                      <Trans i18nKey="overview.upgrade.description">
                        Rep fins a un <strong className="text-gray-200">300% més</strong> d'impressions de clubs i envia missatges directes.
@@ -433,10 +433,10 @@ function QuickAction({ href, icon: Icon, label }: { href: string; icon: React.El
     <Link 
       to={href}
       className="bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] hover:border-[#374151] transition-all duration-base ease-out hover:-translate-y-0.5 rounded-xl p-4 flex flex-col items-center justify-center gap-3 text-center group shadow-sm">
-      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-white p-3 rounded-lg transition-all duration-base ease-out transform group-hover:scale-110">
+      <div className="bg-[#1F2937] group-hover:bg-blue-500 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] text-blue-500/70 group-hover:text-gray-100 p-3 rounded-lg transition-all duration-base ease-out transform group-hover:scale-110">
         <Icon className="w-5 h-5" />
       </div>
-      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-white transition-colors duration-fast ease-out">{label}</span>
+      <span className="text-xs font-semibold text-[#6B7280] group-hover:text-gray-100 transition-colors duration-fast ease-out">{label}</span>
     </Link>
   );
 }

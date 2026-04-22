@@ -16,7 +16,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-10">
           {/* Col 1 · Brand + Contacte */}
           <div className="lg:col-span-5 flex flex-col">
-            <h3 className="text-white text-xl font-bold mb-4 tracking-tight">
+            <h3 className="text-gray-100 text-xl font-bold mb-4 tracking-tight">
               Global Play 360
             </h3>
             <p className="text-sm leading-relaxed mb-8 max-w-md">
@@ -26,7 +26,7 @@ export default function Footer() {
             <div className="text-sm space-y-3">
               <a
                 href="mailto:hello@globalplay360.com"
-                className="flex items-center gap-3 hover:text-white transition-colors group"
+                className="flex items-center gap-3 hover:text-gray-100 transition-colors group"
               >
                 <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#0070F3]/10 border border-[#0070F3]/20 text-[#0070F3] group-hover:bg-[#0070F3]/20 transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
@@ -44,7 +44,7 @@ export default function Footer() {
 
           {/* Col 2 · Platform */}
           <div className="lg:col-span-2 lg:col-start-7">
-            <h4 className="text-white font-semibold mb-5 uppercase tracking-wider text-xs">
+            <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.col.platform', 'Plataforma')}
             </h4>
             <ul className="space-y-3 text-sm">
@@ -57,7 +57,7 @@ export default function Footer() {
 
           {/* Col 3 · Per a tu */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold mb-5 uppercase tracking-wider text-xs">
+            <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.col.forYou', 'Per a tu')}
             </h4>
             <ul className="space-y-3 text-sm">
@@ -80,7 +80,7 @@ export default function Footer() {
 
           {/* Col 4 · Legal & Support */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold mb-5 uppercase tracking-wider text-xs">
+            <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.legal')}
             </h4>
             <ul className="space-y-3 text-sm">
@@ -94,7 +94,7 @@ export default function Footer() {
       </section>
 
       {/* ───────── Bottom bar ───────── */}
-      <section className="border-t border-white/5 bg-[#010814]">
+      <section className="border-t border-gray-100/5 bg-[#010814]">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-xs text-[#8892B0]/80 text-center md:text-left">
             &copy; {currentYear} Global Play 360. {t('footer.rightsShort', 'Tots els drets reservats.')}
@@ -112,7 +112,7 @@ export default function Footer() {
               </span>
             </div>
 
-            <div className="h-4 w-px bg-white/10 hidden md:block" />
+            <div className="h-4 w-px bg-gray-100/10 hidden md:block" />
 
             <LanguageSelector />
           </div>
@@ -127,7 +127,7 @@ function FooterLink({ to, children }: { to: string; children: React.ReactNode })
     <li>
       <Link
         to={to}
-        className="inline-block text-[#8892B0] hover:text-white hover:translate-x-0.5 transition-all duration-fast ease-out"
+        className="inline-block text-[#8892B0] hover:text-gray-100 hover:translate-x-0.5 transition-all duration-fast ease-out"
       >
         {children}
       </Link>

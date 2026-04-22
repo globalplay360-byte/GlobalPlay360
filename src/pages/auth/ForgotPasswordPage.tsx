@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
             Recuperar Contrasenya
           </h2>
           <p className="mt-2 text-sm text-[#9CA3AF]">
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
                 id="email"
                 type="email"
                 required
-                className="w-full px-4 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-white focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+                className="w-full px-4 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-gray-100 focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Ex. joan@exemple.cat"
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
             </Button>
 
             <div className="text-center">
-              <Link to="/login" className="text-sm text-[#9CA3AF] hover:text-white transition-colors">
+              <Link to="/login" className="text-sm text-[#9CA3AF] hover:text-gray-100 transition-colors">
                 Recordes la contrasenya? <span className="text-[#3B82F6]">{t('forgotPassword.loginLink', 'Inicia sessió')}</span>
               </Link>
             </div>

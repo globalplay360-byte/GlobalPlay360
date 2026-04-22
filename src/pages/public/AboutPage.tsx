@@ -26,7 +26,7 @@ const AboutPage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-white overflow-hidden relative">
+    <div className="min-h-screen bg-[#0B1120] text-gray-100 overflow-hidden relative">
       {/* Estils d'animació injectats si volem el shine també aquí */}
       <style>{`
         @keyframes shine {
@@ -37,7 +37,7 @@ const AboutPage: React.FC = () => {
             120deg,
             #3B82F6 20%,
             #93C5FD 40%,
-            #FFFFFF 50%,
+            #F3F4F6 50%,
             #93C5FD 60%,
             #3B82F6 80%
           );
@@ -64,7 +64,7 @@ const AboutPage: React.FC = () => {
             {/* Title */}
             <motion.h1
               variants={fadeInUp}
-              className="text-3xl md:text-5xl lg:text-6xl font-medium leading-tight tracking-tighter text-white whitespace-normal md:whitespace-nowrap drop-shadow-xl"
+              className="text-3xl md:text-5xl lg:text-6xl font-medium leading-tight tracking-tighter text-gray-100 whitespace-normal md:whitespace-nowrap drop-shadow-xl"
             >
               {t('aboutPage.hero.titleL1', 'Revolutionizing the')} <br className="hidden md:block"/>
               <span className="font-bold animate-shine px-2 inline-block mt-2">
@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
             {/* Subtitle */}
             <motion.p
               variants={fadeInUp}
-              className="text-lg md:text-xl font-normal text-white/90 mb-10 max-w-[600px] mx-auto leading-relaxed drop-shadow-md"
+              className="text-lg md:text-xl font-normal text-gray-100/90 mb-10 max-w-[600px] mx-auto leading-relaxed drop-shadow-md"
             >
               {t('aboutPage.hero.subtitle', 'Global Play 360 is the premier platform connecting athletes, coaches, and sports organizations worldwide. Our mission is to democratize access to sports opportunities and empower professionals to reach their full potential.')}
             </motion.p>
@@ -85,10 +85,10 @@ const AboutPage: React.FC = () => {
               variants={fadeInUp}
               className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Link to="/register" className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-white px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+              <Link to="/register" className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-gray-100 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                 {t('aboutPage.hero.ctaPrimary', 'Get Started')}
               </Link>
-              <Link to="/" className="flex items-center justify-center gap-2 border border-white/20 hover:border-white/50 hover:bg-white/5 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
+              <Link to="/" className="flex items-center justify-center gap-2 border border-gray-100/20 hover:border-gray-100/50 hover:bg-gray-100/5 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
                 {t('aboutPage.hero.ctaSecondary', 'Back to Home')}
               </Link>
             </motion.div>
@@ -141,10 +141,10 @@ const AboutPage: React.FC = () => {
                   <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs md:text-sm mb-3 block">
                     {t('aboutPage.serve.kicker', 'Professional sports office')}
                   </span>
-                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-6 tracking-tighter">
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-100 mb-6 tracking-tighter">
                     {t('aboutPage.serve.title', 'Who We Serve')}
                   </h2>
-                  <p className="text-white/80 text-lg md:text-xl font-normal leading-relaxed max-w-2xl">
+                  <p className="text-gray-100/80 text-lg md:text-xl font-normal leading-relaxed max-w-2xl">
                     {t('aboutPage.serve.subtitle', 'Our platform is designed to meet the unique needs of every participant in the sports ecosystem.')}
                   </p>
                 </div>
@@ -162,8 +162,8 @@ const AboutPage: React.FC = () => {
                 {/* Glow del ratolí a la vora de la targeta */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#3B82F6]/0 via-[#3B82F6]/5 to-[#3B82F6]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <h3 className="text-xl md:text-2xl font-medium text-white mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.players.title', 'For Players')}</h3>
-                <p className="text-white/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
+                <h3 className="text-xl md:text-2xl font-medium text-gray-100 mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.players.title', 'For Players')}</h3>
+                <p className="text-gray-100/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
                   {t('aboutPage.serve.players.desc', 'Showcase your skills with a professional profile, find open trials, connect with clubs directly, and take the next big step in your sporting career.')}
                 </p>
               </motion.div>
@@ -176,8 +176,8 @@ const AboutPage: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#3B82F6]/0 via-[#3B82F6]/5 to-[#3B82F6]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <h3 className="text-xl md:text-2xl font-medium text-white mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.coaches.title', 'For Coaches')}</h3>
-                <p className="text-white/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
+                <h3 className="text-xl md:text-2xl font-medium text-gray-100 mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.coaches.title', 'For Coaches')}</h3>
+                <p className="text-gray-100/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
                   {t('aboutPage.serve.coaches.desc', 'Discover new coaching opportunities, build your professional network, and connect with organizations looking for your specific expertise and tactical vision.')}
                 </p>
               </motion.div>
@@ -190,8 +190,8 @@ const AboutPage: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#3B82F6]/0 via-[#3B82F6]/5 to-[#3B82F6]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <h3 className="text-xl md:text-2xl font-medium text-white mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.clubs.title', 'For Clubs')}</h3>
-                <p className="text-white/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
+                <h3 className="text-xl md:text-2xl font-medium text-gray-100 mb-4 relative z-10 tracking-tight">{t('aboutPage.serve.clubs.title', 'For Clubs')}</h3>
+                <p className="text-gray-100/70 leading-relaxed relative z-10 font-light text-sm md:text-base">
                   {t('aboutPage.serve.clubs.desc', 'Post open positions, scout verified talent globally, manage incoming applications efficiently, and build your championship-winning team.')}
                 </p>
               </motion.div>
@@ -251,7 +251,7 @@ function MilestonesSection() {
   ];
 
   return (
-    <section className="relative py-24 md:py-32 border-y border-white/5 bg-gradient-to-b from-[#0B1120] via-[#0A1628] to-[#0B1120]">
+    <section className="relative py-24 md:py-32 border-y border-gray-100/5 bg-gradient-to-b from-[#0B1120] via-[#0A1628] to-[#0B1120]">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
 
@@ -266,10 +266,10 @@ function MilestonesSection() {
           <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs mb-3 block">
             {t('aboutPage.milestones.kicker', 'What we stand for')}
           </span>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-gray-100 mb-4">
             {t('aboutPage.milestones.title', 'Built on strong foundations')}
           </h2>
-          <p className="text-white/70 text-base md:text-lg font-light">
+          <p className="text-gray-100/70 text-base md:text-lg font-light">
             {t('aboutPage.milestones.subtitle', 'No inflated metrics. Just the principles we refuse to compromise on — from day one.')}
           </p>
         </motion.div>
@@ -296,8 +296,8 @@ function MilestonesSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={p.iconPath} />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2.5 tracking-tight">{p.title}</h3>
-              <p className="text-white/65 leading-relaxed text-sm font-light">{p.desc}</p>
+              <h3 className="text-lg font-semibold text-gray-100 mb-2.5 tracking-tight">{p.title}</h3>
+              <p className="text-gray-100/65 leading-relaxed text-sm font-light">{p.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -339,7 +339,7 @@ function ArchitectureSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 relative bg-[#0A1020] border-y border-white/5">
+    <section className="py-24 md:py-32 relative bg-[#0A1020] border-y border-gray-100/5">
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#3B82F6]/5 blur-[100px] rounded-full pointer-events-none" />
 
       <SectionContainer className="relative">
@@ -353,10 +353,10 @@ function ArchitectureSection() {
           <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs mb-3 block">
             {t('aboutPage.arch.kicker', 'Under the hood')}
           </span>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-gray-100 mb-4">
             {t('aboutPage.arch.title', 'Architecture & Security')}
           </h2>
-          <p className="text-white/70 text-base md:text-lg font-light">
+          <p className="text-gray-100/70 text-base md:text-lg font-light">
             {t('aboutPage.arch.subtitle', 'We take infrastructure seriously so you can focus on sport.')}
           </p>
         </motion.div>
@@ -383,8 +383,8 @@ function ArchitectureSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={p.iconPath} />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3 tracking-tight">{p.title}</h3>
-              <p className="text-white/65 leading-relaxed text-sm md:text-base font-light">{p.desc}</p>
+              <h3 className="text-xl font-semibold text-gray-100 mb-3 tracking-tight">{p.title}</h3>
+              <p className="text-gray-100/65 leading-relaxed text-sm md:text-base font-light">{p.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -451,10 +451,10 @@ function RoadmapSection() {
           <span className="text-[#3B82F6] font-semibold tracking-widest uppercase text-xs mb-3 block">
             {t('aboutPage.roadmap.kicker', 'Radical transparency')}
           </span>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-gray-100 mb-4">
             {t('aboutPage.roadmap.title', 'Our public roadmap')}
           </h2>
-          <p className="text-white/70 text-base md:text-lg font-light">
+          <p className="text-gray-100/70 text-base md:text-lg font-light">
             {t('aboutPage.roadmap.subtitle', 'What we have shipped, what we are building and what is coming next.')}
           </p>
         </motion.div>
@@ -469,19 +469,19 @@ function RoadmapSection() {
               transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
               className="bg-[#111827] border border-[#1F2937] rounded-2xl p-6 lg:p-7"
             >
-              <div className="flex items-center gap-2.5 mb-6 pb-4 border-b border-white/5">
+              <div className="flex items-center gap-2.5 mb-6 pb-4 border-b border-gray-100/5">
                 <span
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ background: styles[col.status].dot, boxShadow: `0 0 12px ${styles[col.status].glow}` }}
                 />
-                <h3 className="text-white font-semibold tracking-tight text-sm uppercase">
+                <h3 className="text-gray-100 font-semibold tracking-tight text-sm uppercase">
                   {col.label}
                 </h3>
-                <span className="ml-auto text-white/40 text-xs tabular-nums">{col.items.length}</span>
+                <span className="ml-auto text-gray-100/40 text-xs tabular-nums">{col.items.length}</span>
               </div>
               <ul className="space-y-3">
                 {col.items.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-white/75 text-sm leading-relaxed">
+                  <li key={item} className="flex items-start gap-3 text-gray-100/75 text-sm leading-relaxed">
                     <span
                       className="w-1 h-1 rounded-full mt-2 flex-shrink-0"
                       style={{ background: styles[col.status].dot }}
@@ -533,10 +533,10 @@ function FoundingMembersSection() {
             {t('aboutPage.founding.badge', 'Founding Members · Free until July 1, 2026')}
           </span>
 
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-5">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-gray-100 mb-5">
             {t('aboutPage.founding.title', 'Be one of the first 100')}
           </h2>
-          <p className="text-white/75 text-base md:text-lg font-light mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-gray-100/75 text-base md:text-lg font-light mb-10 max-w-xl mx-auto leading-relaxed">
             {t('aboutPage.founding.subtitle', 'Join GlobalPlay360 as a Founding Member: unlimited Premium access, private roadmap input and early-bird pricing for life.')}
           </p>
 
@@ -547,7 +547,7 @@ function FoundingMembersSection() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t('aboutPage.founding.placeholder', 'Your email address')}
-              className="flex-1 bg-[#0A192F] border border-white/10 text-white placeholder:text-white/40 rounded-lg px-5 py-3 text-sm focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all"
+              className="flex-1 bg-[#0A192F] border border-gray-100/10 text-gray-100 placeholder:text-gray-100/40 rounded-lg px-5 py-3 text-sm focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all"
             />
             <button
               type="submit"
@@ -559,7 +559,7 @@ function FoundingMembersSection() {
             </button>
           </form>
 
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-gray-100/40">
             {t('aboutPage.founding.privacy', 'No spam. Unsubscribe anytime. Pure sports community.')}
           </p>
         </motion.div>
@@ -574,7 +574,7 @@ function FoundingMembersSection() {
 function ClosingContactSection() {
   const { t } = useTranslation();
   return (
-    <section className="relative py-28 md:py-36 border-t border-white/5 overflow-hidden">
+    <section className="relative py-28 md:py-36 border-t border-gray-100/5 overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 z-0 bg-[#0B1120]">
         <video
@@ -601,10 +601,10 @@ function ClosingContactSection() {
           transition={{ duration: 0.7 }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-2xl md:text-4xl font-medium tracking-tight text-white mb-5">
+          <h2 className="text-2xl md:text-4xl font-medium tracking-tight text-gray-100 mb-5">
             {t('aboutPage.closing.title', 'Partnerships, press or a bold idea?')}
           </h2>
-          <p className="text-white/80 mb-8 max-w-xl mx-auto font-light">
+          <p className="text-gray-100/80 mb-8 max-w-xl mx-auto font-light">
             {t('aboutPage.closing.subtitle', 'We read every email. If GlobalPlay360 resonates with your organization, let’s build something.')}
           </p>
           <a

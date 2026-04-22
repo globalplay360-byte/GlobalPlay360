@@ -105,7 +105,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-[#FFFFFF] py-12">
+    <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-gray-100 py-12">
       <div className="w-full max-w-lg bg-[#111827] rounded-xl border border-[#1F2937] shadow-xl p-6 sm:p-8 relative overflow-hidden">
         
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-50" />
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                   className={`py-2 px-3 text-sm font-medium rounded-lg border transition-all capitalize ${
                     role === r 
                       ? 'bg-[#3B82F6]/10 border-[#3B82F6] text-[#3B82F6]' 
-                      : 'bg-[#0F172A] border-[#1F2937] text-[#9CA3AF] hover:border-[#3B82F6]/50 hover:text-white'
+                      : 'bg-[#0F172A] border-[#1F2937] text-[#9CA3AF] hover:border-[#3B82F6]/50 hover:text-gray-100'
                   }`}
                 >
                   {t(`registerPage.roles.${r}`)}
@@ -153,7 +153,7 @@ export default function RegisterPage() {
               type="text" 
               value={displayName}
               onChange={(e) => { setDisplayName(e.target.value); if(status==='error') setStatus('idle'); }}
-              className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+              className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
               placeholder={t('registerPage.namePlaceholder')}
               disabled={status === 'loading' || status === 'success'}
             />
@@ -166,7 +166,7 @@ export default function RegisterPage() {
               type="email" 
               value={email}
               onChange={(e) => { setEmail(e.target.value); if(status==='error') setStatus('idle'); }}
-              className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+              className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
               placeholder={t('registerPage.emailPlaceholder')}
               disabled={status === 'loading' || status === 'success'}
             />
@@ -180,14 +180,14 @@ export default function RegisterPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); if(status==='error') setStatus('idle'); }}
-                className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+                className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
                 placeholder={t('registerPage.passwordPlaceholder')}
                 disabled={status === 'loading' || status === 'success'}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-white"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
               >
                 {showPassword ? (
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -227,14 +227,14 @@ export default function RegisterPage() {
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => { setConfirmPassword(e.target.value); if(status==='error') setStatus('idle'); }}
-                className="w-full bg-[#0F172A] border border-[#1F2937] text-white rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
+                className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
                 placeholder={t('registerPage.confirmPasswordPlaceholder')}
                 disabled={status === 'loading' || status === 'success'}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}    
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-white"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
               >
                 {showConfirmPassword ? (
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
@@ -268,11 +268,11 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={status === 'loading' || status === 'success'}
-            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-white font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-gray-100 font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
           >
             {status === 'loading' ? (
                <>
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -303,7 +303,7 @@ export default function RegisterPage() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={status === 'loading' || status === 'success'}
-            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"   
+            className="w-full bg-[#0F172A] hover:bg-[#1E293B] border border-[#1F2937] text-gray-100 font-medium rounded-lg px-4 py-2.5 transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"   
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
