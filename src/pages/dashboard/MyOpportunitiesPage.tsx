@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
+import { formatLocation } from '@/utils/location';
 
 export default function MyOpportunitiesPage() {
   const { user } = useAuth();
@@ -174,7 +175,7 @@ const formatDate = (dateString: string) => {
                 <div className="flex flex-wrap gap-2.5 text-sm text-[#9CA3AF] font-medium">
                   <span>{t(`sports.${opp.sport}`, opp.sport)}</span>
                   <span className="text-[#1F2937]">•</span>
-                  <span>{opp.location}</span>
+                  <span>{formatLocation(opp)}</span>
                   <span className="text-[#1F2937]">•</span>
                   <span className="capitalize">{opp.contractType.replace('-', ' ')}</span>
                   <span className="text-[#1F2937]">•</span>
@@ -230,6 +231,7 @@ const formatDate = (dateString: string) => {
     </div>
   );
 }
+
 
 
 

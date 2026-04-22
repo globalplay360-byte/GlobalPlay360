@@ -253,7 +253,9 @@
       "title": "Premium",
       "month": "/mes",
       "year": "/año",
-      "trial": "✓ 30 días de prueba gratuitos",      "saveToday": "Te ahorras {{amount}}€ hoy",      "desc": "Herramientas profesionales para acelerar tu carrera.",
+      "trial": "✓ 30 días de prueba gratuitos",
+      "saveToday": "Te ahorras {{amount}}€ hoy",
+      "desc": "Herramientas profesionales para acelerar tu carrera.",
       "features": {
         "f1": "Perfil destacado con vídeos",
         "f2": "Búsqueda ilimitada",
@@ -447,6 +449,11 @@
     "aboutMe": "Sobre mí",
     "emptyBio": "No hay biografía.",
     "sportsData": "Datos Deportivos",
+    "playerStats": "Estadísticas",
+    "positions": "Posiciones",
+    "contactInfo": "Contacto",
+    "socialNetworks": "Redes Sociales",
+    "joined": "Miembro desde",
     "position": "Posición",
     "height": "Altura",
     "weight": "Peso",
@@ -478,7 +485,13 @@
     "contactAndSocial": "Contacto y Redes",
     "viewHighlights": "Ver Highlights",
     "memberSince": "Miembro desde {{date}}",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "sport": "Deporte",
+    "country": "País",
+    "state": "Provincia / Estado",
+    "selectCountry": "Selecciona el país...",
+    "selectState": "Selecciona el estado...",
+    "selectCity": "Selecciona la ciudad..."
   },
   "applications": {
     "titleClub": "Candidaturas Recibidas",
@@ -590,7 +603,8 @@
     "contactClub": "Contactar Club",
     "aboutClub": "Sobre el Club",
     "club": "Club",
-    "viewFullProfile": "Ver Perfil Completo"
+    "viewFullProfile": "Ver Perfil Completo",
+    "ownOpportunity": "Esta es tu oportunidad."
   },
   "opportunities": {
     "errorLoading": "Error cargando oportunidades",
@@ -600,7 +614,7 @@
     "discoverOpps": "Descubre las últimas oportunidades alrededor del mundo.",
     "createOpportunity": "Crear Oportunidad",
     "filters": {
-      "all": "Todas",
+      "all": "Todos los deportes",
       "football": "Fútbol 11",
       "basketball": "Baloncesto",
       "proContracts": "Contratos Pro"
@@ -616,7 +630,8 @@
     "more": "más",
     "published": "Publicado:",
     "viewDetail": "Ver Detalle",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "clearFilters": "Limpiar Filtros"
   },
   "opportunityForm": {
     "restricted": "Acceso restringido",
@@ -667,9 +682,19 @@
       "salaryPlaceholder": "Ej: 15.000€/año + alojamiento",
       "locationPlaceholder": "Ej: Barcelona, España",
       "descPlaceholder": "Detalla las responsabilidades, el equipo, los objetivos, etc.",
-      "requirementsPlaceholder": "Ej: +2 años experiencia Profesional..."
+      "requirementsPlaceholder": "Ej: +2 años experiencia Profesional...",
+      "countryBase": "País",
+      "country": "País *",
+      "state": "Provincia / Estado",
+      "city": "Ciudad"
     },
-    "addBtn": "Añadir"
+    "addBtn": "Añadir",
+    "placeholders": {
+      "countryBase": "Buscar país...",
+      "country": "Buscar país...",
+      "state": "Selecciona estado...",
+      "city": "Selecciona ciudad..."
+    }
   },
   "premiumLock": {
     "defaultTitle": "Esto es contenido Premium",
@@ -760,11 +785,14 @@
       "foundedYear": "Año de fundación",
       "website": "Web oficial",
       "venueName": "Instalación principal",
-      "venueCapacity": "Aforo"
+      "venueCapacity": "Aforo",
+      "state": "Provincia / Estado",
+      "city": "Ciudad",
+      "currentClub": "Equipo Actual / Club"
     },
     "placeholders": {
       "displayName": "Tu nombre público",
-      "country": "Ej: España",
+      "country": "Buscar país...",
       "bio": "Comparte tu historia con clubes y scouts...",
       "phone": "+34 600 000 000",
       "instagram": "@tucuenta",
@@ -775,7 +803,10 @@
       "foundedYear": "Ej: 1899",
       "website": "https://tuclub.com",
       "venueName": "Ej: Estadio Municipal",
-      "venueCapacity": "Ej: 5000"
+      "venueCapacity": "Ej: 5000",
+      "state": "Selecciona estado...",
+      "city": "Selecciona ciudad...",
+      "currentClub": "Ej: FC Barcelona"
     },
     "hints": {
       "bio": "Describe tu trayectoria, objetivos y experiencia.",
@@ -788,7 +819,8 @@
       "foundedYear": "Año en que se fundó el club.",
       "website": "URL pública del club.",
       "venueName": "Nombre del estadio, pabellón o complejo deportivo.",
-      "venueCapacity": "Capacidad de espectadores de la instalación."
+      "venueCapacity": "Capacidad de espectadores de la instalación.",
+      "currentClub": "¿En qué equipo juegas actualmente? (Opcional)"
     }
   },
   "legal": {
@@ -798,9 +830,15 @@
       "title": "Documento en revisión",
       "body": "Este texto es un borrador basado en plantillas estándar del RGPD y la LSSI. No sustituye el asesoramiento legal profesional. Antes del lanzamiento en producción, este contenido debe ser revisado y adaptado por un abogado especialista."
     },
-    "privacy": { "title": "Política de privacidad" },
-    "terms": { "title": "Condiciones de uso" },
-    "cookies": { "title": "Política de cookies" }
+    "privacy": {
+      "title": "Política de privacidad"
+    },
+    "terms": {
+      "title": "Condiciones de uso"
+    },
+    "cookies": {
+      "title": "Política de cookies"
+    }
   },
   "contact": {
     "title": "Hablemos",
@@ -822,6 +860,14 @@
       "pricing": "Planes y precios",
       "privacy": "Privacidad",
       "terms": "Condiciones"
+    },
+    "publicProfile": {
+      "lockedTitle": "Estadísticas y Contacto Protegidos",
+      "lockedDesc": "Los usuarios del Plan Free no tienen acceso completo a los perfiles de otros usuarios. Pásate a Premium para desbloquear sus estadísticas y abrir un chat directo.",
+      "hideDetails": "Datos de contacto ocultos para el Plan Free",
+      "notFound": "Perfil no encontrado",
+      "error": "Error cargando el perfil",
+      "sendMessage": "Enviar Mensaje"
     }
   }
 }

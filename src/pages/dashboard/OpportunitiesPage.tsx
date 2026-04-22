@@ -1,16 +1,85 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import Select from 'react-select';
+import { Country, State, City } from 'country-state-city';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
+import { formatLocation } from '@/utils/location';
+
+const darkSelectStyles = {
+  control: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: '#111827',
+    borderColor: state.isFocused ? '#3B82F6' : '#374151',
+    color: '#F3F4F6',
+    boxShadow: state.isFocused ? '0 0 0 1px #3B82F6' : 'none',
+    '&:hover': {
+      borderColor: '#4B5563'
+    },
+    minHeight: '42px',
+  }),
+  menu: (base: any) => ({
+    ...base,
+    backgroundColor: '#1F2937',
+    border: '1px solid #374151',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+    zIndex: 50,
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected ? '#3B82F6' : state.isFocused ? '#374151' : 'transparent',
+    color: state.isSelected ? '#FFFFFF' : '#F3F4F6',
+    cursor: 'pointer',
+    '&:active': {
+      backgroundColor: '#2563EB'
+    },
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: '#F3F4F6',
+  }),
+  placeholder: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+  }),
+  input: (base: any) => ({
+    ...base,
+    color: '#F3F4F6',
+  }),
+  indicatorSeparator: (base: any) => ({
+    ...base,
+    backgroundColor: '#374151',
+  }),
+  dropdownIndicator: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+    '&:hover': {
+      color: '#D1D5DB'
+    }
+  }),
+};
+
+const SPORT_OPTIONS = [
+  'football',
+  'basketball',
+  'futsal',
+  'volleyball',
+  'handball',
+  'waterpolo',
+  'tennis',
+  'rugby',
+  'american_football',
+  'hockey',
+  'other'
+];
 
 export default function OpportunitiesPage() {
   const { user } = useAuth();
@@ -20,6 +89,34 @@ export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [filters, setFilters] = useState({
+    sport: '',
+    country: '',
+    state: '',
+    city: ''
+  });
+
+  const countryOptions = useMemo(() => Country.getAllCountries().map(c => ({ value: c.isoCode, label: c.name })), []);
+  const stateOptions = useMemo(() => filters.country ? State.getStatesOfCountry(filters.country).map(s => ({ value: s.isoCode, label: s.name })) : [], [filters.country]);
+  const cityOptions = useMemo(() => filters.country && filters.state ? City.getCitiesOfState(filters.country, filters.state).map(c => ({ value: c.name, label: c.name })) : [], [filters.country, filters.state]);
+
+  const sportOptions = useMemo(() => {
+    return [
+      { value: '', label: t('opportunities.filters.all') },
+      ...SPORT_OPTIONS.map(s => ({ value: s, label: t(`profile.sports.${s}`) || s }))
+    ];
+  }, [t]);
+
+  const filteredOpportunities = useMemo(() => {
+    return opportunities.filter(opp => {
+      if (filters.sport && opp.sport !== filters.sport) return false;
+      if (filters.country && opp.country !== filters.country) return false;
+      if (filters.state && opp.state !== filters.state) return false;
+      if (filters.city && opp.city !== filters.city) return false;
+      return true;
+    });
+  }, [opportunities, filters]);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,24 +194,79 @@ export default function OpportunitiesPage() {
         }
       />
 
-      {/* Filters (placeholder) */}
-      <div className="bg-[#111827] border border-[#1F2937] p-4 rounded-xl flex gap-4 overflow-x-auto shadow-sm">
-        <Badge variant="primary" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out active:scale-[0.98] hover:shadow-md hover:shadow-[#3B82F6]/10">{t('opportunities.filters.all')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.football')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.basketball')}</Badge>
-        <Badge variant="default" className="cursor-pointer px-4 py-2 text-sm transition-all duration-fast ease-out hover:bg-[#1F2937] active:scale-[0.98]">{t('opportunities.filters.proContracts')}</Badge>
+      {/* Filters */}
+      <div className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 p-4 rounded-xl flex flex-col md:flex-row gap-4 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] items-end z-10">
+        <div className="flex-1 w-full relative z-40">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.sport')}</label>
+          <Select
+            {...{ id: 'sport-select', instanceId: 'sport-select' }}
+            styles={darkSelectStyles}
+            options={sportOptions}
+            value={sportOptions.find(o => o.value === filters.sport) || sportOptions[0]}
+            onChange={(selected: any) => setFilters(f => ({ ...f, sport: selected?.value || '' }))}
+            isClearable={false}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-30">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.country')}</label>
+          <Select
+            {...{ id: 'country-select', instanceId: 'country-select' }}
+            styles={darkSelectStyles}
+            options={countryOptions}
+            value={countryOptions.find(o => o.value === filters.country) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, country: selected?.value || '', state: '', city: '' }))}
+            isClearable
+            placeholder={t('profile.selectCountry')}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-20">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.state')}</label>
+          <Select
+            {...{ id: 'state-select', instanceId: 'state-select' }}
+            styles={darkSelectStyles}
+            options={stateOptions}
+            value={stateOptions.find(o => o.value === filters.state) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, state: selected?.value || '', city: '' }))}
+            isClearable
+            isDisabled={!filters.country}
+            placeholder={t('profile.selectState')}
+          />
+        </div>
+        <div className="flex-1 w-full relative z-10">
+          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.city')}</label>
+          <Select
+            {...{ id: 'city-select', instanceId: 'city-select' }}
+            styles={darkSelectStyles}
+            options={cityOptions}
+            value={cityOptions.find(o => o.value === filters.city) || null}
+            onChange={(selected: any) => setFilters(f => ({ ...f, city: selected?.value || '' }))}
+            isClearable
+            isDisabled={!filters.state}
+            placeholder={t('profile.selectCity')}
+          />
+        </div>
+        <div className="w-full md:w-auto shrink-0 z-0">
+          <Button 
+            variant="outline" 
+            onClick={() => setFilters({ sport: '', country: '', state: '', city: '' })}
+            className="w-full h-[42px] border-[#374151] hover:bg-[#1F2937]"
+            disabled={!filters.sport && !filters.country && !filters.state && !filters.city}
+          >
+            {t('opportunities.clearFilters')}
+          </Button>
+        </div>
       </div>
 
       {/* ── Loading state ──────────────────────────────── */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-64 rounded-xl bg-[#111827] border border-[#1F2937] animate-pulse" />
+            <div key={n} className="h-72 rounded-2xl bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/60 animate-pulse" />
           ))}
         </div>
 
       /* ── Empty state ───────────────────────────────── */
-      ) : opportunities.length === 0 ? (
+      ) : filteredOpportunities.length === 0 ? (
         <EmptyState
           title={t('opportunities.emptyTitle')}
           description={t('opportunities.emptyDesc')}
@@ -127,66 +279,102 @@ export default function OpportunitiesPage() {
 
       /* ── Data state ────────────────────────────────── */
       ) : (
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6"
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-5"
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
-          {opportunities.map((opp) => (
-            <motion.div key={opp.id} variants={itemVariants}>
-              <Card className="flex flex-col hover:border-[#3B82F6]/50 group h-full">
-                <CardHeader className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-100 group-hover:text-[#3B82F6] transition-colors duration-base ease-out">{opp.title}</h3>
-                  </div>
-                  <Badge variant={opp.status === 'open' ? 'success' : 'default'} className="uppercase text-[10px] tracking-wider font-semibold">
-                    {t(`opportunities.status.${opp.status}`)}
-                  </Badge>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="flex gap-2 mb-4 text-xs font-medium text-[#9CA3AF]">
-                    <div className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-blue-500/50" />
-                      {opp.sport}
-                    </div>
-                    <span>•</span>
-                    <div className="flex items-center gap-1">{opp.location}</div>
-                    <span>•</span>
-                    <div className="capitalize">{opp.contractType.replace('-', ' ')}</div>
-                  </div>
+          {filteredOpportunities.map((opp) => (
+            <motion.article
+              key={opp.id}
+              variants={itemVariants}
+              className="relative rounded-2xl border border-[#2A3447]/70 bg-gradient-to-b from-[#1A2235] to-[#141C2E] p-5 sm:p-6 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] hover:border-[#3B82F6]/40 hover:-translate-y-0.5 hover:shadow-[0_1px_0_0_rgba(243,244,246,0.06)_inset,0_20px_50px_-20px_rgba(59,130,246,0.35)] transition-all duration-base ease-out group flex flex-col"
+            >
+              {/* Inner top highlight */}
+              <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
 
-                  <p className="text-[#6B7280] text-sm line-clamp-3 mb-6">{opp.description}</p>
+              {/* Header: title + status */}
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold text-gray-100/90 tracking-tight leading-snug line-clamp-2 flex-1 group-hover:text-gray-100 transition-colors duration-fast">
+                  {opp.title}
+                </h3>
+                <Badge
+                  variant={opp.status === 'open' ? 'success' : 'default'}
+                  className="uppercase text-[10px] tracking-wider font-semibold shrink-0"
+                >
+                  {t(`opportunities.status.${opp.status}`)}
+                </Badge>
+              </div>
 
-                  <div className="space-y-3 mt-auto">
-                    <h4 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wide">{t('opportunities.keyRequirements')}</h4>
-                    <ul className="flex flex-wrap gap-2">
-                      {opp.requirements.slice(0, 3).map((req, idx) => (
-                        <Badge key={idx} variant="default" className="text-[11px] bg-[#1F2937]/50 border-[#374151]/50">{req}</Badge>
-                      ))}
-                      {opp.requirements.length > 3 && (
-                        <span className="text-xs text-[#6B7280] items-center flex">+{opp.requirements.length - 3} {t('opportunities.more')}</span>
-                      )}
-                    </ul>
-                  </div>
-                </CardContent>
-                <CardFooter className="justify-between mt-auto">
-                  <div className="text-xs text-[#6B7280] font-medium">
-                    {t('opportunities.published')} {formatDate(opp.createdAt)}
-                  </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" size="sm" className="transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                      {t('opportunities.viewDetail')}
-                    </Button>
-                    {user?.role !== 'club' && (
-                      <Button variant="primary" size="sm" className="shadow-sm hover:shadow-[#3B82F6]/20 transition-all duration-fast active:scale-[0.98]" onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}>
-                        {t('opportunities.apply')}
-                      </Button>
+              {/* Meta pills */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12.5px] text-[#9CA3AF] mb-4">
+                <span className="capitalize">{opp.sport}</span>
+                <span className="text-[#2A3447]">·</span>
+                <span>{formatLocation(opp)}</span>
+                <span className="text-[#2A3447]">·</span>
+                <span className="capitalize">{opp.contractType.replace('-', ' ')}</span>
+              </div>
+
+              {/* Description */}
+              <p className="text-[#9CA3AF] text-sm leading-relaxed line-clamp-3 mb-5">
+                {opp.description}
+              </p>
+
+              {/* Requirements */}
+              {opp.requirements.length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#6B7280] mb-2">
+                    {t('opportunities.keyRequirements')}
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {opp.requirements.slice(0, 3).map((req, idx) => (
+                      <Badge
+                        key={idx}
+                        variant="default"
+                        className="text-[11px] bg-[#1F2937]/60 border-[#2A3447]/70 text-[#9CA3AF]"
+                      >
+                        {req}
+                      </Badge>
+                    ))}
+                    {opp.requirements.length > 3 && (
+                      <span className="text-[11px] text-[#6B7280] items-center flex">
+                        +{opp.requirements.length - 3} {t('opportunities.more')}
+                      </span>
                     )}
-                  </div>
-                </CardFooter>
-              </Card>
-            </motion.div>
+                  </ul>
+                </div>
+              )}
+
+              {/* Spacer pushes footer to bottom */}
+              <div className="flex-1" />
+
+              {/* Divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#2A3447]/70 to-transparent mb-4" />
+
+              {/* Footer */}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#6B7280]">
+                  {t('opportunities.published')} · {formatDate(opp.createdAt)}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}
+                    className="inline-flex items-center px-3.5 py-2 text-[13px] font-medium tracking-wide text-gray-200 bg-[#1F2937]/40 border border-[#1F2937] hover:bg-[#1F2937]/80 hover:border-[#374151] rounded-lg transition-all duration-fast active:scale-[0.98]"
+                  >
+                    {t('opportunities.viewDetail')}
+                  </button>
+                  {user?.role !== 'club' && (
+                    <button
+                      onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}
+                      className="inline-flex items-center px-3.5 py-2 text-[13px] font-semibold tracking-wide text-[#0B1220] bg-[#EAB308] hover:bg-[#F5C518] rounded-lg shadow-sm hover:shadow-[0_8px_20px_-10px_rgba(234,179,8,0.55)] transition-all duration-base active:scale-[0.98]"
+                    >
+                      {t('opportunities.apply')}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.article>
           ))}
         </motion.div>
       )}

@@ -19,22 +19,23 @@
 
 ## 🧩 Setup previ
 
-- [ ] `npm install` net i sense warnings crítics.
-- [ ] `npm run dev` arrenca sense errors a consola.
-- [ ] Verificar que Firestore apunta a projecte de **test** (no live) amb dades de prova.
-- [ ] Tenir 3 comptes de prova (Gmail + alias): 1 player, 1 coach, 1 club.
-- [ ] Tenir targeta test Stripe `4242 4242 4242 4242` preparada.
+- [x] `npm install` net i sense warnings crítics.
+- [x] `npm run dev` arrenca sense errors a consola.
+- [x] Verificar que Firestore apunta a projecte de **test** (no live) amb dades de prova.
+- [x] Tenir 3 comptes de prova (Gmail + alias): 1 player, 1 coach, 1 club.
+- [x] Tenir targeta test Stripe `4242 4242 4242 4242` preparada.
 
 ---
 
 ## 👤 Bloc 1 — Fluxos per rol
 
 ### 1.1 Player (Free)
-- [ ] Registre nou amb email + password → rebuda email de verificació.
-- [ ] Verificar email amb `/auth/action` → entra al dashboard.
-- [ ] Onboarding: completar perfil (displayName, bio, country, esport, posició).
-- [ ] Pujar avatar a Storage — es veu immediatament al Navbar/Topbar.
-- [ ] Editar perfil amb camps d'esport específics (e.g. futbol: posició, peu preferit).
+
+- [x] Registre nou amb email + password → rebuda email de verificació.
+- [x] Verificar email amb `/auth/action` → entra al dashboard.
+- [x] Onboarding: completar perfil (displayName, bio, country, esport, posició).
+- [x] Pujar avatar a Storage — es veu immediatament al Navbar/Topbar.
+- [x] Editar perfil amb camps d'esport específics (e.g. futbol: posició, peu preferit).
 - [ ] `/dashboard/opportunities` — veure marketplace d'ofertes obertes.
 - [ ] Filtrar per esport, ubicació, tipus de contracte.
 - [ ] Veure detall d'una oferta (`/dashboard/opportunities/:id`).
@@ -43,6 +44,7 @@
 - [ ] Intentar aplicar a una segona oferta sent Free → **paywall** apareix (límit Free).
 
 ### 1.2 Coach (Free)
+
 - [ ] Registre amb rol "Coach" seleccionat.
 - [ ] Onboarding: camps coach (`experienceYears`, `specialization`, `certifications`) — **verificar que ja NO apareix "Secció Coach en desenvolupament"**.
 - [ ] Desar → perfil actualitza a Firestore correctament.
@@ -50,6 +52,7 @@
 - [ ] Verificar que xat amb club només s'obre si Premium (paywall).
 
 ### 1.3 Club (Free inicial)
+
 - [ ] Registre amb rol "Club".
 - [ ] Onboarding: camps club (`foundedYear`, `website`, `venueName`, `venueCapacity`) — **verificar que ja NO apareix "Secció Club en desenvolupament"**.
 - [ ] Crear nova oportunitat (`/dashboard/opportunities/new`) — omplir tots els camps.
@@ -60,6 +63,7 @@
 - [ ] **Xat amb candidat**: intentar obrir → paywall si Free.
 
 ### 1.4 UX Club — verificació visual (ex-fixes UX)
+
 - [ ] A "Les Meves Ofertes", clicar "Veure" en una oferta → el botó "Tornar" a detail porta a `/dashboard/opportunities/mine` (NO al marketplace general).
 - [ ] Hover al botó "Tancar" mostra tooltip "Tancar: deixa de ser visible".
 - [ ] Hover al botó "Reobrir" mostra tooltip "Reobrir: torna a ser visible".
@@ -86,23 +90,28 @@
 ## 💰 Bloc 3 — Paywalls Free vs Premium vs Trial
 
 ### 3.1 Usuari Free
+
 - [ ] Aplicar a +1 oferta (segons límit Free) → paywall amb CTA "Upgrade a Premium".
 - [ ] Intentar obrir xat amb club → `PremiumLockCard` visible.
-- [ ] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
+- [x] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
+- [x] **Perfils Públics**: Les rutes `/dashboard/profile/:id` mostren la fitxa sense editar.
 
 ### 3.2 Trial 30 dies
+
 - [ ] Iniciar trial des de `/pricing` amb card test.
 - [ ] A `/dashboard/billing` veig "Trial actiu — queden 30 dies".
 - [ ] Durant trial puc fer totes les accions Premium (xat, aplicacions il·limitades).
 - [ ] Banner visible al dashboard indicant trial.
 
 ### 3.3 Premium actiu
+
 - [ ] Post-trial o pagament directe → plan `premium` a Firestore.
 - [ ] Xat funciona sense paywall, temps real.
 - [ ] Aplicacions il·limitades.
 - [ ] Accés a `/dashboard/billing` amb Customer Portal funcional.
 
 ### 3.4 Cancel·lació
+
 - [ ] Cancel·lar subscripció des de Customer Portal.
 - [ ] Banner "La teva subscripció es cancel·larà el DD/MM" apareix.
 - [ ] Accés Premium manté fins al final del període de facturació.
@@ -175,6 +184,7 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 > Afegeix aquí els bugs a mesura que els trobis. Formata com:
 >
 > ### Bug #N — [🔴/🟠/🟡] Títol curt
+>
 > - **Rol:** player / coach / club / admin / públic
 > - **Plan:** free / trial / premium / n/a
 > - **URL:** `/ruta/afectada`
@@ -191,10 +201,10 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 Quan hagis completat el QA, omple aquest resum:
 
-- **Total items validats:** ___ / ___
-- **Blockers trobats:** ___
-- **Majors:** ___
-- **Minors:** ___
+- **Total items validats:** **_ / _**
+- **Blockers trobats:** \_\_\_
+- **Majors:** \_\_\_
+- **Minors:** \_\_\_
 - **Aptes per desplegar a producció:** ☐ Sí / ☐ Amb reserves / ☐ No
 
-**Signat:** Anna Borràs · **Data:** ______
+**Signat:** Anna Borràs · **Data:** **\_\_**

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import EmptyState from '@/components/ui/EmptyState';
+import { formatLocation } from '@/utils/location';
 import {
   ArrowLeftIcon,
   MapPinIcon,
@@ -33,7 +34,7 @@ export default function OpportunityDetailPage() {
     if (from === 'mine') return { url: '/dashboard/opportunities/mine', label: t('opportunityDetail.backMine') };
     if (from === 'marketplace') return { url: '/dashboard/opportunities', label: t('opportunityDetail.backMarketplace') };
     // Fallback per accés directe per URL: decidim pel rol
-    return user?.role === t('opportunityDetail.club')
+    return user?.role === 'club'
       ? { url: '/dashboard/opportunities/mine', label: t('opportunityDetail.backMine') }
       : { url: '/dashboard/opportunities', label: t('opportunityDetail.backMarketplace') };
   })();
@@ -215,7 +216,7 @@ const handleMessage = async () => {
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
                   <MapPinIcon className="w-3.5 h-3.5 mr-1" /> {t("opportunityDetail.location")}
                 </div>
-                <div className="font-medium text-gray-100">{opportunity.location}</div>
+                <div className="font-medium text-gray-100">{formatLocation(opportunity)}</div>
               </div>
               <div>
                 <div className="text-[#6B7280] text-xs uppercase tracking-wider mb-1 flex items-center">
@@ -239,7 +240,7 @@ const handleMessage = async () => {
 
             {/* Description */}
             <div className="mb-10">
-              <h2 className="text-xl font-medium text-gray-100/90 tracking-normal mb-4">Sobre l'Oportunitat</h2>
+              <h2 className="text-xl font-medium text-gray-100/90 tracking-normal mb-4">{t('opportunityDetail.aboutOpp')}</h2>
               <div className="text-sm text-[#9CA3AF] leading-relaxed space-y-4 whitespace-pre-wrap">
                 {opportunity.description}
               </div>
@@ -266,9 +267,15 @@ const handleMessage = async () => {
           <Card className="border-[#3B82F6]/30 shadow-lg shadow-[#3B82F6]/10 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[#3B82F6]/5 to-transparent pointer-events-none" />
             <CardContent className="p-6 sm:p-8 relative z-10">
-              {user?.role === t('opportunityDetail.club') ? (
+              {user?.uid === opportunity.clubId ? (
                 <div className="text-center text-[#9CA3AF] p-4 text-sm font-medium">
-                  Els clubs no poden aplicar a oportunitats.
+                  {t('opportunityDetail.ownOpportunity')}
+                </div>
+              ) : user?.role === 'club' ? (
+                <div className="text-center p-4 bg-transparent border border-[#3B82F6]/20 rounded-lg">
+                  <span className="text-[#3B82F6] font-semibold text-sm tracking-wide">
+                    {t('opportunityDetail.clubCannotApply', 'Els clubs no poden aplicar a oportunitats.')}
+                  </span>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -318,8 +325,8 @@ const handleMessage = async () => {
               </div>
             </CardContent>
             <CardFooter className="pt-0 pb-6 px-6">
-              <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast ease-out active:scale-[0.98]">
-                Veure Perfil Complet
+              <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast" onClick={() => navigate(`/dashboard/profile/${opportunity.clubId}`)}>
+                {t('opportunities.viewFullProfile', 'Veure Perfil Complet')}
               </Button>
             </CardFooter>
           </Card>
@@ -328,5 +335,7 @@ const handleMessage = async () => {
     </div>
   );
 }
+
+
 
 

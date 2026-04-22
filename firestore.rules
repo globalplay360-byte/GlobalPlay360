@@ -37,7 +37,7 @@ service cloud.firestore {
                     && request.resource.data.clubId == resource.data.clubId
                     && request.resource.data.userId == resource.data.userId
                     && request.resource.data.opportunityId == resource.data.opportunityId;
-      allow delete: if false;
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == resource.data.clubId);
     }
 
     // ── CONVERSATIONS (Missatgeria) ────────────────────────

@@ -34,6 +34,7 @@ import ApplicationsPage from './pages/dashboard/ApplicationsPage';
 import MessagesPage from './pages/dashboard/MessagesPage';
 import MessageDetailPage from './pages/dashboard/MessageDetailPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
+import PublicProfilePage from './pages/dashboard/PublicProfilePage';
 import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
 import BillingPage from './pages/dashboard/BillingPage';
 
@@ -71,6 +72,7 @@ function App() {
               <Route index element={<OverviewPage />} />
               {/* Profile Route complet */}
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/:id" element={<PublicProfilePage />} />
 
               {/* Oportunitats niades clares */}
               <Route path="opportunities">
