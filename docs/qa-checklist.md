@@ -95,6 +95,7 @@
 - [ ] Intentar obrir xat amb club → `PremiumLockCard` visible.
 - [x] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
 - [x] **Perfils Públics**: Les rutes `/dashboard/profile/:id` mostren la fitxa sense editar.
+- [ ] **S6-T5 Free intenta funcionalitats Premium**: ❌ BUG. La UI aplica paywall a `MessagesPage`, `MessageDetailPage` i `ProfileView`, però el backend no garanteix Premium. `conversations/{id}` i `messages/{id}` només validen `participants`, no `stripeRole/plan`; i `users/{uid}` permet lectura a qualsevol usuari autenticat, de manera que el detall de perfil es continua exposant via Firestore. Cal defense in depth real a rules/model de dades.
 
 ### 3.2 Trial 30 dies
 
@@ -149,11 +150,11 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 - [x] **S6-T1 Club NO pot editar `opportunity` d'un altre Club**: UI bloqueja (EmptyState cadenat) + Firestore rules llancen `permission-denied`. Verificat al Playground (`update /opportunities/{id}` amb UID Club A → DENY). ✅ Doble capa confirmada (2026-04-23)
 - [x] **S6-T2 Club NO pot eliminar `opportunity` aliena**: Playground `delete /opportunities/{id}` amb UID Club A → DENY. ✅ (2026-04-23)
 - [x] **S6-T3 Usuari aliè NO pot llegir `application`**: Regla endurita de `allow read: if true` → `if userId || clubId`. Playground `get /applications/{id}` amb UID aliè → DENY. ✅ Fix desplegat (2026-04-23)
+- [x] **S6-T4 Usuari no participant NO pot llegir `messages` d'una conversa aliena**: Playground `get /conversations/cuU7TzI9mi44YMmNy05n/messages/F7vRRoJtlN8AK2xJnRzC` amb UID aliè → DENY. ✅ La regla comprova `participants` del document pare `conversations/{conversationId}` (2026-04-23)
 - [ ] Usuari NO autenticat NO pot llegir `users/{uid}` (excepte camps públics si aplica).
 - [ ] Usuari Free NO pot crear més de N aplicacions (si la regla ho comprova).
 - [ ] Player NO pot canviar el seu propi `role` o `plan` (només admin/cloud function).
 - [ ] Club NO pot crear oportunitats si el seu `role` no és `club`.
-- [ ] Missatges (`messages`) només llegibles pels participants del xat.
 
 ---
 
