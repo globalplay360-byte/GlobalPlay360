@@ -95,12 +95,14 @@
 - [ ] Intentar obrir xat amb club → `PremiumLockCard` visible.
 - [x] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
 - [x] **Perfils Públics**: Les rutes `/dashboard/profile/:id` mostren la fitxa sense editar.
-- [x] **S6-T5 Free intenta funcionalitats Premium (Missatgeria)**: ✅ PASS backend. Afegit `hasPremium()` a `firestore.rules` que llegeix la custom claim `stripeRole` (escrita per `firestore-stripe-payments`). Regles noves a `conversations`:
-  - `read` metadata: només participant (preserva el Teaser Paywall UX — la llista i el badge `unreadCount` continuen funcionant per a Free).
-  - `create` / `update`: participant + `hasPremium()`.
-  - `messages/{id}` `read` i `write`: participant + `hasPremium()` (protecció total del contingut).
-  A `AuthContext`, afegit force-refresh del JWT (`getIdToken(true)`) quan `sub.status` canvia, perquè la claim propagui immediatament després d'un checkout sense requerir logout/login. Validat via Firestore Rules Playground: Free amb `stripeRole` absent → DENY a `messages/*` i a `conversations` create/update; Premium amb `stripeRole:'premium'` → ALLOW.
-- [ ] **S6-T5 Perfils Premium (deute tècnic)**: ⚠️ DIFERIT. `users/{uid}` permet `read: if request.auth != null` perquè els camps públics (nom, rol, bio, avatar) i privats (email, telèfon, vídeos, stats) viuen al mateix document, i Firestore rules no poden fer ocultació parcial de camps. La UI sí que amaga els camps premium a `ProfileView`, però un atacant amb el SDK de Firestore pot llegir tot el document. Fix correcte: separar camps sensibles a subcolecció `users/{uid}/private/profile` i protegir-la amb `hasPremium()`. Documentat a `docs/TODO.md` com a millora post-MVP.
+- [x] **S6-T5 Free intenta funcionalitats Premium**: ✅ **PASS complet** (backend + UI). Validat amb suite automatitzada `tests/rules-s6-t5.mjs` (10/10 assertions contra emulador Firestore). Implementació:
+  - **`hasPremium()` helper a `firestore.rules`** que llegeix la custom claim `stripeRole` (escrita per l'extensió `firestore-stripe-payments` quan `status='active'` o `trialing'`).
+  - **Conversations**: `read` metadata només participant (preserva Teaser Paywall UX); `create` / `update` requereixen participant + `hasPremium()`.
+  - **Messages subcollection**: `read` i `write` requereixen participant + `hasPremium()` (protecció total del contingut del xat).
+  - **Schema split del perfil**: camps PII (`email`, `phone`, `instagram`, `youtubeVideoUrl`, `dateOfBirth`) mòguts a subcol·lecció `users/{uid}/private/profile` amb rule pròpia: `allow read: if owner || hasPremium()`. Free stranger rep DENY, Owner i Premium reben ALLOW.
+  - **MigraciÓ lazy**: `migrateLegacyPrivateFields()` detecta camps sensibles a documents `users/{uid}` antics i els mou automàticament a la subcol·lecció en carregar el perfil del propietari (silent, no bloqueja flux).
+  - **`AuthContext`**: force-refresh del JWT (`getIdToken(true)`) quan `sub.status` canvia → la claim propaga immediatament després d'un checkout sense requerir logout/login.
+  - **Test suite reproducible**: `firebase emulators:exec --only firestore "node tests/rules-s6-t5.mjs"` retorna 10/10 PASS.
 
 ### 3.2 Trial 30 dies
 

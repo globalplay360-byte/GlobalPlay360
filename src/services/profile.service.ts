@@ -1,11 +1,11 @@
-import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, setDoc, serverTimestamp, getDoc, deleteField } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './firebase';
-import type { User } from '@/types';
+import { PRIVATE_PROFILE_KEYS, type User, type UserPrivate } from '@/types';
 
 /**
  * Fields that can be mutated from the Profile screen.
- * Explicitly excludes auth/billing fields to prevent accidental overwrites.    
+ * Explicitly excludes auth/billing fields to prevent accidental overwrites.
  */
 export type ProfileUpdate = Partial<
   Omit<
@@ -21,12 +21,89 @@ export type ProfileUpdate = Partial<
   >
 >;
 
-/** Update the current user's profile document in Firestore. */
+/**
+ * Update the current user's profile document in Firestore.
+ * Auto-split: camps sensibles (PII/Premium) van a `users/{uid}/private/profile`,
+ * la resta al doc públic `users/{uid}`.
+ */
 export async function updateUserProfile(uid: string, data: ProfileUpdate): Promise<void> {
-  await updateDoc(doc(db, 'users', uid), {
-    ...data,
-    _updatedAt: serverTimestamp(),
-  });
+  const publicUpdate: Record<string, unknown> = {};
+  const privateUpdate: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(data)) {
+    if ((PRIVATE_PROFILE_KEYS as readonly string[]).includes(key)) {
+      privateUpdate[key] = value;
+    } else {
+      publicUpdate[key] = value;
+    }
+  }
+
+  const writes: Promise<unknown>[] = [];
+
+  if (Object.keys(publicUpdate).length > 0) {
+    writes.push(
+      updateDoc(doc(db, 'users', uid), {
+        ...publicUpdate,
+        _updatedAt: serverTimestamp(),
+      }),
+    );
+  }
+
+  if (Object.keys(privateUpdate).length > 0) {
+    // setDoc amb merge:true crea el doc si no existeix.
+    writes.push(
+      setDoc(
+        doc(db, 'users', uid, 'private', 'profile'),
+        { ...privateUpdate, _updatedAt: serverTimestamp() },
+        { merge: true },
+      ),
+    );
+  }
+
+  await Promise.all(writes);
+}
+
+/** Llegeix la subcol·lecció privada del perfil. Retorna null si no existeix o DENY. */
+export async function getUserPrivateProfile(uid: string): Promise<UserPrivate | null> {
+  try {
+    const snap = await getDoc(doc(db, 'users', uid, 'private', 'profile'));
+    if (!snap.exists()) return null;
+    return snap.data() as UserPrivate;
+  } catch {
+    // permission-denied (usuari Free llegint un altre perfil) → retornem null silent
+    return null;
+  }
+}
+
+/**
+ * Migració lazy: si el propietari té camps sensibles al doc públic legacy,
+ * els mou a la subcol·lecció privada i els esborra del doc públic.
+ * S'executa silent en segon pla; errors no bloquegen el flux.
+ */
+export async function migrateLegacyPrivateFields(uid: string, publicDoc: Record<string, unknown>): Promise<void> {
+  const legacyPrivate: Record<string, unknown> = {};
+  const legacyDeletes: Record<string, unknown> = {};
+
+  for (const key of PRIVATE_PROFILE_KEYS) {
+    if (publicDoc[key] !== undefined && publicDoc[key] !== null && publicDoc[key] !== '') {
+      legacyPrivate[key] = publicDoc[key];
+      legacyDeletes[key] = deleteField();
+    }
+  }
+
+  if (Object.keys(legacyPrivate).length === 0) return;
+
+  try {
+    await setDoc(
+      doc(db, 'users', uid, 'private', 'profile'),
+      { ...legacyPrivate, _migratedAt: serverTimestamp() },
+      { merge: true },
+    );
+    await updateDoc(doc(db, 'users', uid), legacyDeletes);
+  } catch (err) {
+    // No bloqueja. La migració es tornarà a intentar a la propera sessió del propietari.
+    console.warn('[profile.migrate] legacy private fields migration failed:', err);
+  }
 }
 
 /** 

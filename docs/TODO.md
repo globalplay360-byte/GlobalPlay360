@@ -6,9 +6,14 @@ Aquest document recopila tasques, funcionalitats futures o sistemes inacabats qu
 
 - [ ] **Mètrica "Força del perfil" (Profile Strength)**: Actualment a `OverviewPage.tsx` es troba configurada en estètic al `100%`. Ha d'estar ancorada a un sistema de progrés basat en l'arxiu/context de `ProfilePage.tsx` que mesuri quants camps crucials (nom, foto, data de naixement, etc.) l'usuari ha arribat a omplir.
 - [ ] **Sincronització robusta del mirror de subscripció a `users/{uid}`**: L'app ja calcula `activePlan` des de `customers/{uid}/subscriptions` (font de veritat) i el context local queda alineat. Com a millora futura, si es vol persistir també `users.plan`, `users.subscriptionStatus` i `trialEndsAt`, cal fer-ho al backend (Cloud Function/Admin sync) o replantejar les `firestore.rules`; no és blocker per a l'MVP.
-- [~] **Hardening real del paywall Premium (S6-T5) amb defense in depth**
-  - **Estat actual QA:** ✅ PART MISSATGERIA RESOLTA el 2026-04-23. ⚠️ Part perfils diferida com a deute tècnic.
-  - **Resolució aplicada (missatgeria):**
+- [x] **Hardening real del paywall Premium (S6-T5) amb defense in depth** — ✅ RESOLT 2026-04-23
+  - **Estat actual QA:** ✅ PASS complet (missatgeria + perfils). Validat amb suite automatitzada `tests/rules-s6-t5.mjs` (10/10 assertions contra emulador).
+  - **Resolució part perfils premium:**
+    - Schema split aplicat: `users/{uid}` manté camps públics (marketplace), `users/{uid}/private/profile` conté PII (`email`, `phone`, `instagram`, `youtubeVideoUrl`, `dateOfBirth`).
+    - Rule: `match /users/{uid}/private/{docId} { allow read: if owner || hasPremium(); allow create, update: if owner; allow delete: if false; }`
+    - `profile.service.ts` separa automàticament camps privats/públics a `updateUserProfile()`. `auth.service.ts::getUserDoc()` fa merge transparent per al client (inclou els camps privats només si l'usuari actual és owner o Premium; en cas contrari el `getUserPrivateProfile()` retorna `null` silent).
+    - `migrateLegacyPrivateFields()` mou els camps sensibles existents al schema nou la primera vegada que el propietari obre el seu perfil. Cap migració manual requerida.
+  - **Resolució part missatgeria:**
     - Afegit helper `hasPremium()` a `firestore.rules` que comprova `request.auth.token.stripeRole in ['premium', 'pro']` (custom claim que escriu l'extensió `firestore-stripe-payments` quan la subscripció és `active` o `trialing`).
     - Aplicat a `conversations`: `create` i `update` requereixen participant + `hasPremium()`. El `read` de metadata es manté només amb check de participant per preservar el Teaser Paywall UX (la llista de converses amb badge "Missatge protegit").
     - Aplicat a `conversations/{id}/messages/{id}`: `read` i `write` requereixen participant + `hasPremium()` (defense in depth total del contingut).

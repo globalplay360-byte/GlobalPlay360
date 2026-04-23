@@ -17,6 +17,10 @@ service cloud.firestore {
     }
 
     // ── USERS ──────────────────────────────────────────────
+    // Doc `users/{uid}` conté NOMÉS camps públics (displayName, role, bio, sport,
+    // country, position, height, etc.) necessaris per al marketplace.
+    // Els camps sensibles (email, phone, instagram, youtubeVideoUrl, dateOfBirth)
+    // viuen a la subcol·lecció `users/{uid}/private/profile` amb rule pròpia.
     match /users/{userId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == userId;
@@ -32,6 +36,17 @@ service cloud.firestore {
                     && (!request.resource.data.keys().hasAll(['email']) || request.resource.data.email == resource.data.email);
 
       allow delete: if false;
+
+      // ── Subcol·lecció privada (PII + camps Premium-gated) ──
+      // Lectura: propietari SEMPRE, o qualsevol amb claim stripeRole='premium'|'pro'.
+      // Escriptura: només el propietari.
+      // Defense in depth: un Free autenticat rep DENY encara que manipuli el SDK.
+      match /private/{docId} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == userId || hasPremium());
+        allow create, update: if request.auth != null && request.auth.uid == userId;
+        allow delete: if false;
+      }
     }
 
     // ── OPPORTUNITIES ──────────────────────────────────────
