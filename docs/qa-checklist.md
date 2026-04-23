@@ -165,9 +165,17 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
   - Player `role=player` legítim → ALLOW
   - Coach `role=coach` legítim → ALLOW
   - Auth sense doc `users/{uid}` → DENY (defensa contra auth sense perfil)
+- [x] **S6-T7 Modificació de role/plan/email al propi doc**: ✅ PASS backend. Rule a `users/{userId}.update` comprova que els tres camps sensibles no canvien respecte `resource.data`. Validat amb 8 tests automatitzats a `tests/rules-s6-t5.mjs`:
+  - role `player` → `club` → DENY (immutable)
+  - role → `admin` → DENY (escalada impossible)
+  - plan `free` → `premium` → DENY (bypass de billing)
+  - email → `attacker@evil.com` → DENY (account takeover)
+  - Modificar role d'UN ALTRE usuari → DENY (no propietari)
+  - Bio + displayName amb role inalterat → ALLOW
+  - Payload amb `role: 'player'` explícit (mateix valor) → ALLOW
+  - Payload tracrós: bio legítim + `role: 'club'` amagat → DENY (la rule detecta la diff)
 - [ ] Usuari NO autenticat NO pot llegir `users/{uid}` (excepte camps públics si aplica).
 - [ ] Usuari Free NO pot crear més de N aplicacions (si la regla ho comprova).
-- [ ] Player NO pot canviar el seu propi `role` o `plan` (només admin/cloud function).
 - [ ] Club NO pot crear oportunitats si el seu `role` no és `club`.
 
 ---

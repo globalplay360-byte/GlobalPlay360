@@ -245,6 +245,93 @@ await runCheck(
   'deny',
 );
 
+// === S6-T7: USERS/{UID} — ROLE / PLAN / EMAIL IMMUTABLES ===
+// Seed un usuari "victim" amb role=player que intentarà escalar a club.
+await env.withSecurityRulesDisabled(async (ctx) => {
+  const db = ctx.firestore();
+  await setDoc(doc(db, 'users', 'victim_player'), {
+    displayName: 'Victim',
+    role: 'player',
+    plan: 'free',
+    email: 'victim@test.com', // legacy — abans del schema split
+    bio: 'old bio',
+  });
+});
+
+// Importo updateDoc dinàmicament (no l'he importat al top)
+const { updateDoc } = await import('firebase/firestore');
+
+// 17. Canviar role 'player' → 'club' sobre el propi doc → DENY
+await runCheck(
+  "[users.update] Self role 'player' → 'club' → DENY (immutable)",
+  () => updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), { role: 'club' }),
+  'deny',
+);
+
+// 18. Canviar role 'player' → 'admin' → DENY (escalada màxima)
+await runCheck(
+  "[users.update] Self role → 'admin' → DENY (escalada impossible)",
+  () => updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), { role: 'admin' }),
+  'deny',
+);
+
+// 19. Canviar plan 'free' → 'premium' per autoregalar-se Premium → DENY
+await runCheck(
+  "[users.update] Self plan 'free' → 'premium' → DENY (billing bypass)",
+  () => updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), { plan: 'premium' }),
+  'deny',
+);
+
+// 20. Canviar email → DENY (account takeover)
+await runCheck(
+  '[users.update] Self email → attacker@evil.com → DENY',
+  () =>
+    updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), {
+      email: 'attacker@evil.com',
+    }),
+  'deny',
+);
+
+// 21. Canviar role d'un ALTRE usuari → DENY (no és propietari)
+await runCheck(
+  "[users.update] Modificar role d'un ALTRE usuari → DENY",
+  () => updateDoc(doc(env.authenticatedContext('attacker_uid').firestore(), 'users/victim_player'), { role: 'club' }),
+  'deny',
+);
+
+// 22. Actualitzar camps editables (bio, displayName) amb role idèntic → ALLOW
+await runCheck(
+  '[users.update] Self bio + displayName (role inalterat) → ALLOW',
+  () =>
+    updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), {
+      bio: 'new bio actualitzada',
+      displayName: 'Victim Renamed',
+    }),
+  'allow',
+);
+
+// 23. Payload combinat: bio nova + role sense canviar explícitament → ALLOW
+await runCheck(
+  '[users.update] Self bio + role explícit (mateix valor) → ALLOW',
+  () =>
+    updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), {
+      bio: 'una altra bio',
+      role: 'player', // mateix valor → passa
+    }),
+  'allow',
+);
+
+// 24. Payload combinat tracrós: bio legítim + role canvi encobert → DENY
+await runCheck(
+  '[users.update] Self bio legit + role encobert a club → DENY (rule detecta)',
+  () =>
+    updateDoc(doc(env.authenticatedContext('victim_player').firestore(), 'users/victim_player'), {
+      bio: 'innocent update',
+      role: 'club', // intent d'amagar el canvi de role entre camps legítims
+    }),
+  'deny',
+);
+
 // === REPORT ===
 console.log('');
 console.log('────────────────────────────────────────────────────────────');
