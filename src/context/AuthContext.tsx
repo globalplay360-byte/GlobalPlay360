@@ -67,19 +67,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsub = subscribeToActiveSubscription(
       uid,
       (sub) => {
-        const computedPlan = sub ? 'premium' : 'free';
-        
         setState((s) => {
+          const hasTrialAccess =
+            !!s.user &&
+            (s.user.plan === 'trial' || s.user.subscriptionStatus === 'trialing') &&
+            !!s.user.trialEndsAt &&
+            new Date(s.user.trialEndsAt).getTime() > Date.now();
+
+          const hasPaidAccess =
+            !!sub ||
+            s.user?.plan === 'premium' ||
+            s.user?.plan === 'pro' ||
+            s.user?.subscriptionStatus === 'active';
+
+          const computedPlan: ActivePlan = hasPaidAccess || hasTrialAccess ? 'premium' : 'free';
+
           // If the user's document plan differs drastically from truth, sync it
           // This allows other users to know if this user is free or premium
-          if (s.user && computedPlan === 'premium' && s.user.plan !== 'premium' && s.user.plan !== 'pro' && s.user.plan !== 'trial') {
+          if (s.user && !!sub && s.user.plan !== 'premium' && s.user.plan !== 'pro') {
             updateDoc(doc(db, 'users', uid), { plan: 'premium', subscriptionStatus: sub?.status }).catch(console.error);
-          } else if (s.user && computedPlan === 'free' && s.user.plan !== 'free' && s.user.subscriptionStatus !== 'expired') {
-             // If trial ended or subscription cancelled, mark as free explicitly
-             const noTrial = !s.user.trialEndsAt || new Date(s.user.trialEndsAt).getTime() < Date.now();
-             if (noTrial) {
-                updateDoc(doc(db, 'users', uid), { plan: 'free', subscriptionStatus: sub?.status || 'expired' }).catch(console.error);
-             }
+          } else if (s.user && !hasPaidAccess && !hasTrialAccess && s.user.plan !== 'free' && s.user.subscriptionStatus !== 'expired') {
+            updateDoc(doc(db, 'users', uid), { plan: 'free', subscriptionStatus: sub?.status || 'expired' }).catch(console.error);
           }
 
           return {

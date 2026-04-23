@@ -788,7 +788,11 @@
     "emptyDesc": "Busca oportunidades o inicia conversaciones para empezar a hablar con clubes de todo el mundo.",
     "unknownUser": "Usuario desconocido",
     "protectedMessage": "Mensaje protegido",
-    "newConversation": "Nueva conversación"
+    "newConversation": "Nueva conversación",
+    "lockTitle": "Mensajería directa · Premium",
+    "lockDesc": "Con Premium puedes leer y responder a los mensajes de entrenadores y cazatalentos sin límites. Empieza la prueba gratuita de 30 días.",
+    "basicAccount": "{{name}} tiene una cuenta básica.",
+    "basicAccountNotified": "Le hemos notificado. Podrá responderte cuando active Premium."
   },
   "profileEdit": {
     "success": "Perfil actualizado correctamente.",

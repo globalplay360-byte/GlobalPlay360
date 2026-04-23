@@ -788,7 +788,11 @@
     "emptyDesc": "Search for opportunities or start conversations to begin talking with clubs worldwide.",
     "unknownUser": "Unknown user",
     "protectedMessage": "Protected message",
-    "newConversation": "New conversation"
+    "newConversation": "New conversation",
+    "lockTitle": "Direct messaging · Premium",
+    "lockDesc": "With Premium you can read and reply to messages from coaches and scouts without limits. Start your free 30-day trial.",
+    "basicAccount": "{{name}} has a basic account.",
+    "basicAccountNotified": "We've notified them. They'll be able to reply once they activate Premium."
   },
   "profileEdit": {
     "success": "Profile updated successfully.",
