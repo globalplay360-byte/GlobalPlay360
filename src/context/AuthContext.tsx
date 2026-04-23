@@ -96,9 +96,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!uid) return;
 
     setState((s) => ({ ...s, subscriptionLoading: true }));
+    let lastSubStatus: string | null | undefined = undefined;
     const unsub = subscribeToActiveSubscription(
       uid,
       (sub) => {
+        // Quan la subscripció apareix/desapareix/canvia d'estat, forcem refresh
+        // del JWT perquè l'extensió Stripe acaba d'escriure/treure la custom claim
+        // `stripeRole`. Sense això, les Firestore rules bloquejarien missatgeria
+        // fins que l'usuari tanqués i tornés a obrir sessió.
+        const currentStatus = sub?.status ?? null;
+        if (lastSubStatus !== undefined && lastSubStatus !== currentStatus) {
+          auth.currentUser?.getIdToken(true).catch(() => { /* silent */ });
+        }
+        lastSubStatus = currentStatus;
+
         setState((s) => {
           const hasStripeTrialAccess = sub?.status === 'trialing' && !!sub.trial_end_seconds && sub.trial_end_seconds * 1000 > Date.now();
 

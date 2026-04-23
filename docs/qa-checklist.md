@@ -95,7 +95,12 @@
 - [ ] Intentar obrir xat amb club → `PremiumLockCard` visible.
 - [x] Visibility limitada del perfil (si aplica) — verificar què veu un club d'un player Free vs Premium.
 - [x] **Perfils Públics**: Les rutes `/dashboard/profile/:id` mostren la fitxa sense editar.
-- [ ] **S6-T5 Free intenta funcionalitats Premium**: ❌ BUG. La UI aplica paywall a `MessagesPage`, `MessageDetailPage` i `ProfileView`, però el backend no garanteix Premium. `conversations/{id}` i `messages/{id}` només validen `participants`, no `stripeRole/plan`; i `users/{uid}` permet lectura a qualsevol usuari autenticat, de manera que el detall de perfil es continua exposant via Firestore. Cal defense in depth real a rules/model de dades.
+- [x] **S6-T5 Free intenta funcionalitats Premium (Missatgeria)**: ✅ PASS backend. Afegit `hasPremium()` a `firestore.rules` que llegeix la custom claim `stripeRole` (escrita per `firestore-stripe-payments`). Regles noves a `conversations`:
+  - `read` metadata: només participant (preserva el Teaser Paywall UX — la llista i el badge `unreadCount` continuen funcionant per a Free).
+  - `create` / `update`: participant + `hasPremium()`.
+  - `messages/{id}` `read` i `write`: participant + `hasPremium()` (protecció total del contingut).
+  A `AuthContext`, afegit force-refresh del JWT (`getIdToken(true)`) quan `sub.status` canvia, perquè la claim propagui immediatament després d'un checkout sense requerir logout/login. Validat via Firestore Rules Playground: Free amb `stripeRole` absent → DENY a `messages/*` i a `conversations` create/update; Premium amb `stripeRole:'premium'` → ALLOW.
+- [ ] **S6-T5 Perfils Premium (deute tècnic)**: ⚠️ DIFERIT. `users/{uid}` permet `read: if request.auth != null` perquè els camps públics (nom, rol, bio, avatar) i privats (email, telèfon, vídeos, stats) viuen al mateix document, i Firestore rules no poden fer ocultació parcial de camps. La UI sí que amaga els camps premium a `ProfileView`, però un atacant amb el SDK de Firestore pot llegir tot el document. Fix correcte: separar camps sensibles a subcolecció `users/{uid}/private/profile` i protegir-la amb `hasPremium()`. Documentat a `docs/TODO.md` com a millora post-MVP.
 
 ### 3.2 Trial 30 dies
 

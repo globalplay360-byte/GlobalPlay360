@@ -6,8 +6,18 @@ Aquest document recopila tasques, funcionalitats futures o sistemes inacabats qu
 
 - [ ] **Mètrica "Força del perfil" (Profile Strength)**: Actualment a `OverviewPage.tsx` es troba configurada en estètic al `100%`. Ha d'estar ancorada a un sistema de progrés basat en l'arxiu/context de `ProfilePage.tsx` que mesuri quants camps crucials (nom, foto, data de naixement, etc.) l'usuari ha arribat a omplir.
 - [ ] **Sincronització robusta del mirror de subscripció a `users/{uid}`**: L'app ja calcula `activePlan` des de `customers/{uid}/subscriptions` (font de veritat) i el context local queda alineat. Com a millora futura, si es vol persistir també `users.plan`, `users.subscriptionStatus` i `trialEndsAt`, cal fer-ho al backend (Cloud Function/Admin sync) o replantejar les `firestore.rules`; no és blocker per a l'MVP.
-- [ ] **Hardening real del paywall Premium (S6-T5) amb defense in depth**
-  - **Estat actual QA:** FALLAT / BUG el 2026-04-23. La UI bloqueja correctament l'usuari Free, però el backend no aplica les mateixes restriccions.
+- [~] **Hardening real del paywall Premium (S6-T5) amb defense in depth**
+  - **Estat actual QA:** ✅ PART MISSATGERIA RESOLTA el 2026-04-23. ⚠️ Part perfils diferida com a deute tècnic.
+  - **Resolució aplicada (missatgeria):**
+    - Afegit helper `hasPremium()` a `firestore.rules` que comprova `request.auth.token.stripeRole in ['premium', 'pro']` (custom claim que escriu l'extensió `firestore-stripe-payments` quan la subscripció és `active` o `trialing`).
+    - Aplicat a `conversations`: `create` i `update` requereixen participant + `hasPremium()`. El `read` de metadata es manté només amb check de participant per preservar el Teaser Paywall UX (la llista de converses amb badge "Missatge protegit").
+    - Aplicat a `conversations/{id}/messages/{id}`: `read` i `write` requereixen participant + `hasPremium()` (defense in depth total del contingut).
+    - A `src/context/AuthContext.tsx`: afegit force-refresh del JWT (`auth.currentUser.getIdToken(true)`) quan `sub.status` canvia, perquè la claim `stripeRole` propagui al token actiu sense requerir logout/login després del checkout.
+    - Desplegat a `globalplay360-3f9a1` i validat via Firestore Rules Playground.
+  - **Part diferida (perfils premium):**
+    - Seguim amb `users/{uid}` llegible per qualsevol usuari autenticat i la UI amagant camps a `ProfileView`. La correcció correcta requereix schema split a subcol·lecció `users/{uid}/private/profile` + nova rule protegida per `hasPremium()` + adaptació de `PublicProfilePage`/`ProfileView` per llegir dual.
+    - Assumit com a risc conegut per a l'MVP (qualsevol autenticat pot llegir dades sensibles via SDK directe, tot i que la UI les amaga).
+  - **Detall tècnic històric (pre-fix):**
   - **Objectiu funcional:** un usuari `free` no ha de poder obrir ni utilitzar missatgeria premium, ni accedir a camps de perfil marcats com a premium, encara que manipuli el client o faci crides directes a Firestore.
   - **Reproducció validada:**
     - `MessagesPage.tsx` i `MessageDetailPage.tsx` mostren `PremiumLockCard` quan `activePlan === 'free'`.
