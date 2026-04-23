@@ -47,6 +47,19 @@ await env.withSecurityRulesDisabled(async (ctx) => {
     lastMessage: 'hi',
     updatedAt: new Date(),
   });
+
+  // === Seed per tests S6-T6 (Applications role-based) ===
+  await setDoc(doc(db, 'users', 'player_applicant'), { displayName: 'Player', role: 'player' });
+  await setDoc(doc(db, 'users', 'coach_applicant'), { displayName: 'Coach', role: 'coach' });
+  await setDoc(doc(db, 'users', 'club_fcb'), { displayName: 'FC Barcelona', role: 'club' });
+  await setDoc(doc(db, 'users', 'club_real'), { displayName: 'Real Madrid', role: 'club' });
+  await setDoc(doc(db, 'opportunities', 'opp1'), {
+    clubId: 'club_fcb',
+    title: 'Base sènior',
+    sport: 'basketball',
+    status: 'open',
+    createdAt: new Date().toISOString(),
+  });
 });
 
 console.log('\n=== S6-T5 Backend Paywall Rules Tests ===\n');
@@ -153,6 +166,82 @@ await runCheck(
 await runCheck(
   '[users/alice/private/profile] Unauthenticated → DENY',
   () => getDoc(doc(env.unauthenticatedContext().firestore(), 'users/alice/private/profile')),
+  'deny',
+);
+
+// === S6-T6: APPLICATIONS — ROLE-BASED CREATE ===
+const makeApp = (userId, clubId) => ({
+  opportunityId: 'opp1',
+  userId,
+  clubId,
+  status: 'submitted',
+  createdAt: new Date().toISOString(),
+  message: 'Hola',
+});
+
+// 11. Club aplicant amb el seu propi uid com a userId → DENY (role=='club')
+await runCheck(
+  '[applications.create] Club (role=club) amb userId=self → DENY',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('club_fcb').firestore(), 'applications/app_club_self'),
+      makeApp('club_fcb', 'club_real'),
+    ),
+  'deny',
+);
+
+// 12. Club aplicant a una oferta d'un altre club posant el seu uid com a userId → DENY
+await runCheck(
+  '[applications.create] Club aplicant a oferta d\'altre club → DENY',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('club_real').firestore(), 'applications/app_club_cross'),
+      makeApp('club_real', 'club_fcb'),
+    ),
+  'deny',
+);
+
+// 13. Club intentant suplantar un player (userId ≠ auth.uid) → DENY (auth check)
+await runCheck(
+  '[applications.create] Club suplantant player (userId mismatch) → DENY',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('club_fcb').firestore(), 'applications/app_impersonate'),
+      makeApp('player_applicant', 'club_real'),
+    ),
+  'deny',
+);
+
+// 14. Player aplicant a una oferta → ALLOW
+await runCheck(
+  '[applications.create] Player (role=player) → ALLOW',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('player_applicant').firestore(), 'applications/app_player_ok'),
+      makeApp('player_applicant', 'club_fcb'),
+    ),
+  'allow',
+);
+
+// 15. Coach aplicant a una oferta → ALLOW (role=coach no és club)
+await runCheck(
+  '[applications.create] Coach (role=coach) → ALLOW',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('coach_applicant').firestore(), 'applications/app_coach_ok'),
+      makeApp('coach_applicant', 'club_fcb'),
+    ),
+  'allow',
+);
+
+// 16. User sense doc a Firestore (attack via auth només) → DENY (exists() check)
+await runCheck(
+  '[applications.create] Auth sense doc users/{uid} → DENY',
+  () =>
+    setDoc(
+      doc(env.authenticatedContext('ghost_user').firestore(), 'applications/app_ghost'),
+      makeApp('ghost_user', 'club_fcb'),
+    ),
   'deny',
 );
 

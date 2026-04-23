@@ -57,11 +57,18 @@ service cloud.firestore {
     }
 
     // ── APPLICATIONS ───────────────────────────────────────
+    // Només players/coaches poden crear candidatures. Els clubs mai (ni amb el
+    // seu propi uid com a userId) — un club no aplica a les seves pròpies ofertes
+    // ni pot suplantar un candidat. Comprovem el role des del doc users/{uid}.
     match /applications/{applicationId} {
       allow read: if request.auth != null
                   && (request.auth.uid == resource.data.userId
                       || request.auth.uid == resource.data.clubId);
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow create: if request.auth != null
+                    && request.auth.uid == request.resource.data.userId
+                    && request.auth.uid != request.resource.data.clubId
+                    && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+                    && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role != 'club';
       allow update: if request.auth != null
                     && request.auth.uid == resource.data.clubId
                     && request.resource.data.clubId == resource.data.clubId

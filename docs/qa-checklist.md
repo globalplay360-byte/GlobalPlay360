@@ -158,6 +158,13 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 - [x] **S6-T2 Club NO pot eliminar `opportunity` aliena**: Playground `delete /opportunities/{id}` amb UID Club A → DENY. ✅ (2026-04-23)
 - [x] **S6-T3 Usuari aliè NO pot llegir `application`**: Regla endurita de `allow read: if true` → `if userId || clubId`. Playground `get /applications/{id}` amb UID aliè → DENY. ✅ Fix desplegat (2026-04-23)
 - [x] **S6-T4 Usuari no participant NO pot llegir `messages` d'una conversa aliena**: Playground `get /conversations/cuU7TzI9mi44YMmNy05n/messages/F7vRRoJtlN8AK2xJnRzC` amb UID aliè → DENY. ✅ La regla comprova `participants` del document pare `conversations/{conversationId}` (2026-04-23)
+- [x] **S6-T6 Club NO pot crear `applications`**: ✅ PASS backend. Regla endurida: `applications.create` requereix `auth.uid == userId` + `auth.uid != clubId` + `users/{auth.uid}.role != 'club'` + `users/{auth.uid}` ha d'existir. Validat amb 6 tests automatitzats a `tests/rules-s6-t5.mjs`:
+  - Club amb `userId=self` → DENY
+  - Club aplicant a oferta d'altre club → DENY
+  - Club suplantant player (`userId` mismatch auth) → DENY
+  - Player `role=player` legítim → ALLOW
+  - Coach `role=coach` legítim → ALLOW
+  - Auth sense doc `users/{uid}` → DENY (defensa contra auth sense perfil)
 - [ ] Usuari NO autenticat NO pot llegir `users/{uid}` (excepte camps públics si aplica).
 - [ ] Usuari Free NO pot crear més de N aplicacions (si la regla ho comprova).
 - [ ] Player NO pot canviar el seu propi `role` o `plan` (només admin/cloud function).
