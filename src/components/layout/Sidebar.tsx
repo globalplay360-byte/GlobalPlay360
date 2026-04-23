@@ -1,6 +1,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useUnreadCount } from '@/hooks/useUnreadCount';
 import { useEffect } from 'react';
 import { Logo } from '@/components/ui/Logo';
 
@@ -12,6 +13,7 @@ interface SidebarProps {
 export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const { user, activePlan } = useAuth();
   const location = useLocation();
+  const { unreadMessages } = useUnreadCount();
   const { t } = useTranslation();
   const isPremium = activePlan === 'premium';
 
@@ -104,7 +106,7 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
                 <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
                   {item.icon}
                 </div>
-                {item.label}
+                <span className="whitespace-nowrap">{item.label}</span> {item.path === '/dashboard/messages' && unreadMessages > 0 && (<span className="bg-[#EF4444] ml-auto text-gray-100 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-[0_2px_4px_rgba(239,68,68,0.4)]">{unreadMessages > 99 ? '99+' : unreadMessages}</span>)}
               </Link>
             );
           })}

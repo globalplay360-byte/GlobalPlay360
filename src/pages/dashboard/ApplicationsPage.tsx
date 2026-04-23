@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,7 +11,6 @@ import {
 import { getOpportunityById } from "@/services/opportunities.service";
 import { getUserDoc } from "@/services/auth.service";
 import { getOrCreateConversation } from "@/services/messages.service";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import type { Application, Opportunity, User } from "@/types";
@@ -20,6 +19,12 @@ import EmptyState from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import PageHeader from "@/components/ui/PageHeader";
 import { formatLocation } from '@/utils/location';
+import {
+  CheckCircleIcon,
+  XCircleIcon,
+  EyeIcon,
+  ArrowUturnLeftIcon
+} from "@heroicons/react/24/outline";
 
 interface ApplicationExtended extends Application {
   opportunity?: Opportunity;
@@ -30,6 +35,8 @@ interface ApplicationExtended extends Application {
 export default function ApplicationsPage() {
   const { user, activePlan } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const currentUserRole = user?.role || "player";
   const isFree = activePlan === 'free';
@@ -53,10 +60,26 @@ export default function ApplicationsPage() {
     }
   };
 
+  useEffect(() => {
+    // Check if we came back from pricing specifically to start a chat
+    const startChatId = searchParams.get('startChat');
+    if (startChatId && !isFree && user) {
+      // Small timeout to ensure everything is mounted
+      setTimeout(() => {
+        handleStartConversation(startChatId);
+        // Clean URL to prevent loops
+        setSearchParams(new URLSearchParams());
+      }, 100);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, isFree, user]);
+
   const handleStartConversation = async (otherUserId: string) => {
     if (!user) return;
     if (isFree) {
-      navigate('/pricing');
+      // Append startChat param when redirecting to pricing so we know what to do upon returning
+      const returnPath = `${location.pathname}?startChat=${otherUserId}`;
+      navigate(`/pricing?returnUrl=${encodeURIComponent(returnPath)}`);
       return;
     }
     try {
@@ -382,34 +405,36 @@ export default function ApplicationsPage() {
 
                   {/* Status management (club only) */}
                   {currentUserRole === "club" && app.opportunity && (
-                    <div className="flex flex-wrap items-center gap-1.5 ml-auto">
+                    <div className="flex items-center gap-1.5 ml-auto bg-[#111827]/80 rounded-lg p-1 border border-[#2A3447]/60">
                       {app.status === "submitted" && (
                         <button
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
-                          title={t('applications.titleMarkInReview')}
-                          className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-purple-500/20 text-purple-300/90 hover:bg-purple-500/10 hover:border-purple-500/40 transition-all duration-fast disabled:opacity-50"
+                          title={t('applications.titleMarkInReview', 'Posar en revisió')}
+                          className="group flex items-center justify-center p-2 rounded-md bg-transparent hover:bg-purple-500/10 text-gray-400 hover:text-purple-400 transition-all duration-fast disabled:opacity-50"
                         >
-                          {updatingId === app.id ? "..." : t('applications.markInReview')}
+                          <EyeIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                         </button>
                       )}
                       {(app.status === "submitted" || app.status === "in_review") && (
                         <>
+                          <div className={app.status === "submitted" ? "w-px h-6 bg-[#2A3447]" : "hidden"} />
                           <button
                             onClick={() => handleStatusChange(app, "accepted")}
                             disabled={updatingId === app.id}
-                            title={t('applications.titleAccept')}
-                            className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-emerald-500/20 text-emerald-300/90 hover:bg-emerald-500/10 hover:border-emerald-500/40 transition-all duration-fast disabled:opacity-50"
+                            title={t('applications.titleAccept', 'Acceptar candidatura')}
+                            className="group flex items-center justify-center p-2 rounded-md bg-transparent hover:bg-emerald-500/10 text-gray-400 hover:text-emerald-400 transition-all duration-fast disabled:opacity-50"
                           >
-                            {updatingId === app.id ? "..." : t('applications.accept')}
+                            <CheckCircleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                           </button>
+                          <div className="w-px h-6 bg-[#2A3447]" />
                           <button
                             onClick={() => handleStatusChange(app, "rejected")}
                             disabled={updatingId === app.id}
-                            title={t('applications.titleReject')}
-                            className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-red-500/20 text-red-300/90 hover:bg-red-500/10 hover:border-red-500/40 transition-all duration-fast disabled:opacity-50"
+                            title={t('applications.titleReject', 'Rebutjar candidatura')}
+                            className="group flex items-center justify-center p-2 rounded-md bg-transparent hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-all duration-fast disabled:opacity-50"
                           >
-                            {updatingId === app.id ? "..." : t('applications.reject')}
+                            <XCircleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                           </button>
                         </>
                       )}
@@ -417,10 +442,10 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => handleStatusChange(app, "in_review")}
                           disabled={updatingId === app.id}
-                          title={t('applications.titleReopen')}
-                          className="px-2.5 py-1.5 text-[11.5px] font-medium tracking-wide rounded-md border border-[#1F2937] text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937]/60 transition-all duration-fast disabled:opacity-50"
+                          title={t('applications.titleReopen', 'Tornar a obrir per revisió')}
+                          className="group flex items-center justify-center p-2 rounded-md bg-transparent hover:bg-[#2A3447]/50 text-gray-400 hover:text-gray-200 transition-all duration-fast disabled:opacity-50"
                         >
-                          {updatingId === app.id ? "..." : t('applications.reopen')}
+                          <ArrowUturnLeftIcon className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
                         </button>
                       )}
                     </div>

@@ -63,7 +63,12 @@ export default function PricingPage() {
     setCheckoutLoading(true);
     setError(null);
     try {
-      const url = await createCheckoutSession(user.uid, price.id);
+      const returnUrl = searchParams.get('returnUrl');
+      const successUrl = returnUrl 
+        ? `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}&returnUrl=${encodeURIComponent(returnUrl)}`
+        : `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
+
+      const url = await createCheckoutSession(user.uid, price.id, { successUrl });
       window.location.assign(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('pricingPage.errorCheckout'));

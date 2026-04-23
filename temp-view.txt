@@ -1,0 +1,7 @@
+                  <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
+                    {item.icon}
+                  </div>
+>                 {item.label}
+                </Link>
+              );
+            })}

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { subscribeToMessages, sendMessage, markConversationAsRead } from '@/services/messages.service';
-import { getUserDoc } from '@/services/auth.service';
+import { getUserDoc, hasActiveSubscription } from '@/services/auth.service';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import PremiumLockCard from '@/components/ui/PremiumLockCard';
@@ -203,7 +203,6 @@ export default function MessageDetailPage() {
     return (
       <div className="p-6 h-full flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
         <PremiumLockCard
-          className="max-w-md w-full"
           title="Missatgeria directa · Premium"
           description="Amb Premium pots llegir i respondre als missatges d'entrenadors i caçatalents sense límits. Comença la prova de 30 dies gratuïts."
         />
@@ -233,6 +232,21 @@ export default function MessageDetailPage() {
         displayName={otherUser?.displayName || 'Usuari N/A'}
         role={otherUser?.role || 'user'}
       />
+
+      {/* Warning d'Expectatives per a usuaris Free a l'altre costat */}
+      {!hasActiveSubscription(otherUser) && (
+        <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-3 shrink-0 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.4)] relative z-0 flex items-start gap-3 w-full">
+          <div className="mt-0.5 text-yellow-500/90 shrink-0">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-[13px] text-yellow-100/90 leading-relaxed font-medium">
+            <strong className="text-yellow-500">{otherUser?.displayName} té un compte bàsic.</strong>{' '}
+            L'hem notificat del teu interès; podrà llegir el teu missatge i respondre't tan bon punt actualitzi el seu pla.
+          </p>
+        </div>
+      )}
 
       {/* Timeline Zone */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col gap-1 custom-scrollbar">

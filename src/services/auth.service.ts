@@ -144,3 +144,19 @@ export async function verifyEmail(): Promise<void> {
 export async function confirmEmailVerification(code: string): Promise<void> {
   await applyActionCode(auth, code);
 }
+
+/** Check if another user has an active premium plan or valid trial */
+export function hasActiveSubscription(user: User | null): boolean {
+  if (!user) return false;
+  if (user.plan === 'premium' || user.plan === 'pro') return true;
+  if (user.subscriptionStatus === 'active') return true;
+  
+  // If they are in a trial, ensure it hasn't expired
+  if (user.plan === 'trial' || user.subscriptionStatus === 'trialing') {
+    if (user.trialEndsAt) {
+      const trialEnds = new Date(user.trialEndsAt).getTime();
+      return trialEnds > Date.now();
+    }
+  }
+  return false;
+}

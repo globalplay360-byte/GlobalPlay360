@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/services/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '@/services/firebase';
 import type { User, UserRole } from '@/types';
 import * as authService from '@/services/auth.service';
 import { subscribeToActiveSubscription, type StripeSubscription } from '@/services/stripe.service';
@@ -66,12 +67,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsub = subscribeToActiveSubscription(
       uid,
       (sub) => {
-        setState((s) => ({
-          ...s,
-          subscription: sub,
-          activePlan: sub ? 'premium' : 'free',
-          subscriptionLoading: false,
-        }));
+        const computedPlan = sub ? 'premium' : 'free';
+        
+        setState((s) => {
+          // If the user's document plan differs drastically from truth, sync it
+          // This allows other users to know if this user is free or premium
+          if (s.user && computedPlan === 'premium' && s.user.plan !== 'premium' && s.user.plan !== 'pro' && s.user.plan !== 'trial') {
+            updateDoc(doc(db, 'users', uid), { plan: 'premium', subscriptionStatus: sub?.status }).catch(console.error);
+          } else if (s.user && computedPlan === 'free' && s.user.plan !== 'free' && s.user.subscriptionStatus !== 'expired') {
+             // If trial ended or subscription cancelled, mark as free explicitly
+             const noTrial = !s.user.trialEndsAt || new Date(s.user.trialEndsAt).getTime() < Date.now();
+             if (noTrial) {
+                updateDoc(doc(db, 'users', uid), { plan: 'free', subscriptionStatus: sub?.status || 'expired' }).catch(console.error);
+             }
+          }
+
+          return {
+            ...s,
+            subscription: sub,
+            activePlan: computedPlan,
+            subscriptionLoading: false,
+          };
+        });
       },
       () => {
         setState((s) => ({ ...s, subscriptionLoading: false }));

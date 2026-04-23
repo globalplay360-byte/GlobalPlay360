@@ -1,6 +1,6 @@
 export type UserRole = 'player' | 'coach' | 'club' | 'admin';
-export type PlanType = 'trial' | 'premium' | 'pro';
-export type SubscriptionStatus = 'trialing' | 'active' | 'canceled' | 'expired';
+export type PlanType = 'free' | 'trial' | 'premium' | 'pro';
+export type SubscriptionStatus = 'none' | 'trialing' | 'active' | 'canceled' | 'expired';
 
 export type Sport =
   | 'football'
