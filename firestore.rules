@@ -30,7 +30,9 @@ service cloud.firestore {
 
     // ── APPLICATIONS ───────────────────────────────────────
     match /applications/{applicationId} {
-      allow read: if request.auth != null;
+      allow read: if request.auth != null
+                  && (request.auth.uid == resource.data.userId
+                      || request.auth.uid == resource.data.clubId);
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
       allow update: if request.auth != null
                     && request.auth.uid == resource.data.clubId

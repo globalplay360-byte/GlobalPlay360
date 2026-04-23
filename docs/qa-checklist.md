@@ -146,8 +146,9 @@
 
 Provar a **Firebase Console → Firestore → Rules → Playground**:
 
-- [ ] Player NO pot editar `opportunity` que no és seva.
-- [ ] Club NO pot llegir `application` d'una altra club.
+- [x] **S6-T1 Club NO pot editar `opportunity` d'un altre Club**: UI bloqueja (EmptyState cadenat) + Firestore rules llancen `permission-denied`. Verificat al Playground (`update /opportunities/{id}` amb UID Club A → DENY). ✅ Doble capa confirmada (2026-04-23)
+- [x] **S6-T2 Club NO pot eliminar `opportunity` aliena**: Playground `delete /opportunities/{id}` amb UID Club A → DENY. ✅ (2026-04-23)
+- [x] **S6-T3 Usuari aliè NO pot llegir `application`**: Regla endurita de `allow read: if true` → `if userId || clubId`. Playground `get /applications/{id}` amb UID aliè → DENY. ✅ Fix desplegat (2026-04-23)
 - [ ] Usuari NO autenticat NO pot llegir `users/{uid}` (excepte camps públics si aplica).
 - [ ] Usuari Free NO pot crear més de N aplicacions (si la regla ho comprova).
 - [ ] Player NO pot canviar el seu propi `role` o `plan` (només admin/cloud function).
