@@ -139,6 +139,21 @@
 - Els invoices no es sincronitzen a Firestore subcol·lecció `customers/{uid}/subscriptions/{id}/invoices/{invoiceId}` — és opcional per MVP i no bloquejant. Funcionalitat base de subscripció funciona perfectament.
 - QA Test **S5-T4 Webhook sincronització correcta** marcat com a ✅ PASSAT / OK.
 
+### S5-T7 — Canvi de pla (upgrade/downgrade) (estat a 2026-04-23)
+
+- **Estat actual:** ✅ PASS.
+- **Validat:** canvi de pla via Customer Portal (monthly ↔ yearly), prorrateig amb ajust immediat observat (`Importe debido hoy: 0,01 €`), actualització de tarifa i manteniment d'accés Premium.
+- **Validació Firestore:** a `customers/{uid}/subscriptions/{subId}` consta `status: active`, `price.id` anual (`price_1TNtV2GsDnXOvDn3B0vNZbKX`) i `current_period_end` anual.
+- **Nota important QA:** la font de veritat del pla és `customers/{uid}/subscriptions`; els camps de resum a `users` poden quedar temporalment desalineats.
+
+### Ajust d'AuthContext — coherència local del mirror d'usuari (2026-04-23)
+
+- S'ha ajustat `src/context/AuthContext.tsx` amb un canvi petit i local per reflectir el `user` del context a partir de la subscripció real de Stripe.
+- S'ha eliminat l'intent de `updateDoc` client-side sobre `users`, perquè les `firestore.rules` actuals no permeten modificar `plan` i aquest mirall no era fiable.
+- El càlcul de `activePlan` prioritza ara l'estat de `customers/{uid}/subscriptions` i evita quedar enganxat a camps stale de `users` després de canvis monthly/yearly, trial/active o expiració.
+- El trial es reflecteix des de la subscripció quan existeix; només es fa fallback al perfil si encara no hi ha document de subscripció.
+- **Abast del canvi:** no toca checkout, billing page ni Customer Portal; només millora la coherència interna del context.
+
 ---
 
 ## 9. Comandes útils per reprendre

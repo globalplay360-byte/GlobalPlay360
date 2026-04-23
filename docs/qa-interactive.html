@@ -901,7 +901,7 @@ const DATA = [
         steps: [
           "Fes una subscripció i comprova Firebase Functions logs.",
           "Verifica que customer.subscription.created i invoice.paid es reben.",
-          "Comprova que activePlan es sincronitza al document d'usuari."
+          "Comprova que activePlan queda en premium a l'app i que la subscripció queda actualitzada a customers/{uid}/subscriptions."
         ],
         expect: "Webhooks reben i processen events correctament. Sense errors 500. Firestore actualitzat."
       },

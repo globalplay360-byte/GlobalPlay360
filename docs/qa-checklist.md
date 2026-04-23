@@ -127,9 +127,18 @@
 - [ ] Webhook rep `checkout.session.completed` → actualitza `users.{uid}.plan`.
 - [ ] Customer Portal obre amb el customerId correcte.
 - [ ] Canviar mètode de pagament des del Portal.
+- [x] **S5-T7 Canvi de pla (monthly ↔ yearly)**: validat canvi via Customer Portal, prorrateig aplicat (ajust immediat) i manteniment d'accés Premium. Price anual reflectit a la subscripció Firestore.
 - [ ] Cancel·lació des del Portal → webhook `customer.subscription.updated` actualitza `users.{uid}.cancelAtPeriodEnd`.
 - [ ] Reactivar subscripció cancel·lada (abans de la data final) → banner desapareix.
 - [ ] Factures descarregables des del Portal.
+
+### Nota QA — S5-T7 (2026-04-23)
+
+- Configuració del Customer Portal actualitzada per permetre `switch plans` entre `25€/mes` i `250€/any`.
+- El flux de canvi de pla funciona des del portal de Stripe.
+- Test final executat en subscripció mensual activa amb canvi a anual: Stripe mostra ajust immediat (`Importe debido hoy: 0,01 €`) i proper període anual.
+- Verificat a Firestore (`customers/{uid}/subscriptions/{subId}`): `status: active`, `price.id` anual i `current_period_end` anual.
+- Criteri de font de veritat QA: validar sempre la subcol·lecció `customers/{uid}/subscriptions` (els camps resum de `users` poden anar desalineats temporalment).
 
 ---
 

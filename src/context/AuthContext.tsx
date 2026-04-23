@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '@/services/firebase';
+import { auth } from '@/services/firebase';
 import type { User, UserRole } from '@/types';
 import * as authService from '@/services/auth.service';
 import { subscribeToActiveSubscription, type StripeSubscription } from '@/services/stripe.service';
@@ -26,6 +25,39 @@ interface AuthContextValue extends AuthState {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function toIsoDate(seconds: number | null | undefined, fallback: string): string {
+  if (!seconds) return fallback;
+  return new Date(seconds * 1000).toISOString();
+}
+
+function mirrorUserFromSubscription(
+  user: User | null,
+  subscription: StripeSubscription | null,
+  hasTrialAccess: boolean,
+  hasPaidAccess: boolean,
+): User | null {
+  if (!user) return null;
+
+  if (subscription) {
+    return {
+      ...user,
+      plan: subscription.status === 'trialing' ? 'trial' : 'premium',
+      subscriptionStatus: subscription.status,
+      trialEndsAt: toIsoDate(subscription.trial_end_seconds, user.trialEndsAt),
+    };
+  }
+
+  if (!hasTrialAccess && !hasPaidAccess) {
+    return {
+      ...user,
+      plan: 'free',
+      subscriptionStatus: user.subscriptionStatus === 'none' ? 'none' : 'expired',
+    };
+  }
+
+  return user;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -68,30 +100,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       uid,
       (sub) => {
         setState((s) => {
-          const hasTrialAccess =
+          const hasStripeTrialAccess = sub?.status === 'trialing' && !!sub.trial_end_seconds && sub.trial_end_seconds * 1000 > Date.now();
+
+          const hasProfileTrialAccess =
+            !sub &&
             !!s.user &&
             (s.user.plan === 'trial' || s.user.subscriptionStatus === 'trialing') &&
             !!s.user.trialEndsAt &&
             new Date(s.user.trialEndsAt).getTime() > Date.now();
 
+          const hasTrialAccess = hasStripeTrialAccess || hasProfileTrialAccess;
+
           const hasPaidAccess =
-            !!sub ||
-            s.user?.plan === 'premium' ||
-            s.user?.plan === 'pro' ||
-            s.user?.subscriptionStatus === 'active';
+            sub?.status === 'active' ||
+            s.user?.plan === 'pro';
 
           const computedPlan: ActivePlan = hasPaidAccess || hasTrialAccess ? 'premium' : 'free';
-
-          // If the user's document plan differs drastically from truth, sync it
-          // This allows other users to know if this user is free or premium
-          if (s.user && !!sub && s.user.plan !== 'premium' && s.user.plan !== 'pro') {
-            updateDoc(doc(db, 'users', uid), { plan: 'premium', subscriptionStatus: sub?.status }).catch(console.error);
-          } else if (s.user && !hasPaidAccess && !hasTrialAccess && s.user.plan !== 'free' && s.user.subscriptionStatus !== 'expired') {
-            updateDoc(doc(db, 'users', uid), { plan: 'free', subscriptionStatus: sub?.status || 'expired' }).catch(console.error);
-          }
+          const mirroredUser = mirrorUserFromSubscription(s.user, sub, hasTrialAccess, hasPaidAccess);
 
           return {
             ...s,
+            user: mirroredUser,
             subscription: sub,
             activePlan: computedPlan,
             subscriptionLoading: false,
