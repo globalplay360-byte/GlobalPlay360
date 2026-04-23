@@ -51,6 +51,20 @@ export async function hasUserApplied(userId: string, opportunityId: string): Pro
   return !snap.empty;
 }
 
+/** Get the specific application document for a user and opportunity if it exists */
+export async function getUserApplicationForOpportunity(userId: string, opportunityId: string): Promise<Application | null> {
+  const q = query(
+    collection(db, COLLECTION),
+    where('userId', '==', userId),
+    where('opportunityId', '==', opportunityId),
+    limit(1),
+  );
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() } as Application;
+}
+
 // ── Write ───────────────────────────────────────────────
 
 interface CreateApplicationInput {

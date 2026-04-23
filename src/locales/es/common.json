@@ -4,6 +4,16 @@
   "register": "Registrarse",
   "home": "Inicio",
   "dashboard": "Panel",
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "both": "Masculino y Femenino"
+  },
+  "category": {
+    "youth": "Formación / Base (Infantil, Cadete, etc)",
+    "senior": "Amateur / Rendimiento (Sénior)",
+    "both": "Ambas"
+  },
   "homePage": {
     "hero": {
       "title": "Donde el Talento Encuentra la \n Oportunidad",
@@ -489,9 +499,9 @@
     "sport": "Deporte",
     "country": "País",
     "state": "Provincia / Estado",
-    "selectCountry": "Selecciona el país...",
-    "selectState": "Selecciona el estado...",
-    "selectCity": "Selecciona la ciudad..."
+    "selectCountry": "Selecciona...",
+    "selectState": "Selecciona...",
+    "selectCity": "Selecciona..."
   },
   "applications": {
     "titleClub": "Candidaturas Recibidas",
@@ -604,7 +614,16 @@
     "aboutClub": "Sobre el Club",
     "club": "Club",
     "viewFullProfile": "Ver Perfil Completo",
-    "ownOpportunity": "Esta es tu oportunidad."
+    "ownOpportunity": "Esta es tu oportunidad.",
+    "errorMissingCoverLetter": "Introduce una carta de presentación o mensaje.",
+    "coverLetterLabel": "Carta de presentación *",
+    "coverLetterPlaceholder": "Explica al club por qué encajas en esta posición (mínimo unas pocas de frases)...",
+    "cancel": "Cancelar",
+    "send": "Enviar",
+    "withdrawConfirm": "¿Estás seguro de que quieres retirar y deshacer tu candidatura para esta oportunidad?",
+    "withdrawButton": "Retirar candidatura",
+    "coverLetterPlaceholderPlayer": "Explica al club por qué encajas en esta posición y cuáles son tus virtudes como jugador/a...",
+    "coverLetterPlaceholderCoach": "Explica al club qué puedes aportar como entrenador/a y por qué eres la persona ideal para este proyecto deportivo..."
   },
   "opportunities": {
     "errorLoading": "Error cargando oportunidades",
@@ -617,7 +636,8 @@
       "all": "Todos los deportes",
       "football": "Fútbol 11",
       "basketball": "Baloncesto",
-      "proContracts": "Contratos Pro"
+      "proContracts": "Contratos Pro",
+      "allTargetRoles": "Todos los perfiles"
     },
     "emptyTitle": "Aún no hay oportunidades",
     "emptyDesc": "No se han encontrado oportunidades publicadas. Vuelve a intentarlo más tarde o crea la primera si eres un club.",
@@ -631,7 +651,9 @@
     "published": "Publicado:",
     "viewDetail": "Ver Detalle",
     "apply": "Aplicar",
-    "clearFilters": "Limpiar Filtros"
+    "clearFilters": "Limpiar Filtros",
+    "ownOpportunity": "Tu oportunidad",
+    "alreadyApplied": "Candidatura enviada"
   },
   "opportunityForm": {
     "restricted": "Acceso restringido",
@@ -686,7 +708,8 @@
       "countryBase": "País",
       "country": "País *",
       "state": "Provincia / Estado",
-      "city": "Ciudad"
+      "city": "Ciudad",
+      "targetRoleLabel": "¿Qué perfil buscas?"
     },
     "addBtn": "Añadir",
     "placeholders": {
@@ -694,6 +717,11 @@
       "country": "Buscar país...",
       "state": "Selecciona estado...",
       "city": "Selecciona ciudad..."
+    },
+    "targetRole": {
+      "player": "Jugador/a",
+      "coach": "Entrenador/a",
+      "both": "Ambos"
     }
   },
   "premiumLock": {
@@ -769,6 +797,7 @@
     "cancel": "Cancelar",
     "saving": "Guardando...",
     "save": "Guardar cambios",
+    "avatarMaxLimit": "La imagen es demasiado grande. El peso máximo permitido es de 5 MB.",
     "fields": {
       "generalInfo": "Información general",
       "displayName": "Nombre mostrado",

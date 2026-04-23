@@ -7,11 +7,24 @@ import { Country, State, City } from 'country-state-city';
 
 type FormData = Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>;
 
-const SPORT_OPTIONS = ['Football', 'Basketball', 'Tennis', 'Handball', 'Volleyball', 'Rugby', 'Swimming', 'Athletics'];
+const SPORT_OPTIONS = [
+  'football',
+  'basketball',
+  'futsal',
+  'volleyball',
+  'handball',
+  'waterpolo',
+  'tennis',
+  'rugby',
+  'american_football',
+  'hockey',
+  'other'
+];
 
 export const INITIAL_FORM: FormData = {
   title: '',
-  sport: 'Football',
+  sport: 'football',
+  targetRole: 'player',
   gender: 'male',
   country: '',
   state: '',
@@ -201,12 +214,20 @@ export default function OpportunityForm({
           />
         </div>
 
-        {/* Sport + Gender + Contract */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Sport + Gender + Target Role + Contract */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label className={labelClass}>{t("opportunityForm.fields.targetRoleLabel", "A qui busques?")}</label>
+            <select className={inputClass} value={form.targetRole || 'player'} onChange={(e) => updateField('targetRole', e.target.value as Opportunity['targetRole'])}>
+              <option value="player">{t("opportunityForm.targetRole.player", "Jugador/a")}</option>
+              <option value="coach">{t("opportunityForm.targetRole.coach", "Entrenador/a")}</option>
+              <option value="both">{t("opportunityForm.targetRole.both", "Tots dos")}</option>
+            </select>
+          </div>
           <div>
             <label className={labelClass}>{t("opportunityForm.fields.sportLabel")}</label>
             <select className={inputClass} value={form.sport} onChange={(e) => updateField('sport', e.target.value)}>
-              {SPORT_OPTIONS.map((s) => <option key={s} value={s}>{t("profile.sports." + s.toLowerCase())}</option>)}
+              {SPORT_OPTIONS.map((s) => <option key={s} value={s}>{t(`profile.sports.${s}`)}</option>)}
             </select>
           </div>
           <div>

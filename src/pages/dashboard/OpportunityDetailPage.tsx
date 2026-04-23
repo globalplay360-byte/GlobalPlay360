@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { Opportunity } from '@/types';
 import { getOpportunityById } from '@/services/opportunities.service';
 import { getUserDoc } from '@/services/auth.service';
-import { createApplication, hasUserApplied } from '@/services/applications.service';
+import { createApplication, getUserApplicationForOpportunity, deleteApplication } from '@/services/applications.service';
 import { getOrCreateConversation } from '@/services/messages.service';
 import { Card, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -47,8 +47,11 @@ export default function OpportunityDetailPage() {
 
   // Application state
   const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [applicationId, setApplicationId] = useState<string | null>(null);
   const [applying, setApplying] = useState(false);
   const [applyError, setApplyError] = useState<string | null>(null);
+  const [showApplyForm, setShowApplyForm] = useState(false);
+  const [coverLetter, setCoverLetter] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -71,16 +74,22 @@ export default function OpportunityDetailPage() {
         setOpportunity(opp);
 
         // Fetch club info + check if already applied in parallel
-        const [clubDoc, applied] = await Promise.all([
+        const [clubDoc, app] = await Promise.all([
           getUserDoc(opp.clubId),
-          user ? hasUserApplied(user.uid, opp.id) : false,
+          user ? getUserApplicationForOpportunity(user.uid, opp.id) : null,
         ]);
         if (!cancelled) {
           if (clubDoc) {
             setClubName(clubDoc.displayName);
             setClubEmail(clubDoc.email);
           }
-          setAlreadyApplied(applied);
+          if (app) {
+            setAlreadyApplied(true);
+            setApplicationId(app.id);
+          } else {
+            setAlreadyApplied(false);
+            setApplicationId(null);
+          }
         }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : t('opportunityDetail.errorLoading'));
@@ -93,17 +102,41 @@ export default function OpportunityDetailPage() {
     return () => { cancelled = true; };
   }, [id, user]);
 
+  const handleApplyClick = () => {
+    setShowApplyForm(true);
+  };
+
+  const handleCancelApplication = async () => {
+    if (!applicationId) return;
+    if (!window.confirm(t('opportunityDetail.withdrawConfirm', 'Estàs segur que vols retirar i desfer la teva candidatura per a aquesta oportunitat?'))) return;
+    
+    try {
+      setApplying(true);
+      await deleteApplication(applicationId);
+      setAlreadyApplied(false);
+      setApplicationId(null);
+      setCoverLetter('');
+    } catch (err) {
+      setApplyError(err instanceof Error ? err.message : 'Error al retirar la candidatura.');
+    } finally {
+      setApplying(false);
+    }
+  };
+
   const handleApply = async () => {
     if (!user || !opportunity) return;
     try {
       setApplying(true);
       setApplyError(null);
-      await createApplication({
+      const newAppId = await createApplication({
         opportunityId: opportunity.id,
         userId: user.uid,
         clubId: opportunity.clubId,
+        coverLetter: coverLetter.trim()
       });
       setAlreadyApplied(true);
+      setApplicationId(newAppId);
+      setShowApplyForm(false);
     } catch (err) {
       setApplyError(err instanceof Error ? err.message : t('opportunityDetail.errorApply'));
     } finally {
@@ -277,19 +310,56 @@ const handleMessage = async () => {
                     {t('opportunityDetail.clubCannotApply', 'Els clubs no poden aplicar a oportunitats.')}
                   </span>
                 </div>
+              ) : opportunity.targetRole && opportunity.targetRole !== 'both' && user?.role && opportunity.targetRole !== user.role ? (
+                  <div className="text-center p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                    <span className="text-[#EAB308] font-semibold text-sm tracking-wide">
+                      {t('opportunityDetail.roleMismatch', 'Aquesta oportunitat no és per al teu rol.')}
+                    </span>
+                  </div>
               ) : (
                 <div className="space-y-4">
                   {alreadyApplied ? (
-                    <div className="text-center p-4 bg-[#10B981]/10 border border-[#10B981]/20 rounded-lg">
+                    <div className="text-center p-4 bg-[#10B981]/10 border border-[#10B981]/20 rounded-lg flex flex-col gap-3">
                       <span className="text-[#10B981] font-semibold text-sm tracking-wide">{t('opportunityDetail.alreadyApplied')}</span>
+                      <button 
+                        onClick={handleCancelApplication} 
+                        disabled={applying}
+                        className="text-xs font-medium text-gray-400 hover:text-red-400 underline underline-offset-2 transition-colors disabled:opacity-50"
+                      >
+                        {t('opportunityDetail.withdrawButton', 'Retirar candidatura')}
+                      </button>
                     </div>
+                  ) : showApplyForm ? (
+                      <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              {t('opportunityDetail.coverLetterLabel', 'Carta de presentació *')}
+                            </label>
+                            <textarea
+                              placeholder={
+                                user?.role === 'coach'
+                                  ? t('opportunityDetail.coverLetterPlaceholderCoach', 'Explica al club què pots aportar com a entrenador/a i per què ets la persona ideal per a aquest projecte esportiu...')
+                                  : t('opportunityDetail.coverLetterPlaceholderPlayer', 'Explica al club per què encaixes en aquesta posició i quines són les teves virtuts com a jugador/a...')
+                              }
+                              value={coverLetter}
+                              onChange={(e) => setCoverLetter(e.target.value)}
+                              className="w-full h-32 bg-[#0F172A] border border-[#374151] rounded-lg p-3 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent text-sm resize-none"
+                            ></textarea>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="secondary" fullWidth onClick={() => setShowApplyForm(false)} disabled={applying}>{t('opportunityDetail.cancel', 'Cancel·lar')}</Button>
+                          <Button variant="primary" fullWidth onClick={handleApply} disabled={applying}>
+                            {applying ? t('opportunityDetail.sending') : t('opportunityDetail.send', 'Enviar')}
+                          </Button>
+                        </div>
+                      </div>
                   ) : (
                     <Button
                       variant="primary"
                       size="lg"
                       fullWidth
                       className="text-base font-bold tracking-wide shadow-md hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all duration-base ease-out active:scale-[0.98]"
-                      onClick={handleApply}
+                      onClick={handleApplyClick}
                       disabled={applying}
                     >
                       {applying ? t('opportunityDetail.sending') : t('opportunityDetail.applyNow')}

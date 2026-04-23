@@ -189,6 +189,13 @@ export default function OverviewPage() {
             value: activeConversations.length,
             icon: ChatBubbleLeftEllipsisIcon
           },
+          { 
+            label: t('overview.stats.coachPlayer.profileStrength', 'Fuerza del perfil'), 
+            value: '100%',
+            icon: UserCircleIcon, 
+            trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
+            trendUp: true 
+          },
         ];
       }
       return [

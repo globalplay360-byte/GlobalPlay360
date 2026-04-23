@@ -20,6 +20,14 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
+    // Validación del límite de 5 MB
+    const MAX_MB = 5;
+    if (file.size > MAX_MB * 1024 * 1024) {
+      alert(t('profileEdit.avatarMaxLimit', `La imatge és massa gran. El pes màxim permès és de ${MAX_MB} MB.`));
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     try {
       setIsUploading(true);
       const photoURL = await uploadAvatar(user.uid, file);

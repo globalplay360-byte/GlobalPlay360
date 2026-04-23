@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { Country, State, City } from 'country-state-city';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
+import { getUserApplications } from '@/services/applications.service';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
@@ -37,6 +38,7 @@ const darkSelectStyles = {
     ...base,
     backgroundColor: state.isSelected ? '#3B82F6' : state.isFocused ? '#374151' : 'transparent',
     color: state.isSelected ? '#FFFFFF' : '#F3F4F6',
+    fontSize: '13px',
     cursor: 'pointer',
     '&:active': {
       backgroundColor: '#2563EB'
@@ -45,14 +47,17 @@ const darkSelectStyles = {
   singleValue: (base: any) => ({
     ...base,
     color: '#F3F4F6',
+    fontSize: '13px',
   }),
   placeholder: (base: any) => ({
     ...base,
     color: '#9CA3AF',
+    fontSize: '13px',
   }),
   input: (base: any) => ({
     ...base,
     color: '#F3F4F6',
+    fontSize: '13px',
   }),
   indicatorSeparator: (base: any) => ({
     ...base,
@@ -87,14 +92,22 @@ export default function OpportunitiesPage() {
   const { t } = useTranslation();
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [appliedOppIds, setAppliedOppIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    sport: string;
+    country: string;
+    state: string;
+    city: string;
+    targetRole?: string;
+  }>({
     sport: '',
     country: '',
     state: '',
-    city: ''
+    city: '',
+    targetRole: ''
   });
 
   const countryOptions = useMemo(() => Country.getAllCountries().map(c => ({ value: c.isoCode, label: c.name })), []);
@@ -108,12 +121,21 @@ export default function OpportunitiesPage() {
     ];
   }, [t]);
 
+  const targetRoleOptions = useMemo(() => {
+    return [
+      { value: '', label: t('opportunities.filters.allTargetRoles', "Tots els rols") },
+      { value: 'player', label: t('opportunityForm.targetRole.player', "Jugador/a") },
+      { value: 'coach', label: t('opportunityForm.targetRole.coach', "Entrenador/a") }
+    ];
+  }, [t]);
+
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter(opp => {
-      if (filters.sport && opp.sport !== filters.sport) return false;
+      if (filters.sport && opp.sport?.toLowerCase() !== filters.sport.toLowerCase()) return false;
       if (filters.country && opp.country !== filters.country) return false;
       if (filters.state && opp.state !== filters.state) return false;
       if (filters.city && opp.city !== filters.city) return false;
+      if (filters.targetRole && opp.targetRole && opp.targetRole !== 'both' && opp.targetRole !== filters.targetRole) return false;
       return true;
     });
   }, [opportunities, filters]);
@@ -125,7 +147,15 @@ export default function OpportunitiesPage() {
       try {
         setIsLoading(true);
         setError(null);
+        
         const data = await getOpportunitiesByField('status', '==', 'open');
+        
+        // Fetch user applications if logged in
+        if (user && user.role !== 'club') {
+          const apps = await getUserApplications(user.uid);
+          if (!cancelled) setAppliedOppIds(new Set(apps.map(a => a.opportunityId)));
+        }
+
         if (!cancelled) setOpportunities(data);
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : t('opportunities.errorLoading'));
@@ -195,8 +225,19 @@ export default function OpportunitiesPage() {
       />
 
       {/* Filters */}
-      <div className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 p-4 rounded-xl flex flex-col md:flex-row gap-4 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] items-end z-10">
-        <div className="flex-1 w-full relative z-40">
+        <div className="relative border border-[#2A3447]/70 p-4 rounded-xl flex flex-col md:flex-row flex-wrap gap-4 bg-gradient-to-b from-[#1A2235] to-[#141C2E] shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] z-10 w-full md:items-end">
+          <div className="flex-1 min-w-[140px] relative z-50">
+            <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('opportunityForm.fields.targetRoleLabel', 'Rol')}</label>
+            <Select
+              {...{ id: 'role-select', instanceId: 'role-select' }}
+              styles={darkSelectStyles}
+              options={targetRoleOptions}
+              value={targetRoleOptions.find(o => o.value === filters.targetRole) || targetRoleOptions[0]}
+              onChange={(selected: any) => setFilters(f => ({ ...f, targetRole: selected?.value || '' }))}
+              isClearable={false}
+            />
+          </div>
+          <div className="flex-1 min-w-[140px] relative z-40">
           <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.sport')}</label>
           <Select
             {...{ id: 'sport-select', instanceId: 'sport-select' }}
@@ -248,9 +289,9 @@ export default function OpportunitiesPage() {
         <div className="w-full md:w-auto shrink-0 z-0">
           <Button 
             variant="outline" 
-            onClick={() => setFilters({ sport: '', country: '', state: '', city: '' })}
-            className="w-full h-[42px] border-[#374151] hover:bg-[#1F2937]"
-            disabled={!filters.sport && !filters.country && !filters.state && !filters.city}
+            onClick={() => setFilters({ sport: '', country: '', state: '', city: '', targetRole: '' })}
+            className="w-full h-[42px] border border-[#374151] hover:bg-[#1F2937] text-gray-300 hover:text-gray-100 transition-colors"
+            disabled={!filters.sport && !filters.country && !filters.state && !filters.city && !filters.targetRole}
           >
             {t('opportunities.clearFilters')}
           </Button>
@@ -296,7 +337,7 @@ export default function OpportunitiesPage() {
 
               {/* Header: title + status */}
               <div className="flex items-start justify-between gap-3 mb-3">
-                <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold text-gray-100/90 tracking-tight leading-snug line-clamp-2 flex-1 group-hover:text-gray-100 transition-colors duration-fast">
+                  <h3 className="text-[1.2rem] sm:text-[1.3rem] font-normal text-gray-100 tracking-tight leading-snug line-clamp-2 flex-1 group-hover:text-white transition-colors duration-fast">
                   {opp.title}
                 </h3>
                 <Badge
@@ -309,11 +350,31 @@ export default function OpportunitiesPage() {
 
               {/* Meta pills */}
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12.5px] text-[#9CA3AF] mb-4">
-                <span className="capitalize">{opp.sport}</span>
+                {opp.targetRole && opp.targetRole !== 'both' ? (
+                  <>
+                    <span className="capitalize text-blue-400 font-medium">
+                      {t(`opportunityForm.targetRole.${opp.targetRole}`)}
+                    </span>
+                    <span className="text-[#2A3447]">·</span>
+                  </>
+                ) : null}
+                <span className="capitalize">{t(`profile.sports.${opp.sport.toLowerCase()}`) || opp.sport}</span>
                 <span className="text-[#2A3447]">·</span>
                 <span>{formatLocation(opp)}</span>
                 <span className="text-[#2A3447]">·</span>
                 <span className="capitalize">{opp.contractType.replace('-', ' ')}</span>
+                {user?.uid === opp.clubId && (
+                  <>
+                    <span className="text-[#2A3447]">·</span>
+                    <span className="text-[#3B82F6] font-semibold">{t('opportunities.ownOpportunity', 'La teva oportunitat')}</span>
+                  </>
+                )}
+                {appliedOppIds.has(opp.id) && (
+                  <>
+                    <span className="text-[#2A3447]">·</span>
+                    <span className="text-[#10B981] font-semibold">{t('opportunities.alreadyApplied', 'Candidatura enviada')}</span>
+                  </>
+                )}
               </div>
 
               {/* Description */}
@@ -360,7 +421,7 @@ export default function OpportunitiesPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}
-                    className="inline-flex items-center px-3.5 py-2 text-[13px] font-medium tracking-wide text-gray-200 bg-[#1F2937]/40 border border-[#1F2937] hover:bg-[#1F2937]/80 hover:border-[#374151] rounded-lg transition-all duration-fast active:scale-[0.98]"
+                      className="inline-flex items-center px-3.5 py-2 text-[13px] font-medium tracking-wide text-[#EAB308] bg-[#1F2937]/40 border border-[#1F2937] hover:bg-[#EAB308]/10 hover:border-[#EAB308]/30 hover:text-[#F5C518] rounded-lg transition-all duration-fast active:scale-[0.98]"
                   >
                     {t('opportunities.viewDetail')}
                   </button>

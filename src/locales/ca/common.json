@@ -4,6 +4,16 @@
   "register": "Registrar-se",
   "home": "Inici",
   "dashboard": "Tauler",
+  "gender": {
+    "male": "Masculí",
+    "female": "Femení",
+    "both": "Masculí i Femení"
+  },
+  "category": {
+    "youth": "Formació / Base (Infantil, Cadet, etc)",
+    "senior": "Amateur / Rendiment (Sènior)",
+    "both": "Ambdues"
+  },
   "homePage": {
     "hero": {
       "title": "On el Talent Troba \n l'Oportunitat",
@@ -489,9 +499,9 @@
     "sport": "Esport",
     "country": "País",
     "state": "Província / Estat",
-    "selectCountry": "Selecciona el país...",
-    "selectState": "Selecciona l'estat...",
-    "selectCity": "Selecciona la ciutat..."
+    "selectCountry": "Selecciona...",
+    "selectState": "Selecciona...",
+    "selectCity": "Selecciona..."
   },
   "applications": {
     "titleClub": "Candidatures Rebudes",
@@ -606,7 +616,16 @@
     "aboutClub": "Sobre el Club",
     "club": "Club",
     "viewFullProfile": "Veure Perfil Complet",
-    "ownOpportunity": "Aquesta és la teva oportunitat."
+    "ownOpportunity": "Aquesta és la teva oportunitat.",
+    "errorMissingCoverLetter": "Introdueix una carta de presentació o missatge.",
+    "coverLetterLabel": "Carta de presentació *",
+    "coverLetterPlaceholder": "Explica al club per què encaixes amb aquesta posició (mínim un parell de frases)...",
+    "cancel": "Cancel·lar",
+    "send": "Enviar",
+    "withdrawConfirm": "Estàs segur que vols retirar i desfer la teva candidatura per a aquesta oportunitat?",
+    "withdrawButton": "Retirar candidatura",
+    "coverLetterPlaceholderPlayer": "Explica al club per què encaixes en aquesta posició i quines són les teves virtuts com a jugador/a...",
+    "coverLetterPlaceholderCoach": "Explica al club què pots aportar com a entrenador/a i per què ets la persona ideal per a aquest projecte esportiu..."
   },
   "opportunities": {
     "errorLoading": "Error carregant oportunitats",
@@ -619,7 +638,8 @@
       "all": "Tots els esports",
       "football": "Futbol 11",
       "basketball": "Bàsquet",
-      "proContracts": "Contractes Pro"
+      "proContracts": "Contractes Pro",
+      "allTargetRoles": "Tots els perfils"
     },
     "emptyTitle": "Encara no hi ha oportunitats",
     "emptyDesc": "No s'han trobat oportunitats publicades. Torna-ho a provar més tard o crea la primera si ets un club.",
@@ -633,7 +653,9 @@
     "published": "Publicat:",
     "viewDetail": "Veure Detall",
     "apply": "Aplicar",
-    "clearFilters": "Netejar Filtres"
+    "clearFilters": "Netejar Filtres",
+    "ownOpportunity": "La teva oportunitat",
+    "alreadyApplied": "Candidatura enviada"
   },
   "opportunityForm": {
     "restricted": "Accés restringit",
@@ -688,7 +710,8 @@
       "countryBase": "País",
       "country": "País *",
       "state": "Província / Estat",
-      "city": "Ciutat"
+      "city": "Ciutat",
+      "targetRoleLabel": "Quin perfil busques?"
     },
     "addBtn": "Afegir",
     "placeholders": {
@@ -696,6 +719,11 @@
       "country": "Cerca país...",
       "state": "Selecciona estat...",
       "city": "Selecciona ciutat..."
+    },
+    "targetRole": {
+      "player": "Jugador/a",
+      "coach": "Entrenador/a",
+      "both": "Tots dos"
     }
   },
   "premiumLock": {
@@ -771,6 +799,7 @@
     "cancel": "Cancel·lar",
     "saving": "Desant...",
     "save": "Desar canvis",
+    "avatarMaxLimit": "La imatge és massa gran. El pes màxim permès és de 5 MB.",
     "fields": {
       "generalInfo": "Informació general",
       "displayName": "Nom mostrat",

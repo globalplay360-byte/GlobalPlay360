@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GlobalPlay360 · QA Interactiu</title>
+<style>
+  :root {
+    --bg-0: #0B1120;
+    --bg-1: #0F172A;
+    --bg-2: #141C2E;
+    --bg-3: #1A2235;
+    --border: #2A3447;
+    --border-soft: #1F2937;
+    --text-0: #F3F4F6;
+    --text-1: rgba(243, 244, 246, 0.9);
+    --text-2: #9CA3AF;
+    --text-3: #6B7280;
+    --blue: #3B82F6;
+    --blue-soft: #60A5FA;
+    --green: #10B981;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --purple: #A78BFA;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--bg-0);
+    color: var(--text-1);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.06), transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(167, 139, 250, 0.04), transparent 60%),
+      var(--bg-0);
+  }
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+  header.top {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: linear-gradient(180deg, #1A2235, #141C2E);
+    box-shadow: 0 1px 0 0 rgba(243, 244, 246, 0.04) inset, 0 20px 50px -24px rgba(0, 0, 0, 0.7);
+    padding: 28px 28px 24px;
+    margin-bottom: 24px;
+  }
+  header.top::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 24px; right: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(243, 244, 246, 0.12), transparent);
+  }
+  .eyebrow {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-soft);
+    margin-bottom: 10px;
+  }
+  header.top h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--text-0);
+  }
+  header.top p {
+    margin: 0;
+    color: var(--text-2);
+    font-size: 14px;
+    max-width: 70ch;
+  }
+  .progress {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .kpi {
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: linear-gradient(180deg, rgba(26, 34, 53, 0.6), rgba(20, 28, 46, 0.6));
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .kpi .l {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .kpi .v {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-0);
+    margin-top: 4px;
+    letter-spacing: -0.01em;
+  }
+  .kpi.ok .v { color: var(--green); }
+  .kpi.bad .v { color: var(--red); }
+  .kpi.todo .v { color: var(--text-2); }
+
+  .bar {
+    margin-top: 14px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(31, 41, 55, 0.7);
+    overflow: hidden;
+    position: relative;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #34D399);
+    transition: width 220ms ease-out;
+  }
+
+  section.session {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: linear-gradient(180deg, #1A2235, #141C2E);
+    box-shadow: 0 1px 0 0 rgba(243, 244, 246, 0.04) inset, 0 10px 30px -16px rgba(0, 0, 0, 0.7);
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  section.session::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 20px; right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(243, 244, 246, 0.10), transparent);
+    z-index: 2;
+  }
+  .session-head {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid rgba(42, 52, 71, 0.5);
+    transition: background 160ms ease;
+  }
+  .session-head:hover { background: rgba(31, 41, 55, 0.25); }
+  .session-head h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-0);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .session-head h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.28);
+    color: var(--blue-soft);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .session-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    color: var(--text-2);
+    background: rgba(15, 23, 42, 0.6);
+    white-space: nowrap;
+  }
+  .pill.ok { color: var(--green); border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.08); }
+  .pill.bad { color: var(--red); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.08); }
+  .pill.todo { color: var(--text-3); }
+
+  .caret {
+    width: 10px; height: 10px;
+    border-right: 2px solid var(--text-3);
+    border-bottom: 2px solid var(--text-3);
+    transform: rotate(45deg);
+    transition: transform 180ms ease;
+    margin-left: 4px;
+  }
+  .session[data-open="false"] .caret { transform: rotate(-45deg); }
+  .session[data-open="false"] .session-body { display: none; }
+
+  .session-body { padding: 8px 14px 18px; }
+
+  .test {
+    padding: 16px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(42, 52, 71, 0.5);
+    background: rgba(15, 23, 42, 0.35);
+    margin: 10px 4px;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+  .test[data-status="pass"] { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.04); }
+  .test[data-status="fail"] { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.04); }
+
+  .test-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .test-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-0);
+    letter-spacing: -0.005em;
+  }
+  .test-id {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 4px;
+  }
+  .steps {
+    margin: 6px 0 12px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .steps li {
+    position: relative;
+    padding: 4px 0 4px 22px;
+    color: var(--text-2);
+    font-size: 13px;
+  }
+  .steps li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 12px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--blue-soft);
+    opacity: 0.7;
+  }
+  .expect {
+    display: block;
+    font-size: 12px;
+    color: var(--text-2);
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(31, 41, 55, 0.35);
+    border: 1px solid rgba(42, 52, 71, 0.5);
+    margin-bottom: 10px;
+  }
+  .expect strong {
+    color: var(--blue-soft);
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 140ms ease;
+  }
+  .btn:hover { color: var(--text-0); border-color: rgba(75, 85, 99, 0.9); }
+  .btn[data-active="todo"] { background: rgba(107, 114, 128, 0.12); color: var(--text-2); border-color: rgba(107, 114, 128, 0.35); }
+  .btn[data-active="pass"] { background: rgba(16, 185, 129, 0.14); color: var(--green); border-color: rgba(16, 185, 129, 0.4); }
+  .btn[data-active="fail"] { background: rgba(239, 68, 68, 0.14); color: var(--red); border-color: rgba(239, 68, 68, 0.4); }
+
+  .fail-box {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: none;
+  }
+  .test[data-status="fail"] .fail-box { display: block; }
+  .fail-box label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .fail-box textarea, .fail-box select {
+    width: 100%;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: rgba(11, 17, 32, 0.8);
+    color: var(--text-0);
+    resize: vertical;
+    min-height: 70px;
+    margin-bottom: 10px;
+  }
+  .fail-box select { min-height: unset; cursor: pointer; }
+  .fail-box textarea:focus, .fail-box select:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+  .fail-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: end;
+  }
+  .sev {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer {
+    position: sticky;
+    bottom: 16px;
+    z-index: 20;
+    margin-top: 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: linear-gradient(180deg, rgba(26, 34, 53, 0.95), rgba(20, 28, 46, 0.95));
+    box-shadow: 0 1px 0 0 rgba(243, 244, 246, 0.04) inset, 0 16px 40px -20px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .footer .group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn.primary {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+    font-weight: 600;
+    padding: 9px 16px;
+  }
+  .btn.primary:hover { background: #2563EB; border-color: #2563EB; }
+  .btn.danger-outline {
+    color: var(--red);
+    border-color: rgba(239, 68, 68, 0.35);
+    background: rgba(239, 68, 68, 0.06);
+  }
+  .btn.danger-outline:hover { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal[data-open="true"] { display: flex; }
+  .modal-card {
+    width: 100%;
+    max-width: 780px;
+    max-height: 86vh;
+    border-radius: 16px;
+    border: 1px solid rgba(42, 52, 71, 0.7);
+    background: linear-gradient(180deg, #1A2235, #141C2E);
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(42, 52, 71, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-head h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-0);
+  }
+  .modal-head .sub {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 3px;
+  }
+  .modal-body {
+    overflow: auto;
+    padding: 16px 22px;
+  }
+  .modal-body pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--text-1);
+    background: rgba(11, 17, 32, 0.7);
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(42, 52, 71, 0.5);
+    line-height: 1.55;
+  }
+  .modal-foot {
+    padding: 14px 22px;
+    border-top: 1px solid rgba(42, 52, 71, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .close-x {
+    background: none;
+    border: none;
+    color: var(--text-3);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .close-x:hover { color: var(--text-0); }
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green);
+    color: #05291c;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px -8px rgba(16, 185, 129, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 220ms ease;
+    z-index: 200;
+  }
+  .toast[data-show="true"] {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 720px) {
+    .progress { grid-template-columns: repeat(2, 1fr); }
+    header.top h1 { font-size: 22px; }
+    .wrap { padding: 18px 14px 100px; }
+    .session-head { padding: 14px 16px; }
+    .test { padding: 14px 12px; margin: 10px 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">Bloc 2 · QA Funcional End-to-End</div>
+    <h1>GlobalPlay360 — Checklist Interactiu de QA</h1>
+    <p>Recorregut complet dels fluxos crítics amb 3 rols (player / coach / club). El progrés es guarda automàticament al navegador. Quan acabis, genera l'informe amb només els bugs per enviar-me'l de tornada.</p>
+    <div class="progress">
+      <div class="kpi"><div class="l">Total tests</div><div class="v" id="kpi-total">0</div></div>
+      <div class="kpi ok"><div class="l">Passats</div><div class="v" id="kpi-pass">0</div></div>
+      <div class="kpi bad"><div class="l">Fallats</div><div class="v" id="kpi-fail">0</div></div>
+      <div class="kpi todo"><div class="l">Pendents</div><div class="v" id="kpi-todo">0</div></div>
+    </div>
+    <div class="bar"><span id="bar-fill" style="width: 0%"></span></div>
+  </header>
+
+  <div id="sessions"></div>
+
+  <div class="footer">
+    <div class="group">
+      <button class="btn primary" id="btn-report">📄 Generar Informe per a Claude</button>
+      <button class="btn" id="btn-export-json">💾 Exportar JSON</button>
+      <button class="btn" id="btn-import-json">📥 Importar JSON</button>
+      <input type="file" id="file-import" accept="application/json" hidden />
+    </div>
+    <div class="group">
+      <button class="btn danger-outline" id="btn-reset">↺ Reiniciar progrés</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Report -->
+<div class="modal" id="modal" data-open="false">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3>Informe de bugs · Markdown</h3>
+        <div class="sub">Copia el text i enganxa'l a Claude per a que pugui resoldre els bugs.</div>
+      </div>
+      <button class="close-x" id="modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <pre id="report-text"></pre>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="btn-copy">📋 Copiar al portapapers</button>
+      <button class="btn primary" id="btn-download-md">⬇ Descarregar .md</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   DATA MODEL — Test Cases
+   Each session groups related flows. Each test has:
+   id, title, steps[], expect, status, bug, severity
+============================================================ */
+const DATA = [
+  {
+    id: "s1",
+    title: "Sessió 1 · Registre i Onboarding (3 rols)",
+    tests: [
+      {
+        id: "s1-t1",
+        title: "Registre amb email/password (Player)",
+        steps: [
+          "Obre /auth/register a una finestra incògnit.",
+          "Introdueix un email vàlid no registrat i una password forta (≥ 8 chars, mixed case, número).",
+          "Envia el formulari i verifica la redirecció automàtica."
+        ],
+        expect: "Es crea document a users/{uid} amb emailVerified=false i es redirigeix a la pantalla de verificació d'email."
+      },
+      {
+        id: "s1-t2",
+        title: "Pantalla de verificació d'email",
+        steps: [
+          "A la pantalla de verificació, clica 'Reenviar email' i comprova que no hi ha errors a la consola.",
+          "Obre l'email rebut i intercepta el link (no cliquis directament si vols veure el missatge original).",
+          "Clica el link i verifica el flux de tornada a l'app."
+        ],
+        expect: "emailVerified=true al document d'usuari i l'usuari accedeix a l'onboarding o dashboard segons estat."
+      },
+      {
+        id: "s1-t3",
+        title: "Onboarding — Assignació de rol",
+        steps: [
+          "A l'onboarding selecciona rol 'Player'.",
+          "Repeteix el test amb un nou registre per rol 'Coach'.",
+          "Repeteix el test amb un nou registre per rol 'Club'."
+        ],
+        expect: "El camp role del document d'usuari es guarda correctament i no es pot canviar des de la UI després. Cada rol veu les opcions adequades del Sidebar."
+      },
+      {
+        id: "s1-t4",
+        title: "Dashboard carrega dades correctes segons rol",
+        steps: [
+          "Per cada rol (player/coach/club), accedeix a /dashboard.",
+          "Verifica que l'Overview mostra les cards pròpies del rol.",
+          "Club: comprova l'opció 'Les meves ofertes' al Sidebar. Player/Coach: no la han de veure."
+        ],
+        expect: "Sidebar condicional correcte (club veu 'Les meves ofertes'). Les stats del Overview coincideixen amb el rol."
+      },
+      {
+        id: "s1-t5",
+        title: "Reset password — flux complet",
+        steps: [
+          "A /auth/login clica 'Has oblidat la contrasenya?'.",
+          "Introdueix l'email, envia i comprova que arriba.",
+          "Clica el link, introdueix nova password i torna a fer login."
+        ],
+        expect: "La pantalla de reset és custom Dark SaaS Navy (no Firebase default) i el login amb la nova password funciona."
+      },
+      {
+        id: "s1-t6",
+        title: "Login amb credencials incorrectes",
+        steps: [
+          "Intenta login amb email vàlid i password equivocada.",
+          "Intenta login amb email no registrat.",
+          "Intenta accedir a /dashboard sense sessió."
+        ],
+        expect: "Missatges d'error clars i localitzats. Redirecció a /auth/login si no hi ha sessió activa."
+      }
+    ]
+  },
+  {
+    id: "s2",
+    title: "Sessió 2 · Edició de perfils i Storage",
+    tests: [
+      {
+        id: "s2-t1",
+        title: "ProfileEditForm — Player (camps específics)",
+        steps: [
+          "Accedeix a /dashboard/profile i clica 'Editar Perfil'.",
+          "Completa tots els camps (displayName, bio, phone, país, posició, esport, peu dominant, etc).",
+          "Desa i comprova que torna a mode view amb els valors actualitzats."
+        ],
+        expect: "Tots els camps persisteixen a Firestore i es mostren al perfil públic. Sense errors de validació."
+      },
+      {
+        id: "s2-t2",
+        title: "ProfileEditForm — Coach (camps específics)",
+        steps: [
+          "Login com a Coach i edita el perfil.",
+          "Completa els camps compartits (displayName, bio, phone, country, url) i els específics de Coach si n'hi ha.",
+          "Verifica que NO apareix el missatge 'Secció Coach en desenvolupament'."
+        ],
+        expect: "El formulari Coach funciona completament. Canvis persisteixen i es mostren al perfil públic."
+      },
+      {
+        id: "s2-t3",
+        title: "ProfileEditForm — Club (camps específics)",
+        steps: [
+          "Login com a Club i edita el perfil.",
+          "Completa els camps (displayName com a nom del club, bio, phone, country, url oficial).",
+          "Verifica que NO apareix el missatge 'Secció Club en desenvolupament'."
+        ],
+        expect: "El formulari Club és operatiu. Sense placeholders 'en desenvolupament'."
+      },
+      {
+        id: "s2-t4",
+        title: "Pujada d'avatar a Firebase Storage",
+        steps: [
+          "Al perfil, clica sobre l'avatar i selecciona una imatge (JPG o PNG).",
+          "Obre DevTools > Network i verifica la crida a firebasestorage.googleapis.com.",
+          "Sense recarregar la pàgina, l'avatar nou ha d'aparèixer a la UI."
+        ],
+        expect: "Fitxer pujat a users/{uid}/avatar.* dins Storage. photoURL al document users actualitzat. UI reflecteix el canvi sense refresh."
+      },
+      {
+        id: "s2-t5",
+        title: "Validació d'avatar — formats/mida",
+        steps: [
+          "Intenta pujar un fitxer > 5MB (si hi ha límit).",
+          "Intenta pujar un PDF o document no-imatge.",
+          "Comprova el missatge d'error."
+        ],
+        expect: "Error controlat i clar sense trencar la UI. Files Storage rules han de rebutjar-ho."
+      },
+      {
+        id: "s2-t6",
+        title: "Perfil públic — URL /profile/:uid",
+        steps: [
+          "Obre el perfil públic del propi user sense sessió (incògnit).",
+          "Comprova que es mostren: avatar, nom, bio, stats públiques, posicions/esport.",
+          "Info privada (email, telèfon si marcat privat) NO ha d'aparèixer."
+        ],
+        expect: "Perfil públic renderitza només info pública. Firestore rules bloquegen camps privats."
+      }
+    ]
+  },
+  {
+    id: "s3",
+    title: "Sessió 3 · Marketplace (Ofertes i Candidatures)",
+    tests: [
+      {
+        id: "s3-t1",
+        title: "Club · Crear nova oferta",
+        steps: [
+          "Com a Club, vés a /dashboard/opportunities/mine i clica 'Crear nova'.",
+          "Completa tots els camps obligatoris (títol, descripció, esport, posició, ubicació, salari opcional).",
+          "Publica i verifica que apareix a la llista i al marketplace públic."
+        ],
+        expect: "Document creat a opportunities amb ownerId=club.uid i status='open'. Apareix a /dashboard/opportunities."
+      },
+      {
+        id: "s3-t2",
+        title: "Club · Editar oferta",
+        steps: [
+          "Des de 'Les meves ofertes', obre el detall i clica Editar.",
+          "Modifica el títol i la descripció.",
+          "Desa i verifica a Firestore i UI."
+        ],
+        expect: "Canvis persisteixen i es mostren correctament. Sense errors de permís."
+      },
+      {
+        id: "s3-t3",
+        title: "Club · Toggle obert / tancat",
+        steps: [
+          "Al detall de l'oferta, fes clic a 'Tancar oferta'.",
+          "Confirma i verifica que status passa a 'closed'.",
+          "Reobre i comprova que torna a 'open'."
+        ],
+        expect: "El camp status es modifica correctament i les candidatures queden bloquejades quan 'closed'."
+      },
+      {
+        id: "s3-t4",
+        title: "Club · Eliminar oferta",
+        steps: [
+          "Al detall, prem 'Eliminar'.",
+          "Confirma l'acció al modal.",
+          "Verifica que l'oferta desapareix de la llista i del marketplace."
+        ],
+        expect: "Oferta eliminada de Firestore. Candidatures associades marcades com a 'orphan' o similar (veure rules)."
+      },
+      {
+        id: "s3-t5",
+        title: "Player · Veure detall i candidatura",
+        steps: [
+          "Com a Player, accedeix a /dashboard/opportunities i obre una oferta.",
+          "Clica 'Aplicar' i omple els camps requerits (carta de presentació).",
+          "Envia i comprova el feedback."
+        ],
+        expect: "Candidatura creada a applications amb userId=player.uid i status='pending'. Apareix al dashboard del Player a 'Candidatures'."
+      },
+      {
+        id: "s3-t6",
+        title: "Coach · Veure detall i candidatura",
+        steps: [
+          "Com a Coach, repeteix el flux de candidatura sobre una oferta tècnica.",
+          "Verifica que la candidatura s'associa correctament al coach.",
+          "Comprova que l'oferta apareix com 'ja aplicada' si torna al detall."
+        ],
+        expect: "Flux coach idèntic al player. UI mostra estat 'Ja has aplicat'."
+      },
+      {
+        id: "s3-t7",
+        title: "Club · NO veu botó d'aplicar",
+        steps: [
+          "Com a Club, obre una oferta d'un altre club.",
+          "Verifica que el botó 'Aplicar' NO apareix.",
+          "Intenta navegar manualment a la URL de candidatura."
+        ],
+        expect: "UI oculta el botó. Backend/rules bloquegen la creació d'application si ownerRole=club."
+      },
+      {
+        id: "s3-t8",
+        title: "Filtres cascade al marketplace",
+        steps: [
+          "A /dashboard/opportunities aplica filtre per esport.",
+          "Aplica també filtre per posició (dependent de l'esport).",
+          "Comprova que només es mostren posicions vàlides per a l'esport seleccionat."
+        ],
+        expect: "Els filtres cascade funcionen i els resultats s'actualitzen en temps real."
+      }
+    ]
+  },
+  {
+    id: "s4",
+    title: "Sessió 4 · Gestió d'Estats i Xat en temps real",
+    tests: [
+      {
+        id: "s4-t1",
+        title: "Club · Rebre candidatura i canviar estat",
+        steps: [
+          "Com a Club, vés a /dashboard/applications i obre una candidatura pending.",
+          "Canvia l'estat a 'Acceptada'.",
+          "Canvia una altra candidatura a 'Rebutjada'."
+        ],
+        expect: "Camp status a applications s'actualitza. Timestamp de canvi guardat si existeix."
+      },
+      {
+        id: "s4-t2",
+        title: "Player · Veu estat actualitzat",
+        steps: [
+          "Com a Player afectat, vés a /dashboard/applications.",
+          "Verifica que l'estat mostra 'Acceptada' / 'Rebutjada' en temps real (si tens Firestore real-time).",
+          "Comprova que l'UI distingeix visualment els estats (colors/pills)."
+        ],
+        expect: "L'estat es reflecteix sense refresh manual. Badge colorejat correctament."
+      },
+      {
+        id: "s4-t3",
+        title: "Obrir xat des de candidatura",
+        steps: [
+          "Al detall d'una candidatura acceptada, clica 'Obrir Xat'.",
+          "Verifica que es crea o recupera la sala a chats/{chatId}.",
+          "Envia un primer missatge."
+        ],
+        expect: "Document chat creat amb participants = [clubId, playerId]. Missatge guardat a messages subcollection."
+      },
+      {
+        id: "s4-t4",
+        title: "Xat — enviament en temps real",
+        steps: [
+          "Obre el xat des de dues finestres (club + player) en paral·lel.",
+          "Envia un missatge des del player.",
+          "Verifica que apareix instantàniament a la finestra del club (< 1s)."
+        ],
+        expect: "Entrega real-time via Firestore onSnapshot. Sense refresh. Timestamp correcte."
+      },
+      {
+        id: "s4-t5",
+        title: "Xat — paywall per Free",
+        steps: [
+          "Com a user Free, intenta enviar > N missatges (segons límit) o obrir > N xats.",
+          "Comprova el missatge de paywall.",
+          "Fes upgrade i torna a provar."
+        ],
+        expect: "Paywall visible amb CTA a /dashboard/billing. Després de premium, xat funciona sense límit."
+      },
+      {
+        id: "s4-t6",
+        title: "Notificacions al Topbar",
+        steps: [
+          "Envia un missatge com a Player.",
+          "Comprova que el Topbar del Club mostra el punt vermell de notificació.",
+          "Obre el xat i verifica que el punt desapareix."
+        ],
+        expect: "Indicador d'unread funciona. Es marca com a read en obrir el xat."
+      }
+    ]
+  },
+  {
+    id: "s5",
+    title: "Sessió 5 · Stripe & Paywall (360°)",
+    tests: [
+      {
+        id: "s5-t1",
+        title: "Activar trial 30 dies",
+        steps: [
+          "Com a user Free nou, vés a /pricing.",
+          "Subscriu-te a Premium (test mode, targeta 4242 4242 4242 4242).",
+          "Verifica que no es cobra res i trial_end és a 30 dies vista."
+        ],
+        expect: "Document customers/{uid}/subscriptions creat amb status='trialing'. activePlan passa a 'premium' a l'app."
+      },
+      {
+        id: "s5-t2",
+        title: "Upgrade de rol a Premium",
+        steps: [
+          "Durant el trial, verifica que les features premium (messages il·limitats, visibility boost) estan actives.",
+          "Comprova el badge de Premium a Profile i Sidebar.",
+          "Verifica que apareix l'opció Subscripció al Sidebar."
+        ],
+        expect: "UI reflecteix l'estat premium. Paywalls eliminats. No requereix refresh."
+      },
+      {
+        id: "s5-t3",
+        title: "Customer Portal — cancel·lar subscripció",
+        steps: [
+          "A /dashboard/billing, clica 'Gestionar subscripció'.",
+          "Dins el Customer Portal de Stripe, cancel·la la subscripció.",
+          "Torna a l'app i verifica l'estat."
+        ],
+        expect: "cancel_at_period_end=true. Banner 'La teva subscripció acaba el XX/XX/XXXX' visible. Accés premium actiu fins final de cicle."
+      },
+      {
+        id: "s5-t4",
+        title: "Customer Portal — reactivar subscripció",
+        steps: [
+          "Dins Customer Portal, reactiva la subscripció cancel·lada.",
+          "Torna a l'app i comprova que el banner desapareix.",
+          "Verifica que status ha tornat a 'active'."
+        ],
+        expect: "cancel_at_period_end=false. Banner desapareix. Subscripció continua normalment."
+      },
+      {
+        id: "s5-t5",
+        title: "Targeta denegada",
+        steps: [
+          "Subscriu-te amb targeta 4000 0000 0000 0002 (decline generic).",
+          "Verifica el missatge d'error que es mostra.",
+          "Prova també 4000 0000 0000 9995 (insufficient funds)."
+        ],
+        expect: "Stripe retorna error i es mostra a la UI. No es crea document de subscripció. User roman a Free."
+      },
+      {
+        id: "s5-t6",
+        title: "Webhook — sincronització correcta",
+        steps: [
+          "Fes una subscripció i comprova Firebase Functions logs.",
+          "Verifica que customer.subscription.created i invoice.paid es reben.",
+          "Comprova que activePlan es sincronitza al document d'usuari."
+        ],
+        expect: "Webhooks reben i processen events correctament. Sense errors 500. Firestore actualitzat."
+      },
+      {
+        id: "s5-t7",
+        title: "Canvi de pla (upgrade/downgrade)",
+        steps: [
+          "Des del Customer Portal, canvia de Premium Monthly a Premium Yearly.",
+          "Verifica el proration.",
+          "Comprova que activePlan segueix sent 'premium'."
+        ],
+        expect: "Canvi de price ID reflectit a Firestore. Facturació prorratejada correcta."
+      }
+    ]
+  },
+  {
+    id: "s6",
+    title: "Sessió 6 · Firestore Rules & casos extrems",
+    tests: [
+      {
+        id: "s6-t1",
+        title: "Editar oferta d'un altre Club (atac UI)",
+        steps: [
+          "Com a Club A, copia la URL d'edició d'una oferta del Club B.",
+          "Navega manualment a aquesta URL.",
+          "Intenta desar canvis."
+        ],
+        expect: "UI redirigeix o bloqueja. Firestore rules llancen permission-denied. No s'aplica cap canvi."
+      },
+      {
+        id: "s6-t2",
+        title: "Eliminar oferta aliena",
+        steps: [
+          "Com a Club A, crida directament deleteDoc amb l'id d'una oferta del Club B (des de console o eina externa).",
+          "Verifica el resultat."
+        ],
+        expect: "permission-denied. L'oferta es manté intacta."
+      },
+      {
+        id: "s6-t3",
+        title: "Oportunitat òrfena — neteja des del player",
+        steps: [
+          "Club publica una oferta, player aplica, Club elimina l'oferta.",
+          "Player accedeix a /dashboard/applications.",
+          "Clica 'Eliminar' a la candidatura òrfena."
+        ],
+        expect: "La candidatura òrfena es pot eliminar pel propi player. Rules permeten delete si userId==auth.uid."
+      },
+      {
+        id: "s6-t4",
+        title: "Llegir missatges d'un xat aliè",
+        steps: [
+          "Com a User C (no participant), intenta llegir chats/{chatId}/messages d'un xat de A i B.",
+          "Prova des del client i via eina externa."
+        ],
+        expect: "permission-denied. No es retorna cap dada."
+      },
+      {
+        id: "s6-t5",
+        title: "Free intenta funcionalitats Premium",
+        steps: [
+          "Com a Free, intenta obrir un xat.",
+          "Intenta enviar missatges il·limitats.",
+          "Intenta veure perfils visibles només per premium."
+        ],
+        expect: "Paywall bloqueja a UI. Rules també bloquegen per garantia backend (defense in depth)."
+      },
+      {
+        id: "s6-t6",
+        title: "Club aplicant a una oferta (should fail)",
+        steps: [
+          "Com a Club, simula POST a applications amb la teva auth.",
+          "Verifica que Firestore rules ho rebutgin."
+        ],
+        expect: "permission-denied basat en role de l'auth token o camp role del doc user."
+      },
+      {
+        id: "s6-t7",
+        title: "Modificació de role al document propi",
+        steps: [
+          "Com a user auth, intenta updateDoc(users/{uid}) canviant role de 'player' a 'club'.",
+          "Verifica el resultat."
+        ],
+        expect: "permission-denied. El camp role ha de ser immutable un cop assignat (o només modificable per admin)."
+      }
+    ]
+  },
+  {
+    id: "s7",
+    title: "Sessió 7 · UX, i18n & Responsive",
+    tests: [
+      {
+        id: "s7-t1",
+        title: "Idioma — canvi CA / ES / EN",
+        steps: [
+          "Des del LanguageSelector al Footer, canvia a ES.",
+          "Navega pel Dashboard, Auth, Pricing, About.",
+          "Repeteix amb EN."
+        ],
+        expect: "Tots els textos es tradueixen (sense claus sense resoldre com 'sidebar.nav.overview')."
+      },
+      {
+        id: "s7-t2",
+        title: "Responsive mòbil (< 640px)",
+        steps: [
+          "Obre DevTools i simula iPhone 12 / Pixel 5.",
+          "Navega: Overview, Profile, Opportunities, Detail, Chat.",
+          "Verifica que no hi ha overflow horitzontal ni texts tallats."
+        ],
+        expect: "Layout mobile-first consistent. Sidebar drawer animat. Cards apilades correctament."
+      },
+      {
+        id: "s7-t3",
+        title: "Mobile drawer (Sidebar)",
+        steps: [
+          "A mòbil, obre el menú hamburguesa del Topbar.",
+          "Comprova l'animació slide-in + overlay.",
+          "Tanca amb Escape, tap fora i botó X."
+        ],
+        expect: "Drawer obre/tanca fluidament. body amb overflow:hidden mentre obert. Focus atrapat dins."
+      },
+      {
+        id: "s7-t4",
+        title: "Accessibilitat bàsica (a11y)",
+        steps: [
+          "Navega tot amb Tab + Shift+Tab.",
+          "Verifica focus rings visibles a inputs, botons i links.",
+          "Comprova aria-labels a botons icon-only (Topbar, Sidebar)."
+        ],
+        expect: "Ordre de focus lògic. Cap element 'atrapa' ni salta. Contrast WCAG AA."
+      },
+      {
+        id: "s7-t5",
+        title: "Empty states",
+        steps: [
+          "Com a user nou sense candidatures, vés a /dashboard/applications.",
+          "Com a Club sense ofertes, vés a /dashboard/opportunities/mine.",
+          "Verifica missatges i CTAs."
+        ],
+        expect: "EmptyState consistent (icona + text + CTA quan escau). Sense 'undefined' ni cards buides."
+      }
+    ]
+  },
+  {
+    id: "s8",
+    title: "Sessió 8 · Pàgines públiques & Legal",
+    tests: [
+      {
+        id: "s8-t1",
+        title: "Homepage — càrrega i CTAs",
+        steps: [
+          "Obre / sense sessió.",
+          "Verifica hero, seccions i CTAs cap a /auth/register.",
+          "Clica tots els links principals i verifica que no hi ha 404."
+        ],
+        expect: "Home carrega ràpid (< 3s). Tots els links funcionen. Videos/imatges renderitzen correctament."
+      },
+      {
+        id: "s8-t2",
+        title: "About — seccions completes",
+        steps: [
+          "Obre /about.",
+          "Verifica hero amb vídeo, Milestones, Architecture, Roadmap, Founding Members, Contact.",
+          "Comprova animacions i CTAs."
+        ],
+        expect: "Totes les seccions renderitzen. Vídeo carrega amb poster fallback. Sense errors de consola."
+      },
+      {
+        id: "s8-t3",
+        title: "Pricing — plans i CTAs",
+        steps: [
+          "Obre /pricing.",
+          "Verifica Free / Premium / Pro amb preus correctes.",
+          "Clica 'Comença trial' per cada pla."
+        ],
+        expect: "Redirigeix a Stripe Checkout amb el Price ID correcte. Preus coincideixen amb l'extensió."
+      },
+      {
+        id: "s8-t4",
+        title: "Pàgines legals — existeixen",
+        steps: [
+          "Des del Footer, clica Privacy, Terms, Cookies, Contact.",
+          "Verifica que cap 404.",
+          "Revisa el contingut mínim requerit per Stripe i GDPR."
+        ],
+        expect: "Les 4 rutes existeixen i renderitzen contingut real (no placeholder 'Lorem ipsum')."
+      },
+      {
+        id: "s8-t5",
+        title: "Footer — trust badges i LanguageSelector",
+        steps: [
+          "Verifica la presència de badges Stripe i GDPR al Footer.",
+          "Comprova que el LanguageSelector funciona des del Footer.",
+          "Clica totes les columnes del Footer."
+        ],
+        expect: "Footer de 4 columnes consistent a totes les pàgines públiques. Trust badges visibles."
+      }
+    ]
+  }
+];
+
+/* ============================================================
+   STATE (persisted in localStorage)
+============================================================ */
+const STORAGE_KEY = "gp360_qa_state_v1";
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    return JSON.parse(raw);
+  } catch { return defaultState(); }
+}
+function defaultState() {
+  const s = {};
+  DATA.forEach(session => {
+    session.tests.forEach(t => {
+      s[t.id] = { status: "todo", bug: "", severity: "Major" };
+    });
+  });
+  return s;
+}
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* ============================================================
+   RENDER
+============================================================ */
+const sessionsEl = document.getElementById("sessions");
+
+function render() {
+  sessionsEl.innerHTML = "";
+  DATA.forEach(session => {
+    const counts = countSession(session);
+    const pillClass = counts.fail > 0 ? "bad" : counts.todo === 0 ? "ok" : "todo";
+    const pillText = counts.fail > 0
+      ? `${counts.fail} bugs`
+      : counts.todo === 0
+        ? "✓ Complet"
+        : `${counts.done}/${counts.total}`;
+
+    const wrap = document.createElement("section");
+    wrap.className = "session";
+    wrap.dataset.open = "true";
+    wrap.innerHTML = `
+      <div class="session-head" data-toggle="${session.id}">
+        <h2>
+          <span class="num">${DATA.indexOf(session) + 1}</span>
+          ${session.title}
+        </h2>
+        <div class="session-meta">
+          <span class="pill ${pillClass}">${pillText}</span>
+          <span class="caret"></span>
+        </div>
+      </div>
+      <div class="session-body" id="body-${session.id}"></div>
+    `;
+    sessionsEl.appendChild(wrap);
+
+    const body = wrap.querySelector(".session-body");
+    session.tests.forEach(test => body.appendChild(renderTest(test)));
+  });
+
+  updateKpis();
+  bindSessionToggle();
+}
+
+function renderTest(test) {
+  const s = state[test.id] || { status: "todo", bug: "", severity: "Major" };
+  const div = document.createElement("div");
+  div.className = "test";
+  div.dataset.status = s.status;
+  div.dataset.id = test.id;
+
+  div.innerHTML = `
+    <div class="test-id">${test.id.toUpperCase()}</div>
+    <div class="test-head">
+      <div class="test-title">${escapeHtml(test.title)}</div>
+    </div>
+    <ol class="steps">
+      ${test.steps.map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+    </ol>
+    <div class="expect">
+      <strong>Resultat esperat</strong>
+      ${escapeHtml(test.expect)}
+    </div>
+    <div class="actions">
+      <button class="btn status-btn" data-status="todo" data-active="${s.status === "todo" ? "todo" : ""}">● Sense provar</button>
+      <button class="btn status-btn" data-status="pass" data-active="${s.status === "pass" ? "pass" : ""}">✓ Passat / OK</button>
+      <button class="btn status-btn" data-status="fail" data-active="${s.status === "fail" ? "fail" : ""}">✕ Fallat / BUG</button>
+    </div>
+    <div class="fail-box">
+      <label>Descripció del bug</label>
+      <textarea placeholder="Què ha passat, passos exactes, comportament observat vs esperat, consola/network si cal..." data-field="bug">${escapeHtml(s.bug)}</textarea>
+      <div class="fail-row">
+        <div>
+          <label>Severitat</label>
+          <select data-field="severity">
+            <option value="Blocker" ${s.severity === "Blocker" ? "selected" : ""}>🔴 Blocker — bloqueja entrega</option>
+            <option value="Major" ${s.severity === "Major" ? "selected" : ""}>🟠 Major — flux trencat però workaround</option>
+            <option value="Minor" ${s.severity === "Minor" ? "selected" : ""}>🟡 Minor — detall UX / polish</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  `;
+
+  div.querySelectorAll(".status-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const newStatus = btn.dataset.status;
+      state[test.id].status = newStatus;
+      if (newStatus !== "fail") {
+        // keep bug but hidden
+      }
+      saveState();
+      render();
+    });
+  });
+  div.querySelector('textarea[data-field="bug"]').addEventListener("input", (e) => {
+    state[test.id].bug = e.target.value;
+    saveState();
+  });
+  div.querySelector('select[data-field="severity"]').addEventListener("change", (e) => {
+    state[test.id].severity = e.target.value;
+    saveState();
+    // Re-render so KPIs/pill update (severity doesn't affect counts but ok for consistency)
+  });
+
+  return div;
+}
+
+function bindSessionToggle() {
+  document.querySelectorAll(".session-head").forEach(h => {
+    h.addEventListener("click", () => {
+      const section = h.closest(".session");
+      section.dataset.open = section.dataset.open === "true" ? "false" : "true";
+    });
+  });
+}
+
+function countSession(session) {
+  let pass = 0, fail = 0, todo = 0;
+  session.tests.forEach(t => {
+    const st = state[t.id]?.status || "todo";
+    if (st === "pass") pass++;
+    else if (st === "fail") fail++;
+    else todo++;
+  });
+  return { pass, fail, todo, done: pass + fail, total: session.tests.length };
+}
+
+function updateKpis() {
+  let total = 0, pass = 0, fail = 0, todo = 0;
+  DATA.forEach(s => {
+    total += s.tests.length;
+    s.tests.forEach(t => {
+      const st = state[t.id]?.status || "todo";
+      if (st === "pass") pass++;
+      else if (st === "fail") fail++;
+      else todo++;
+    });
+  });
+  document.getElementById("kpi-total").textContent = total;
+  document.getElementById("kpi-pass").textContent = pass;
+  document.getElementById("kpi-fail").textContent = fail;
+  document.getElementById("kpi-todo").textContent = todo;
+  const pct = total ? Math.round(((pass + fail) / total) * 100) : 0;
+  document.getElementById("bar-fill").style.width = pct + "%";
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+/* ============================================================
+   REPORT (Markdown) — només tests fallats
+============================================================ */
+function buildReport() {
+  const sev = { Blocker: [], Major: [], Minor: [] };
+  DATA.forEach(session => {
+    session.tests.forEach(t => {
+      const s = state[t.id];
+      if (s && s.status === "fail") {
+        (sev[s.severity] || sev.Major).push({
+          session: session.title,
+          id: t.id.toUpperCase(),
+          title: t.title,
+          expect: t.expect,
+          bug: s.bug || "(sense descripció)"
+        });
+      }
+    });
+  });
+
+  const total = sev.Blocker.length + sev.Major.length + sev.Minor.length;
+  if (total === 0) {
+    return `# QA Report — GlobalPlay360\n\n**Data:** ${new Date().toLocaleString("ca-ES")}\n\n✅ **Cap bug detectat.** Tots els tests fallats són 0. La plataforma està llesta per al següent bloc (Perf/SEO/a11y o Deploy).\n`;
+  }
+
+  const lines = [];
+  lines.push(`# 🐛 QA Report — GlobalPlay360`);
+  lines.push(``);
+  lines.push(`**Data:** ${new Date().toLocaleString("ca-ES")}`);
+  lines.push(`**Total bugs:** ${total} · 🔴 ${sev.Blocker.length} Blocker · 🟠 ${sev.Major.length} Major · 🟡 ${sev.Minor.length} Minor`);
+  lines.push(``);
+  lines.push(`Claude, aquests són els bugs detectats al QA end-to-end. Ordenats per severitat.`);
+  lines.push(``);
+
+  const renderGroup = (name, icon, items) => {
+    if (!items.length) return;
+    lines.push(`## ${icon} ${name} (${items.length})`);
+    lines.push(``);
+    items.forEach((b, i) => {
+      lines.push(`### ${i + 1}. [${b.id}] ${b.title}`);
+      lines.push(`- **Sessió:** ${b.session}`);
+      lines.push(`- **Esperat:** ${b.expect}`);
+      lines.push(`- **Observat:**`);
+      lines.push(``);
+      b.bug.split("\n").forEach(line => lines.push(`  > ${line}`));
+      lines.push(``);
+    });
+  };
+  renderGroup("Blockers", "🔴", sev.Blocker);
+  renderGroup("Majors", "🟠", sev.Major);
+  renderGroup("Minors", "🟡", sev.Minor);
+
+  lines.push(`---`);
+  lines.push(`_Generat per qa-interactive.html_`);
+  return lines.join("\n");
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+const modal = document.getElementById("modal");
+document.getElementById("btn-report").addEventListener("click", () => {
+  document.getElementById("report-text").textContent = buildReport();
+  modal.dataset.open = "true";
+});
+document.getElementById("modal-close").addEventListener("click", () => modal.dataset.open = "false");
+modal.addEventListener("click", (e) => { if (e.target === modal) modal.dataset.open = "false"; });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.dataset.open = "false"; });
+
+document.getElementById("btn-copy").addEventListener("click", async () => {
+  const text = document.getElementById("report-text").textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    toast("Copiat al portapapers ✓");
+  } catch {
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    toast("Copiat al portapapers ✓");
+  }
+});
+document.getElementById("btn-download-md").addEventListener("click", () => {
+  const text = document.getElementById("report-text").textContent;
+  const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-");
+  a.href = url;
+  a.download = `qa-report-${stamp}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* ============================================================
+   Import / Export / Reset
+============================================================ */
+document.getElementById("btn-export-json").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `qa-state-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Estat exportat");
+});
+document.getElementById("btn-import-json").addEventListener("click", () => {
+  document.getElementById("file-import").click();
+});
+document.getElementById("file-import").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const imported = JSON.parse(text);
+    state = { ...defaultState(), ...imported };
+    saveState();
+    render();
+    toast("Estat importat ✓");
+  } catch {
+    toast("Error llegint el fitxer");
+  }
+  e.target.value = "";
+});
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if (confirm("Segur que vols reiniciar tot el progrés del QA? Aquesta acció no es pot desfer.")) {
+    state = defaultState();
+    saveState();
+    render();
+    toast("Progrés reiniciat");
+  }
+});
+
+/* ============================================================
+   Toast
+============================================================ */
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.dataset.show = "true";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.dataset.show = "false", 2200);
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+render();
+</script>
+</body>
+</html>

@@ -62,6 +62,8 @@ export interface User {
   experienceYears?: number;
   certifications?: string[];
   specialization?: string;
+  genderPreference?: 'male' | 'female' | 'both';
+  categoryPreference?: 'youth' | 'senior' | 'both';
 
   // ── Profile: Club ────────────────────────────────────
   foundedYear?: number;
@@ -75,6 +77,7 @@ export interface Opportunity {
   clubId: string;
   title: string;
   sport: string;
+  targetRole?: 'player' | 'coach' | 'both';
   gender: 'male' | 'female' | 'mixed';
   country: string;
   state?: string;

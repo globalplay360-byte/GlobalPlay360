@@ -4,6 +4,16 @@
   "register": "Register",
   "home": "Home",
   "dashboard": "Dashboard",
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "both": "Male and Female"
+  },
+  "category": {
+    "youth": "Youth / Academy",
+    "senior": "Amateur / Senior",
+    "both": "Both"
+  },
   "homePage": {
     "hero": {
       "title": "Where Talent Meets \n Opportunity",
@@ -489,9 +499,9 @@
     "sport": "Sport",
     "country": "Country",
     "state": "State / Province",
-    "selectCountry": "Select country...",
-    "selectState": "Select state...",
-    "selectCity": "Select city..."
+    "selectCountry": "Select...",
+    "selectState": "Select...",
+    "selectCity": "Select..."
   },
   "applications": {
     "titleClub": "Received Applications",
@@ -604,7 +614,16 @@
     "aboutClub": "About the Club",
     "club": "Club",
     "viewFullProfile": "View Full Profile",
-    "ownOpportunity": "This is your opportunity."
+    "ownOpportunity": "This is your opportunity.",
+    "errorMissingCoverLetter": "Please provide a cover letter or message.",
+    "coverLetterLabel": "Cover letter *",
+    "coverLetterPlaceholder": "Explain to the club why you are a good fit for this position (at least a couple of sentences)...",
+    "cancel": "Cancel",
+    "send": "Send",
+    "withdrawConfirm": "Are you sure you want to withdraw your application for this opportunity?",
+    "withdrawButton": "Withdraw application",
+    "coverLetterPlaceholderPlayer": "Explain to the club why you fit this position and what your strengths as a player are...",
+    "coverLetterPlaceholderCoach": "Explain to the club what you can bring as a coach and why you are the ideal person for this sporting project..."
   },
   "opportunities": {
     "errorLoading": "Error loading opportunities",
@@ -617,7 +636,8 @@
       "all": "All sports",
       "football": "Football",
       "basketball": "Basketball",
-      "proContracts": "Pro Contracts"
+      "proContracts": "Pro Contracts",
+      "allTargetRoles": "All profiles"
     },
     "emptyTitle": "No opportunities yet",
     "emptyDesc": "No published opportunities found. Try again later or create the first one if you are a club.",
@@ -631,7 +651,9 @@
     "published": "Published:",
     "viewDetail": "View Detail",
     "apply": "Apply",
-    "clearFilters": "Clear Filters"
+    "clearFilters": "Clear Filters",
+    "ownOpportunity": "Your opportunity",
+    "alreadyApplied": "Application sent"
   },
   "opportunityForm": {
     "restricted": "Restricted access",
@@ -686,7 +708,8 @@
       "countryBase": "Country",
       "country": "Country *",
       "state": "State / Province",
-      "city": "City"
+      "city": "City",
+      "targetRoleLabel": "What profile are you looking for?"
     },
     "addBtn": "Add",
     "placeholders": {
@@ -694,6 +717,11 @@
       "country": "Search country...",
       "state": "Select state...",
       "city": "Select city..."
+    },
+    "targetRole": {
+      "player": "Player",
+      "coach": "Coach",
+      "both": "Both"
     }
   },
   "premiumLock": {
@@ -769,6 +797,7 @@
     "cancel": "Cancel",
     "saving": "Saving...",
     "save": "Save changes",
+    "avatarMaxLimit": "The image is too large. The maximum allowed size is 5 MB.",
     "fields": {
       "generalInfo": "General information",
       "displayName": "Display name",
