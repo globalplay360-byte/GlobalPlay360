@@ -79,8 +79,10 @@ export default function PrelaunchPage() {
         </header>
 
         <section className="flex flex-1 items-center justify-center py-10 sm:py-16 lg:py-20">
-          <div className="flex flex-col items-center justify-center text-center">
-            <Logo className="h-64 w-auto text-[#FFC107] drop-shadow-[0_22px_70px_rgba(255,193,7,0.28)] sm:h-80 lg:h-[30rem] xl:h-[34rem]" />
+          <div className="prelaunch-logo-shell flex flex-col items-center justify-center text-center">
+            <div className="prelaunch-logo-core">
+              <Logo className="h-64 w-auto text-[#FFC107] sm:h-80 lg:h-[30rem] xl:h-[34rem]" />
+            </div>
           </div>
         </section>
       </main>

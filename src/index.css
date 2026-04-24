@@ -91,6 +91,37 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes prelaunch-logo-intro {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes prelaunch-logo-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 22px 70px rgba(255, 193, 7, 0.22));
+  }
+  50% {
+    transform: translateY(-10px) scale(1.018);
+    filter: drop-shadow(0 28px 90px rgba(255, 193, 7, 0.34));
+  }
+}
+
+.prelaunch-logo-shell {
+  animation: prelaunch-logo-intro 900ms var(--ease-out) both;
+}
+
+.prelaunch-logo-core {
+  animation: prelaunch-logo-float 6.8s var(--ease-in-out) 900ms infinite;
+  will-change: transform, filter;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
