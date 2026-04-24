@@ -186,6 +186,18 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 ## 🌐 Bloc 8 — Pàgines públiques & Legal
 
+- [x] **S8-T4 Pàgines legals — existeixen + contingut Stripe/GDPR**: ✅ PASS. Doble auditoria:
+  - **Rutes verificades** (`tests/links-audit.mjs`): `/privacy`, `/terms`, `/cookies`, `/contact` totes existents a `App.tsx` dins `PublicLayout`. 0 links trencats des del Footer.
+  - **Contingut mínim verificat** (`tests/legal-content-audit.mjs`, 19/19 checks PASS):
+    - **RGPD a privacy.content.ts**: ✅ base legal, ✅ drets (accés/rectificació/supressió/oposició), ✅ DPO, ✅ retenció, ✅ transferència internacional, ✅ AEPD.
+    - **Stripe a terms.content.ts**: ✅ condicions subscripció, ✅ cancel·lació/devolucions, ✅ IVA, ✅ Customer Portal esmentat.
+    - **Cookies a cookies.content.ts**: ✅ categories, ✅ gestió/revocació, ✅ **durada** (afegida secció nova ca/es/en — session vs persistent vs third-party).
+    - ✅ Sense "Lorem ipsum", ✅ Sense `[PENDENT_*]` clicables.
+  - **Fix crític aplicat**: `tests/legal-cleanup.mjs` script one-shot va substituir **54 placeholders `[PENDENT_*]`** dels 3 content files per `<em>[pendent de configuració]</em>` multiidioma. Això incloïa 15 `<a href="mailto:[PENDENT_EMAIL_LEGAL/DPO]">` que eren links mailto actius amb destinatari invàlid (hauria obert el client d'email amb destí trencat si algú els clicava). També els camps `[PENDENT_RESPONSABLE]`, `[PENDENT_NOM_LEGAL]`, `[PENDENT_NIF]`, `[PENDENT_DOMICILI]` com a text pla als apartats d'identificació de l'empresa.
+  - **Afegit contingut legal nou**: secció "Durada de les cookies" als 3 idiomes (requerit per RGPD Art. 13 + Guia AEPD cookies).
+  - **Pendent de la clienta Aina**: substituir els marcadors `[pendent de configuració]` per dades reals (email legal, email DPO, NIF, nom legal, responsable, domicili) abans del go-live a producció.
+  - Reproduïble: `node tests/legal-content-audit.mjs`.
+
 - [x] **S8-T3 Pricing — plans i CTAs**: ✅ PASS. Revisió completa de `PricingPage.tsx` + `stripe.service.ts`:
   - **Plans mostrats**: Free (0€, hardcoded) + Premium (25€/mes o 250€/any, dinàmic des de Firestore). **Pro NO es mostra** — per decisió de producte documentada a CLAUDE.md (d'ús intern, no comercialitzat).
   - **Preus dinàmics verificats**: `listActiveProductsWithPrices()` llegeix `products/{id}/prices/{priceId}` de Firestore (sincronitzat per l'extensió Stripe via webhook). Matcheja `role === 'premium'` i agrupa per `interval === 'month' | 'year'`.

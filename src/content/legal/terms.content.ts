@@ -20,11 +20,11 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servei',
         html: `
           <ul>
-            <li><strong>Titular:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Denominació social:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>NIF:</strong> [PENDENT_NIF]</li>
-            <li><strong>Domicili:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Correu:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
+            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Denominació social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Domicili:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Correu:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
           </ul>
         `
       },
@@ -118,11 +118,11 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servicio',
         html: `
           <ul>
-            <li><strong>Titular:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Denominación social:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>NIF:</strong> [PENDENT_NIF]</li>
-            <li><strong>Domicilio:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Correo:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
+            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Denominación social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Domicilio:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Correo:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
           </ul>
         `
       },
@@ -216,11 +216,11 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Service provider',
         html: `
           <ul>
-            <li><strong>Owner:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Legal entity:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>Tax ID:</strong> [PENDENT_NIF]</li>
-            <li><strong>Address:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Email:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
+            <li><strong>Owner:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Legal entity:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Tax ID:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Address:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Email:</strong> <em style="color:#6B7280">[pending configuration]</em></li>
           </ul>
         `
       },

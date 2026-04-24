@@ -34,6 +34,13 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
           </ul>
 
           <p>Actualment <strong>no utilitzem cookies analítiques ni publicitàries</strong>. Si en el futur n'afegíssim, se't demanaria el consentiment previ.</p>
+
+          <h3>Durada de les cookies</h3>
+          <ul>
+            <li><strong>Cookies de sessió</strong>: s'eliminen automàticament quan tanques el navegador (ex: <code>firebaseAuth</code> en sessions temporals).</li>
+            <li><strong>Cookies persistents</strong>: es mantenen al dispositiu fins que les elimines manualment o expiren (ex: <code>i18nextLng</code> — 1 any).</li>
+            <li><strong>Cookies de tercers</strong>: durada regida per la política pròpia del proveïdor (Stripe, Firebase/Google).</li>
+          </ul>
         `
       },
       {
@@ -55,7 +62,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contacte',
-        html: `<p>Per a qualsevol qüestió sobre cookies o privacitat, contacta amb nosaltres a <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a>.</p>`
+        html: `<p>Per a qualsevol qüestió sobre cookies o privacitat, contacta amb nosaltres a <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
       }
     ]
   },
@@ -87,6 +94,13 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
           </ul>
 
           <p>Actualmente <strong>no utilizamos cookies analíticas ni publicitarias</strong>. Si en el futuro las añadiéramos, se te pediría el consentimiento previo.</p>
+
+          <h3>Duración de las cookies</h3>
+          <ul>
+            <li><strong>Cookies de sesión</strong>: se eliminan automáticamente al cerrar el navegador (ej: <code>firebaseAuth</code> en sesiones temporales).</li>
+            <li><strong>Cookies persistentes</strong>: se mantienen en el dispositivo hasta que las eliminas manualmente o caducan (ej: <code>i18nextLng</code> — 1 año).</li>
+            <li><strong>Cookies de terceros</strong>: duración regida por la política propia del proveedor (Stripe, Firebase/Google).</li>
+          </ul>
         `
       },
       {
@@ -108,7 +122,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contacto',
-        html: `<p>Para cualquier cuestión sobre cookies o privacidad, contacta con nosotros en <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a>.</p>`
+        html: `<p>Para cualquier cuestión sobre cookies o privacidad, contacta con nosotros en <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
       }
     ]
   },
@@ -140,6 +154,13 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
           </ul>
 
           <p>We currently <strong>do not use analytical or advertising cookies</strong>. If we add them in the future, prior consent will be requested.</p>
+
+          <h3>Cookie duration</h3>
+          <ul>
+            <li><strong>Session cookies</strong>: automatically deleted when you close the browser (e.g. <code>firebaseAuth</code> in temporary sessions).</li>
+            <li><strong>Persistent cookies</strong>: remain on the device until you manually delete them or they expire (e.g. <code>i18nextLng</code> — 1 year).</li>
+            <li><strong>Third-party cookies</strong>: duration governed by each provider's own policy (Stripe, Firebase/Google).</li>
+          </ul>
         `
       },
       {
@@ -161,7 +182,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contact',
-        html: `<p>For any question about cookies or privacy, contact us at <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a>.</p>`
+        html: `<p>For any question about cookies or privacy, contact us at <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
       }
     ]
   }
