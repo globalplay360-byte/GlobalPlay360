@@ -184,6 +184,19 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 - [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
 
+- [x] **S7-T4 Accessibilitat bàsica (a11y)**: ✅ PASS. Auditoria automàtica amb `tests/a11y-audit.mjs` (WCAG 4.1.2 / 2.4.7 / 3.3.2). Problemes detectats i resolts:
+  - **Icon-only buttons sense aria-label**:
+    - `MessageDetailPage.tsx:100` botó submit del xat (paper plane) → afegit `aria-label="Enviar missatge"` + focus ring.
+  - **Inputs sense label**:
+    - `Topbar.tsx:37` input de cerca només amb `placeholder` → afegit `aria-label`, `type=search` i focus ring visible.
+    - `AboutPage.tsx:544` newsletter email → afegit `aria-label`.
+    - `ProfilePage.tsx:99` input file ocult → afegit `aria-label` per si screen reader l'anuncia.
+  - **Focus rings absents** (`outline-none` sense `focus-visible:` equivalent):
+    - `LanguageSelector.tsx:32` → afegit `focus-visible:ring-2 focus-visible:ring-[#3B82F6]` + `aria-haspopup` + `aria-expanded`.
+  - **Falsos positius verificats**: mailto link a ContactPage (té `{CONTACT_EMAIL}` visible), YouTube link a ProfileView (té URL visible), inputs auth amb `<label htmlFor>` a 2-4 línies abans (LoginPage, ForgotPasswordPage, AuthActionPage), `FormControls` wrapper que hereta props.
+  - **Cobertures verificades**: tots els auth inputs tenen `<label htmlFor>`, drawer té focus trap + inert (S7-T3), botons icon-only al Topbar/Sidebar tenen `aria-label` prèviament.
+  - Reproduïble: `node tests/a11y-audit.mjs`.
+
 - [x] **S7-T3 Mobile drawer (Sidebar) — accessibilitat**: ✅ PASS. Bug d'a11y detectat a la consola (`Blocked aria-hidden on an element because its descendant retained focus`) resolt:
   - Substituït `aria-hidden={!mobileOpen}` per `inert={!mobileOpen ? '' : undefined}` a `<aside>` drawer. `inert` és l'atribut HTML modern que remou focus + interacció de tots els descendents i no té el conflicte que bloqueja Chrome quan un element amb focus queda dins d'un ancestor amb `aria-hidden`.
   - **Focus trap** implementat: Tab/Shift+Tab queden atrapats dins el drawer cicle first↔last element.

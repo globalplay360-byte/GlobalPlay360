@@ -96,11 +96,12 @@ export default function ProfilePage() {
           </Button>
         }
       />
-      <input 
-        type="file" 
-        ref={fileInputRef} 
-        className="hidden" 
-        accept="image/*" 
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/*"
+        aria-label={t('profile.uploadAvatar', 'Pujar imatge de perfil')}
         onChange={handleAvatarChange}
       />
     </>

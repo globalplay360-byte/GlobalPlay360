@@ -100,7 +100,8 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
         <button
           type="submit"
           disabled={sending || !text.trim()}
-          className="p-2.5 text-gray-100/95 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition-all duration-fast active:scale-[0.95] flex-shrink-0 m-1 shadow-[0_6px_14px_-6px_rgba(59,130,246,0.5)] group"
+          aria-label={sending ? 'Enviant…' : 'Enviar missatge'}
+          className="p-2.5 text-gray-100/95 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition-all duration-fast active:scale-[0.95] flex-shrink-0 m-1 shadow-[0_6px_14px_-6px_rgba(59,130,246,0.5)] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120]"
         >
           {sending ? (
             <div className="w-5 h-5 border-2 border-gray-100/30 border-t-gray-100/90 rounded-full animate-spin"></div>

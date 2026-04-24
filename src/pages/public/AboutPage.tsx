@@ -546,6 +546,7 @@ function FoundingMembersSection() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              aria-label={t('aboutPage.founding.placeholder', 'Your email address')}
               placeholder={t('aboutPage.founding.placeholder', 'Your email address')}
               className="flex-1 bg-[#0A192F] border border-gray-100/10 text-gray-100 placeholder:text-gray-100/40 rounded-lg px-5 py-3 text-sm focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-all"
             />

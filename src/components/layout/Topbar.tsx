@@ -34,10 +34,11 @@ export default function Topbar({ onMobileMenuClick }: TopbarProps) {
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg className="w-4 h-4 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </div>
-        <input 
-          type="text" 
+        <input
+          type="search"
+          aria-label={t('topbar.searchPlaceholder', 'Cerca jugadors, clubs, estadístiques...')}
           placeholder={t('topbar.searchPlaceholder', 'Cerca jugadors, clubs, estadístiques...')}
-          className="w-full bg-[#0F172A] text-gray-100 border border-[#1F2937] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[#3B82F6] transition-colors duration-fast ease-out"
+          className="w-full bg-[#0F172A] text-gray-100 border border-[#1F2937] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[#3B82F6] focus-visible:ring-2 focus-visible:ring-[#3B82F6]/40 transition-colors duration-fast ease-out"
         />
       </div>
 
