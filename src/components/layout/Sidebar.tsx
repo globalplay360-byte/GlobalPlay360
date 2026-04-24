@@ -2,7 +2,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUnreadCount } from '@/hooks/useUnreadCount';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Logo } from '@/components/ui/Logo';
 
 interface SidebarProps {
@@ -16,6 +16,8 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
   const { unreadMessages } = useUnreadCount();
   const { t } = useTranslation();
   const isPremium = activePlan === 'premium';
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (mobileOpen && onMobileClose) onMobileClose();
@@ -23,14 +25,53 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
 
   useEffect(() => {
     if (!mobileOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && onMobileClose) onMobileClose();
+
+    // Desa quin element tenia focus abans d'obrir el drawer per restaurar-lo en tancar.
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+
+    // Focus trap: captura Tab/Shift+Tab i fa cicle només dins el drawer.
+    const getFocusables = (): HTMLElement[] => {
+      const root = drawerRef.current;
+      if (!root) return [];
+      return Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute('disabled'));
     };
+
+    // Focus inicial al primer element interactiu del drawer.
+    setTimeout(() => {
+      const focusables = getFocusables();
+      focusables[0]?.focus();
+    }, 0);
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && onMobileClose) {
+        onMobileClose();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusables = getFocusables();
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
     document.addEventListener('keydown', handleKey);
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleKey);
       document.body.style.overflow = '';
+      // Restaura focus al trigger que va obrir el drawer (típicament hamburger button).
+      previouslyFocused.current?.focus?.();
     };
   }, [mobileOpen, onMobileClose]);
 
@@ -145,10 +186,17 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
         aria-hidden="true"
       />
       <aside
+        ref={drawerRef}
         className={`lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#0B1120] border-r border-[#1F2937] flex flex-col shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-base ease-out ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        aria-hidden={!mobileOpen}
+        /**
+         * `inert` quan està tancat: remou focus + interacció de tots els descendents
+         * (més correcte que aria-hidden, que Chrome bloqueja quan un descendent
+         * conserva focus — patró típic en tancar el drawer clicant un link).
+         * React 19+ vol boolean pur, no string buit.
+         */
+        inert={!mobileOpen}
         role="dialog"
         aria-modal="true"
         aria-label="Menú de navegació"

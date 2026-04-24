@@ -184,6 +184,13 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 - [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
 
+- [x] **S7-T3 Mobile drawer (Sidebar) — accessibilitat**: ✅ PASS. Bug d'a11y detectat a la consola (`Blocked aria-hidden on an element because its descendant retained focus`) resolt:
+  - Substituït `aria-hidden={!mobileOpen}` per `inert={!mobileOpen ? '' : undefined}` a `<aside>` drawer. `inert` és l'atribut HTML modern que remou focus + interacció de tots els descendents i no té el conflicte que bloqueja Chrome quan un element amb focus queda dins d'un ancestor amb `aria-hidden`.
+  - **Focus trap** implementat: Tab/Shift+Tab queden atrapats dins el drawer cicle first↔last element.
+  - **Focus inicial** al primer element interactiu del drawer quan s'obre.
+  - **Focus restoration**: al tancar el drawer, el focus torna al botó que el va obrir (hamburger Topbar).
+  - Manté: tancament per Escape, `body.style.overflow = 'hidden'` mentre obert, overlay clicable que tanca, auto-tancament en canvi de ruta.
+
 - [x] **S7-T2 Responsive mòbil (< 640px)**: ✅ PASS estàtic (auditoria codi). Script `tests/responsive-audit.mjs` detecta patrons comuns d'overflow horitzontal. Resultats:
   - **0 findings HIGH** — cap `min-w-[>300px]` ni `grid-cols-≥4` sense fallback mobile-first.
   - **12 MEDIUM** (tots falsos positius): `w-[500px]`/`w-[400px]` a LegalPageLayout, AboutPage, ContactPage són **decoratius absolute-positioned dins parents amb `overflow-hidden`** (no causen overflow del viewport). Els `text-4xl`/`text-5xl` marcats a HomePage/ProfileView són (a) decoratius de fons amb opacitat 5% i `absolute`, (b) inicials de noms dins avatars de mida fixa `w-28`, o (c) preus de 4 caràcters ("25€") que no desborden.
