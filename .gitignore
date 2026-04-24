@@ -31,3 +31,4 @@ build_output
 
 # Personal reference docs (inspiration, notes, research)
 docs/*.pdf
+.firebase/
