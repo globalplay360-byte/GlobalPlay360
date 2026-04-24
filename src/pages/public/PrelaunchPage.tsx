@@ -26,24 +26,35 @@ const posterSvg = encodeURIComponent(`
 
 const posterUrl = `data:image/svg+xml;charset=UTF-8,${posterSvg}`;
 
-type NavigatorWithConnection = Navigator & {
-  connection?: {
-    saveData?: boolean;
-  };
-};
-
 export default function PrelaunchPage() {
-  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
+  /**
+   * Per defecte intentem reproduir el vídeo. Només el desactivem si l'usuari
+   * ha marcat explícitament `prefers-reduced-motion: reduce`.
+   *
+   * Abans ho bloquejàvem també si `navigator.connection.saveData === true`,
+   * però a Android molts navegadors (Chrome, Samsung Internet, Opera) tenen
+   * Data Saver activat per defecte, cosa que amagava el vídeo a gran part
+   * del públic mòbil. Per una landing pre-launch on el vídeo és el punt
+   * visual central, ho sobreescrivim: el cost real és mínim perquè el
+   * <video> porta `preload="metadata"` (només baixa header, no el MP4 sencer
+   * fins que entra en viewport i comença reproducció).
+   */
+  const [shouldPlayVideo, setShouldPlayVideo] = useState(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const connection = (navigator as NavigatorWithConnection).connection;
+    setShouldPlayVideo(!mediaQuery.matches);
 
-    setShouldPlayVideo(!mediaQuery.matches && !connection?.saveData);
+    const handler = (e: MediaQueryListEvent) => setShouldPlayVideo(!e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#020617] text-white">
+    // min-h-[100svh] en lloc de min-h-screen: evita el problema clàssic de `100vh` a mòbil
+    // (la barra d'URL de Chrome/Safari es recompta diferent i pot fer que el contingut
+    // quedi parcialment fora de viewport visible).
+    <div className="relative min-h-[100svh] overflow-hidden bg-[#020617] text-white">
       {shouldPlayVideo ? (
         <video
           className="absolute inset-0 h-full w-full object-cover opacity-50"
@@ -73,7 +84,7 @@ export default function PrelaunchPage() {
         </div>
       </div>
 
-      <main className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 sm:px-10 lg:px-20 xl:px-24">
+      <main className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col px-6 py-8 sm:px-10 lg:px-20 xl:px-24">
         <header className="h-8" aria-hidden="true">
           <div />
         </header>

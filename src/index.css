@@ -113,13 +113,31 @@
   }
 }
 
+/**
+ * Nota: usem valors literals de cubic-bezier en lloc de var(--ease-*) perquè
+ * les variables viuen dins de @theme (Tailwind v4) i no es propaguen com a
+ * CSS custom properties accessibles via var() fora del context Tailwind.
+ * A mòbil Chrome/Safari això feia que `animation-fill-mode: both` quedés
+ * enganxat al keyframe `from { opacity: 0 }` → logo invisible.
+ */
 .prelaunch-logo-shell {
-  animation: prelaunch-logo-intro 900ms var(--ease-out) both;
+  animation: prelaunch-logo-intro 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 1; /* fallback defensiu per si l'animació falla en algun navegador */
 }
 
 .prelaunch-logo-core {
-  animation: prelaunch-logo-float 6.8s var(--ease-in-out) 900ms infinite;
+  animation: prelaunch-logo-float 6.8s cubic-bezier(0.65, 0, 0.35, 1) 900ms infinite;
   will-change: transform, filter;
+}
+
+/* Fallback d'urgència per motion reduced: mantenim logo visible i quiet */
+@media (prefers-reduced-motion: reduce) {
+  .prelaunch-logo-shell,
+  .prelaunch-logo-core {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
