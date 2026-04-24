@@ -184,6 +184,15 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 - [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
 
+## 🌐 Bloc 8 — Pàgines públiques & Legal
+
+- [x] **S8-T1 Homepage — càrrega i CTAs**: ✅ PASS. Auditoria `tests/links-audit.mjs` + verificació manual assets:
+  - **25 links interns OK, 0 trencats** a `HomePage.tsx`, `Navbar.tsx`, `Footer.tsx`, `PublicLayout.tsx` (validat contra les 32 rutes de `App.tsx`).
+  - **Tots els CTAs a `/register`** correctament enllaçats (HomePage hero, Navbar, Footer, Pricing).
+  - **6 links externs** (YouTube, Instagram, Facebook, X/Twitter, LinkedIn, mailto hello@globalplay360.com) — verificació manual requerida (depenen de tercers).
+  - **Vídeo hero**: asset Firebase Storage 200 OK, però pesava **31 MB** sense optimització. Afegit `preload="metadata"` + `aria-hidden="true"` al `<video>` de HomePage per complir el criteri <3s (ara el navegador només baixa el header del MP4 inicialment, no els 31 MB complets). Recomanació post-MVP: comprimir el vídeo a ~5-8 MB amb H.264 baixa tasa + afegir `<img>` poster fallback.
+  - Reproduïble: `node tests/links-audit.mjs`.
+
 - [x] **S7-T5 Empty states**: ✅ PASS. Auditoria `tests/empty-state-audit.mjs` + revisió manual de cada pàgina amb llistat dinàmic. Verificat:
   - `ApplicationsPage`: empty state **role-aware**. Un **Club** sense candidatures rebudes veu "Encara no has rebut candidatures" + CTA "Gestionar les meves ofertes". Un **Player/Coach** veu "Encara no has aplicat a cap oportunitat" + CTA "Buscar Oportunitats". (Abans el CTA sempre era "Buscar Oportunitats" tant si ets Club com Player — confús per al Club.)
   - `MyOpportunitiesPage`: Club sense ofertes → "Encara no has publicat cap oportunitat" + CTA "Crear Oportunitat" ✅. També té guard `user.role !== 'club'` → "Accés restringit" amb CTA cap al marketplace.

@@ -37,6 +37,14 @@ export default function HomePage() {
           loop
           muted
           playsInline
+          /**
+           * `preload="metadata"` només baixa el header del MP4 fins que el
+           * navegador pot començar a reproduir (~segons), no els 31MB complets.
+           * `aria-hidden` perquè és purament decoratiu — l'usuari no hi interactua.
+           * Millora LCP/FCP i compleix el criteri S8-T1 "Home <3s".
+           */
+          preload="metadata"
+          aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-40 object-center"
           src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/globalHome.mp4?alt=media&token=239272b5-8d5d-4e1b-a347-05fe2bb94710"
         />
