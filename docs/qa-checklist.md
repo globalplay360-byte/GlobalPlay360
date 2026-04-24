@@ -180,7 +180,11 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 ---
 
-## 🌐 Bloc 6 — i18n (CA / ES / EN)
+## 🌐 Bloc 7 — i18n (CA / ES / EN)
+
+- [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
+
+## 🌐 Bloc 6 (legacy) — i18n (CA / ES / EN)
 
 - [ ] Canviar idioma al `LanguageSelector` (Footer + Topbar) funciona en temps real.
 - [ ] Home, About, Pricing, Login, Register, tot Dashboard tenen traducció completa (sense claus crues com `home.hero.title`).

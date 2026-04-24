@@ -85,7 +85,8 @@
     "admin": "Dashboard",
     "logout": "Logout",
     "login": "Login",
-    "register": "Sign Up"
+    "register": "Sign Up",
+    "dashboard": "Dashboard"
   },
   "footer": {
     "description": "Global Play 360 is the leading platform connecting athletes, coaches, and sports organizations worldwide.",
@@ -366,7 +367,9 @@
   },
   "topbar": {
     "searchPlaceholder": "Search players, clubs, statistics...",
-    "logout": "Log out"
+    "logout": "Log out",
+    "openMenu": "Open menu",
+    "notifications": "Notifications"
   },
   "dashboardLayout": {
     "banner": {
@@ -445,7 +448,9 @@
         "desc": "They match your filters.",
         "time": "Tuesday, 09:15"
       }
-    }
+    },
+    "noApplicationsYet": "No applications yet.",
+    "noRecentOpportunities": "No recent opportunities."
   },
   "profile": {
     "notAuthenticated": "Not authenticated",
@@ -530,7 +535,9 @@
     "titleReopen": "Reopen for review",
     "reopen": "O",
     "emptyTitle": "No applications found",
-    "emptyDesc": "There are no applications to display yet."
+    "emptyDesc": "There are no applications to display yet.",
+    "removeOrphoned": "Remove record",
+    "removeOrphaned": "Remove record"
   },
   "applications_old": {
     "errorChat": "An error occurred while trying to open the chat.",
@@ -587,7 +594,11 @@
     "restrictedDesc": "This view is exclusive to clubs.",
     "backToMarketplace": "Back to Marketplace",
     "connectionError": "Connection error",
-    "retry": "Retry"
+    "retry": "Retry",
+    "confirmDelete": "Are you sure you want to delete this opportunity?",
+    "errorDeleting": "Error deleting the opportunity.",
+    "errorLoading": "Error loading opportunities.",
+    "errorToggling": "Error toggling status."
   },
   "opportunityDetail": {
     "backApplications": "Back to Applications",
@@ -623,7 +634,8 @@
     "withdrawConfirm": "Are you sure you want to withdraw your application for this opportunity?",
     "withdrawButton": "Withdraw application",
     "coverLetterPlaceholderPlayer": "Explain to the club why you fit this position and what your strengths as a player are...",
-    "coverLetterPlaceholderCoach": "Explain to the club what you can bring as a coach and why you are the ideal person for this sporting project..."
+    "coverLetterPlaceholderCoach": "Explain to the club what you can bring as a coach and why you are the ideal person for this sporting project...",
+    "roleMismatch": "This opportunity isn't for your role."
   },
   "opportunities": {
     "errorLoading": "Error loading opportunities",
@@ -653,7 +665,8 @@
     "apply": "Apply",
     "clearFilters": "Clear Filters",
     "ownOpportunity": "Your opportunity",
-    "alreadyApplied": "Application sent"
+    "alreadyApplied": "Application sent",
+    "viewFullProfile": "View full profile"
   },
   "opportunityForm": {
     "restricted": "Restricted access",
@@ -762,7 +775,8 @@
       "premiumPlan": "Premium Plan",
       "gp360Sub": "GlobalPlay360 Subscription",
       "billing": "Billing",
-      "managedByStripe": "Managed by Stripe"
+      "managedByStripe": "Managed by Stripe",
+      "globalPlaySub": "GlobalPlay360 Subscription"
     },
     "portal": {
       "title": "Manage Subscription",
@@ -770,7 +784,8 @@
       "button": "Open Stripe Portal",
       "loading": "Opening portal...",
       "error": "Could not open portal.",
-      "note": "You will be redirected to a secure page hosted by Stripe. Once finished, you will automatically return here."
+      "note": "You will be redirected to a secure page hosted by Stripe. Once finished, you will automatically return here.",
+      "opening": "Opening portal…"
     }
   },
   "checkoutSuccess": {
@@ -821,7 +836,27 @@
       "venueCapacity": "Capacity",
       "state": "State / Province",
       "city": "City",
-      "currentClub": "Current Team / Club"
+      "currentClub": "Current Team / Club",
+      "athleticData": "Athletic data",
+      "mainSport": "Main sport",
+      "selectSport": "Select a sport…",
+      "dateOfBirth": "Date of birth",
+      "height": "Height",
+      "weight": "Weight",
+      "position": "Position",
+      "selectPlaceholder": "Select…",
+      "preferredFoot": "Preferred foot",
+      "left": "Left",
+      "right": "Right",
+      "both": "Both",
+      "leftHanded": "Left-handed",
+      "rightHanded": "Right-handed",
+      "oneHanded": "One-handed",
+      "twoHanded": "Two-handed",
+      "genderPreference": "Gender preference",
+      "categoryPreference": "Category preference",
+      "selectPreference": "Select a preference…",
+      "selectCategory": "Select a category…"
     },
     "placeholders": {
       "displayName": "Your public name",
@@ -839,7 +874,9 @@
       "venueCapacity": "Ex: 5000",
       "state": "Select state...",
       "city": "Select city...",
-      "currentClub": "Ex: FC Barcelona"
+      "currentClub": "Ex: FC Barcelona",
+      "height": "E.g. 180",
+      "weight": "E.g. 75"
     },
     "hints": {
       "bio": "Describe your career, goals, and experience.",
@@ -853,7 +890,9 @@
       "website": "Public URL of the club.",
       "venueName": "Name of the stadium, arena, or sports complex.",
       "venueCapacity": "Spectator capacity of the venue.",
-      "currentClub": "Which team are you currently playing for? (Optional)"
+      "currentClub": "Which team are you currently playing for? (Optional)",
+      "height": "In centimeters (cm)",
+      "weight": "In kilograms (kg)"
     }
   },
   "legal": {
@@ -902,5 +941,43 @@
       "error": "Error loading profile",
       "sendMessage": "Send Message"
     }
+  },
+  "adminSidebar": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "users": "Users",
+    "panel": "Admin Panel"
+  },
+  "authAction": {
+    "verifySuccess": "Email verified successfully."
+  },
+  "common": {
+    "searchOpportunities": "Search Opportunities"
+  },
+  "forgotPassword": {
+    "loginLink": "Back to login"
+  },
+  "publicProfile": {
+    "error": "Error loading profile.",
+    "notFound": "Profile not found.",
+    "hideDetails": "Contact info hidden for Free plan",
+    "lockedTitle": "Stats and Contact Locked",
+    "lockedDesc": "Free users don't have full access to other profiles. Upgrade to Premium to unlock.",
+    "sendMessage": "Send message"
+  },
+  "sports": {
+    "american_football": "American Football",
+    "football": "Football",
+    "basketball": "Basketball",
+    "futsal": "Futsal",
+    "volleyball": "Volleyball",
+    "handball": "Handball",
+    "waterpolo": "Water polo",
+    "tennis": "Tennis",
+    "rugby": "Rugby",
+    "hockey": "Hockey",
+    "other": "Other",
+    "details": "Sport details"
   }
 }
