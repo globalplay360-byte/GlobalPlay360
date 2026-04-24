@@ -132,7 +132,7 @@ export default function OpportunityDetailPage() {
         opportunityId: opportunity.id,
         userId: user.uid,
         clubId: opportunity.clubId,
-        coverLetter: coverLetter.trim()
+        message: coverLetter.trim()
       });
       setAlreadyApplied(true);
       setApplicationId(newAppId);

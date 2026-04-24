@@ -13,7 +13,7 @@ interface SidebarProps {
 export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
   const { user, activePlan } = useAuth();
   const location = useLocation();
-  const { unreadMessages } = useUnreadCount();
+  const unreadMessages = useUnreadCount();
   const { t } = useTranslation();
   const isPremium = activePlan === 'premium';
   const drawerRef = useRef<HTMLElement | null>(null);
