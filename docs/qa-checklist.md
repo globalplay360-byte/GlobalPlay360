@@ -184,6 +184,13 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 - [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
 
+- [x] **S7-T2 Responsive mòbil (< 640px)**: ✅ PASS estàtic (auditoria codi). Script `tests/responsive-audit.mjs` detecta patrons comuns d'overflow horitzontal. Resultats:
+  - **0 findings HIGH** — cap `min-w-[>300px]` ni `grid-cols-≥4` sense fallback mobile-first.
+  - **12 MEDIUM** (tots falsos positius): `w-[500px]`/`w-[400px]` a LegalPageLayout, AboutPage, ContactPage són **decoratius absolute-positioned dins parents amb `overflow-hidden`** (no causen overflow del viewport). Els `text-4xl`/`text-5xl` marcats a HomePage/ProfileView són (a) decoratius de fons amb opacitat 5% i `absolute`, (b) inicials de noms dins avatars de mida fixa `w-28`, o (c) preus de 4 caràcters ("25€") que no desborden.
+  - **10 LOW**: padding `p-10`/`py-24`/`p-12` a landing pages (comfort visual, no overflow); `whitespace-nowrap` a badges curtes ("+12%") dins grids responsive.
+  - **Cobertures verificades**: totes les grids del dashboard usen prefix mobile-first (`grid-cols-1 md:grid-cols-2`, `grid-cols-2 sm:grid-cols-4`, etc.). Els titulars dashboard escalen amb `text-2xl sm:text-3xl md:text-4xl`. `ProfileView` té `text-2xl sm:text-3xl` al displayName. `OverviewPage` té text mobile explícit `text-[9px] sm:text-[10px] md:text-xs`.
+  - **Nota**: validació visual final manual recomanada (DevTools iPhone 12/Pixel 5) a Overview, Profile, Opportunities, Detail i Chat per confirmar el layout final. Reproduïble: `node tests/responsive-audit.mjs`.
+
 ## 🌐 Bloc 6 (legacy) — i18n (CA / ES / EN)
 
 - [ ] Canviar idioma al `LanguageSelector` (Footer + Topbar) funciona en temps real.
