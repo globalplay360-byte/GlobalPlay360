@@ -6,6 +6,7 @@ Aquest document recopila tasques, funcionalitats futures o sistemes inacabats qu
 
 - [ ] **Mètrica "Força del perfil" (Profile Strength)**: Actualment a `OverviewPage.tsx` es troba configurada en estètic al `100%`. Ha d'estar ancorada a un sistema de progrés basat en l'arxiu/context de `ProfilePage.tsx` que mesuri quants camps crucials (nom, foto, data de naixement, etc.) l'usuari ha arribat a omplir.
 - [ ] **Sincronització robusta del mirror de subscripció a `users/{uid}`**: L'app ja calcula `activePlan` des de `customers/{uid}/subscriptions` (font de veritat) i el context local queda alineat. Com a millora futura, si es vol persistir també `users.plan`, `users.subscriptionStatus` i `trialEndsAt`, cal fer-ho al backend (Cloud Function/Admin sync) o replantejar les `firestore.rules`; no és blocker per a l'MVP.
+- [ ] **Optimització del bundle inicial del frontend**: el build actual genera un chunk principal JS d'aproximadament `9.95 MB` (`~2.69 MB gzip`), acceptable temporalment per a la landing pre-launch però massa pesat per al llançament públic. Accions recomanades més endavant: lazy loading de rutes públiques i dashboard, `Suspense`, revisió de dependències grans i, si cal, `manualChunks` a Vite per dividir millor el codi inicial.
 - [x] **Hardening real del paywall Premium (S6-T5) amb defense in depth** — ✅ RESOLT 2026-04-23
   - **Estat actual QA:** ✅ PASS complet (missatgeria + perfils). Validat amb suite automatitzada `tests/rules-s6-t5.mjs` (10/10 assertions contra emulador).
   - **Resolució part perfils premium:**
