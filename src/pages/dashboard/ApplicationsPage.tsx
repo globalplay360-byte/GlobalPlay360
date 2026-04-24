@@ -456,8 +456,16 @@ export default function ApplicationsPage() {
           </motion.div>
         ) : (
           <EmptyState
-            title={t('applications.emptyTitle')}
-            description={t('applications.emptyDesc')}
+            title={
+              currentUserRole === 'club'
+                ? t('applications.emptyTitleClub', 'Encara no has rebut candidatures')
+                : t('applications.emptyTitlePlayer', 'Encara no has aplicat a cap oportunitat')
+            }
+            description={
+              currentUserRole === 'club'
+                ? t('applications.emptyDescClub', 'Quan algú apliqui a les teves ofertes, apareixeran aquí per gestionar-les.')
+                : t('applications.emptyDescPlayer', 'Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.')
+            }
             icon={
               <svg
                 className="w-8 h-8"
@@ -474,12 +482,21 @@ export default function ApplicationsPage() {
               </svg>
             }
             action={
-              <Link
-                to="/dashboard/opportunities"
-                className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-gray-100 hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
-              >
-                {t('common.searchOpportunities', 'Buscar Oportunitats')}
-              </Link>
+              currentUserRole === 'club' ? (
+                <Link
+                  to="/dashboard/opportunities/mine"
+                  className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-gray-100 hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
+                >
+                  {t('applications.emptyCtaClub', 'Gestionar les meves ofertes')}
+                </Link>
+              ) : (
+                <Link
+                  to="/dashboard/opportunities"
+                  className="inline-flex items-center justify-center px-4 py-2 bg-[#3B82F6] text-gray-100 hover:bg-[#2563EB] text-sm font-medium rounded-lg transition-colors"
+                >
+                  {t('common.searchOpportunities', 'Buscar Oportunitats')}
+                </Link>
+              )
             }
           />
         )}

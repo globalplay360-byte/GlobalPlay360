@@ -506,7 +506,8 @@
     "state": "State / Province",
     "selectCountry": "Select...",
     "selectState": "Select...",
-    "selectCity": "Select..."
+    "selectCity": "Select...",
+    "uploadAvatar": "Upload profile picture"
   },
   "applications": {
     "titleClub": "Received Applications",
@@ -537,7 +538,12 @@
     "emptyTitle": "No applications found",
     "emptyDesc": "There are no applications to display yet.",
     "removeOrphoned": "Remove record",
-    "removeOrphaned": "Remove record"
+    "removeOrphaned": "Remove record",
+    "emptyTitlePlayer": "You haven't applied to any opportunity yet",
+    "emptyDescPlayer": "Browse the marketplace and send your first application to clubs or offers that match your profile.",
+    "emptyTitleClub": "You haven't received any applications yet",
+    "emptyDescClub": "When someone applies to your offers, they will appear here to be managed.",
+    "emptyCtaClub": "Manage my offers"
   },
   "applications_old": {
     "errorChat": "An error occurred while trying to open the chat.",

@@ -86,6 +86,16 @@ const translations = {
 
   'topbar.openMenu':                      { ca: 'Obrir menú', es: 'Abrir menú', en: 'Open menu' },
   'topbar.notifications':                 { ca: 'Notificacions', es: 'Notificaciones', en: 'Notifications' },
+
+  // S7-T5 — Empty states role-aware a ApplicationsPage
+  'applications.emptyTitlePlayer': { ca: 'Encara no has aplicat a cap oportunitat', es: 'Aún no has aplicado a ninguna oportunidad', en: "You haven't applied to any opportunity yet" },
+  'applications.emptyDescPlayer':  { ca: 'Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.', es: 'Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.', en: 'Browse the marketplace and send your first application to clubs or offers that match your profile.' },
+  'applications.emptyTitleClub':   { ca: 'Encara no has rebut candidatures', es: 'Aún no has recibido candidaturas', en: "You haven't received any applications yet" },
+  'applications.emptyDescClub':    { ca: 'Quan algú apliqui a les teves ofertes, apareixeran aquí per gestionar-les.', es: 'Cuando alguien aplique a tus ofertas, aparecerán aquí para gestionarlas.', en: 'When someone applies to your offers, they will appear here to be managed.' },
+  'applications.emptyCtaClub':     { ca: 'Gestionar les meves ofertes', es: 'Gestionar mis ofertas', en: 'Manage my offers' },
+
+  // S7-T4 — aria-label del input file ocult a ProfilePage
+  'profile.uploadAvatar':          { ca: 'Pujar imatge de perfil', es: 'Subir imagen de perfil', en: 'Upload profile picture' },
 };
 
 // deep set k.path.x = val (no sobreescriu si ja existeix)

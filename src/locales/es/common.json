@@ -506,7 +506,8 @@
     "state": "Provincia / Estado",
     "selectCountry": "Selecciona...",
     "selectState": "Selecciona...",
-    "selectCity": "Selecciona..."
+    "selectCity": "Selecciona...",
+    "uploadAvatar": "Subir imagen de perfil"
   },
   "applications": {
     "titleClub": "Candidaturas Recibidas",
@@ -537,7 +538,12 @@
     "emptyTitle": "Ninguna candidatura encontrada",
     "emptyDesc": "Aún no hay candidaturas para mostrar.",
     "removeOrphoned": "Eliminar registro",
-    "removeOrphaned": "Eliminar registro"
+    "removeOrphaned": "Eliminar registro",
+    "emptyTitlePlayer": "Aún no has aplicado a ninguna oportunidad",
+    "emptyDescPlayer": "Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.",
+    "emptyTitleClub": "Aún no has recibido candidaturas",
+    "emptyDescClub": "Cuando alguien aplique a tus ofertas, aparecerán aquí para gestionarlas.",
+    "emptyCtaClub": "Gestionar mis ofertas"
   },
   "applications_old": {
     "errorChat": "Se ha producido un error al intentar abrir el chat.",

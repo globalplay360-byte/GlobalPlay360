@@ -184,6 +184,15 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 - [x] **S7-T1 Idioma — canvi CA / ES / EN**: ✅ PASS. Auditoria automàtica amb `tests/i18n-audit.mjs` confirma 0 claus sense resoldre als 3 locales (613 claus `t()` usades al codi, totes presents a `ca/es/en/common.json`). S'han afegit 64 claus que faltaven (admin sidebar, billing, footer newsletter, myOpportunities, profileEdit fields/hints/placeholders, publicProfile, sports, topbar, etc.) amb traduccions pròpies als 3 idiomes — script d'omplir idempotent a `tests/i18n-fill.mjs`. Reproduïble: `node tests/i18n-audit.mjs`.
 
+- [x] **S7-T5 Empty states**: ✅ PASS. Auditoria `tests/empty-state-audit.mjs` + revisió manual de cada pàgina amb llistat dinàmic. Verificat:
+  - `ApplicationsPage`: empty state **role-aware**. Un **Club** sense candidatures rebudes veu "Encara no has rebut candidatures" + CTA "Gestionar les meves ofertes". Un **Player/Coach** veu "Encara no has aplicat a cap oportunitat" + CTA "Buscar Oportunitats". (Abans el CTA sempre era "Buscar Oportunitats" tant si ets Club com Player — confús per al Club.)
+  - `MyOpportunitiesPage`: Club sense ofertes → "Encara no has publicat cap oportunitat" + CTA "Crear Oportunitat" ✅. També té guard `user.role !== 'club'` → "Accés restringit" amb CTA cap al marketplace.
+  - `OpportunitiesPage`: marketplace sense filtres o filtratge buit → EmptyState amb missatge adequat ✅.
+  - `MessagesPage`: sense converses → EmptyState "No tens missatges encara" + icona + desc ✅.
+  - `OverviewPage`: secció "recent items" amb guard `recentItems.length === 0`.
+  - **Sense renderitzats `undefined`**: les úniques interpolacions `${...}` trobades són de classes CSS o URLs amb IDs sempre presents (`${conv.id}`, `${opp.id}`), mai text user-facing sense guard.
+  - Afegides 5 noves claus i18n (`applications.emptyTitleClub/emptyDescClub/emptyCtaClub/emptyTitlePlayer/emptyDescPlayer`) als 3 locales ca/es/en.
+
 - [x] **S7-T4 Accessibilitat bàsica (a11y)**: ✅ PASS. Auditoria automàtica amb `tests/a11y-audit.mjs` (WCAG 4.1.2 / 2.4.7 / 3.3.2). Problemes detectats i resolts:
   - **Icon-only buttons sense aria-label**:
     - `MessageDetailPage.tsx:100` botó submit del xat (paper plane) → afegit `aria-label="Enviar missatge"` + focus ring.

@@ -506,7 +506,8 @@
     "state": "Província / Estat",
     "selectCountry": "Selecciona...",
     "selectState": "Selecciona...",
-    "selectCity": "Selecciona..."
+    "selectCity": "Selecciona...",
+    "uploadAvatar": "Pujar imatge de perfil"
   },
   "applications": {
     "titleClub": "Candidatures Rebudes",
@@ -538,7 +539,12 @@
     "reopen": "O",
     "emptyTitle": "Cap candidatura trobada",
     "emptyDesc": "Encara no hi ha candidatures per mostrar.",
-    "removeOrphoned": "Eliminar registre"
+    "removeOrphoned": "Eliminar registre",
+    "emptyTitlePlayer": "Encara no has aplicat a cap oportunitat",
+    "emptyDescPlayer": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
+    "emptyTitleClub": "Encara no has rebut candidatures",
+    "emptyDescClub": "Quan algú apliqui a les teves ofertes, apareixeran aquí per gestionar-les.",
+    "emptyCtaClub": "Gestionar les meves ofertes"
   },
   "applications_old": {
     "errorChat": "S'ha produït un error en intentar obrir el xat.",
