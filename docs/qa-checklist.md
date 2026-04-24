@@ -186,6 +186,18 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 ## 🌐 Bloc 8 — Pàgines públiques & Legal
 
+- [x] **S8-T3 Pricing — plans i CTAs**: ✅ PASS. Revisió completa de `PricingPage.tsx` + `stripe.service.ts`:
+  - **Plans mostrats**: Free (0€, hardcoded) + Premium (25€/mes o 250€/any, dinàmic des de Firestore). **Pro NO es mostra** — per decisió de producte documentada a CLAUDE.md (d'ús intern, no comercialitzat).
+  - **Preus dinàmics verificats**: `listActiveProductsWithPrices()` llegeix `products/{id}/prices/{priceId}` de Firestore (sincronitzat per l'extensió Stripe via webhook). Matcheja `role === 'premium'` i agrupa per `interval === 'month' | 'year'`.
+  - **CTA Free** → `<Link to="/register">` ✅
+  - **CTA Premium** → `handleSubscribe()`:
+    - Si no hi ha sessió → `navigate('/login?redirect=/pricing')` ✅
+    - Si hi ha sessió → crida `createCheckoutSession(user.uid, price.id, { successUrl })` amb el **Price ID real de Stripe** (no hardcoded, evita desincronitzacions). Redirigeix a Stripe Checkout.
+  - **Price IDs actius verificats** (veure `docs/stripe-setup.md` + S5-T7): `price_1TNtCLGs...` (Premium monthly 25€) i `price_1TNtV2Gs...` (Premium yearly 250€). Ambdós amb `trial_period_days: 30`.
+  - **Estats UI**: loading spinner, error banner, cancel banner (`?checkout=cancel`), `isAlreadyPremium` → `<Link to="/dashboard">`, unauthenticated → redirect login.
+  - **Bug real corregit**: el `<video>` de fons reutilitzava `globalHome.mp4` (31 MB) sense optimització (mateix problema que S8-T1 abans). Aplicat `preload="metadata"` + `poster` SVG data URI + `aria-hidden="true"`. Ara la Pricing carrega sense descarregar els 31 MB abans del FCP.
+  - **Toggle mensual/anual**: preu actualitzat reactiu + badge "Estalvia X€/any" si `monthlyTotalIfAnnual > 0`.
+
 - [x] **S8-T2 About — seccions completes**: ✅ PASS. Verificat:
   - **6 seccions renderitzades**: Hero amb vídeo, Milestones, Architecture, Roadmap, Founding Members, Closing Contact (ordre canònic a `AboutPage.tsx`, funcions `MilestonesSection`/`ArchitectureSection`/`RoadmapSection`/`FoundingMembersSection`/`ClosingContactSection`).
   - **Vídeos amb poster fallback**: ambdós `<video>` (`nosotros.mp4` hero, `Newspaper.mp4` closing contact) tenien `preload="none"` però **cap `poster`** → flash negre mentre carrega. Afegits **posters inline SVG data URI** (`POSTER_DARK` radial Dark SaaS Navy per hero, `POSTER_AMBER` tintat per Newspaper) + `aria-hidden="true"` (vídeos decoratius). Zero fitxers extra, zero fetch addicional.

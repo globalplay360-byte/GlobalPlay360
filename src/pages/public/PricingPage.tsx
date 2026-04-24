@@ -86,13 +86,19 @@ export default function PricingPage() {
 
   return (
     <div className="relative min-h-screen text-gray-100 overflow-hidden bg-[#0B1120]">
-      {/* Video Background amb Overlay fosc per no perdre llegibilitat */}
+      {/* Video Background amb Overlay fosc per no perdre llegibilitat.
+          Mateixa optimització que HomePage: preload=metadata + poster data URI
+          per evitar descarregar els 31 MB de globalHome.mp4 al load i evitar
+          flash negre mentre carrega. */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
         <video
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
+          poster="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'><defs><radialGradient id='g' cx='50%25' cy='40%25' r='75%25'><stop offset='0%25' stop-color='%23172A45'/><stop offset='100%25' stop-color='%230B1120'/></radialGradient></defs><rect width='1920' height='1080' fill='url(%23g)'/></svg>"
+          aria-hidden="true"
           className="w-full h-full object-cover opacity-40 object-center"
         >
           <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/globalHome.mp4?alt=media&token=239272b5-8d5d-4e1b-a347-05fe2bb94710" type="video/mp4" />
