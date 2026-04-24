@@ -14,6 +14,9 @@ const PAGES_TO_AUDIT = [
 ];
 
 // ── 1. Rutes definides a App.tsx (extretes manualment però les verifico) ──
+// IMPORTANT: només considerem RUTES ABSOLUTES. Les relatives (`<Route path="opportunities">`
+// dins un <Route path="/dashboard">) no existeixen per separat. Si un Link al footer
+// apunta a `/opportunities` quan la ruta real és `/dashboard/opportunities`, és un bug.
 const appContent = readFileSync('src/App.tsx', 'utf8');
 const routes = new Set();
 const routeRe = /<Route\s+path=["']([^"']+)["']/g;
@@ -21,9 +24,8 @@ let m;
 while ((m = routeRe.exec(appContent)) !== null) {
   const p = m[1];
   if (p === '*') continue;
-  // Normalitza: rutes relatives del nested block passen a absolutes amb /dashboard o /admin
-  // però el HomePage només pot linkar a rutes públiques, que són totes absolutes.
-  routes.add(p.startsWith('/') ? p : `/${p}`);
+  if (!p.startsWith('/')) continue;  // relatives ignorades (ja es sumen a knownAbsolute sota)
+  routes.add(p);
 }
 
 // Afegeix rutes nested absolutes conegudes (composition a App.tsx)

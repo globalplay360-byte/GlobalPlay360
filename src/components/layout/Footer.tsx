@@ -50,7 +50,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <FooterLink to="/">{t('navbar.home', 'Inici')}</FooterLink>
               <FooterLink to="/about">{t('footer.about')}</FooterLink>
-              <FooterLink to="/opportunities">{t('footer.col.opportunities', 'Oportunitats')}</FooterLink>
+              <FooterLink to="/dashboard/opportunities">{t('footer.col.opportunities', 'Oportunitats')}</FooterLink>
               <FooterLink to="/pricing">{t('footer.pricing')}</FooterLink>
             </ul>
           </div>

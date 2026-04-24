@@ -186,6 +186,21 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 ## 🌐 Bloc 8 — Pàgines públiques & Legal
 
+- [x] **S8-T5 Footer — trust badges + LanguageSelector + consistència**: ✅ PASS. Auditoria `tests/footer-audit.mjs` (24/24 checks).
+  - **Estructura 4 columnes** (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-12`):
+    - Col 1 Brand + Contacte (span 5) · email + localització
+    - Col 2 Platform → `/`, `/about`, `/dashboard/opportunities`, `/pricing`
+    - Col 3 Per a tu → deep-links `/register?role=player|club|coach` + Membre Fundador
+    - Col 4 Legal → `/privacy`, `/terms`, `/cookies`, `/contact`
+  - **Trust badges visibles** (`hidden md:flex`): Stripe (escut verd) + GDPR (candau verd) a la bottom bar.
+  - **LanguageSelector** importat i renderitzat a la bottom bar (amb `aria-haspopup` + `aria-expanded` + focus-visible ring gràcies a fix S7-T4).
+  - **Consistència**: `<Footer />` renderitzat a `PublicLayout.tsx` → present a totes les pàgines públiques (Home, About, Pricing, Privacy, Terms, Cookies, Contact, Login, Register, ForgotPassword, AuthAction).
+  - **Bug real corregit**: el footer apuntava a `/opportunities` (ruta inexistent pública) en lloc de `/dashboard/opportunities`. Si algú el clicava → catch-all `<Route path="*">` redirigia a `/` (home), trencant la UX. Fixat a `Footer.tsx:53`.
+  - **Audit millorat** (`tests/links-audit.mjs`): abans extreia rutes nested com a absolutes (fals negatiu), ara només comptabilitza rutes `path="/..."` i deixa les relatives a la llista `knownAbsolute`. 34 links interns OK, 0 trencats.
+  - **Copyright dinàmic**: `new Date().getFullYear()` → no queda enganxat a un any concret.
+  - **A11y**: `<footer>` amb semàntica nativa HTML5; icones dins links amb text adjacent (no icon-only).
+  - Reproduïble: `node tests/footer-audit.mjs`.
+
 - [x] **S8-T4 Pàgines legals — existeixen + contingut Stripe/GDPR**: ✅ PASS. Doble auditoria:
   - **Rutes verificades** (`tests/links-audit.mjs`): `/privacy`, `/terms`, `/cookies`, `/contact` totes existents a `App.tsx` dins `PublicLayout`. 0 links trencats des del Footer.
   - **Contingut mínim verificat** (`tests/legal-content-audit.mjs`, 19/19 checks PASS):
