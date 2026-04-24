@@ -96,6 +96,9 @@ const translations = {
 
   // S7-T4 — aria-label del input file ocult a ProfilePage
   'profile.uploadAvatar':          { ca: 'Pujar imatge de perfil', es: 'Subir imagen de perfil', en: 'Upload profile picture' },
+
+  // S8-T2 — placeholder visual mentre la clienta no hagi proporcionat dades fiscals reals
+  'contact.legal.pending':         { ca: 'Pendent de configuració', es: 'Pendiente de configuración', en: 'Pending configuration' },
 };
 
 // deep set k.path.x = val (no sobreescriu si ja existeix)

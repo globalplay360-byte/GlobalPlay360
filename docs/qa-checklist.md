@@ -186,6 +186,14 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
 
 ## 🌐 Bloc 8 — Pàgines públiques & Legal
 
+- [x] **S8-T2 About — seccions completes**: ✅ PASS. Verificat:
+  - **6 seccions renderitzades**: Hero amb vídeo, Milestones, Architecture, Roadmap, Founding Members, Closing Contact (ordre canònic a `AboutPage.tsx`, funcions `MilestonesSection`/`ArchitectureSection`/`RoadmapSection`/`FoundingMembersSection`/`ClosingContactSection`).
+  - **Vídeos amb poster fallback**: ambdós `<video>` (`nosotros.mp4` hero, `Newspaper.mp4` closing contact) tenien `preload="none"` però **cap `poster`** → flash negre mentre carrega. Afegits **posters inline SVG data URI** (`POSTER_DARK` radial Dark SaaS Navy per hero, `POSTER_AMBER` tintat per Newspaper) + `aria-hidden="true"` (vídeos decoratius). Zero fitxers extra, zero fetch addicional.
+  - **Assets verificats**: `curl -I` retorna HTTP 200 per ambdós MP4s (1.2 MB + 1.4 MB — mides correctes, cap de 31 MB com el hero de Home).
+  - **CTAs verificats**: auditoria `tests/links-audit.mjs` (inclosa AboutPage) retorna 34 links interns OK, 0 trencats.
+  - **Animacions**: totes les seccions usen `motion.div` de framer-motion amb variants `staggerContainer` + `fadeInUp`, viewport triggers (`whileInView`).
+  - Reproduïble: `node tests/links-audit.mjs`.
+
 - [x] **S8-T1 Homepage — càrrega i CTAs**: ✅ PASS. Auditoria `tests/links-audit.mjs` + verificació manual assets:
   - **25 links interns OK, 0 trencats** a `HomePage.tsx`, `Navbar.tsx`, `Footer.tsx`, `PublicLayout.tsx` (validat contra les 32 rutes de `App.tsx`).
   - **Tots els CTAs a `/register`** correctament enllaçats (HomePage hero, Navbar, Footer, Pricing).

@@ -929,7 +929,8 @@
       "title": "Consultas legales",
       "desc": "Ejercicio de derechos RGPD, protección de datos o cualquier requerimiento formal.",
       "emailLabel": "Email legal",
-      "address": "Dirección"
+      "address": "Dirección",
+      "pending": "Pendiente de configuración"
     },
     "quickLinks": {
       "title": "Enlaces rápidos",

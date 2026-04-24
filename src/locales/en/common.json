@@ -929,7 +929,8 @@
       "title": "Legal inquiries",
       "desc": "GDPR rights exercise, data protection or any formal request.",
       "emailLabel": "Legal email",
-      "address": "Address"
+      "address": "Address",
+      "pending": "Pending configuration"
     },
     "quickLinks": {
       "title": "Quick links",

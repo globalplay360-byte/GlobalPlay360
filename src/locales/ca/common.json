@@ -930,7 +930,8 @@
       "title": "Consultes legals",
       "desc": "Exercici de drets RGPD, protecció de dades o qualsevol requeriment formal.",
       "emailLabel": "Email legal",
-      "address": "Adreça"
+      "address": "Adreça",
+      "pending": "Pendent de configuració"
     },
     "quickLinks": {
       "title": "Enllaços ràpids",

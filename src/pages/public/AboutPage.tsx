@@ -22,6 +22,15 @@ const fadeInUp: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
 };
 
+/**
+ * Posters inline (SVG data URI) perquè els <video> decoratius tinguin un
+ * fallback visual mentre l'asset MP4 es baixa. Sense poster, mentre carrega
+ * es veu un flash negre que trenca la continuïtat Dark SaaS Navy.
+ * Data URI = zero fetch addicional, zero assets.
+ */
+const POSTER_DARK = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'><defs><radialGradient id='g' cx='50%25' cy='40%25' r='75%25'><stop offset='0%25' stop-color='%23172A45'/><stop offset='100%25' stop-color='%230B1120'/></radialGradient></defs><rect width='1920' height='1080' fill='url(%23g)'/></svg>`;
+const POSTER_AMBER = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='80%25'><stop offset='0%25' stop-color='%23422006'/><stop offset='60%25' stop-color='%231a0f03'/><stop offset='100%25' stop-color='%230B1120'/></radialGradient></defs><rect width='1920' height='1080' fill='url(%23g)'/></svg>`;
+
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
 
@@ -107,6 +116,8 @@ const AboutPage: React.FC = () => {
           loop
           playsInline
           preload="none"
+          poster={POSTER_DARK}
+          aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover object-[center_65%] z-0"
         >
           <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/nosotros.mp4?alt=media&token=05bbb516-95c2-475e-b8d3-ee2e78565b59" type="video/mp4" />
@@ -584,6 +595,8 @@ function ClosingContactSection() {
           loop
           playsInline
           preload="none"
+          poster={POSTER_AMBER}
+          aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
           <source src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/Newspaper.mp4?alt=media&token=ce8b574c-f399-4462-bc3f-2f69e59384d1" type="video/mp4" />

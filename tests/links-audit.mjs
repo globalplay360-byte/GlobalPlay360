@@ -5,6 +5,9 @@ import { readFileSync } from 'fs';
 
 const PAGES_TO_AUDIT = [
   'src/pages/public/HomePage.tsx',
+  'src/pages/public/AboutPage.tsx',
+  'src/pages/public/PricingPage.tsx',
+  'src/pages/public/ContactPage.tsx',
   'src/components/layout/Navbar.tsx',
   'src/components/layout/Footer.tsx',
   'src/components/layout/PublicLayout.tsx',
