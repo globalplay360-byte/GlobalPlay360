@@ -9,9 +9,7 @@ export default function PublicLayout() {
   if (PRELAUNCH_MODE) {
     return (
       <main className="flex-1">
-        <div key={location.pathname} className="animate-fade-in">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
     );
   }

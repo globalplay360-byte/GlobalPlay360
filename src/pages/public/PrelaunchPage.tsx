@@ -26,6 +26,10 @@ const posterSvg = encodeURIComponent(`
 
 const posterUrl = `data:image/svg+xml;charset=UTF-8,${posterSvg}`;
 
+// Overlay de diagnòstic per debugar mòbils reals (iPhone 12 mini Aina).
+// Activat amb ?debug=1 a la URL. Treure quan resolguem el bug.
+const DEBUG_MODE = typeof window !== 'undefined' && window.location.search.includes('debug=1');
+
 export default function PrelaunchPage() {
   /**
    * Per defecte intentem reproduir el vídeo. Només el desactivem si l'usuari
@@ -40,6 +44,7 @@ export default function PrelaunchPage() {
    * fins que entra en viewport i comença reproducció).
    */
   const [shouldPlayVideo, setShouldPlayVideo] = useState(true);
+  const [debugInfo, setDebugInfo] = useState<string[]>([]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -49,6 +54,31 @@ export default function PrelaunchPage() {
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
+
+  useEffect(() => {
+    if (!DEBUG_MODE) return;
+    const log = (msg: string) =>
+      setDebugInfo(prev => [...prev, `${new Date().toISOString().slice(11, 19)} ${msg}`]);
+
+    log(`UA: ${navigator.userAgent.slice(0, 80)}`);
+    log(`window: ${window.innerWidth}x${window.innerHeight}`);
+    log(`screen: ${window.screen.width}x${window.screen.height} dpr=${window.devicePixelRatio}`);
+    if (window.visualViewport) {
+      log(`vv: ${Math.round(window.visualViewport.width)}x${Math.round(window.visualViewport.height)}`);
+    }
+    log(`reducedMotion: ${window.matchMedia('(prefers-reduced-motion: reduce)').matches}`);
+    log(`shouldPlayVideo: ${shouldPlayVideo}`);
+    log(`100svh supported: ${CSS.supports('height', '100svh')}`);
+    log(`backdrop-filter: ${CSS.supports('backdrop-filter', 'blur(12px)')}`);
+
+    const onError = (e: ErrorEvent) => log(`JS ERROR: ${e.message}`);
+    window.addEventListener('error', onError);
+    return () => window.removeEventListener('error', onError);
+  }, [shouldPlayVideo]);
+
+  const onVideoEvent = (name: string) => () => {
+    if (DEBUG_MODE) setDebugInfo(prev => [...prev, `${new Date().toISOString().slice(11, 19)} video:${name}`]);
+  };
 
   return (
     // min-h-[100svh] en lloc de min-h-screen: evita el problema clàssic de `100vh` a mòbil
@@ -66,6 +96,14 @@ export default function PrelaunchPage() {
           poster={posterUrl}
           aria-hidden="true"
           src={heroVideoUrl}
+          onLoadStart={onVideoEvent('loadstart')}
+          onLoadedMetadata={onVideoEvent('loadedmetadata')}
+          onCanPlay={onVideoEvent('canplay')}
+          onPlay={onVideoEvent('play')}
+          onPlaying={onVideoEvent('playing')}
+          onError={onVideoEvent('error')}
+          onStalled={onVideoEvent('stalled')}
+          onSuspend={onVideoEvent('suspend')}
         />
       ) : (
         <div
@@ -83,6 +121,18 @@ export default function PrelaunchPage() {
           Proximamente
         </div>
       </div>
+
+      {DEBUG_MODE && (
+        <div
+          className="fixed left-2 top-2 z-[9999] max-h-[50vh] max-w-[calc(100vw-1rem)] overflow-auto rounded-md p-2 font-mono text-[10px] leading-tight"
+          style={{ background: '#FFEB3B', color: '#000', border: '2px solid #F44336' }}
+        >
+          <div className="font-bold">DEBUG OVERLAY</div>
+          {debugInfo.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+        </div>
+      )}
 
       <main className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col px-6 py-8 sm:px-10 lg:px-20 xl:px-24">
         <header className="h-8" aria-hidden="true">
