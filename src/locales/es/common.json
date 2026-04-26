@@ -862,7 +862,18 @@
       "genderPreference": "Preferencia de género",
       "categoryPreference": "Preferencia de categoría",
       "selectPreference": "Selecciona una preferencia…",
-      "selectCategory": "Selecciona una categoría…"
+      "selectCategory": "Selecciona una categoría…",
+      "preferredHand": "Mano preferida",
+      "playingHand": "Mano dominante",
+      "stickHand": "Mano del stick",
+      "backhandType": "Revés",
+      "wingspan": "Envergadura",
+      "spikeReach": "Alcance de remate"
+    },
+    "noOptions": {
+      "country": "País no encontrado",
+      "state": "Estado no encontrado",
+      "city": "Ciudad no encontrada"
     },
     "placeholders": {
       "displayName": "Tu nombre público",
@@ -882,7 +893,9 @@
       "city": "Selecciona ciudad...",
       "currentClub": "Ej: FC Barcelona",
       "height": "Ej: 180",
-      "weight": "Ej: 75"
+      "weight": "Ej: 75",
+      "wingspan": "Ej: 210",
+      "spikeReach": "Ej: 320"
     },
     "hints": {
       "bio": "Describe tu trayectoria, objetivos y experiencia.",
@@ -898,7 +911,11 @@
       "venueCapacity": "Capacidad de espectadores de la instalación.",
       "currentClub": "¿En qué equipo juegas actualmente? (Opcional)",
       "height": "En centímetros (cm)",
-      "weight": "En kilogramos (kg)"
+      "weight": "En kilogramos (kg)",
+      "wingspan": "En centímetros, punta a punta de los brazos.",
+      "spikeReach": "Altura máxima de contacto con el balón, en cm.",
+      "hockeyPosition": "Hierba, hielo o patines.",
+      "stickHand": "Agarre predominante."
     }
   },
   "legal": {
@@ -985,6 +1002,16 @@
     "rugby": "Rugby",
     "hockey": "Hockey",
     "other": "Otros",
-    "details": "Detalles deportivos"
+    "details": "Detalles deportivos",
+    "details_football": "Detalles de Fútbol 11",
+    "details_basketball": "Detalles de Baloncesto",
+    "details_futsal": "Detalles de Fútbol Sala",
+    "details_volleyball": "Detalles de Voleibol",
+    "details_handball": "Detalles de Balonmano",
+    "details_waterpolo": "Detalles de Waterpolo",
+    "details_tennis": "Detalles de Tenis",
+    "details_rugby": "Detalles de Rugby",
+    "details_american_football": "Detalles de Fútbol Americano",
+    "details_hockey": "Detalles de Hockey"
   }
 }

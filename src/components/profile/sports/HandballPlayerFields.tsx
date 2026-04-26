@@ -1,6 +1,8 @@
-import type { User, Handedness } from '@/types';
+import type { User } from '@/types';
 import { useTranslation } from 'react-i18next';
-import { Field, Select } from '../fields/FormControls';
+import { FormSection } from '../fields/FormSection';
+import { PositionSelect } from '../fields/PositionSelect';
+import { HandSelect } from '../fields/HandSelect';
 
 interface Props {
   formData: User;
@@ -8,42 +10,24 @@ interface Props {
   disabled?: boolean;
 }
 
-const POSITIONS = ['Porter', 'Central', 'Lateral', 'Extrem', 'Pivot'];
-
 export default function HandballPlayerFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
   return (
-    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="w-1 h-5 rounded-md bg-[#FFC107] shadow-sm shadow-[#FFC107]/30" />
-        <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">Detalls d'Handbol</h2>
-      </div>
-
+    <FormSection title={t('sports.details_handball', 'Detalls d\'Handbol')}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        <Field label={t('profileEdit.fields.position', 'Posició')}>
-          <Select
-            value={formData.position || ''}
-            onChange={(e) => onChange({ position: e.target.value || undefined })}
-            disabled={disabled}
-          >
-            <option value="">{t('profileEdit.fields.selectPlaceholder', 'Selecciona...')}</option>
-            {POSITIONS.map((p) => <option key={p} value={p}>{t(`sports.positions.${p.toLowerCase().replace(/ /g, '')}`, p)}</option>)}
-          </Select>
-        </Field>
-
-        <Field label="Mà preferida">
-          <Select
-            value={formData.preferredHand || ''}
-            onChange={(e) => onChange({ preferredHand: (e.target.value || undefined) as Handedness | undefined })}
-            disabled={disabled}
-          >
-            <option value="">{t('profileEdit.fields.selectPlaceholder', 'Selecciona...')}</option>
-            <option value="right">{t('profileEdit.fields.right', 'Dreta')}</option>
-            <option value="left">{t('profileEdit.fields.left', 'Esquerra')}</option>
-            <option value="both">Ambidextra</option>
-          </Select>
-        </Field>
+        <PositionSelect
+          sport="handball"
+          value={formData.position}
+          onChange={(position) => onChange({ position })}
+          disabled={disabled}
+        />
+        <HandSelect
+          kind="preferredHand"
+          value={formData.preferredHand}
+          onChange={(preferredHand) => onChange({ preferredHand })}
+          disabled={disabled}
+        />
       </div>
-    </section>
+    </FormSection>
   );
 }

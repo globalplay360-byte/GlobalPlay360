@@ -862,7 +862,18 @@
       "genderPreference": "Gender preference",
       "categoryPreference": "Category preference",
       "selectPreference": "Select a preference…",
-      "selectCategory": "Select a category…"
+      "selectCategory": "Select a category…",
+      "preferredHand": "Preferred hand",
+      "playingHand": "Dominant hand",
+      "stickHand": "Stick hand",
+      "backhandType": "Backhand",
+      "wingspan": "Wingspan",
+      "spikeReach": "Spike reach"
+    },
+    "noOptions": {
+      "country": "No country found",
+      "state": "No state found",
+      "city": "No city found"
     },
     "placeholders": {
       "displayName": "Your public name",
@@ -882,7 +893,9 @@
       "city": "Select city...",
       "currentClub": "Ex: FC Barcelona",
       "height": "E.g. 180",
-      "weight": "E.g. 75"
+      "weight": "E.g. 75",
+      "wingspan": "Ex: 210",
+      "spikeReach": "Ex: 320"
     },
     "hints": {
       "bio": "Describe your career, goals, and experience.",
@@ -898,7 +911,11 @@
       "venueCapacity": "Spectator capacity of the venue.",
       "currentClub": "Which team are you currently playing for? (Optional)",
       "height": "In centimeters (cm)",
-      "weight": "In kilograms (kg)"
+      "weight": "In kilograms (kg)",
+      "wingspan": "In centimeters, fingertip to fingertip.",
+      "spikeReach": "Maximum ball-contact height, in cm.",
+      "hockeyPosition": "Field, ice, or roller.",
+      "stickHand": "Predominant grip."
     }
   },
   "legal": {
@@ -985,6 +1002,16 @@
     "rugby": "Rugby",
     "hockey": "Hockey",
     "other": "Other",
-    "details": "Sport details"
+    "details": "Sport details",
+    "details_football": "Football details",
+    "details_basketball": "Basketball details",
+    "details_futsal": "Futsal details",
+    "details_volleyball": "Volleyball details",
+    "details_handball": "Handball details",
+    "details_waterpolo": "Water polo details",
+    "details_tennis": "Tennis details",
+    "details_rugby": "Rugby details",
+    "details_american_football": "American Football details",
+    "details_hockey": "Hockey details"
   }
 }

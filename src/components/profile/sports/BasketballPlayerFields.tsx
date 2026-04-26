@@ -1,6 +1,8 @@
 import type { User } from '@/types';
 import { useTranslation } from 'react-i18next';
-import { Field, Input, Select } from '../fields/FormControls';
+import { Field, Input } from '../fields/FormControls';
+import { FormSection } from '../fields/FormSection';
+import { PositionSelect } from '../fields/PositionSelect';
 
 interface Props {
   formData: User;
@@ -8,41 +10,32 @@ interface Props {
   disabled?: boolean;
 }
 
-const POSITIONS = ['Base (PG)', 'Escorta (SG)', 'Aler (SF)', 'Ala-Pivot (PF)', 'Pivot (C)'];
-
 export default function BasketballPlayerFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
   return (
-    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="w-1 h-5 rounded-md bg-[#FFC107] shadow-sm shadow-[#FFC107]/30" />
-        <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">{t('sports.details', 'Detalls de Bàsquet')}</h2>
-      </div>
-
+    <FormSection title={t('sports.details_basketball', 'Detalls de Bàsquet')}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        <Field label={t('profileEdit.fields.position', 'Posició')}>
-          <Select
-            value={formData.position || ''}
-            onChange={(e) => onChange({ position: e.target.value || undefined })}
-            disabled={disabled}
-          >
-            <option value="">{t('profileEdit.fields.selectPlaceholder', 'Selecciona...')}</option>
-            {POSITIONS.map((p) => <option key={p} value={p}>{t(`sports.positions.${p.toLowerCase().replace(/ /g, '')}`, p)}</option>)}
-          </Select>
-        </Field>
-
-        <Field label="Envergadura (wingspan)" hint="En centímetres, punta a punta de braços.">
+        <PositionSelect
+          sport="basketball"
+          value={formData.position}
+          onChange={(position) => onChange({ position })}
+          disabled={disabled}
+        />
+        <Field
+          label={t('profileEdit.fields.wingspan', 'Envergadura')}
+          hint={t('profileEdit.hints.wingspan', 'En centímetres, punta a punta de braços.')}
+        >
           <Input
             type="number"
             min={100}
             max={260}
             value={formData.wingspan ?? ''}
             onChange={(e) => onChange({ wingspan: e.target.value ? Number(e.target.value) : undefined })}
-            placeholder="Ex: 210"
+            placeholder={t('profileEdit.placeholders.wingspan', 'Ex: 210')}
             disabled={disabled}
           />
         </Field>
       </div>
-    </section>
+    </FormSection>
   );
 }

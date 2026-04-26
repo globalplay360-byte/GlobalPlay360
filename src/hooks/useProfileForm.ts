@@ -30,7 +30,6 @@ export function useProfileForm(initialUser: User) {
   const handleSubmit = useCallback(async (): Promise<boolean> => {
     if (!isDirty) return true;
 
-    // Build a patch containing only fields that actually changed.
     const patch: ProfileUpdate = {};
     (Object.keys(formData) as (keyof User)[]).forEach((key) => {
       if (formData[key] !== initialUser[key]) {

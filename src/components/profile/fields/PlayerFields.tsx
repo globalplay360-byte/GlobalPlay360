@@ -1,7 +1,9 @@
 import type { User, Sport } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { Field, Input, Select } from './FormControls';
+import { FormSection } from './FormSection';
 import SportSpecificFields from '../sports';
+import { buildSportOptions } from '@/constants/sports';
 
 interface Props {
   formData: User;
@@ -9,54 +11,39 @@ interface Props {
   disabled?: boolean;
 }
 
-
+// Camps que depenen de l'esport seleccionat — quan canvia, els reiniciem.
+const SPORT_DEPENDENT_FIELDS = [
+  'position',
+  'preferredFoot',
+  'preferredHand',
+  'playingHand',
+  'stickHand',
+  'backhandType',
+  'wingspan',
+  'spikeReach',
+] as const;
 
 export default function PlayerFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
-
-  const SPORT_OPTIONS: { value: Sport; label: string }[] = [
-    { value: 'football', label: t('sports.football', 'Futbol 11') },
-    { value: 'basketball', label: t('sports.basketball', 'Bàsquet') },
-    { value: 'futsal', label: t('sports.futsal', 'Futbol Sala') },
-    { value: 'volleyball', label: t('sports.volleyball', 'Voleibol') },
-    { value: 'handball', label: t('sports.handball', 'Handbol') },
-    { value: 'waterpolo', label: t('sports.waterpolo', 'Waterpolo') },
-    { value: 'tennis', label: t('sports.tennis', 'Tennis') },
-    { value: 'rugby', label: t('sports.rugby', 'Rugbi') },
-    { value: 'american_football', label: t('sports.american_football', 'Futbol Americà') },
-    { value: 'hockey', label: t('sports.hockey', 'Hoquei') },
-    { value: 'other', label: t('sports.other', 'Altres') },
-  ];
+  const sportOptions = buildSportOptions(t);
 
   const handleSportChange = (value: string) => {
     const newSport = (value || undefined) as Sport | undefined;
-    // Reset sport-specific fields when the sport changes to avoid stale data.
-    onChange({
-      sport: newSport,
-      position: undefined,
-      preferredFoot: undefined,
-      preferredHand: undefined,
-      playingHand: undefined,
-      stickHand: undefined,
-      backhandType: undefined,
-      wingspan: undefined,
-      spikeReach: undefined,
+    const reset: Partial<User> = { sport: newSport };
+    SPORT_DEPENDENT_FIELDS.forEach((k) => {
+      (reset as Record<string, undefined>)[k] = undefined;
     });
+    onChange(reset);
   };
 
   return (
     <>
-      <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="w-1 h-5 rounded-md bg-[#FFC107] shadow-sm shadow-[#FFC107]/30" />
-          <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">{t('profileEdit.fields.athleticData', 'Dades esportives')}</h2>
-        </div>
-
+      <FormSection title={t('profileEdit.fields.athleticData', 'Dades esportives')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <Field label={t('profileEdit.fields.mainSport', 'Esport principal')}>
             <Select value={formData.sport || ''} onChange={(e) => handleSportChange(e.target.value)} disabled={disabled}>
               <option value="">{t('profileEdit.fields.selectSport', 'Selecciona un esport')}</option>
-              {SPORT_OPTIONS.map((o) => (
+              {sportOptions.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </Select>
@@ -111,7 +98,7 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
             />
           </Field>
         </div>
-      </section>
+      </FormSection>
 
       {formData.sport && formData.sport !== 'other' && (
         <SportSpecificFields formData={formData} onChange={onChange} disabled={disabled} />
@@ -119,4 +106,3 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
     </>
   );
 }
-
