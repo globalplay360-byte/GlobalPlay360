@@ -7,15 +7,31 @@
     <title>GlobalPlay360 — Proximamente</title>
     <style>
       html, body { margin: 0; padding: 0; background: #0A192F; color: #fff; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-      #prelaunch-static { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 2rem; box-sizing: border-box; background: #0A192F; }
-      #prelaunch-static .badge { position: absolute; top: 1.25rem; right: 1.25rem; padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.82); }
-      #prelaunch-static svg { width: min(70vw, 22rem); height: auto; color: #FFC107; display: block; }
+      #prelaunch-static { position: fixed; inset: 0; overflow: hidden; background: #020617; }
+      #prelaunch-static .video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; z-index: 0; }
+      #prelaunch-static .overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(2,6,23,0.20) 0%, rgba(2,6,23,0.50) 100%); pointer-events: none; }
+      #prelaunch-static .content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; padding: 2rem; box-sizing: border-box; }
+      #prelaunch-static .badge { position: absolute; top: 1.25rem; right: 1.25rem; z-index: 3; padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.85); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+      #prelaunch-static svg { width: min(70vw, 22rem); height: auto; color: #FFC107; display: block; filter: drop-shadow(0 18px 50px rgba(255,193,7,0.25)); }
     </style>
   </head>
   <body>
     <div id="root">
       <div id="prelaunch-static">
+        <video
+          class="video-bg"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          preload="metadata"
+          aria-hidden="true"
+          src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/global_home.mp4?alt=media&amp;token=d56dab23-e1be-4f3a-a9b6-bd7faeba7b4b"
+        ></video>
+        <div class="overlay"></div>
         <div class="badge">Proximamente</div>
+        <div class="content">
         <svg viewBox="0 0 1500 1500" xmlns="http://www.w3.org/2000/svg" aria-label="GlobalPlay360 Logo" role="img">
           <path fill="currentColor" d="M820.5 520.5l-147.37.76c-53.67 5.04-105.62 25.24-132.51 74.49-27.44 50.25-26.77 132.41.75 182.51 34.9 63.52 111.1 80.06 178.63 76v-132H618.75v-100.5H820.5v324.38c0 .6-4.81 4.82-6.36 4.14-117.35.57-265.14 9.07-345.36-93.42-45.93-58.69-56.6-148.89-46.42-221.11 22.43-159.21 150.8-208.49 295.73-212.02 30.34 2 63.84-2.54 93.81 0 2.06.18 8.6 1.79 8.6 4.15v92.62Z"/>
           <path fill="currentColor" d="M837.75 738v-96.75c38.37-2.63 99.12 9.48 129.03-20.59 17.68-17.77 18.84-51.37 4.76-71.57-27.03-38.8-93.34-26.49-133.79-28.58v-95.62c0-.17-1.42-1-.37-1.13l72.03-.03c79.56 3.41 154.53 39.29 168.88 124.37 17.13 101.62-37.21 169.85-136.14 186.67-34.41 5.85-69.6 2.26-104.39 3.24Z"/>
@@ -33,6 +49,7 @@
           <polygon fill="currentColor" points="421.5 1050 421.5 1107 453 1107 453 1122.75 405 1122.75 405 1050 421.5 1050"/>
           <polygon fill="currentColor" points="861.75 1050 861.75 1107 893.25 1107 893.25 1122.75 845.25 1122.75 845.25 1050 861.75 1050"/>
         </svg>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
