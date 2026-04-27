@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from '@/components/ui/Spinner';
+import { PasswordField } from '@/components/auth/PasswordField';
+import { PasswordStrengthBar } from '@/components/auth/PasswordStrengthBar';
+import { PasswordMatchBar } from '@/components/auth/PasswordMatchBar';
+import { getPasswordStrength } from '@/utils/passwordStrength';
 import type { UserRole } from '@/types';
 
 const ROLE_MAP: Record<string, UserRole> = {
@@ -21,37 +26,10 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [role, setRole] = useState(defaultRole);
-  
+
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  // Calcula la força de la contrasenya
-  const getPasswordStrength = (pass: string) => {
-    let score = 0;
-    if (!pass) return { score: 0, text: '', color: 'bg-transparent', width: 'w-0' };
-    
-    if (pass.length >= 8) score += 1;
-    if (/[A-Z]/.test(pass)) score += 1;
-    if (/[a-z]/.test(pass)) score += 1;
-    if (/[0-9!@#$%^&*(),.?":{}|<>]/.test(pass)) score += 1;
-
-    switch (score) {
-      case 0:
-      case 1:
-        return { score, text: t('registerPage.passwordStrength.veryWeak'), color: 'bg-red-500', width: 'w-1/4' };
-      case 2:
-        return { score, text: t('registerPage.passwordStrength.weak'), color: 'bg-orange-500', width: 'w-2/4' };
-      case 3:
-        return { score, text: t('registerPage.passwordStrength.good'), color: 'bg-yellow-400', width: 'w-3/4' };
-      case 4:
-        return { score, text: t('registerPage.passwordStrength.strong'), color: 'bg-green-500', width: 'w-full' };
-      default:
-        return { score: 0, text: '', color: 'bg-transparent', width: 'w-0' };
-    }
-  };
 
   const strength = getPasswordStrength(password);
 
@@ -80,11 +58,11 @@ export default function RegisterPage() {
     }
 
     setStatus('loading');
-    
+
     try {
       await register(email, password, displayName, ROLE_MAP[role] ?? 'player');
       setStatus('success');
-      setTimeout(() => navigate('/dashboard'), 500);
+      navigate('/dashboard');
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -97,7 +75,7 @@ export default function RegisterPage() {
     try {
       await loginWithGoogle(ROLE_MAP[role] ?? 'player');
       setStatus('success');
-      setTimeout(() => navigate('/dashboard'), 500);
+      navigate('/dashboard');
     } catch {
       setStatus('error');
       setErrorMessage(t('registerPage.errors.googleError'));
@@ -111,9 +89,6 @@ export default function RegisterPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-50" />
 
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#0F172A] border border-[#1F2937] mb-4 hover:border-[#3B82F6] transition-colors">
-            <span className="text-2xl text-[#3B82F6]"></span>
-          </Link>
           <h1 className="text-2xl font-bold mb-2">{t('registerPage.title')}</h1>
           <p className="text-[#9CA3AF] text-sm">{t('registerPage.subtitle')}</p>
         </div>
@@ -173,96 +148,27 @@ export default function RegisterPage() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="password">{t('registerPage.passwordLabel')}</label>
-            <div className="relative">
-              <input 
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); if(status==='error') setStatus('idle'); }}
-                className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-                placeholder={t('registerPage.passwordPlaceholder')}
-                disabled={status === 'loading' || status === 'success'}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
-              >
-                {showPassword ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.456c4.477 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29" /></svg>
-                )}
-              </button>
-            </div>
-            
-            {password && (
-              <div className="mt-2">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs text-[#9CA3AF]">Nivel de seguridad</span>
-                  <span className={`text-xs font-semibold ${
-                    strength.score === 4 ? 'text-green-500' :
-                    strength.score === 3 ? 'text-yellow-400' :
-                    strength.score === 2 ? 'text-orange-500' :
-                    'text-red-500'
-                  }`}>
-                    {strength.text}
-                  </span>
-                </div>
-                <div className="w-full bg-[#1F2937] rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className={`h-full transition-all duration-300 ease-in-out ${strength.color} ${strength.width}`}
-                  />
-                </div>
-              </div>
-            )}
+            <PasswordField
+              id="password"
+              label={t('registerPage.passwordLabel')}
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); if (status === 'error') setStatus('idle'); }}
+              placeholder={t('registerPage.passwordPlaceholder')}
+              disabled={status === 'loading' || status === 'success'}
+            />
+            <PasswordStrengthBar password={password} />
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-[#9CA3AF] mb-1.5" htmlFor="confirmPassword">{t('registerPage.confirmPasswordLabel')}</label>
-            <div className="relative">
-              <input 
-                id="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={(e) => { setConfirmPassword(e.target.value); if(status==='error') setStatus('idle'); }}
-                className="w-full bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all placeholder:text-[#4B5563]"
-                placeholder={t('registerPage.confirmPasswordPlaceholder')}
-                disabled={status === 'loading' || status === 'success'}
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}    
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#9CA3AF] hover:text-gray-100"
-              >
-                {showConfirmPassword ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.456c4.477 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29" /></svg>
-                )}
-              </button>
-            </div>
-
-            {confirmPassword && (
-              <div className="mt-2">
-                <div className="flex justify-between items-center mb-1">        
-                  <span className="text-xs text-[#9CA3AF]">{t('registerPage.matchLabel')}</span>  
-                  <span className={`text-xs font-semibold ${
-                    password === confirmPassword ? 'text-green-500' : 'text-red-500'
-                  }`}>
-                    {password === confirmPassword ? t('registerPage.matchYes') : t('registerPage.matchNo')}
-                  </span>
-                </div>
-                <div className="w-full bg-[#1F2937] rounded-full h-1.5 overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ease-in-out ${
-                      password === confirmPassword ? 'bg-green-500 w-full' : 'bg-red-500 w-full'
-                    }`}
-                  />
-                </div>
-              </div>
-            )}
+            <PasswordField
+              id="confirmPassword"
+              label={t('registerPage.confirmPasswordLabel')}
+              value={confirmPassword}
+              onChange={(e) => { setConfirmPassword(e.target.value); if (status === 'error') setStatus('idle'); }}
+              placeholder={t('registerPage.confirmPasswordPlaceholder')}
+              disabled={status === 'loading' || status === 'success'}
+            />
+            <PasswordMatchBar password={password} confirm={confirmPassword} />
           </div>
 
           <button
@@ -271,11 +177,8 @@ export default function RegisterPage() {
             className="w-full bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#1D4ED8]/50 disabled:cursor-not-allowed text-gray-100 font-medium rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2"
           >
             {status === 'loading' ? (
-               <>
-                <svg className="animate-spin h-5 w-5 text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+              <>
+                <Spinner />
                 <span>{t('registerPage.loading')}</span>
               </>
             ) : status === 'success' ? (

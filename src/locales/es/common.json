@@ -974,13 +974,67 @@
     "panel": "Panel de Administración"
   },
   "authAction": {
-    "verifySuccess": "Correo verificado correctamente."
+    "verifySuccess": "Correo verificado correctamente.",
+    "verifyTitle": "Verificación",
+    "verifying": "Verificando tu correo electrónico...",
+    "backToLogin": "Volver al inicio de sesión",
+    "redirectingDashboard": "Redirigiéndote a tu panel...",
+    "resetTitle": "Nueva Contraseña",
+    "resetSubtitle": "Introduce tu nueva contraseña de seguridad.",
+    "resetSuccess": "Contraseña actualizada",
+    "resetSuccessHint": "Tu contraseña se ha cambiado correctamente.",
+    "redirectingLogin": "Serás redirigido al inicio de sesión...",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Mínimo 8 caracteres, letras, mayúsculas y símbolos",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Vuelve a escribirla",
+    "savePassword": "Guardar Contraseña",
+    "unsupported": "Esta funcionalidad",
+    "unsupportedSuffix": "no está implementada.",
+    "unknownMode": "desconocida",
+    "errors": {
+      "invalidLink": "Enlace inválido o caducado.",
+      "expired": "El enlace ha caducado o ya se ha utilizado.",
+      "verifyFailed": "No se ha podido verificar el correo.",
+      "mismatch": "Las contraseñas no coinciden.",
+      "weak": "Por favor, introduce una contraseña más fuerte (mínimo 8 caracteres, incluyendo mayúsculas y números o símbolos).",
+      "resetFailed": "Ha ocurrido un error al cambiar la contraseña."
+    }
   },
   "common": {
     "searchOpportunities": "Buscar Oportunidades"
   },
   "forgotPassword": {
-    "loginLink": "Volver al login"
+    "loginLink": "Inicia sesión",
+    "title": "Recuperar Contraseña",
+    "subtitle": "Introduce tu correo y te enviaremos un enlace para restablecerla.",
+    "successTitle": "Correo enviado",
+    "successHint": "Revisa tu bandeja de entrada (también la carpeta de Spam) para continuar.",
+    "backToLogin": "Volver al inicio de sesión",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Ej. juan@ejemplo.com",
+    "submit": "Crea una nueva contraseña",
+    "rememberPrefix": "¿Recuerdas la contraseña?",
+    "errors": {
+      "notFound": "No se ha encontrado ninguna cuenta con este correo.",
+      "generic": "Ha habido un error al procesar la petición. Inténtalo más tarde."
+    }
+  },
+  "passwordField": {
+    "show": "Mostrar contraseña",
+    "hide": "Ocultar contraseña"
+  },
+  "passwordStrength": {
+    "label": "Nivel de seguridad",
+    "veryWeak": "Muy débil",
+    "weak": "Débil",
+    "good": "Buena",
+    "strong": "Fuerte"
+  },
+  "passwordMatch": {
+    "label": "Coincidencia",
+    "yes": "Coinciden",
+    "no": "No coinciden"
   },
   "publicProfile": {
     "error": "Error al cargar el perfil.",

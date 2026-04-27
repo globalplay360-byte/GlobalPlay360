@@ -975,13 +975,67 @@
     "panel": "Panell d'Administració"
   },
   "authAction": {
-    "verifySuccess": "Correu verificat correctament."
+    "verifySuccess": "Correu verificat correctament.",
+    "verifyTitle": "Verificació",
+    "verifying": "Verificant el teu correu electrònic...",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "redirectingDashboard": "Redirigint-te al teu tauler...",
+    "resetTitle": "Nova Contrasenya",
+    "resetSubtitle": "Introdueix la teva nova contrasenya de seguretat.",
+    "resetSuccess": "Contrasenya actualitzada",
+    "resetSuccessHint": "La teva contrasenya s'ha canviat correctament.",
+    "redirectingLogin": "Seràs redirigit a l'inici de sessió...",
+    "newPasswordLabel": "Nova contrasenya",
+    "newPasswordPlaceholder": "Mínim 8 caràcters, lletres, majúscules i símbols",
+    "confirmPasswordLabel": "Confirmar contrasenya",
+    "confirmPasswordPlaceholder": "Torna a escriure-la",
+    "savePassword": "Guardar Contrasenya",
+    "unsupported": "Aquesta funcionalitat",
+    "unsupportedSuffix": "no està implementada.",
+    "unknownMode": "desconeguda",
+    "errors": {
+      "invalidLink": "Enllaç invàlid o expirat.",
+      "expired": "L'enllaç ha expirat o ja s'ha utilitzat.",
+      "verifyFailed": "No s'ha pogut verificar el correu.",
+      "mismatch": "Les contrasenyes no coincideixen.",
+      "weak": "Si us plau, introdueix una contrasenya més forta (mínim 8 caràcters, incloent majúscules i números o símbols).",
+      "resetFailed": "Ha ocorregut un error en canviar la contrasenya."
+    }
   },
   "common": {
     "searchOpportunities": "Buscar Oportunitats"
   },
   "forgotPassword": {
-    "loginLink": "Tornar al login"
+    "loginLink": "Inicia sessió",
+    "title": "Recuperar Contrasenya",
+    "subtitle": "Introdueix el teu correu i t'enviarem un enllaç per restablir-la.",
+    "successTitle": "Correu enviat",
+    "successHint": "Revisa la teva safata d'entrada (també la carpeta d'Spam) per continuar.",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "emailLabel": "Correu electrònic",
+    "emailPlaceholder": "Ex. joan@exemple.cat",
+    "submit": "Crea una nova contrasenya",
+    "rememberPrefix": "Recordes la contrasenya?",
+    "errors": {
+      "notFound": "No s'ha trobat cap compte amb aquest correu.",
+      "generic": "Hi ha hagut un error en processar la petició. Intenta-ho més tard."
+    }
+  },
+  "passwordField": {
+    "show": "Mostrar contrasenya",
+    "hide": "Ocultar contrasenya"
+  },
+  "passwordStrength": {
+    "label": "Nivell de seguretat",
+    "veryWeak": "Molt feble",
+    "weak": "Feble",
+    "good": "Bona",
+    "strong": "Forta"
+  },
+  "passwordMatch": {
+    "label": "Coincidència",
+    "yes": "Coincideixen",
+    "no": "No coincideixen"
   },
   "publicProfile": {
     "error": "Error carregant el perfil.",

@@ -974,13 +974,67 @@
     "panel": "Admin Panel"
   },
   "authAction": {
-    "verifySuccess": "Email verified successfully."
+    "verifySuccess": "Email verified successfully.",
+    "verifyTitle": "Verification",
+    "verifying": "Verifying your email...",
+    "backToLogin": "Back to login",
+    "redirectingDashboard": "Redirecting to your dashboard...",
+    "resetTitle": "New Password",
+    "resetSubtitle": "Enter your new secure password.",
+    "resetSuccess": "Password updated",
+    "resetSuccessHint": "Your password has been changed successfully.",
+    "redirectingLogin": "You will be redirected to login...",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "At least 8 characters, with uppercase and symbols",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Type it again",
+    "savePassword": "Save Password",
+    "unsupported": "This feature",
+    "unsupportedSuffix": "is not implemented.",
+    "unknownMode": "unknown",
+    "errors": {
+      "invalidLink": "Invalid or expired link.",
+      "expired": "The link has expired or has already been used.",
+      "verifyFailed": "Could not verify the email.",
+      "mismatch": "Passwords do not match.",
+      "weak": "Please enter a stronger password (at least 8 characters, including uppercase and numbers or symbols).",
+      "resetFailed": "An error occurred while changing the password."
+    }
   },
   "common": {
     "searchOpportunities": "Search Opportunities"
   },
   "forgotPassword": {
-    "loginLink": "Back to login"
+    "loginLink": "Sign in",
+    "title": "Reset Password",
+    "subtitle": "Enter your email and we'll send you a link to reset it.",
+    "successTitle": "Email sent",
+    "successHint": "Check your inbox (and the Spam folder) to continue.",
+    "backToLogin": "Back to login",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "e.g. john@example.com",
+    "submit": "Create a new password",
+    "rememberPrefix": "Remember your password?",
+    "errors": {
+      "notFound": "No account found with that email.",
+      "generic": "There was an error processing your request. Please try again later."
+    }
+  },
+  "passwordField": {
+    "show": "Show password",
+    "hide": "Hide password"
+  },
+  "passwordStrength": {
+    "label": "Security level",
+    "veryWeak": "Very weak",
+    "weak": "Weak",
+    "good": "Good",
+    "strong": "Strong"
+  },
+  "passwordMatch": {
+    "label": "Match",
+    "yes": "Match",
+    "no": "Don't match"
   },
   "publicProfile": {
     "error": "Error loading profile.",
