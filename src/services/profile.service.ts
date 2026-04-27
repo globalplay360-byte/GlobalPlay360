@@ -169,9 +169,13 @@ export async function uploadAvatar(uid: string, file: File): Promise<string> {
   
   await uploadBytes(storageRef, compressedBlob);
   const downloadUrl = await getDownloadURL(storageRef);
-  
-  // Hi afegim un query string inventat perquè el navegador de l'usuari la recarregui
-  return `${downloadUrl}&t=${Date.now()}`;
+
+  // Cache-buster: forcem la recàrrega al client després de pujar una nova
+  // imatge (sobreescriu l'anterior a Storage però el navegador serviria la
+  // versió cau). URL.searchParams és robust si Firebase canvia el format.
+  const url = new URL(downloadUrl);
+  url.searchParams.set('t', String(Date.now()));
+  return url.toString();
 }
 
 /** 
