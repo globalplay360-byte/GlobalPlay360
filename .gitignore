@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 build_output
+vite.config.ts.timestamp-*.mjs
+vite.config.js.timestamp-*.mjs
 
 # Env files
 .env
