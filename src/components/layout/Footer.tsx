@@ -8,13 +8,10 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#020C1B] text-[#8892B0] mt-auto relative">
-      {/* Gradient divider top */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-[#0070F3]/40 to-transparent" />
 
-      {/* ───────── Grid principal ───────── */}
       <section className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-16 md:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-10">
-          {/* Col 1 · Brand + Contacte */}
           <div className="lg:col-span-5 flex flex-col">
             <h3 className="text-gray-100 text-xl font-bold mb-4 tracking-tight">
               Global Play 360
@@ -42,7 +39,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 2 · Platform */}
           <div className="lg:col-span-2 lg:col-start-7">
             <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.col.platform', 'Plataforma')}
@@ -55,7 +51,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 3 · Per a tu */}
           <div className="lg:col-span-2">
             <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.col.forYou', 'Per a tu')}
@@ -78,7 +73,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 · Legal & Support */}
           <div className="lg:col-span-2">
             <h4 className="text-gray-100 font-semibold mb-5 uppercase tracking-wider text-xs">
               {t('footer.legal')}
@@ -93,7 +87,6 @@ export default function Footer() {
         </div>
       </section>
 
-      {/* ───────── Bottom bar ───────── */}
       <section className="border-t border-gray-100/5 bg-[#010814]">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-xs text-[#8892B0]/80 text-center md:text-left">

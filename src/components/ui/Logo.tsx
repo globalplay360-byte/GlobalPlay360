@@ -1,26 +1,15 @@
 import React from 'react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
 interface LogoProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
-  variant?: 'default' | 'monochrome' | 'text-only' | 'icon-only';
 }
 
-export function Logo({ className, variant = 'default', ...props }: LogoProps) {
-  // Integrem currentColor via text-* utility de Tailwind
-  const baseClasses = twMerge(
-    clsx(
-      'transition-colors duration-200 ease-out',
-      className
-    )
-  );
-
+export function Logo({ className = '', ...props }: LogoProps) {
   return (
     <svg
       viewBox="0 0 1500 1500"
       xmlns="http://www.w3.org/2000/svg"
-      className={baseClasses}
+      className={`transition-colors duration-200 ease-out ${className}`}
       aria-label="GlobalPlay360 Logo"
       role="img"
       {...props}

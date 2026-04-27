@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUnreadCount } from '@/hooks/useUnreadCount';
 import { useEffect, useRef } from 'react';
@@ -19,8 +19,14 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
   const drawerRef = useRef<HTMLElement | null>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 
+  // Tancar drawer mòbil quan canvia la ruta. `onMobileClose` queda fora de deps
+  // a propòsit: és un callback que el pare recrea cada render i forçaria un
+  // tear-down innecessari de l'effect; aquí només volem reaccionar al canvi de ruta.
+  const onMobileCloseRef = useRef(onMobileClose);
+  onMobileCloseRef.current = onMobileClose;
   useEffect(() => {
-    if (mobileOpen && onMobileClose) onMobileClose();
+    if (mobileOpen) onMobileCloseRef.current?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {
@@ -106,19 +112,19 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
   const sidebarContent = (
     <>
       <div className="py-8 flex items-center justify-center border-b border-[#1F2937] px-4 overflow-hidden relative">
-        <Link
+        <NavLink
           to="/dashboard"
           className="flex items-center justify-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120] focus-visible:ring-[#3B82F6] rounded-sm"
-          aria-label="Anar al panell d'Inici"
+          aria-label={t('sidebar.gotoDashboard', "Anar al panell d'Inici")}
         >
           <Logo className="h-20 md:h-24 w-auto text-yellow-500 transform scale-[1.55] md:scale-[1.45] origin-center" />
-        </Link>
+        </NavLink>
         {onMobileClose && (
           <button
             type="button"
             onClick={onMobileClose}
             className="lg:hidden absolute right-3 top-3 p-2 text-[#9CA3AF] hover:text-gray-100/90 hover:bg-[#1F2937]/60 rounded-lg transition-all duration-fast"
-            aria-label="Tancar menú"
+            aria-label={t('sidebar.closeMenu', 'Tancar menú')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -132,25 +138,32 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
           {t('sidebar.mainMenu', 'Menú Principal')}
         </p>
         <nav className="flex flex-col space-y-1.5">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-fast ease-out ${
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/dashboard'}
+              className={({ isActive }) =>
+                `flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-fast ease-out ${
                   isActive
                     ? 'bg-[#3B82F6]/10 text-[#3B82F6] shadow-sm transform scale-[1.02]'
                     : 'text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] hover:translate-x-1'
-                }`}
-              >
-                <div className={`${isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}>
-                  {item.icon}
-                </div>
-                <span className="whitespace-nowrap">{item.label}</span> {item.path === '/dashboard/messages' && unreadMessages > 0 && (<span className="bg-[#EF4444] ml-auto text-gray-100 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-[0_2px_4px_rgba(239,68,68,0.4)]">{unreadMessages > 99 ? '99+' : unreadMessages}</span>)}
-              </Link>
-            );
-          })}
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <div className={isActive ? 'text-[#3B82F6]' : 'text-[#6B7280]'}>{item.icon}</div>
+                  <span className="whitespace-nowrap">{item.label}</span>
+                  {item.path === '/dashboard/messages' && unreadMessages > 0 && (
+                    <span className="bg-[#EF4444] ml-auto text-gray-100 text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-[0_2px_4px_rgba(239,68,68,0.4)]">
+                      {unreadMessages > 99 ? '99+' : unreadMessages}
+                    </span>
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
         </nav>
       </div>
 

@@ -12,24 +12,34 @@ export default function DashboardLayout() {
 
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const [isVerified, setIsVerified] = useState(true); // per defecte suposem que sí fins a revisar
+  // Per defecte assumim verificat per evitar flaix del banner mentre comprovem.
+  const [isVerified, setIsVerified] = useState(true);
 
-  // Comprovem regularment o a l'entrar si s'ha verificat l'email per amagar el banner
   useEffect(() => {
+    let cancelled = false;
+
     const checkVerification = async () => {
-      if (auth.currentUser) {
-        await auth.currentUser.reload();
-        const unverified = 
-          !auth.currentUser.emailVerified && 
-          auth.currentUser.providerData.some(p => p.providerId === 'password');
-        setIsVerified(!unverified);
-      }
+      if (!auth.currentUser) return;
+      await auth.currentUser.reload();
+      if (cancelled || !auth.currentUser) return;
+      const unverified =
+        !auth.currentUser.emailVerified &&
+        auth.currentUser.providerData.some((p) => p.providerId === 'password');
+      setIsVerified(!unverified);
     };
+
     checkVerification();
-    
-    // Per si l'usuari verifica des d'una altra pestanya
-    const interval = setInterval(checkVerification, 10000);
-    return () => clearInterval(interval);
+
+    // En lloc de polling cada 10s: comprovem només quan la pestanya recupera focus
+    // (cas típic: l'usuari ha verificat l'email a una altra pestanya/dispositiu).
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') checkVerification();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, []);
 
   const handleResend = async () => {

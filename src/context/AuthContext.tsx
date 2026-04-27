@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/services/firebase';
 import type { User, UserRole } from '@/types';
@@ -203,11 +203,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, user: userDoc }));
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ ...state, login, register, loginWithGoogle, logout, refreshUser }}>
-      {children}
-    </AuthContext.Provider>
+  // Memoritzem el value perquè els consumidors només es re-renderin quan
+  // canvia algun camp d'`state`, no a cada render del provider. Els callbacks
+  // ja són estables via useCallback, així que no entren a les deps.
+  const value = useMemo<AuthContextValue>(
+    () => ({ ...state, login, register, loginWithGoogle, logout, refreshUser }),
+    [state, login, register, loginWithGoogle, logout, refreshUser]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextValue {

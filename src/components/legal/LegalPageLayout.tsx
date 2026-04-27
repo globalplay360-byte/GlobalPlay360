@@ -48,19 +48,6 @@ export default function LegalPageLayout({ title, subtitle, lastUpdated, children
           {children}
         </article>
       </section>
-
-      <style>{`
-        .legal-prose { color: #9CA3AF; line-height: 1.85; font-size: 0.95rem; }
-        .legal-prose h2 { color: #E5E7EB; font-size: 1.35rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #1F2937; }
-        .legal-prose h3 { color: #E5E7EB; font-size: 1.1rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.75rem; }
-        .legal-prose p { margin-bottom: 1.25rem; }
-        .legal-prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
-        .legal-prose ul li { margin-bottom: 0.5rem; }
-        .legal-prose a { color: #3B82F6; text-decoration: underline; }
-        .legal-prose a:hover { color: #60A5FA; }
-        .legal-prose strong { color: #D1D5DB; }
-        .legal-prose code { background: #1F2937; color: #93C5FD; padding: 0.1rem 0.4rem; border-radius: 0.25rem; font-size: 0.9em; }
-      `}</style>
     </div>
   );
 }

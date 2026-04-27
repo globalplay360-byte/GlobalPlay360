@@ -12,7 +12,7 @@ export default function AdminSidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-gray-900 text-gray-300 min-h-[calc(100svh-4rem)] p-4">
+    <aside className="w-64 bg-gray-900 text-gray-300 min-h-[calc(100svh-6rem)] p-4">
       <h2 className="text-gray-100 font-bold text-lg mb-6 px-3">{t('adminSidebar.panel', 'Panell d\'Administració')}</h2>
       <nav className="space-y-1">
         {navItems.map((item) => (
