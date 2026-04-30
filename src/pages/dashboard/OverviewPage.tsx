@@ -17,6 +17,7 @@ import { SparklesIcon } from '@heroicons/react/24/solid';
 import { motion } from 'framer-motion';
 import PageHeader from '@/components/ui/PageHeader';
 import { formatLocation } from '@/utils/location';
+import { getProfileStrength } from '@/utils/profileStrength';
 
 import { getUserApplications, getClubApplications } from '../../services/applications.service';
 import { getOpportunities, getOpportunitiesByField } from '../../services/opportunities.service';
@@ -157,78 +158,81 @@ export default function OverviewPage() {
     const msInWeek = 7 * msInDay;
     const msInMonth = 30 * msInDay;
 
-    // Calculs basats en dades reals
     const newAppsDay = applications.filter(a => a.createdAt && (now - new Date(a.createdAt).getTime() <= msInDay)).length;
     const newAppsWeek = applications.filter(a => a.createdAt && (now - new Date(a.createdAt).getTime() <= msInWeek)).length;
     const newOppsMonth = opportunities.filter(o => o.createdAt && (now - new Date(o.createdAt).getTime() <= msInMonth)).length;
-    
-      // Obviar els canals creats buits on encara no hi ha missatges reals enviats
-      const activeConversations = conversations.filter(c => c.lastMessage && c.lastMessage.trim() !== '');
 
-      // Per a l'esportista/coach (activeRecently) 
-      const hasRecentConvs = activeConversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
-  
-      if (isClub) {
-        return [
-          { 
-            label: t('overview.stats.club.activeOffers'), 
-            value: opportunities.length, 
-            icon: BriefcaseIcon, 
-            trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined, 
-            trendUp: true 
-          },
-          { 
-            label: t('overview.stats.club.applicationsReceived'), 
-            value: applications.length, 
-            icon: DocumentCheckIcon, 
-            trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined, 
-            trendUp: true 
-          },
-          {
-            label: t('overview.stats.club.conversations'),
-            value: activeConversations.length,
-            icon: ChatBubbleLeftEllipsisIcon
-          },
-          { 
-            label: t('overview.stats.coachPlayer.profileStrength', 'Fuerza del perfil'), 
-            value: '100%',
-            icon: UserCircleIcon, 
-            trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
-            trendUp: true 
-          },
-        ];
-      }
+    // Obviar els canals creats buits on encara no hi ha missatges reals enviats
+    const activeConversations = conversations.filter(c => c.lastMessage && c.lastMessage.trim() !== '');
+    const hasRecentConvs = activeConversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
+
+    const profileStrength = getProfileStrength(user);
+    const profileTrend =
+      profileStrength >= 80 ? t('overview.stats.trends.highLevel', 'Nivell Alt')
+      : profileStrength >= 50 ? t('overview.stats.trends.mediumLevel', 'Pots completar més')
+      : t('overview.stats.trends.lowLevel', 'Completa el teu perfil');
+
+    if (isClub) {
       return [
-        { 
-          label: t('overview.stats.coachPlayer.availableOffers'), 
-          value: opportunities.length, 
-          icon: StarIcon, 
+        {
+          label: t('overview.stats.club.activeOffers'),
+          value: opportunities.length,
+          icon: BriefcaseIcon,
           trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined,
-          trendUp: true
+          trendUp: true,
         },
-        { 
-          label: t('overview.stats.coachPlayer.applications'), 
-          value: applications.length, 
-          icon: DocumentCheckIcon, 
-          trend: newAppsWeek > 0 ? `+${newAppsWeek} ${t('overview.stats.trends.thisWeek', 'aquesta setmana')}` : undefined, 
-          trendUp: true 
+        {
+          label: t('overview.stats.club.applicationsReceived'),
+          value: applications.length,
+          icon: DocumentCheckIcon,
+          trend: newAppsDay > 0 ? `+${newAppsDay} ${t('overview.stats.trends.sinceYesterday', "des d'ahir")}` : undefined,
+          trendUp: true,
         },
-        { 
-          label: t('overview.stats.coachPlayer.pendingMessages'), 
-          value: activeConversations.length, 
-          icon: ChatBubbleLeftEllipsisIcon, 
-          trend: hasRecentConvs ? t('overview.stats.trends.activeRecently', 'Actiu recentment') : undefined, 
-          trendUp: true 
+        {
+          label: t('overview.stats.club.conversations'),
+          value: activeConversations.length,
+          icon: ChatBubbleLeftEllipsisIcon,
         },
-        { 
-          label: t('overview.stats.coachPlayer.profileStrength'), 
-          value: '100%',
-          icon: UserCircleIcon, 
-          trend: t('overview.stats.trends.highLevel', 'Nivell Alt'), 
-          trendUp: true 
+        {
+          label: t('overview.stats.coachPlayer.profileStrength', 'Força del perfil'),
+          value: `${profileStrength}%`,
+          icon: UserCircleIcon,
+          trend: profileTrend,
+          trendUp: profileStrength >= 50,
         },
       ];
-  }, [isClub, applications, opportunities, conversations, t]);
+    }
+    return [
+      {
+        label: t('overview.stats.coachPlayer.availableOffers'),
+        value: opportunities.length,
+        icon: StarIcon,
+        trend: newOppsMonth > 0 ? `+${newOppsMonth} ${t('overview.stats.trends.thisMonth', 'aquest mes')}` : undefined,
+        trendUp: true,
+      },
+      {
+        label: t('overview.stats.coachPlayer.applications'),
+        value: applications.length,
+        icon: DocumentCheckIcon,
+        trend: newAppsWeek > 0 ? `+${newAppsWeek} ${t('overview.stats.trends.thisWeek', 'aquesta setmana')}` : undefined,
+        trendUp: true,
+      },
+      {
+        label: t('overview.stats.coachPlayer.pendingMessages'),
+        value: activeConversations.length,
+        icon: ChatBubbleLeftEllipsisIcon,
+        trend: hasRecentConvs ? t('overview.stats.trends.activeRecently', 'Actiu recentment') : undefined,
+        trendUp: true,
+      },
+      {
+        label: t('overview.stats.coachPlayer.profileStrength'),
+        value: `${profileStrength}%`,
+        icon: UserCircleIcon,
+        trend: profileTrend,
+        trendUp: profileStrength >= 50,
+      },
+    ];
+  }, [isClub, applications, opportunities, conversations, user, t]);
 
   const recentItems = isClub ? applications.slice(0, 3) : opportunities.slice(0, 3);
 
@@ -423,24 +427,102 @@ export default function OverviewPage() {
 
           <section className="relative bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 rounded-2xl p-5 md:p-6 flex-1 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)]">
             <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gray-100/10 to-transparent" />
-            <h2 className="text-[15px] font-semibold text-gray-100/90 tracking-tight mb-5 flex items-center justify-between">
+            <h2 className="text-[15px] font-semibold text-gray-100/90 tracking-tight mb-5">
               {t('overview.activity.title')}
-              <span className="text-[10px] font-semibold text-[#6B7280] bg-[#0F172A]/60 border border-[#2A3447]/70 px-2 py-0.5 rounded uppercase tracking-[0.12em]">{t('overview.activity.last7Days', 'Darrers 7 dies')}</span>
             </h2>
-            <div className="relative border-l border-[#2A3447]/60 ml-3 mt-4">
-               <div className="relative pl-5 pb-6">
-                <div className="absolute top-0.5 -left-[17px] bg-gradient-to-br from-[#2A3447] to-[#1F2937] p-1.5 rounded-full border-4 border-[#141C2E] shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
-                  <CheckCircleIcon className="w-3 h-3 text-emerald-400" />
-                </div>
-                <p className="text-sm font-semibold text-gray-100/90 mb-0.5 tracking-tight">{t('overview.activity.item1.title', 'Benvingut a GlobalPlay360!')}</p>
-                <p className="text-xs text-[#9CA3AF] mb-1 leading-relaxed">{t('overview.activity.item1.desc', 'Has iniciat sessió correctament al nou Dashboard.')}</p>
-                <span className="text-[10px] font-medium text-[#6B7280] tracking-wide">{new Date().toLocaleDateString()}</span>
-              </div>
-            </div>
+            <ActivityTimeline
+              user={user}
+              applications={applications}
+              conversations={conversations}
+              isClub={isClub}
+              t={t}
+            />
           </section>
 
         </div>
       </div>
+    </div>
+  );
+}
+
+type ActivityEntry = {
+  key: string;
+  icon: React.ElementType;
+  iconTone: string;
+  title: string;
+  desc: string;
+  date: string;
+};
+
+function ActivityTimeline({
+  user,
+  applications,
+  conversations,
+  isClub,
+  t,
+}: {
+  user: ReturnType<typeof useAuth>['user'];
+  applications: Application[];
+  conversations: Conversation[];
+  isClub: boolean;
+  t: any;
+}) {
+  const entries: ActivityEntry[] = [];
+
+  if (user?.createdAt) {
+    entries.push({
+      key: 'created',
+      icon: CheckCircleIcon,
+      iconTone: 'text-emerald-400',
+      title: t('overview.activity.created.title', 'Compte creat'),
+      desc: t('overview.activity.created.desc', 'Ja formes part de GlobalPlay360.'),
+      date: new Date(user.createdAt).toLocaleDateString(),
+    });
+  }
+
+  const lastApp = applications[0];
+  if (lastApp?.createdAt) {
+    entries.push({
+      key: `app-${lastApp.id}`,
+      icon: DocumentCheckIcon,
+      iconTone: 'text-[#60A5FA]',
+      title: isClub
+        ? t('overview.activity.lastAppClub.title', 'Última candidatura rebuda')
+        : t('overview.activity.lastAppUser.title', 'Última candidatura enviada'),
+      desc: isClub
+        ? t('overview.activity.lastAppClub.desc', 'Hi ha una nova candidatura per revisar.')
+        : t('overview.activity.lastAppUser.desc', 'Estem esperant resposta del club.'),
+      date: new Date(lastApp.createdAt).toLocaleDateString(),
+    });
+  }
+
+  const activeConv = conversations.find((c) => c.lastMessage && c.lastMessage.trim() !== '');
+  if (activeConv?.updatedAt) {
+    entries.push({
+      key: `conv-${activeConv.id}`,
+      icon: ChatBubbleLeftEllipsisIcon,
+      iconTone: 'text-[#EAB308]',
+      title: t('overview.activity.lastConv.title', 'Conversa activa'),
+      desc: t('overview.activity.lastConv.desc', 'Tens una conversa amb missatges recents.'),
+      date: new Date(activeConv.updatedAt).toLocaleDateString(),
+    });
+  }
+
+  return (
+    <div className="relative border-l border-[#2A3447]/60 ml-3 mt-4">
+      {entries.map((e) => {
+        const Icon = e.icon;
+        return (
+          <div key={e.key} className="relative pl-5 pb-6 last:pb-0">
+            <div className="absolute top-0.5 -left-[17px] bg-gradient-to-br from-[#2A3447] to-[#1F2937] p-1.5 rounded-full border-4 border-[#141C2E] shadow-[inset_0_1px_0_0_rgba(243,244,246,0.05)]">
+              <Icon className={`w-3 h-3 ${e.iconTone}`} />
+            </div>
+            <p className="text-sm font-semibold text-gray-100/90 mb-0.5 tracking-tight">{e.title}</p>
+            <p className="text-xs text-[#9CA3AF] mb-1 leading-relaxed">{e.desc}</p>
+            <span className="text-[10px] font-medium text-[#6B7280] tracking-wide">{e.date}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
