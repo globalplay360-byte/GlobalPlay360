@@ -966,13 +966,6 @@
       "sendMessage": "Enviar Mensaje"
     }
   },
-  "adminSidebar": {
-    "dashboard": "Panel",
-    "products": "Productos",
-    "orders": "Pedidos",
-    "users": "Usuarios",
-    "panel": "Panel de Administración"
-  },
   "authAction": {
     "verifySuccess": "Correo verificado correctamente.",
     "verifyTitle": "Verificación",
@@ -1023,6 +1016,84 @@
   "passwordField": {
     "show": "Mostrar contraseña",
     "hide": "Ocultar contraseña"
+  },
+  "adminSidebar": {
+    "panel": "Panel de Administración",
+    "dashboard": "Panel",
+    "users": "Usuarios",
+    "opportunities": "Oportunidades"
+  },
+  "admin": {
+    "role": {
+      "player": "Jugador",
+      "coach": "Entrenador",
+      "club": "Club",
+      "admin": "Administrador"
+    },
+    "dashboard": {
+      "title": "Panel de administración",
+      "description": "Estado global de la plataforma en tiempo real.",
+      "loadError": "No se han podido cargar las métricas.",
+      "kpi": {
+        "users": "Usuarios totales",
+        "newThisWeek": "+{{n}} esta semana",
+        "premium": "Suscripciones activas",
+        "premiumOfTotal": "{{pct}}% del total",
+        "opportunities": "Oportunidades",
+        "openOps": "{{n}} abiertas",
+        "applications": "Candidaturas",
+        "acceptedApps": "{{n}} aceptadas"
+      },
+      "usersByRole": "Usuarios por rol",
+      "applicationsByStatus": "Candidaturas por estado",
+      "viewAllUsers": "Ver todos los usuarios",
+      "viewOpportunities": "Ver oportunidades"
+    },
+    "users": {
+      "title": "Usuarios",
+      "description": "Gestiona la comunidad de la plataforma.",
+      "loadError": "No se han podido cargar los usuarios.",
+      "searchPlaceholder": "Buscar por nombre...",
+      "empty": "Ningún usuario coincide con los filtros.",
+      "showing": "Mostrando {{shown}} de {{total}} usuarios",
+      "viewProfile": "Ver perfil",
+      "filter": {
+        "allRoles": "Todos los roles",
+        "allPlans": "Todos los planes"
+      },
+      "col": {
+        "name": "Nombre",
+        "role": "Rol",
+        "plan": "Plan",
+        "created": "Registro",
+        "actions": "Acciones"
+      }
+    },
+    "opps": {
+      "title": "Oportunidades",
+      "description": "Monitoriza la actividad del marketplace.",
+      "loadError": "No se han podido cargar las oportunidades.",
+      "searchPlaceholder": "Buscar por título...",
+      "empty": "Ninguna oportunidad coincide con los filtros.",
+      "view": "Ver",
+      "stats": {
+        "total": "Total publicadas",
+        "totalApps": "Candidaturas totales",
+        "avg": "Media por oferta"
+      },
+      "filter": {
+        "allStatuses": "Todos los estados"
+      },
+      "col": {
+        "title": "Título",
+        "sport": "Deporte",
+        "location": "Ubicación",
+        "status": "Estado",
+        "apps": "Candidaturas",
+        "created": "Creada",
+        "actions": "Acciones"
+      }
+    }
   },
   "passwordStrength": {
     "label": "Nivel de seguridad",
