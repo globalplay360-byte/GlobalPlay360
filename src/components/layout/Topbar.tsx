@@ -8,7 +8,7 @@ interface TopbarProps {
 }
 
 export default function Topbar({ onMobileMenuClick }: TopbarProps) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const { t } = useTranslation();
   const unreadMessages = useUnreadCount();
 
@@ -54,6 +54,15 @@ export default function Topbar({ onMobileMenuClick }: TopbarProps) {
             </span>
           )}
         </Link>
+
+        {user?.role === 'admin' && (
+          <Link
+            to="/admin"
+            className="text-xs sm:text-sm font-semibold px-2.5 sm:px-3 py-1.5 border border-[#FFC107]/50 text-[#FFC107] rounded-lg hover:bg-[#FFC107]/10 transition-colors"
+          >
+            {t('navbar.admin', 'Admin')}
+          </Link>
+        )}
 
         <div className="hidden sm:block h-6 w-px bg-[#1F2937]"></div>
 
