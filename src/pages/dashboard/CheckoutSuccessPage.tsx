@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 export default function CheckoutSuccessPage() {
+  const [searchParams] = useSearchParams();
+  const returnUrl = searchParams.get('returnUrl');
+
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4 sm:p-6">
       <div className="max-w-lg w-full bg-[#0A192F] border border-gray-100/10 rounded-2xl p-10 text-center">
@@ -24,12 +27,22 @@ export default function CheckoutSuccessPage() {
         </p>
 
         <div className="flex flex-col gap-3">
-          <Link
-            to="/dashboard"
-            className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-gray-100 font-semibold transition-colors"
-          >
-            Anar al panell
-          </Link>
+          {returnUrl ? (
+            <Link
+              to={returnUrl}
+              className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-gray-100 font-semibold transition-colors"
+            >
+              Continuar la teva gestió
+            </Link>
+          ) : (
+            <Link
+              to="/dashboard"
+              className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-gray-100 font-semibold transition-colors"
+            >
+              Anar al panell
+            </Link>
+          )}
+
           <Link
             to="/dashboard/profile"
             className="text-sm text-[#8892B0] hover:text-gray-100 transition-colors"

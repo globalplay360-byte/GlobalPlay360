@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from '@/components/ui/Spinner';
 
 export default function LoginPage() {
   const { login, loginWithGoogle } = useAuth();
@@ -30,13 +31,11 @@ export default function LoginPage() {
     }
 
     setStatus('loading');
-    
+
     try {
-      // Això de moment crida el MOCK service
       await login(email, password);
       setStatus('success');
-      // Espera mock
-      setTimeout(() => navigate('/dashboard'), 500);
+      navigate('/dashboard');
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -49,7 +48,7 @@ export default function LoginPage() {
     try {
       await loginWithGoogle();
       setStatus('success');
-      setTimeout(() => navigate('/dashboard'), 500);
+      navigate('/dashboard');
     } catch {
       setStatus('error');
       setErrorMessage(t('loginPage.errors.googleError'));
@@ -64,9 +63,6 @@ export default function LoginPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-50" />
 
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#0F172A] border border-[#1F2937] mb-4 hover:border-[#3B82F6] transition-colors">
-            <span className="text-2xl text-[#3B82F6]"></span>
-          </Link>
           <h1 className="text-2xl font-bold mb-2">{t('loginPage.title')}</h1>
           <p className="text-[#9CA3AF] text-sm">{t('loginPage.subtitle')}</p>
         </div>
@@ -115,10 +111,7 @@ export default function LoginPage() {
           >
             {status === 'loading' ? (
               <>
-                <svg className="animate-spin h-5 w-5 text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+                <Spinner />
                 <span>{t('loginPage.loading')}</span>
               </>
             ) : status === 'success' ? (

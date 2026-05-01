@@ -143,7 +143,7 @@ export default function BillingPage() {
 
         <div>
           <h2 className="font-semibold text-gray-100/90 text-[15px] tracking-tight mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
-          <p className="text-sm text-[#9CA3AF] leading-relaxed">{t('billing.portal.description', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>
+          <p className="text-sm text-[#9CA3AF] leading-relaxed">{t('billing.portal.desc', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>
         </div>
 
         <button
@@ -171,7 +171,7 @@ export default function BillingPage() {
           </div>
         )}
 
-        <p className="text-[11.5px] text-[#6B7280] leading-relaxed">{t('billing.portal.redirectNotice', 'Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament.')}</p>
+        <p className="text-[11.5px] text-[#6B7280] leading-relaxed">{t('billing.portal.note', 'Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament.')}</p>
       </div>
     </div>
   );

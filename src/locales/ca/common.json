@@ -4,6 +4,16 @@
   "register": "Registrar-se",
   "home": "Inici",
   "dashboard": "Tauler",
+  "gender": {
+    "male": "Masculí",
+    "female": "Femení",
+    "both": "Masculí i Femení"
+  },
+  "category": {
+    "youth": "Formació / Base (Infantil, Cadet, etc)",
+    "senior": "Amateur / Rendiment (Sènior)",
+    "both": "Ambdues"
+  },
   "homePage": {
     "hero": {
       "title": "On el Talent Troba \n l'Oportunitat",
@@ -75,7 +85,8 @@
     "admin": "Panell",
     "logout": "Tancar Sessió",
     "login": "Iniciar Sessió",
-    "register": "Registre"
+    "register": "Registre",
+    "dashboard": "Panell"
   },
   "footer": {
     "description": "Global Play 360 és la plataforma principal que connecta atletes, entrenadors i organitzacions esportives de tot el món.",
@@ -356,7 +367,9 @@
   },
   "topbar": {
     "searchPlaceholder": "Cerca jugadors, clubs, estadístiques...",
-    "logout": "Sortir"
+    "logout": "Sortir",
+    "openMenu": "Obrir menú",
+    "notifications": "Notificacions"
   },
   "dashboardLayout": {
     "banner": {
@@ -435,7 +448,9 @@
         "desc": "Encaixen amb els teus filtres.",
         "time": "Dimarts, 09:15"
       }
-    }
+    },
+    "noApplicationsYet": "Encara no tens candidatures.",
+    "noRecentOpportunities": "Cap oportunitat recent."
   },
   "profile": {
     "notAuthenticated": "No estàs autenticat",
@@ -489,9 +504,10 @@
     "sport": "Esport",
     "country": "País",
     "state": "Província / Estat",
-    "selectCountry": "Selecciona el país...",
-    "selectState": "Selecciona l'estat...",
-    "selectCity": "Selecciona la ciutat..."
+    "selectCountry": "Selecciona...",
+    "selectState": "Selecciona...",
+    "selectCity": "Selecciona...",
+    "uploadAvatar": "Pujar imatge de perfil"
   },
   "applications": {
     "titleClub": "Candidatures Rebudes",
@@ -522,7 +538,13 @@
     "titleReopen": "Reobrir per a nova revisió",
     "reopen": "O",
     "emptyTitle": "Cap candidatura trobada",
-    "emptyDesc": "Encara no hi ha candidatures per mostrar."
+    "emptyDesc": "Encara no hi ha candidatures per mostrar.",
+    "removeOrphoned": "Eliminar registre",
+    "emptyTitlePlayer": "Encara no has aplicat a cap oportunitat",
+    "emptyDescPlayer": "Explora el marketplace i envia la teva primera candidatura a clubs o ofertes que encaixin amb el teu perfil.",
+    "emptyTitleClub": "Encara no has rebut candidatures",
+    "emptyDescClub": "Quan algú apliqui a les teves ofertes, apareixeran aquí per gestionar-les.",
+    "emptyCtaClub": "Gestionar les meves ofertes"
   },
   "applications_old": {
     "errorChat": "S'ha produït un error en intentar obrir el xat.",
@@ -579,7 +601,11 @@
     "restrictedDesc": "Aquesta vista és exclusiva per a clubs.",
     "backToMarketplace": "Tornar al Marketplace",
     "connectionError": "Error de connexió",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "confirmDelete": "Segur que vols eliminar aquesta oportunitat?",
+    "errorDeleting": "Error eliminant l'oportunitat.",
+    "errorLoading": "Error carregant les oportunitats.",
+    "errorToggling": "Error canviant l'estat."
   },
   "opportunityDetail": {
     "backApplications": "Tornar a Candidatures",
@@ -606,7 +632,17 @@
     "aboutClub": "Sobre el Club",
     "club": "Club",
     "viewFullProfile": "Veure Perfil Complet",
-    "ownOpportunity": "Aquesta és la teva oportunitat."
+    "ownOpportunity": "Aquesta és la teva oportunitat.",
+    "errorMissingCoverLetter": "Introdueix una carta de presentació o missatge.",
+    "coverLetterLabel": "Carta de presentació *",
+    "coverLetterPlaceholder": "Explica al club per què encaixes amb aquesta posició (mínim un parell de frases)...",
+    "cancel": "Cancel·lar",
+    "send": "Enviar",
+    "withdrawConfirm": "Estàs segur que vols retirar i desfer la teva candidatura per a aquesta oportunitat?",
+    "withdrawButton": "Retirar candidatura",
+    "coverLetterPlaceholderPlayer": "Explica al club per què encaixes en aquesta posició i quines són les teves virtuts com a jugador/a...",
+    "coverLetterPlaceholderCoach": "Explica al club què pots aportar com a entrenador/a i per què ets la persona ideal per a aquest projecte esportiu...",
+    "roleMismatch": "Aquesta oportunitat no és per al teu rol."
   },
   "opportunities": {
     "errorLoading": "Error carregant oportunitats",
@@ -619,7 +655,8 @@
       "all": "Tots els esports",
       "football": "Futbol 11",
       "basketball": "Bàsquet",
-      "proContracts": "Contractes Pro"
+      "proContracts": "Contractes Pro",
+      "allTargetRoles": "Tots els perfils"
     },
     "emptyTitle": "Encara no hi ha oportunitats",
     "emptyDesc": "No s'han trobat oportunitats publicades. Torna-ho a provar més tard o crea la primera si ets un club.",
@@ -633,7 +670,10 @@
     "published": "Publicat:",
     "viewDetail": "Veure Detall",
     "apply": "Aplicar",
-    "clearFilters": "Netejar Filtres"
+    "clearFilters": "Netejar Filtres",
+    "ownOpportunity": "La teva oportunitat",
+    "alreadyApplied": "Candidatura enviada",
+    "viewFullProfile": "Veure perfil complet"
   },
   "opportunityForm": {
     "restricted": "Accés restringit",
@@ -688,7 +728,8 @@
       "countryBase": "País",
       "country": "País *",
       "state": "Província / Estat",
-      "city": "Ciutat"
+      "city": "Ciutat",
+      "targetRoleLabel": "Quin perfil busques?"
     },
     "addBtn": "Afegir",
     "placeholders": {
@@ -696,6 +737,11 @@
       "country": "Cerca país...",
       "state": "Selecciona estat...",
       "city": "Selecciona ciutat..."
+    },
+    "targetRole": {
+      "player": "Jugador/a",
+      "coach": "Entrenador/a",
+      "both": "Tots dos"
     }
   },
   "premiumLock": {
@@ -736,7 +782,8 @@
       "premiumPlan": "Pla Premium",
       "gp360Sub": "Subscripció GlobalPlay360",
       "billing": "Facturació",
-      "managedByStripe": "Gestionada per Stripe"
+      "managedByStripe": "Gestionada per Stripe",
+      "globalPlaySub": "Subscripció GlobalPlay360"
     },
     "portal": {
       "title": "Gestionar subscripció",
@@ -744,7 +791,8 @@
       "button": "Obrir portal de Stripe",
       "loading": "Obrint portal...",
       "error": "No s'ha pogut obrir el portal.",
-      "note": "Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament."
+      "note": "Seràs redirigit a una pàgina segura allotjada per Stripe. Un cop acabis, tornaràs aquí automàticament.",
+      "opening": "Obrint portal…"
     }
   },
   "checkoutSuccess": {
@@ -762,7 +810,11 @@
     "emptyDesc": "Cerca oportunitats o inicia converses per començar a parlar amb clubs de tot el món.",
     "unknownUser": "Usuari desconegut",
     "protectedMessage": "Missatge protegit",
-    "newConversation": "Nova conversa"
+    "newConversation": "Nova conversa",
+    "lockTitle": "Missatgeria directa · Premium",
+    "lockDesc": "Amb Premium pots llegir i respondre als missatges d'entrenadors i caçatalents sense límits. Comença la prova de 30 dies gratuïts.",
+    "basicAccount": "{{name}} té un compte bàsic.",
+    "basicAccountNotified": "L'hem notificat. Et podrà respondre quan activi Premium."
   },
   "profileEdit": {
     "success": "Perfil actualitzat correctament.",
@@ -771,6 +823,7 @@
     "cancel": "Cancel·lar",
     "saving": "Desant...",
     "save": "Desar canvis",
+    "avatarMaxLimit": "La imatge és massa gran. El pes màxim permès és de 5 MB.",
     "fields": {
       "generalInfo": "Informació general",
       "displayName": "Nom mostrat",
@@ -790,7 +843,38 @@
       "venueCapacity": "Aforament",
       "state": "Província / Estat",
       "city": "Ciutat",
-      "currentClub": "Equip Actual / Club"
+      "currentClub": "Equip Actual / Club",
+      "athleticData": "Dades esportives",
+      "mainSport": "Esport principal",
+      "selectSport": "Selecciona un esport…",
+      "dateOfBirth": "Data de naixement",
+      "height": "Alçada",
+      "weight": "Pes",
+      "position": "Posició",
+      "selectPlaceholder": "Selecciona…",
+      "preferredFoot": "Peu dominant",
+      "left": "Esquerre",
+      "right": "Dret",
+      "both": "Ambdós",
+      "leftHanded": "Esquerrà",
+      "rightHanded": "Dretà",
+      "oneHanded": "A una mà",
+      "twoHanded": "A dues mans",
+      "genderPreference": "Preferència de gènere",
+      "categoryPreference": "Preferència de categoria",
+      "selectPreference": "Selecciona una preferència…",
+      "selectCategory": "Selecciona una categoria…",
+      "preferredHand": "Mà preferida",
+      "playingHand": "Mà dominant",
+      "stickHand": "Mà del stick",
+      "backhandType": "Revés",
+      "wingspan": "Envergadura",
+      "spikeReach": "Abast de remat"
+    },
+    "noOptions": {
+      "country": "Cap país trobat",
+      "state": "Cap estat trobat",
+      "city": "Cap ciutat trobada"
     },
     "placeholders": {
       "displayName": "El teu nom públic",
@@ -808,7 +892,11 @@
       "venueCapacity": "Ex: 5000",
       "state": "Selecciona estat...",
       "city": "Selecciona ciutat...",
-      "currentClub": "Ex: FC Barcelona"
+      "currentClub": "Ex: FC Barcelona",
+      "height": "Ex: 180",
+      "weight": "Ex: 75",
+      "wingspan": "Ex: 210",
+      "spikeReach": "Ex: 320"
     },
     "hints": {
       "bio": "Descriu la teva trajectòria, objectius i experiència.",
@@ -822,7 +910,13 @@
       "website": "URL pública del club.",
       "venueName": "Nom de l'estadi, pavelló o complex esportiu.",
       "venueCapacity": "Capacitat d'espectadors de la instal·lació.",
-      "currentClub": "A quin equip jugues actualment? (Opcional)"
+      "currentClub": "A quin equip jugues actualment? (Opcional)",
+      "height": "En centímetres (cm)",
+      "weight": "En kilograms (kg)",
+      "wingspan": "En centímetres, punta a punta de braços.",
+      "spikeReach": "Alçada màxima de contacte amb la pilota, en cm.",
+      "hockeyPosition": "Herba, gel o patins.",
+      "stickHand": "Agafada predominant."
     }
   },
   "legal": {
@@ -853,7 +947,8 @@
       "title": "Consultes legals",
       "desc": "Exercici de drets RGPD, protecció de dades o qualsevol requeriment formal.",
       "emailLabel": "Email legal",
-      "address": "Adreça"
+      "address": "Adreça",
+      "pending": "Pendent de configuració"
     },
     "quickLinks": {
       "title": "Enllaços ràpids",
@@ -871,5 +966,107 @@
       "error": "Error carregant el perfil",
       "sendMessage": "Enviar Missatge"
     }
+  },
+  "adminSidebar": {
+    "dashboard": "Tauler",
+    "products": "Productes",
+    "orders": "Comandes",
+    "users": "Usuaris",
+    "panel": "Panell d'Administració"
+  },
+  "authAction": {
+    "verifySuccess": "Correu verificat correctament.",
+    "verifyTitle": "Verificació",
+    "verifying": "Verificant el teu correu electrònic...",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "redirectingDashboard": "Redirigint-te al teu tauler...",
+    "resetTitle": "Nova Contrasenya",
+    "resetSubtitle": "Introdueix la teva nova contrasenya de seguretat.",
+    "resetSuccess": "Contrasenya actualitzada",
+    "resetSuccessHint": "La teva contrasenya s'ha canviat correctament.",
+    "redirectingLogin": "Seràs redirigit a l'inici de sessió...",
+    "newPasswordLabel": "Nova contrasenya",
+    "newPasswordPlaceholder": "Mínim 8 caràcters, lletres, majúscules i símbols",
+    "confirmPasswordLabel": "Confirmar contrasenya",
+    "confirmPasswordPlaceholder": "Torna a escriure-la",
+    "savePassword": "Guardar Contrasenya",
+    "unsupported": "Aquesta funcionalitat",
+    "unsupportedSuffix": "no està implementada.",
+    "unknownMode": "desconeguda",
+    "errors": {
+      "invalidLink": "Enllaç invàlid o expirat.",
+      "expired": "L'enllaç ha expirat o ja s'ha utilitzat.",
+      "verifyFailed": "No s'ha pogut verificar el correu.",
+      "mismatch": "Les contrasenyes no coincideixen.",
+      "weak": "Si us plau, introdueix una contrasenya més forta (mínim 8 caràcters, incloent majúscules i números o símbols).",
+      "resetFailed": "Ha ocorregut un error en canviar la contrasenya."
+    }
+  },
+  "common": {
+    "searchOpportunities": "Buscar Oportunitats"
+  },
+  "forgotPassword": {
+    "loginLink": "Inicia sessió",
+    "title": "Recuperar Contrasenya",
+    "subtitle": "Introdueix el teu correu i t'enviarem un enllaç per restablir-la.",
+    "successTitle": "Correu enviat",
+    "successHint": "Revisa la teva safata d'entrada (també la carpeta d'Spam) per continuar.",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "emailLabel": "Correu electrònic",
+    "emailPlaceholder": "Ex. joan@exemple.cat",
+    "submit": "Crea una nova contrasenya",
+    "rememberPrefix": "Recordes la contrasenya?",
+    "errors": {
+      "notFound": "No s'ha trobat cap compte amb aquest correu.",
+      "generic": "Hi ha hagut un error en processar la petició. Intenta-ho més tard."
+    }
+  },
+  "passwordField": {
+    "show": "Mostrar contrasenya",
+    "hide": "Ocultar contrasenya"
+  },
+  "passwordStrength": {
+    "label": "Nivell de seguretat",
+    "veryWeak": "Molt feble",
+    "weak": "Feble",
+    "good": "Bona",
+    "strong": "Forta"
+  },
+  "passwordMatch": {
+    "label": "Coincidència",
+    "yes": "Coincideixen",
+    "no": "No coincideixen"
+  },
+  "publicProfile": {
+    "error": "Error carregant el perfil.",
+    "notFound": "Perfil no trobat.",
+    "hideDetails": "Dades de contacte ocultes per al Pla Free",
+    "lockedTitle": "Estadístiques i Contacte Protegits",
+    "lockedDesc": "Els usuaris del Pla Free no tenen accés complet als perfils d'altres usuaris. Passa't a Premium per desbloquejar-ho.",
+    "sendMessage": "Enviar missatge"
+  },
+  "sports": {
+    "american_football": "Futbol Americà",
+    "football": "Futbol 11",
+    "basketball": "Bàsquet",
+    "futsal": "Futbol Sala",
+    "volleyball": "Voleibol",
+    "handball": "Handbol",
+    "waterpolo": "Waterpolo",
+    "tennis": "Tennis",
+    "rugby": "Rugbi",
+    "hockey": "Hoquei",
+    "other": "Altres",
+    "details": "Detalls esportius",
+    "details_football": "Detalls de Futbol 11",
+    "details_basketball": "Detalls de Bàsquet",
+    "details_futsal": "Detalls de Futbol Sala",
+    "details_volleyball": "Detalls de Voleibol",
+    "details_handball": "Detalls d'Handbol",
+    "details_waterpolo": "Detalls de Waterpolo",
+    "details_tennis": "Detalls de Tennis",
+    "details_rugby": "Detalls de Rugbi",
+    "details_american_football": "Detalls de Futbol Americà",
+    "details_hockey": "Detalls d'Hoquei"
   }
 }

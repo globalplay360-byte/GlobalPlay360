@@ -37,33 +37,37 @@ import ProfilePage from './pages/dashboard/ProfilePage';
 import PublicProfilePage from './pages/dashboard/PublicProfilePage';
 import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
 import BillingPage from './pages/dashboard/BillingPage';
+import PrelaunchPage from './pages/public/PrelaunchPage';
+import { PRELAUNCH_MODE } from './config/site';
 
 function App() {
+  const publicFallback = PRELAUNCH_MODE ? <PrelaunchPage /> : <HomePage />;
+
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           {/* Public Routes inside PublicLayout */}
           <Route element={<PublicLayout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={publicFallback} />
             
             {/* Pricing (public) */}
-            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/pricing" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <PricingPage />} />
             
             {/* About (public) */}
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <AboutPage />} />
 
             {/* Legal (public) */}
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/cookies" element={<CookiesPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <PrivacyPage />} />
+            <Route path="/terms" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <TermsPage />} />
+            <Route path="/cookies" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <CookiesPage />} />
+            <Route path="/contact" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <ContactPage />} />
 
             {/* Auth Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/auth/action" element={<AuthActionPage />} />
+            <Route path="/login" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <LoginPage />} />
+            <Route path="/register" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <RegisterPage />} />
+            <Route path="/forgot-password" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <ForgotPasswordPage />} />
+            <Route path="/auth/action" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <AuthActionPage />} />
           </Route>
 
           {/* Internal Shared Dashboard Routes (Player, Coach, Club) */}

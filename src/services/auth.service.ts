@@ -14,6 +14,7 @@ import {
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import type { User, UserRole, PlanType } from '@/types';
+import { getUserPrivateProfile, migrateLegacyPrivateFields } from './profile.service';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -25,11 +26,32 @@ function trialEndDate(): string {
   return d.toISOString();
 }
 
-/** Read the Firestore user document and return our app User */
+/**
+ * Read the Firestore user document and return our app User.
+ * Merge automàtic amb la subcol·lecció privada `users/{uid}/private/profile`
+ * si l'usuari actual té accés (owner o Premium). Si és Free llegint un altre
+ * perfil, els camps privats no es retornen (protegit per rules).
+ *
+ * Bonus: si el propietari encara té camps sensibles al doc legacy (abans del
+ * schema split), s'inicia una migració lazy en background.
+ */
 export async function getUserDoc(uid: string): Promise<User | null> {
   const snap = await getDoc(doc(db, 'users', uid));
   if (!snap.exists()) return null;
-  return { uid, ...snap.data() } as User;
+
+  const publicData = snap.data() as Record<string, unknown>;
+  const privateData = await getUserPrivateProfile(uid);
+
+  // Migració lazy només si l'usuari actual és el propietari del doc
+  if (auth.currentUser?.uid === uid) {
+    void migrateLegacyPrivateFields(uid, publicData);
+  }
+
+  return {
+    uid,
+    ...publicData,
+    ...(privateData ?? {}),
+  } as User;
 }
 
 /** Create the Firestore user document (called once on register) */
@@ -40,23 +62,47 @@ async function createUserDoc(
   role: UserRole,
   plan: PlanType = 'trial',
 ): Promise<User> {
-  const userData: Omit<User, 'uid'> = {
+  const trialEnd = trialEndDate();
+  const createdAt = new Date().toISOString();
+
+  // Doc públic: camps no sensibles del marketplace
+  const publicUserData = {
+    displayName,
+    role,
+    plan,
+    subscriptionStatus: 'trialing' as const,
+    trialEndsAt: trialEnd,
+    onboardingCompleted: false,
+    createdAt,
+  };
+
+  // Doc privat: PII (email) — protegit per firestore rules
+  const privateUserData = {
+    email,
+  };
+
+  await Promise.all([
+    setDoc(doc(db, 'users', uid), {
+      ...publicUserData,
+      _createdAt: serverTimestamp(),
+    }),
+    setDoc(doc(db, 'users', uid, 'private', 'profile'), {
+      ...privateUserData,
+      _createdAt: serverTimestamp(),
+    }),
+  ]);
+
+  return {
+    uid,
     email,
     displayName,
     role,
     plan,
     subscriptionStatus: 'trialing',
-    trialEndsAt: trialEndDate(),
+    trialEndsAt: trialEnd,
     onboardingCompleted: false,
-    createdAt: new Date().toISOString(),
+    createdAt,
   };
-
-  await setDoc(doc(db, 'users', uid), {
-    ...userData,
-    _createdAt: serverTimestamp(), // Firestore server timestamp for ordering
-  });
-
-  return { uid, ...userData };
 }
 
 // ── Auth methods ─────────────────────────────────────────
@@ -143,4 +189,20 @@ export async function verifyEmail(): Promise<void> {
 
 export async function confirmEmailVerification(code: string): Promise<void> {
   await applyActionCode(auth, code);
+}
+
+/** Check if another user has an active premium plan or valid trial */
+export function hasActiveSubscription(user: User | null): boolean {
+  if (!user) return false;
+  if (user.plan === 'premium' || user.plan === 'pro') return true;
+  if (user.subscriptionStatus === 'active') return true;
+  
+  // If they are in a trial, ensure it hasn't expired
+  if (user.plan === 'trial' || user.subscriptionStatus === 'trialing') {
+    if (user.trialEndsAt) {
+      const trialEnds = new Date(user.trialEndsAt).getTime();
+      return trialEnds > Date.now();
+    }
+  }
+  return false;
 }

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { resetPassword } from '@/services/auth.service';
 import { Button } from '@/components/ui/Button';
+import { getFirebaseErrorCode } from '@/utils/firebaseErrors';
 
 export default function ForgotPasswordPage() {
   const { t } = useTranslation();
@@ -21,12 +22,13 @@ export default function ForgotPasswordPage() {
     try {
       await resetPassword(email);
       setSuccess(true);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
-      if (err && typeof err === 'object' && 'code' in err && (err as any).code === 'auth/user-not-found' || (err as any).code === 'auth/invalid-email') {
-        setError('No s\'ha trobat cap compte amb aquest correu.');
+      const code = getFirebaseErrorCode(err);
+      if (code === 'auth/user-not-found' || code === 'auth/invalid-email') {
+        setError(t('forgotPassword.errors.notFound', 'No s\'ha trobat cap compte amb aquest correu.'));
       } else {
-        setError('Hi ha hagut un error en processar la petició. Intenta-ho més tard.');
+        setError(t('forgotPassword.errors.generic', 'Hi ha hagut un error en processar la petició. Intenta-ho més tard.'));
       }
     } finally {
       setLoading(false);
@@ -38,26 +40,26 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] p-6 sm:p-8 shadow-xl shadow-black/50">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
-            Recuperar Contrasenya
+            {t('forgotPassword.title', 'Recuperar Contrasenya')}
           </h2>
           <p className="mt-2 text-sm text-[#9CA3AF]">
-            Introdueix el teu correu i t'enviarem un enllaç per restablir-la.
+            {t('forgotPassword.subtitle', 'Introdueix el teu correu i t\'enviarem un enllaç per restablir-la.')}
           </p>
         </div>
 
         {success ? (
           <div className="text-center space-y-6">
             <div className="p-4 bg-green-500/10 text-[#10B981] border border-green-500/20 rounded-lg">
-              <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="font-medium text-lg">Correu enviat</p>
+              <p className="font-medium text-lg">{t('forgotPassword.successTitle', 'Correu enviat')}</p>
               <p className="text-sm mt-1">
-                Revisa la teva safata d'entrada (també la carpeta d'Spam) per continuar.
+                {t('forgotPassword.successHint', 'Revisa la teva safata d\'entrada (també la carpeta d\'Spam) per continuar.')}
               </p>
             </div>
             <Link to="/login" className="block text-[#3B82F6] hover:text-[#2563EB] text-sm font-medium transition-colors">
-              Tornar a l'inici de sessió
+              {t('forgotPassword.backToLogin', 'Tornar a l\'inici de sessió')}
             </Link>
           </div>
         ) : (
@@ -70,7 +72,7 @@ export default function ForgotPasswordPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-[#9CA3AF] mb-1">
-                Correu electrònic
+                {t('forgotPassword.emailLabel', 'Correu electrònic')}
               </label>
               <input
                 id="email"
@@ -79,23 +81,19 @@ export default function ForgotPasswordPage() {
                 className="w-full px-4 py-2 bg-[#0F172A] border border-[#1F2937] rounded-lg text-gray-100 focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Ex. joan@exemple.cat"
+                placeholder={t('forgotPassword.emailPlaceholder', 'Ex. joan@exemple.cat')}
                 disabled={loading}
               />
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              fullWidth
-              disabled={loading}
-            >
-              Crea una nova contrasenya
+            <Button type="submit" variant="primary" fullWidth disabled={loading}>
+              {t('forgotPassword.submit', 'Crea una nova contrasenya')}
             </Button>
 
             <div className="text-center">
               <Link to="/login" className="text-sm text-[#9CA3AF] hover:text-gray-100 transition-colors">
-                Recordes la contrasenya? <span className="text-[#3B82F6]">{t('forgotPassword.loginLink', 'Inicia sessió')}</span>
+                {t('forgotPassword.rememberPrefix', 'Recordes la contrasenya?')}{' '}
+                <span className="text-[#3B82F6]">{t('forgotPassword.loginLink', 'Inicia sessió')}</span>
               </Link>
             </div>
           </form>

@@ -38,12 +38,11 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-24">
             {/* Logo y Links Izquierda */}
             <div className="flex items-center gap-14 lg:gap-24">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="-ml-2 flex items-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#020C1B] focus-visible:ring-[#3B82F6] rounded-sm mr-4 md:mr-8"
-                aria-label="Tornar a l'inici"
+                aria-label={t('navbar.home', 'Inici')}
               >
-                {/* Punt exacte final d'equilibri per lletres visibles al SaaS */}
                 <Logo className="h-16 md:h-24 w-auto text-gray-100 transform scale-[1.45] origin-left" />
               </Link>
 

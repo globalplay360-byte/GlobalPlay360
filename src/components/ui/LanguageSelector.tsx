@@ -29,7 +29,10 @@ export function LanguageSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 bg-[#0F172A] border border-[#1F2937] rounded-lg text-xs font-medium text-[#9CA3AF] hover:text-gray-100 hover:border-[#3B82F6]/50 transition-all focus:outline-none"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label={`Idioma actual: ${currentLang.label}`}
+        className="flex items-center gap-2 px-3 py-1.5 bg-[#0F172A] border border-[#1F2937] rounded-lg text-xs font-medium text-[#9CA3AF] hover:text-gray-100 hover:border-[#3B82F6]/50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120]"
       >
         <span>{currentLang.label}</span>
         <svg 

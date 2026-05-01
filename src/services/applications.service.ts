@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { getUserDoc } from './auth.service';
+import { mapDocs } from '@/utils/firestoreHelpers';
 import type { Application } from '@/types';
 
 const COLLECTION = 'applications';
@@ -27,16 +28,21 @@ export async function getUserApplications(userId: string): Promise<Application[]
     orderBy('createdAt', 'desc'),
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Application);
+  return mapDocs<Application>(snap);
 }
-/** Get all applications received by a given club, newest first */
+
+/**
+ * Get all applications received by a given club, newest first.
+ * Sort en client (no `orderBy` server-side) per evitar requerir un índex
+ * compost `clubId + createdAt`. Acceptable mentre el volum per club és baix.
+ */
 export async function getClubApplications(clubId: string): Promise<Application[]> {
   const q = query(
     collection(db, COLLECTION),
-    where('clubId', '==', clubId)
+    where('clubId', '==', clubId),
   );
   const snap = await getDocs(q);
-  const apps = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Application);
+  const apps = mapDocs<Application>(snap);
   return apps.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 /** Check if a user has already applied to a specific opportunity */
@@ -51,6 +57,20 @@ export async function hasUserApplied(userId: string, opportunityId: string): Pro
   return !snap.empty;
 }
 
+/** Get the specific application document for a user and opportunity if it exists */
+export async function getUserApplicationForOpportunity(userId: string, opportunityId: string): Promise<Application | null> {
+  const q = query(
+    collection(db, COLLECTION),
+    where('userId', '==', userId),
+    where('opportunityId', '==', opportunityId),
+    limit(1),
+  );
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() } as Application;
+}
+
 // ── Write ───────────────────────────────────────────────
 
 interface CreateApplicationInput {
@@ -61,12 +81,12 @@ interface CreateApplicationInput {
 }
 
 /** Create a new application. Returns the document ID. Throws if duplicate. */
-export async function createApplication(data: CreateApplicationInput): Promise<string> {    // Prevent clubs from applying
-    const currentUser = await getUserDoc(data.userId);
-    if (currentUser?.role === 'club') {
-      throw new Error('Els clubs no poden aplicar a oportunitats.');
-    }
-  // Double-check for duplicates before writing
+export async function createApplication(data: CreateApplicationInput): Promise<string> {
+  const currentUser = await getUserDoc(data.userId);
+  if (currentUser?.role === 'club') {
+    throw new Error('Els clubs no poden aplicar a oportunitats.');
+  }
+
   const alreadyApplied = await hasUserApplied(data.userId, data.opportunityId);
   if (alreadyApplied) {
     throw new Error('Ja has aplicat a aquesta oportunitat.');

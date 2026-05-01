@@ -1,6 +1,8 @@
-import type { User } from '@/types';
+import type { User, Sport } from '@/types';
 import { useTranslation } from 'react-i18next';
-import { Field, Input, Textarea } from './FormControls';
+import { Field, Input, Textarea, Select } from './FormControls';
+import { FormSection } from './FormSection';
+import { buildSportOptions } from '@/constants/sports';
 
 interface Props {
   formData: User;
@@ -8,29 +10,38 @@ interface Props {
   disabled?: boolean;
 }
 
+type GenderPref = NonNullable<User['genderPreference']>;
+type CategoryPref = NonNullable<User['categoryPreference']>;
+
 export default function CoachFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
+  const sportOptions = buildSportOptions(t);
 
   const certificationsText = (formData.certifications ?? []).join('\n');
 
   const handleCertificationsChange = (value: string) => {
-    const list = value
-      .split('\n')
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
+    // Split només per \n preserva línies buides mentre l'usuari escriu (Enter no s'engoleix).
+    const list = value.split('\n');
     onChange({ certifications: list.length > 0 ? list : undefined });
   };
 
-  return (
-    <section className="bg-[#111827] border border-[#1F2937] rounded-xl p-5 sm:p-7 flex flex-col gap-5 sm:gap-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="w-1 h-5 rounded-md bg-[#FFC107] shadow-sm shadow-[#FFC107]/30" />
-        <h2 className="text-lg sm:text-xl font-extrabold text-gray-100 tracking-tight">
-          {t('profileEdit.fields.coachData', 'Dades d\'entrenador')}
-        </h2>
-      </div>
+  const handleSportChange = (value: string) => {
+    const newSport = (value || undefined) as Sport | undefined;
+    onChange({ sport: newSport });
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+  return (
+    <FormSection title={t('profileEdit.fields.coachData', 'Dades d\'entrenador')}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+        <Field label={t('profileEdit.fields.mainSport', 'Esport principal')}>
+          <Select value={formData.sport || ''} onChange={(e) => handleSportChange(e.target.value)} disabled={disabled}>
+            <option value="">{t('profileEdit.fields.selectSport', 'Selecciona un esport')}</option>
+            {sportOptions.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </Select>
+        </Field>
+
         <Field
           label={t('profileEdit.fields.experienceYears', 'Anys d\'experiència')}
           hint={t('profileEdit.hints.experienceYears', 'Temps total com a entrenador professional o amateur.')}
@@ -45,17 +56,46 @@ export default function CoachFields({ formData, onChange, disabled }: Props) {
             disabled={disabled}
           />
         </Field>
+
         <Field
           label={t('profileEdit.fields.specialization', 'Especialització')}
-          hint={t('profileEdit.hints.specialization', 'Categoria, franja d\'edat o metodologia principal.')}
+          hint={t('profileEdit.hints.specialization', 'Sistema de joc o mètodes (ex: joc ràpid, formació).')}
         >
           <Input
             type="text"
             value={formData.specialization || ''}
             onChange={(e) => onChange({ specialization: e.target.value })}
-            placeholder={t('profileEdit.placeholders.specialization', 'Ex: Futbol base, categoria juvenil')}
+            placeholder={t('profileEdit.placeholders.specialization', 'Ex: Transicions ofensives ràpides')}
             disabled={disabled}
           />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <Field label={t('profileEdit.fields.genderPreference', 'Gènere d\'equips preferit')}>
+          <Select
+            value={formData.genderPreference || ''}
+            onChange={(e) => onChange({ genderPreference: (e.target.value || undefined) as GenderPref | undefined })}
+            disabled={disabled}
+          >
+            <option value="">{t('profileEdit.fields.selectPreference', 'Sense preferència específica')}</option>
+            <option value="male">{t('gender.male', 'Masculí')}</option>
+            <option value="female">{t('gender.female', 'Femení')}</option>
+            <option value="both">{t('gender.both', 'Masculí i Femení')}</option>
+          </Select>
+        </Field>
+
+        <Field label={t('profileEdit.fields.categoryPreference', 'Categoria preferida')}>
+          <Select
+            value={formData.categoryPreference || ''}
+            onChange={(e) => onChange({ categoryPreference: (e.target.value || undefined) as CategoryPref | undefined })}
+            disabled={disabled}
+          >
+            <option value="">{t('profileEdit.fields.selectCategory', 'Qualsevol categoria')}</option>
+            <option value="youth">{t('category.youth', 'Formació / Base (Infantil, Cadet, etc)')}</option>
+            <option value="senior">{t('category.senior', 'Amateur / Rendiment (Sènior)')}</option>
+            <option value="both">{t('category.both', 'Ambdues')}</option>
+          </Select>
         </Field>
       </div>
 
@@ -70,6 +110,6 @@ export default function CoachFields({ formData, onChange, disabled }: Props) {
           disabled={disabled}
         />
       </Field>
-    </section>
+    </FormSection>
   );
 }

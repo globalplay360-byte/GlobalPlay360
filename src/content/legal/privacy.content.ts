@@ -17,12 +17,12 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>El responsable del tractament de les teves dades personals és:</p>
           <ul>
-            <li><strong>Titular:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Denominació social:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>NIF:</strong> [PENDENT_NIF]</li>
-            <li><strong>Domicili:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Correu electrònic:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
-            <li><strong>Delegat de Protecció de Dades (DPO):</strong> <a href="mailto:[PENDENT_EMAIL_DPO]">[PENDENT_EMAIL_DPO]</a></li>
+            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Denominació social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Domicili:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Correu electrònic:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Delegat de Protecció de Dades (DPO):</strong> <em style="color:#6B7280">[pendent de configuració]</em></li>
           </ul>
         `
       },
@@ -89,7 +89,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Oposició:</strong> oposar-te al tractament basat en interès legítim.</li>
             <li><strong>Retirar consentiment:</strong> per a tractaments basats en consentiment.</li>
           </ul>
-          <p>Per exercir aquests drets, envia un correu a <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a> amb una còpia del teu DNI o document equivalent. Respondrem en un màxim de 30 dies.</p>
+          <p>Per exercir aquests drets, envia un correu a <em style="color:#6B7280">[pendent de configuració]</em> amb una còpia del teu DNI o document equivalent. Respondrem en un màxim de 30 dies.</p>
           <p>Si consideres que no hem respost correctament, pots presentar una reclamació davant l'<strong>Agència Espanyola de Protecció de Dades</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },
@@ -130,12 +130,12 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>El responsable del tratamiento de tus datos personales es:</p>
           <ul>
-            <li><strong>Titular:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Denominación social:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>NIF:</strong> [PENDENT_NIF]</li>
-            <li><strong>Domicilio:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Correo electrónico:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
-            <li><strong>Delegado de Protección de Datos (DPO):</strong> <a href="mailto:[PENDENT_EMAIL_DPO]">[PENDENT_EMAIL_DPO]</a></li>
+            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Denominación social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Domicilio:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Correo electrónico:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Delegado de Protección de Datos (DPO):</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
           </ul>
         `
       },
@@ -202,7 +202,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Oposición:</strong> oponerte al tratamiento basado en interés legítimo.</li>
             <li><strong>Retirar consentimiento:</strong> para tratamientos basados en consentimiento.</li>
           </ul>
-          <p>Para ejercer estos derechos, envía un correo a <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a> con copia de tu DNI o documento equivalente. Responderemos en un máximo de 30 días.</p>
+          <p>Para ejercer estos derechos, envía un correo a <em style="color:#6B7280">[pendiente de configuración]</em> con copia de tu DNI o documento equivalente. Responderemos en un máximo de 30 días.</p>
           <p>Si consideras que no hemos respondido correctamente, puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },
@@ -243,12 +243,12 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>The controller of your personal data is:</p>
           <ul>
-            <li><strong>Owner:</strong> [PENDENT_RESPONSABLE]</li>
-            <li><strong>Legal entity:</strong> [PENDENT_NOM_LEGAL]</li>
-            <li><strong>Tax ID:</strong> [PENDENT_NIF]</li>
-            <li><strong>Address:</strong> [PENDENT_DOMICILI]</li>
-            <li><strong>Email:</strong> <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a></li>
-            <li><strong>Data Protection Officer (DPO):</strong> <a href="mailto:[PENDENT_EMAIL_DPO]">[PENDENT_EMAIL_DPO]</a></li>
+            <li><strong>Owner:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Legal entity:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Tax ID:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Address:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Email:</strong> <em style="color:#6B7280">[pending configuration]</em></li>
+            <li><strong>Data Protection Officer (DPO):</strong> <em style="color:#6B7280">[pending configuration]</em></li>
           </ul>
         `
       },
@@ -315,7 +315,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Objection:</strong> object to processing based on legitimate interest.</li>
             <li><strong>Withdraw consent:</strong> for processing based on consent.</li>
           </ul>
-          <p>To exercise these rights, send an email to <a href="mailto:[PENDENT_EMAIL_LEGAL]">[PENDENT_EMAIL_LEGAL]</a> with a copy of your ID or equivalent document. We will respond within a maximum of 30 days.</p>
+          <p>To exercise these rights, send an email to <em style="color:#6B7280">[pending configuration]</em> with a copy of your ID or equivalent document. We will respond within a maximum of 30 days.</p>
           <p>If you believe we have not responded correctly, you can file a complaint with the <strong>Spanish Data Protection Agency</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },

@@ -173,6 +173,12 @@ const formatDate = (dateString: string) => {
                   </Badge>
                 </div>
                 <div className="flex flex-wrap gap-2.5 text-sm text-[#9CA3AF] font-medium">
+                  {opp.targetRole && opp.targetRole !== 'both' ? (
+                    <>
+                      <span className="text-blue-400 capitalize">{t(`opportunityForm.targetRole.${opp.targetRole}`)}</span>
+                      <span className="text-[#1F2937]">•</span>
+                    </>
+                  ) : null}
                   <span>{t(`sports.${opp.sport}`, opp.sport)}</span>
                   <span className="text-[#1F2937]">•</span>
                   <span>{formatLocation(opp)}</span>

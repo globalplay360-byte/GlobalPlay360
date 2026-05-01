@@ -5,6 +5,7 @@ import {
   onSnapshot,
   query,
   where,
+  limit,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { db, functions } from './firebase';
@@ -211,6 +212,7 @@ export function subscribeToActiveSubscription(
   const q = query(
     collection(db, 'customers', uid, 'subscriptions'),
     where('status', 'in', ['trialing', 'active']),
+    limit(1),
   );
   return onSnapshot(
     q,

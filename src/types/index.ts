@@ -1,6 +1,15 @@
 export type UserRole = 'player' | 'coach' | 'club' | 'admin';
-export type PlanType = 'trial' | 'premium' | 'pro';
-export type SubscriptionStatus = 'trialing' | 'active' | 'canceled' | 'expired';
+export type PlanType = 'free' | 'trial' | 'premium' | 'pro';
+export type SubscriptionStatus =
+  | 'none'
+  | 'trialing'
+  | 'active'
+  | 'canceled'
+  | 'expired'
+  | 'incomplete'
+  | 'incomplete_expired'
+  | 'past_due'
+  | 'unpaid';
 
 export type Sport =
   | 'football'
@@ -19,10 +28,35 @@ export type Handedness = 'left' | 'right' | 'both';
 export type StickHand = 'left' | 'right';
 export type BackhandType = 'one-hand' | 'two-hand';
 
+/**
+ * Camps PII/sensibles que viuen a `users/{uid}/private/profile`.
+ * Nomes accessibles pel propietari o per usuaris amb pla Premium actiu.
+ * Protegits a firestore.rules amb hasPremium() || owner.
+ */
+export interface UserPrivate {
+  email?: string;
+  phone?: string;
+  instagram?: string;
+  youtubeVideoUrl?: string;
+  dateOfBirth?: string;         // ISO date — PII
+}
+
+/** Claus que es migraran de `users/{uid}` a `users/{uid}/private/profile`. */
+export const PRIVATE_PROFILE_KEYS = [
+  'email',
+  'phone',
+  'instagram',
+  'youtubeVideoUrl',
+  'dateOfBirth',
+] as const;
+
 export interface User {
   // ── Core / Auth ──────────────────────────────────────
   uid: string;
-  email: string;
+  email: string;                // Nota: al doc public `users/{uid}` ja NO s'hi escriu;
+                                // el client el llegeix de la subcolleccio privada
+                                // i el merge es fa a getUserDoc. Es mante al tipus
+                                // perque la resta de l'app ja el consumeix aixi.
   displayName: string;
   photoURL?: string;
   role: UserRole;
@@ -37,14 +71,14 @@ export interface User {
   state?: string;
   city?: string;
   bio?: string;
-  phone?: string;
-  instagram?: string;
-  youtubeVideoUrl?: string;
+  phone?: string;               // Privat — s'exposa nomes si owner || Premium
+  instagram?: string;           // Privat
+  youtubeVideoUrl?: string;     // Privat
 
   // ── Profile: Player (core) ───────────────────────────
   sport?: Sport;
   currentClub?: string;         // Equip on juga actualment
-  dateOfBirth?: string;         // ISO date
+  dateOfBirth?: string;         // Privat — PII
   height?: number;              // cm
   weight?: number;              // kg
   position?: string;            // label depending on sport
@@ -62,6 +96,8 @@ export interface User {
   experienceYears?: number;
   certifications?: string[];
   specialization?: string;
+  genderPreference?: 'male' | 'female' | 'both';
+  categoryPreference?: 'youth' | 'senior' | 'both';
 
   // ── Profile: Club ────────────────────────────────────
   foundedYear?: number;
@@ -75,6 +111,7 @@ export interface Opportunity {
   clubId: string;
   title: string;
   sport: string;
+  targetRole?: 'player' | 'coach' | 'both';
   gender: 'male' | 'female' | 'mixed';
   country: string;
   state?: string;

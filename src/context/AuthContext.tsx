@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/services/firebase';
 import type { User, UserRole } from '@/types';
@@ -25,6 +25,39 @@ interface AuthContextValue extends AuthState {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function toIsoDate(seconds: number | null | undefined, fallback: string): string {
+  if (!seconds) return fallback;
+  return new Date(seconds * 1000).toISOString();
+}
+
+function mirrorUserFromSubscription(
+  user: User | null,
+  subscription: StripeSubscription | null,
+  hasTrialAccess: boolean,
+  hasPaidAccess: boolean,
+): User | null {
+  if (!user) return null;
+
+  if (subscription) {
+    return {
+      ...user,
+      plan: subscription.status === 'trialing' ? 'trial' : 'premium',
+      subscriptionStatus: subscription.status,
+      trialEndsAt: toIsoDate(subscription.trial_end_seconds, user.trialEndsAt),
+    };
+  }
+
+  if (!hasTrialAccess && !hasPaidAccess) {
+    return {
+      ...user,
+      plan: 'free',
+      subscriptionStatus: user.subscriptionStatus === 'none' ? 'none' : 'expired',
+    };
+  }
+
+  return user;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -63,15 +96,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!uid) return;
 
     setState((s) => ({ ...s, subscriptionLoading: true }));
+    let lastSubStatus: string | null | undefined = undefined;
     const unsub = subscribeToActiveSubscription(
       uid,
       (sub) => {
-        setState((s) => ({
-          ...s,
-          subscription: sub,
-          activePlan: sub ? 'premium' : 'free',
-          subscriptionLoading: false,
-        }));
+        // Quan la subscripció apareix/desapareix/canvia d'estat, forcem refresh
+        // del JWT perquè l'extensió Stripe acaba d'escriure/treure la custom claim
+        // `stripeRole`. Sense això, les Firestore rules bloquejarien missatgeria
+        // fins que l'usuari tanqués i tornés a obrir sessió.
+        const currentStatus = sub?.status ?? null;
+        if (lastSubStatus !== undefined && lastSubStatus !== currentStatus) {
+          auth.currentUser?.getIdToken(true).catch(() => { /* silent */ });
+        }
+        lastSubStatus = currentStatus;
+
+        setState((s) => {
+          const hasStripeTrialAccess = sub?.status === 'trialing' && !!sub.trial_end_seconds && sub.trial_end_seconds * 1000 > Date.now();
+
+          const hasProfileTrialAccess =
+            !sub &&
+            !!s.user &&
+            (s.user.plan === 'trial' || s.user.subscriptionStatus === 'trialing') &&
+            !!s.user.trialEndsAt &&
+            new Date(s.user.trialEndsAt).getTime() > Date.now();
+
+          const hasTrialAccess = hasStripeTrialAccess || hasProfileTrialAccess;
+
+          const hasPaidAccess =
+            sub?.status === 'active' ||
+            s.user?.plan === 'pro';
+
+          const computedPlan: ActivePlan = hasPaidAccess || hasTrialAccess ? 'premium' : 'free';
+          const mirroredUser = mirrorUserFromSubscription(s.user, sub, hasTrialAccess, hasPaidAccess);
+
+          return {
+            ...s,
+            user: mirroredUser,
+            subscription: sub,
+            activePlan: computedPlan,
+            subscriptionLoading: false,
+          };
+        });
       },
       () => {
         setState((s) => ({ ...s, subscriptionLoading: false }));
@@ -138,11 +203,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, user: userDoc }));
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ ...state, login, register, loginWithGoogle, logout, refreshUser }}>
-      {children}
-    </AuthContext.Provider>
+  // Memoritzem el value perquè els consumidors només es re-renderin quan
+  // canvia algun camp d'`state`, no a cada render del provider. Els callbacks
+  // ja són estables via useCallback, així que no entren a les deps.
+  const value = useMemo<AuthContextValue>(
+    () => ({ ...state, login, register, loginWithGoogle, logout, refreshUser }),
+    [state, login, register, loginWithGoogle, logout, refreshUser]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextValue {

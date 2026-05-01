@@ -4,10 +4,54 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>globalplay360</title>
+    <title>GlobalPlay360 — Proximamente</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #0A192F; color: #fff; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+      #prelaunch-static { position: fixed; inset: 0; overflow: hidden; background: #020617; }
+      #prelaunch-static .video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; z-index: 0; }
+      #prelaunch-static .overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(2,6,23,0.20) 0%, rgba(2,6,23,0.50) 100%); pointer-events: none; }
+      #prelaunch-static .content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; padding: 2rem; box-sizing: border-box; }
+      #prelaunch-static .badge { position: absolute; top: 1.25rem; right: 1.25rem; z-index: 3; padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.85); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+      #prelaunch-static svg { width: min(70vw, 22rem); height: auto; color: #FFC107; display: block; filter: drop-shadow(0 18px 50px rgba(255,193,7,0.25)); }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="prelaunch-static">
+        <video
+          class="video-bg"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          preload="metadata"
+          aria-hidden="true"
+          src="https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/global_home.mp4?alt=media&amp;token=d56dab23-e1be-4f3a-a9b6-bd7faeba7b4b"
+        ></video>
+        <div class="overlay"></div>
+        <div class="badge">Proximamente</div>
+        <div class="content">
+        <svg viewBox="0 0 1500 1500" xmlns="http://www.w3.org/2000/svg" aria-label="GlobalPlay360 Logo" role="img">
+          <path fill="currentColor" d="M820.5 520.5l-147.37.76c-53.67 5.04-105.62 25.24-132.51 74.49-27.44 50.25-26.77 132.41.75 182.51 34.9 63.52 111.1 80.06 178.63 76v-132H618.75v-100.5H820.5v324.38c0 .6-4.81 4.82-6.36 4.14-117.35.57-265.14 9.07-345.36-93.42-45.93-58.69-56.6-148.89-46.42-221.11 22.43-159.21 150.8-208.49 295.73-212.02 30.34 2 63.84-2.54 93.81 0 2.06.18 8.6 1.79 8.6 4.15v92.62Z"/>
+          <path fill="currentColor" d="M837.75 738v-96.75c38.37-2.63 99.12 9.48 129.03-20.59 17.68-17.77 18.84-51.37 4.76-71.57-27.03-38.8-93.34-26.49-133.79-28.58v-95.62c0-.17-1.42-1-.37-1.13l72.03-.03c79.56 3.41 154.53 39.29 168.88 124.37 17.13 101.62-37.21 169.85-136.14 186.67-34.41 5.85-69.6 2.26-104.39 3.24Z"/>
+          <path fill="currentColor" d="M387 1074h-18c-.1 0-.1-1.23-.73-1.86-18.79-19.25-45.52-1.81-37.56 22.53 6.25 19.11 35.64 19.49 40.54-.41H348v-12.75h40.5c2.6 25.58-15.49 44.84-41.53 42.65-25.9-2.17-40.05-27.25-32-51.31 11.06-33.04 62.44-32.1 72.03 1.15Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M497.85 1048.72c53.5-5.27 58.22 71.86 8.02 75.52-52.66 3.84-57.5-70.65-8.02-75.52ZM486.27 1070.52c-9.88 10.02-7.18 29.93 5.96 35.88 19.34 8.75 37.69-9.11 30.36-28.86-5.3-14.29-25.9-17.59-36.33-7.01Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M593.62 1050c20.23 2.15 27.46 22.89 11.63 35.99 10.96 3 13.62 18.87 7.5 27.38-2.72 3.78-11.61 9.38-16.12 9.38h-39.38v-72.75c11.61.9 24.98-1.21 36.38 0ZM573.75 1080h13.12c1.16 0 6.31-1.51 7.4-2.35 3.22-2.49 3.55-7.67 1.4-10.94-.66-1.01-3.5-3.2-4.3-3.2h-17.62v16.5ZM573.75 1110c7.55-.48 24.93 2.64 25.45-8.68.23-5.02-4.47-9.32-9.32-9.32h-16.12v18Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M1223.1 1048.72c43.36-4.18 45.47 65.34 12.74 74.24-48.85 13.28-54.76-70.19-12.74-74.24ZM1235.74 1105.99c9.36-8.75 8.75-40.45-6.93-42.42-18.75-2.35-20.36 26.25-14.23 38.22 4.03 7.87 14.44 10.48 21.16 4.2Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M624 1122.75l28.62-72.62 15.28-.18 29.6 72.81h-16.88l-5.25-12c-.54-.84-1.39-.69-2.21-.79-7.92-.99-18.02.73-26.19.14l-4.98 12.65h-18ZM651 1097.25h19.5l-9.38-25.5-10.12 25.5Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M974.25 1122.75h-18l-4.42-12.3-29.23-.34-4.6 12.65h-18l29.24-72.39c.9-.54 12.97-.67 14.64-.36.84.15 1.44.36 1.81 1.19l28.56 71.56ZM947.25 1097.25H927l10.12-26.26 10.13 26.26Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M789.75 1102.5v20.25h-16.5v-72.75h32.62c1.87 0 7.86 2 9.88 2.87 18.98 8.16 19.88 36.86 1.66 46.17-1.86.95-8.32 3.46-10.04 3.46h-17.62ZM800.62 1064.25c-3.47-.34-7.36.25-10.88 0v24h13.88c5.76 0 10.39-6.87 10.15-12.34-.35-7.89-6-10.96-13.15-11.66Z"/>
+          <path fill="currentColor" d="M1108.5 1050v11.62l-16.5 16.5c8.5 1.55 16.95 7.49 18.98 16.26 8.54 36.9-52.45 40.97-53.49 5.86h15.75c1.99 14.08 26.02 12.06 22.18-3.8-.66-2.72-4.89-6.7-7.55-6.7h-16.12c-2.96-12.84 8.62-16.84 15-25.5H1059v-14.25h49.5Z"/>
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M1168.5 1050l-15 23.99c19.58-2.8 33.53 15.64 26.83 33.96-7.07 19.35-37.74 21.65-50.06 6.15-16.73-21.05 10.94-45.72 19.48-64.11h18.75ZM1151.05 1086.93c-14.05 2.36-13.09 22.8 1.34 23.84 18.88 1.36 17.92-27.07-1.34-23.84Z"/>
+          <path fill="currentColor" d="M998.25 1050l15.38 29.25 16.12-29.25h18.75c.12 1.36-.8 2.38-1.38 3.49-3.1 5.93-24.87 40.88-24.87 43.38v25.88h-16.5v-25.88c0-2.03-17.78-30.44-20.38-35.12-2.08-3.75-4.51-7.71-5.87-11.75h18.75Z"/>
+          <polygon fill="currentColor" points="726.75 1050 726.75 1107 757.88 1107 759 1108.12 759 1122.75 710.25 1122.75 710.25 1050 726.75 1050"/>
+          <polygon fill="currentColor" points="421.5 1050 421.5 1107 453 1107 453 1122.75 405 1122.75 405 1050 421.5 1050"/>
+          <polygon fill="currentColor" points="861.75 1050 861.75 1107 893.25 1107 893.25 1122.75 845.25 1122.75 845.25 1050 861.75 1050"/>
+        </svg>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

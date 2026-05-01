@@ -12,5 +12,6 @@ export default defineConfig({
   },
   build: {
     outDir: 'build_output',
+    target: ['es2020', 'safari14', 'chrome87'],
   }
 })

@@ -14,9 +14,9 @@ interface ConversationExtended extends Conversation {
 }
 
 // ConversationListItem extret al mateix fitxer per comoditat, però pot anar fora
-function ConversationListItem({ conv, currentUserId }: { conv: ConversationExtended; currentUserId: string }) {
+function ConversationListItem({ conv, currentUserId, activePlan }: { conv: ConversationExtended; currentUserId: string; activePlan: string }) {
   const { t, i18n } = useTranslation();
-  const isLocked = false;
+  const isLocked = activePlan === 'free';
   const unread = conv.unreadCount?.[currentUserId] ?? 0;
   const hasUnread = unread > 0;
 
@@ -90,7 +90,7 @@ export default function MessagesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || activePlan === 'free') return;
+    if (!user) return;
 
     const unsubscribe = subscribeToUserConversations(user.uid, async (convs) => {
       const extendedConvs = await Promise.all(
@@ -111,26 +111,10 @@ export default function MessagesPage() {
     return () => unsubscribe();
   }, [user, activePlan]);
 
-  if (subscriptionLoading || (activePlan === 'premium' && loading)) {
+  if (subscriptionLoading || loading) {
     return (
       <div className="p-6 max-w-4xl mx-auto flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6]"></div>
-      </div>
-    );
-  }
-
-  if (activePlan === 'free') {
-    return (
-      <div className="p-6 max-w-2xl mx-auto w-full">
-        <PageHeader
-          title={t('messages.pageTitle', 'Missatges Directes')}
-          description={t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
-        />
-
-        <PremiumLockCard
-          title={t("messages.unlockTitle", "Mantingues converses en temps real amb els clubs")}
-          description={t("messages.unlockDesc", "Aconsegueix accés directe a organitzacions i clubs d'elit i respon de manera immediata. L'eina definitiva per a tancar fitxatges.")}
-        />
       </div>
     );
   }
@@ -142,6 +126,15 @@ export default function MessagesPage() {
         description={t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
       />
 
+      {activePlan === 'free' && (
+        <div className="mb-6">
+          <PremiumLockCard
+            title={t("messages.unlockTitle", "Mantingues converses en temps real amb els clubs")}
+            description={t("messages.unlockDesc", "Aconsegueix accés directe a organitzacions i clubs d'elit i respon de manera immediata. L'eina definitiva per a tancar fitxatges.")}
+          />
+        </div>
+      )}
+
       {conversations.length > 0 ? (
         <div className="flex flex-col gap-4">
           {conversations.map(conv => (
@@ -149,6 +142,7 @@ export default function MessagesPage() {
               key={conv.id}
               conv={conv}
               currentUserId={user!.uid}
+              activePlan={activePlan}
             />
           ))}
         </div>
@@ -166,3 +160,7 @@ export default function MessagesPage() {
     </div>
   );
 }
+
+
+
+

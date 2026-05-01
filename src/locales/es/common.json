@@ -4,6 +4,16 @@
   "register": "Registrarse",
   "home": "Inicio",
   "dashboard": "Panel",
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "both": "Masculino y Femenino"
+  },
+  "category": {
+    "youth": "Formación / Base (Infantil, Cadete, etc)",
+    "senior": "Amateur / Rendimiento (Sénior)",
+    "both": "Ambas"
+  },
   "homePage": {
     "hero": {
       "title": "Donde el Talento Encuentra la \n Oportunidad",
@@ -75,7 +85,8 @@
     "admin": "Dashboard",
     "logout": "Salir",
     "login": "Entrar",
-    "register": "Registro"
+    "register": "Registro",
+    "dashboard": "Panel"
   },
   "footer": {
     "description": "Global Play 360 es la plataforma principal que conecta atletas, entrenadores y organizaciones deportivas en todo el mundo.",
@@ -356,7 +367,9 @@
   },
   "topbar": {
     "searchPlaceholder": "Busca jugadores, clubes, estadísticas...",
-    "logout": "Salir"
+    "logout": "Salir",
+    "openMenu": "Abrir menú",
+    "notifications": "Notificaciones"
   },
   "dashboardLayout": {
     "banner": {
@@ -435,7 +448,9 @@
         "desc": "Encajan con tus filtros.",
         "time": "Martes, 09:15"
       }
-    }
+    },
+    "noApplicationsYet": "Aún no tienes candidaturas.",
+    "noRecentOpportunities": "Ninguna oportunidad reciente."
   },
   "profile": {
     "notAuthenticated": "No estás autenticado",
@@ -489,9 +504,10 @@
     "sport": "Deporte",
     "country": "País",
     "state": "Provincia / Estado",
-    "selectCountry": "Selecciona el país...",
-    "selectState": "Selecciona el estado...",
-    "selectCity": "Selecciona la ciudad..."
+    "selectCountry": "Selecciona...",
+    "selectState": "Selecciona...",
+    "selectCity": "Selecciona...",
+    "uploadAvatar": "Subir imagen de perfil"
   },
   "applications": {
     "titleClub": "Candidaturas Recibidas",
@@ -520,7 +536,14 @@
     "titleReopen": "Reabrir para revisión",
     "reopen": "O",
     "emptyTitle": "Ninguna candidatura encontrada",
-    "emptyDesc": "Aún no hay candidaturas para mostrar."
+    "emptyDesc": "Aún no hay candidaturas para mostrar.",
+    "removeOrphoned": "Eliminar registro",
+    "removeOrphaned": "Eliminar registro",
+    "emptyTitlePlayer": "Aún no has aplicado a ninguna oportunidad",
+    "emptyDescPlayer": "Explora el marketplace y envía tu primera candidatura a clubes u ofertas que encajen con tu perfil.",
+    "emptyTitleClub": "Aún no has recibido candidaturas",
+    "emptyDescClub": "Cuando alguien aplique a tus ofertas, aparecerán aquí para gestionarlas.",
+    "emptyCtaClub": "Gestionar mis ofertas"
   },
   "applications_old": {
     "errorChat": "Se ha producido un error al intentar abrir el chat.",
@@ -577,7 +600,11 @@
     "restrictedDesc": "Esta vista es exclusiva para clubes.",
     "backToMarketplace": "Volver al Marketplace",
     "connectionError": "Error de conexión",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "confirmDelete": "¿Seguro que quieres eliminar esta oportunidad?",
+    "errorDeleting": "Error al eliminar la oportunidad.",
+    "errorLoading": "Error al cargar las oportunidades.",
+    "errorToggling": "Error al cambiar el estado."
   },
   "opportunityDetail": {
     "backApplications": "Volver a Candidaturas",
@@ -604,7 +631,17 @@
     "aboutClub": "Sobre el Club",
     "club": "Club",
     "viewFullProfile": "Ver Perfil Completo",
-    "ownOpportunity": "Esta es tu oportunidad."
+    "ownOpportunity": "Esta es tu oportunidad.",
+    "errorMissingCoverLetter": "Introduce una carta de presentación o mensaje.",
+    "coverLetterLabel": "Carta de presentación *",
+    "coverLetterPlaceholder": "Explica al club por qué encajas en esta posición (mínimo unas pocas de frases)...",
+    "cancel": "Cancelar",
+    "send": "Enviar",
+    "withdrawConfirm": "¿Estás seguro de que quieres retirar y deshacer tu candidatura para esta oportunidad?",
+    "withdrawButton": "Retirar candidatura",
+    "coverLetterPlaceholderPlayer": "Explica al club por qué encajas en esta posición y cuáles son tus virtudes como jugador/a...",
+    "coverLetterPlaceholderCoach": "Explica al club qué puedes aportar como entrenador/a y por qué eres la persona ideal para este proyecto deportivo...",
+    "roleMismatch": "Esta oportunidad no es para tu rol."
   },
   "opportunities": {
     "errorLoading": "Error cargando oportunidades",
@@ -617,7 +654,8 @@
       "all": "Todos los deportes",
       "football": "Fútbol 11",
       "basketball": "Baloncesto",
-      "proContracts": "Contratos Pro"
+      "proContracts": "Contratos Pro",
+      "allTargetRoles": "Todos los perfiles"
     },
     "emptyTitle": "Aún no hay oportunidades",
     "emptyDesc": "No se han encontrado oportunidades publicadas. Vuelve a intentarlo más tarde o crea la primera si eres un club.",
@@ -631,7 +669,10 @@
     "published": "Publicado:",
     "viewDetail": "Ver Detalle",
     "apply": "Aplicar",
-    "clearFilters": "Limpiar Filtros"
+    "clearFilters": "Limpiar Filtros",
+    "ownOpportunity": "Tu oportunidad",
+    "alreadyApplied": "Candidatura enviada",
+    "viewFullProfile": "Ver perfil completo"
   },
   "opportunityForm": {
     "restricted": "Acceso restringido",
@@ -686,7 +727,8 @@
       "countryBase": "País",
       "country": "País *",
       "state": "Provincia / Estado",
-      "city": "Ciudad"
+      "city": "Ciudad",
+      "targetRoleLabel": "¿Qué perfil buscas?"
     },
     "addBtn": "Añadir",
     "placeholders": {
@@ -694,6 +736,11 @@
       "country": "Buscar país...",
       "state": "Selecciona estado...",
       "city": "Selecciona ciudad..."
+    },
+    "targetRole": {
+      "player": "Jugador/a",
+      "coach": "Entrenador/a",
+      "both": "Ambos"
     }
   },
   "premiumLock": {
@@ -734,7 +781,8 @@
       "premiumPlan": "Plan Premium",
       "gp360Sub": "Suscripción GlobalPlay360",
       "billing": "Facturación",
-      "managedByStripe": "Gestionada por Stripe"
+      "managedByStripe": "Gestionada por Stripe",
+      "globalPlaySub": "Suscripción GlobalPlay360"
     },
     "portal": {
       "title": "Gestionar suscripción",
@@ -742,7 +790,8 @@
       "button": "Abrir portal de Stripe",
       "loading": "Abriendo portal...",
       "error": "No se pudo abrir el portal.",
-      "note": "Serás redirigido a una página segura alojada por Stripe. Una vez termines, volverás aquí automáticamente."
+      "note": "Serás redirigido a una página segura alojada por Stripe. Una vez termines, volverás aquí automáticamente.",
+      "opening": "Abriendo portal…"
     }
   },
   "checkoutSuccess": {
@@ -760,7 +809,11 @@
     "emptyDesc": "Busca oportunidades o inicia conversaciones para empezar a hablar con clubes de todo el mundo.",
     "unknownUser": "Usuario desconocido",
     "protectedMessage": "Mensaje protegido",
-    "newConversation": "Nueva conversación"
+    "newConversation": "Nueva conversación",
+    "lockTitle": "Mensajería directa · Premium",
+    "lockDesc": "Con Premium puedes leer y responder a los mensajes de entrenadores y cazatalentos sin límites. Empieza la prueba gratuita de 30 días.",
+    "basicAccount": "{{name}} tiene una cuenta básica.",
+    "basicAccountNotified": "Le hemos notificado. Podrá responderte cuando active Premium."
   },
   "profileEdit": {
     "success": "Perfil actualizado correctamente.",
@@ -769,6 +822,7 @@
     "cancel": "Cancelar",
     "saving": "Guardando...",
     "save": "Guardar cambios",
+    "avatarMaxLimit": "La imagen es demasiado grande. El peso máximo permitido es de 5 MB.",
     "fields": {
       "generalInfo": "Información general",
       "displayName": "Nombre mostrado",
@@ -788,7 +842,38 @@
       "venueCapacity": "Aforo",
       "state": "Provincia / Estado",
       "city": "Ciudad",
-      "currentClub": "Equipo Actual / Club"
+      "currentClub": "Equipo Actual / Club",
+      "athleticData": "Datos deportivos",
+      "mainSport": "Deporte principal",
+      "selectSport": "Selecciona un deporte…",
+      "dateOfBirth": "Fecha de nacimiento",
+      "height": "Altura",
+      "weight": "Peso",
+      "position": "Posición",
+      "selectPlaceholder": "Selecciona…",
+      "preferredFoot": "Pie dominante",
+      "left": "Izquierdo",
+      "right": "Derecho",
+      "both": "Ambos",
+      "leftHanded": "Zurdo",
+      "rightHanded": "Diestro",
+      "oneHanded": "A una mano",
+      "twoHanded": "A dos manos",
+      "genderPreference": "Preferencia de género",
+      "categoryPreference": "Preferencia de categoría",
+      "selectPreference": "Selecciona una preferencia…",
+      "selectCategory": "Selecciona una categoría…",
+      "preferredHand": "Mano preferida",
+      "playingHand": "Mano dominante",
+      "stickHand": "Mano del stick",
+      "backhandType": "Revés",
+      "wingspan": "Envergadura",
+      "spikeReach": "Alcance de remate"
+    },
+    "noOptions": {
+      "country": "País no encontrado",
+      "state": "Estado no encontrado",
+      "city": "Ciudad no encontrada"
     },
     "placeholders": {
       "displayName": "Tu nombre público",
@@ -806,7 +891,11 @@
       "venueCapacity": "Ej: 5000",
       "state": "Selecciona estado...",
       "city": "Selecciona ciudad...",
-      "currentClub": "Ej: FC Barcelona"
+      "currentClub": "Ej: FC Barcelona",
+      "height": "Ej: 180",
+      "weight": "Ej: 75",
+      "wingspan": "Ej: 210",
+      "spikeReach": "Ej: 320"
     },
     "hints": {
       "bio": "Describe tu trayectoria, objetivos y experiencia.",
@@ -820,7 +909,13 @@
       "website": "URL pública del club.",
       "venueName": "Nombre del estadio, pabellón o complejo deportivo.",
       "venueCapacity": "Capacidad de espectadores de la instalación.",
-      "currentClub": "¿En qué equipo juegas actualmente? (Opcional)"
+      "currentClub": "¿En qué equipo juegas actualmente? (Opcional)",
+      "height": "En centímetros (cm)",
+      "weight": "En kilogramos (kg)",
+      "wingspan": "En centímetros, punta a punta de los brazos.",
+      "spikeReach": "Altura máxima de contacto con el balón, en cm.",
+      "hockeyPosition": "Hierba, hielo o patines.",
+      "stickHand": "Agarre predominante."
     }
   },
   "legal": {
@@ -851,7 +946,8 @@
       "title": "Consultas legales",
       "desc": "Ejercicio de derechos RGPD, protección de datos o cualquier requerimiento formal.",
       "emailLabel": "Email legal",
-      "address": "Dirección"
+      "address": "Dirección",
+      "pending": "Pendiente de configuración"
     },
     "quickLinks": {
       "title": "Enlaces rápidos",
@@ -869,5 +965,107 @@
       "error": "Error cargando el perfil",
       "sendMessage": "Enviar Mensaje"
     }
+  },
+  "adminSidebar": {
+    "dashboard": "Panel",
+    "products": "Productos",
+    "orders": "Pedidos",
+    "users": "Usuarios",
+    "panel": "Panel de Administración"
+  },
+  "authAction": {
+    "verifySuccess": "Correo verificado correctamente.",
+    "verifyTitle": "Verificación",
+    "verifying": "Verificando tu correo electrónico...",
+    "backToLogin": "Volver al inicio de sesión",
+    "redirectingDashboard": "Redirigiéndote a tu panel...",
+    "resetTitle": "Nueva Contraseña",
+    "resetSubtitle": "Introduce tu nueva contraseña de seguridad.",
+    "resetSuccess": "Contraseña actualizada",
+    "resetSuccessHint": "Tu contraseña se ha cambiado correctamente.",
+    "redirectingLogin": "Serás redirigido al inicio de sesión...",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Mínimo 8 caracteres, letras, mayúsculas y símbolos",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Vuelve a escribirla",
+    "savePassword": "Guardar Contraseña",
+    "unsupported": "Esta funcionalidad",
+    "unsupportedSuffix": "no está implementada.",
+    "unknownMode": "desconocida",
+    "errors": {
+      "invalidLink": "Enlace inválido o caducado.",
+      "expired": "El enlace ha caducado o ya se ha utilizado.",
+      "verifyFailed": "No se ha podido verificar el correo.",
+      "mismatch": "Las contraseñas no coinciden.",
+      "weak": "Por favor, introduce una contraseña más fuerte (mínimo 8 caracteres, incluyendo mayúsculas y números o símbolos).",
+      "resetFailed": "Ha ocurrido un error al cambiar la contraseña."
+    }
+  },
+  "common": {
+    "searchOpportunities": "Buscar Oportunidades"
+  },
+  "forgotPassword": {
+    "loginLink": "Inicia sesión",
+    "title": "Recuperar Contraseña",
+    "subtitle": "Introduce tu correo y te enviaremos un enlace para restablecerla.",
+    "successTitle": "Correo enviado",
+    "successHint": "Revisa tu bandeja de entrada (también la carpeta de Spam) para continuar.",
+    "backToLogin": "Volver al inicio de sesión",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Ej. juan@ejemplo.com",
+    "submit": "Crea una nueva contraseña",
+    "rememberPrefix": "¿Recuerdas la contraseña?",
+    "errors": {
+      "notFound": "No se ha encontrado ninguna cuenta con este correo.",
+      "generic": "Ha habido un error al procesar la petición. Inténtalo más tarde."
+    }
+  },
+  "passwordField": {
+    "show": "Mostrar contraseña",
+    "hide": "Ocultar contraseña"
+  },
+  "passwordStrength": {
+    "label": "Nivel de seguridad",
+    "veryWeak": "Muy débil",
+    "weak": "Débil",
+    "good": "Buena",
+    "strong": "Fuerte"
+  },
+  "passwordMatch": {
+    "label": "Coincidencia",
+    "yes": "Coinciden",
+    "no": "No coinciden"
+  },
+  "publicProfile": {
+    "error": "Error al cargar el perfil.",
+    "notFound": "Perfil no encontrado.",
+    "hideDetails": "Datos de contacto ocultos para el Plan Free",
+    "lockedTitle": "Estadísticas y Contacto Protegidos",
+    "lockedDesc": "Los usuarios del Plan Free no tienen acceso completo a los perfiles de otros usuarios. Pásate a Premium para desbloquearlo.",
+    "sendMessage": "Enviar mensaje"
+  },
+  "sports": {
+    "american_football": "Fútbol Americano",
+    "football": "Fútbol 11",
+    "basketball": "Baloncesto",
+    "futsal": "Fútbol Sala",
+    "volleyball": "Voleibol",
+    "handball": "Balonmano",
+    "waterpolo": "Waterpolo",
+    "tennis": "Tenis",
+    "rugby": "Rugby",
+    "hockey": "Hockey",
+    "other": "Otros",
+    "details": "Detalles deportivos",
+    "details_football": "Detalles de Fútbol 11",
+    "details_basketball": "Detalles de Baloncesto",
+    "details_futsal": "Detalles de Fútbol Sala",
+    "details_volleyball": "Detalles de Voleibol",
+    "details_handball": "Detalles de Balonmano",
+    "details_waterpolo": "Detalles de Waterpolo",
+    "details_tennis": "Detalles de Tenis",
+    "details_rugby": "Detalles de Rugby",
+    "details_american_football": "Detalles de Fútbol Americano",
+    "details_hockey": "Detalles de Hockey"
   }
 }

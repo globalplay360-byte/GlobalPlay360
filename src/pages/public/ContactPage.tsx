@@ -67,14 +67,18 @@ export default function ContactPage() {
                   {t('contact.legal.emailLabel', 'Email legal')}:
                 </span>
                 <br />
-                <a href="mailto:[PENDENT_EMAIL_LEGAL]" className="text-[#60A5FA] hover:text-[#93C5FD]">[PENDENT_EMAIL_LEGAL]</a>
+                <span className="italic text-[#6B7280]">
+                  {t('contact.legal.pending', 'Pendent de configuració')}
+                </span>
               </p>
               <p className="pt-2">
                 <span className="text-[#6B7280] uppercase text-xs font-bold tracking-wider">
                   {t('contact.legal.address', 'Adreça')}:
                 </span>
                 <br />
-                <span>[PENDENT_DOMICILI]</span>
+                <span className="italic text-[#6B7280]">
+                  {t('contact.legal.pending', 'Pendent de configuració')}
+                </span>
               </p>
             </div>
           </div>
