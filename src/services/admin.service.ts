@@ -81,11 +81,14 @@ export async function getAdminMetrics(): Promise<AdminMetrics> {
 /**
  * Llista d'usuaris ordenada per data de registre. MVP: client-side pagination.
  * Quan superem ~500 usuaris caldrà migrar a `startAfter` cursors o índex Algolia.
+ *
+ * Nota: el doc Firestore no guarda `uid` com a camp (l'ID és el del doc), per
+ * això injectem `uid: d.id` aquí per consistència amb el tipus User.
  */
 export async function listAllUsers(max = 500): Promise<User[]> {
   const q = query(collection(db, 'users'), orderBy('createdAt', 'desc'), fbLimit(max));
   const snap = await getDocs(q);
-  return mapDocs<User>(snap);
+  return snap.docs.map((d) => ({ ...d.data(), uid: d.id } as User));
 }
 
 export interface OpportunityWithStats extends Opportunity {

@@ -16,6 +16,16 @@ service cloud.firestore {
              && request.auth.token.stripeRole in ['premium', 'pro'];
     }
 
+    // Admin role check: l'admin té accés de lectura ampla per al panell de
+    // gestió. Cost: 1 document read per rule check (acceptable per a un panell
+    // d'ús esporàdic). Per migrar a custom claims `admin: true` cal una Cloud
+    // Function que els assigni; aquesta versió funciona sense infraestructura.
+    function isAdmin() {
+      return request.auth != null
+             && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+             && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // ── USERS ──────────────────────────────────────────────
     // Doc `users/{uid}` conté NOMÉS camps públics (displayName, role, bio, sport,
     // country, position, height, etc.) necessaris per al marketplace.
@@ -63,7 +73,8 @@ service cloud.firestore {
     match /applications/{applicationId} {
       allow read: if request.auth != null
                   && (request.auth.uid == resource.data.userId
-                      || request.auth.uid == resource.data.clubId);
+                      || request.auth.uid == resource.data.clubId
+                      || isAdmin());
       allow create: if request.auth != null
                     && request.auth.uid == request.resource.data.userId
                     && request.auth.uid != request.resource.data.clubId
