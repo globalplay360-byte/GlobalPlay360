@@ -967,13 +967,6 @@
       "sendMessage": "Enviar Missatge"
     }
   },
-  "adminSidebar": {
-    "dashboard": "Tauler",
-    "products": "Productes",
-    "orders": "Comandes",
-    "users": "Usuaris",
-    "panel": "Panell d'Administració"
-  },
   "authAction": {
     "verifySuccess": "Correu verificat correctament.",
     "verifyTitle": "Verificació",
@@ -1024,6 +1017,84 @@
   "passwordField": {
     "show": "Mostrar contrasenya",
     "hide": "Ocultar contrasenya"
+  },
+  "adminSidebar": {
+    "panel": "Panell d'Administració",
+    "dashboard": "Tauler",
+    "users": "Usuaris",
+    "opportunities": "Oportunitats"
+  },
+  "admin": {
+    "role": {
+      "player": "Jugador",
+      "coach": "Entrenador",
+      "club": "Club",
+      "admin": "Administrador"
+    },
+    "dashboard": {
+      "title": "Tauler d'administració",
+      "description": "Estat global de la plataforma en temps real.",
+      "loadError": "No s'han pogut carregar les mètriques.",
+      "kpi": {
+        "users": "Usuaris totals",
+        "newThisWeek": "+{{n}} aquesta setmana",
+        "premium": "Subscripcions actives",
+        "premiumOfTotal": "{{pct}}% del total",
+        "opportunities": "Oportunitats",
+        "openOps": "{{n}} obertes",
+        "applications": "Candidatures",
+        "acceptedApps": "{{n}} acceptades"
+      },
+      "usersByRole": "Usuaris per rol",
+      "applicationsByStatus": "Candidatures per estat",
+      "viewAllUsers": "Veure tots els usuaris",
+      "viewOpportunities": "Veure oportunitats"
+    },
+    "users": {
+      "title": "Usuaris",
+      "description": "Gestiona la comunitat de la plataforma.",
+      "loadError": "No s'han pogut carregar els usuaris.",
+      "searchPlaceholder": "Cercar per nom...",
+      "empty": "Cap usuari coincideix amb els filtres.",
+      "showing": "Mostrant {{shown}} de {{total}} usuaris",
+      "viewProfile": "Veure perfil",
+      "filter": {
+        "allRoles": "Tots els rols",
+        "allPlans": "Tots els plans"
+      },
+      "col": {
+        "name": "Nom",
+        "role": "Rol",
+        "plan": "Pla",
+        "created": "Registre",
+        "actions": "Accions"
+      }
+    },
+    "opps": {
+      "title": "Oportunitats",
+      "description": "Monitoritza l'activitat del marketplace.",
+      "loadError": "No s'han pogut carregar les oportunitats.",
+      "searchPlaceholder": "Cercar per títol...",
+      "empty": "Cap oportunitat coincideix amb els filtres.",
+      "view": "Veure",
+      "stats": {
+        "total": "Total publicades",
+        "totalApps": "Candidatures totals",
+        "avg": "Mitjana per oferta"
+      },
+      "filter": {
+        "allStatuses": "Tots els estats"
+      },
+      "col": {
+        "title": "Títol",
+        "sport": "Esport",
+        "location": "Ubicació",
+        "status": "Estat",
+        "apps": "Candidatures",
+        "created": "Creada",
+        "actions": "Accions"
+      }
+    }
   },
   "passwordStrength": {
     "label": "Nivell de seguretat",

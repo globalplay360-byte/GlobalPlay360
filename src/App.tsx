@@ -24,6 +24,8 @@ import AuthActionPage from './pages/auth/AuthActionPage';
 
 // Admin / Dashboard Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminOpportunitiesPage from './pages/admin/AdminOpportunitiesPage';
 import OverviewPage from './pages/dashboard/OverviewPage';
 import OpportunitiesPage from './pages/dashboard/OpportunitiesPage';
 import OpportunityDetailPage from './pages/dashboard/OpportunityDetailPage';
@@ -108,6 +110,8 @@ function App() {
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsersPage />} />
+              <Route path="opportunities" element={<AdminOpportunitiesPage />} />
             </Route>
           </Route>
 

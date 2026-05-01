@@ -6,9 +6,8 @@ export default function AdminSidebar() {
 
   const navItems = [
     { to: '/admin', label: t('adminSidebar.dashboard', 'Tauler'), icon: '📊' },
-    { to: '/admin/products', label: t('adminSidebar.products', 'Productes'), icon: '📦' },
-    { to: '/admin/orders', label: t('adminSidebar.orders', 'Comandes'), icon: '🧾' },
     { to: '/admin/users', label: t('adminSidebar.users', 'Usuaris'), icon: '👥' },
+    { to: '/admin/opportunities', label: t('adminSidebar.opportunities', 'Oportunitats'), icon: '🎯' },
   ];
 
   return (

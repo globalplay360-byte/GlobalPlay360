@@ -967,11 +967,82 @@
     }
   },
   "adminSidebar": {
+    "panel": "Admin Panel",
     "dashboard": "Dashboard",
-    "products": "Products",
-    "orders": "Orders",
     "users": "Users",
-    "panel": "Admin Panel"
+    "opportunities": "Opportunities"
+  },
+  "admin": {
+    "role": {
+      "player": "Player",
+      "coach": "Coach",
+      "club": "Club",
+      "admin": "Administrator"
+    },
+    "dashboard": {
+      "title": "Admin dashboard",
+      "description": "Live overview of the platform.",
+      "loadError": "Could not load metrics.",
+      "kpi": {
+        "users": "Total users",
+        "newThisWeek": "+{{n}} this week",
+        "premium": "Active subscriptions",
+        "premiumOfTotal": "{{pct}}% of total",
+        "opportunities": "Opportunities",
+        "openOps": "{{n}} open",
+        "applications": "Applications",
+        "acceptedApps": "{{n}} accepted"
+      },
+      "usersByRole": "Users by role",
+      "applicationsByStatus": "Applications by status",
+      "viewAllUsers": "View all users",
+      "viewOpportunities": "View opportunities"
+    },
+    "users": {
+      "title": "Users",
+      "description": "Manage the platform community.",
+      "loadError": "Could not load users.",
+      "searchPlaceholder": "Search by name...",
+      "empty": "No users match the filters.",
+      "showing": "Showing {{shown}} of {{total}} users",
+      "viewProfile": "View profile",
+      "filter": {
+        "allRoles": "All roles",
+        "allPlans": "All plans"
+      },
+      "col": {
+        "name": "Name",
+        "role": "Role",
+        "plan": "Plan",
+        "created": "Joined",
+        "actions": "Actions"
+      }
+    },
+    "opps": {
+      "title": "Opportunities",
+      "description": "Monitor marketplace activity.",
+      "loadError": "Could not load opportunities.",
+      "searchPlaceholder": "Search by title...",
+      "empty": "No opportunities match the filters.",
+      "view": "View",
+      "stats": {
+        "total": "Total published",
+        "totalApps": "Total applications",
+        "avg": "Average per offer"
+      },
+      "filter": {
+        "allStatuses": "All statuses"
+      },
+      "col": {
+        "title": "Title",
+        "sport": "Sport",
+        "location": "Location",
+        "status": "Status",
+        "apps": "Applications",
+        "created": "Created",
+        "actions": "Actions"
+      }
+    }
   },
   "authAction": {
     "verifySuccess": "Email verified successfully.",
