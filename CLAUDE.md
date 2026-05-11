@@ -53,6 +53,27 @@ A mesura que l'usuari avanci, intenta introduir (amb cura) conceptes com:
 - `git rebase` per mantenir un historial lineal abans de fusionar.
 - `git log --oneline` o l'ús de `--amend` per arreglar un error a l'últim commit.
 
+## 💳 Política de plans i subscripcions
+
+En aquest projecte, **els plans no s'han de modificar des del panell admin** com si `users.plan` fos la font de veritat.
+
+Regla de negoci:
+
+1. Els **canvis reals de subscripció o pla** s'han de fer a **Stripe**.
+2. L'extensió `firestore-stripe-payments` i la sincronització posterior són la font de veritat del pla actiu.
+3. El panell admin pot gestionar **rols** i **moderació de contingut**, però **no** ha d'editar manualment el pla d'un usuari com a substitut de Stripe.
+4. Si la clienta vol canviar el pla d'un usuari, l'operativa correcta és: **demanar-ho i executar-ho directament a Stripe**.
+
+### Motiu tècnic
+
+- `activePlan` es calcula des de `customers/{uid}/subscriptions`.
+- Les `firestore.rules` premium es recolzen en la claim `stripeRole` del JWT.
+- Tocar només `users.plan` des del panell admin pot deixar el sistema inconsistent entre UI, Firestore i Stripe.
+
+### Excepció futura
+
+Si més endavant es vol donar accés manual intern, no s'ha de reaprofitar `users.plan`; caldria dissenyar un sistema separat d'**override auditat** (`adminGrantedPlan`, expiració i motiu).
+
 ## 📊 Estat del Projecte i Propers Passos
 
 **📅 Data avui:** 2026-04-21 · **Entrega clienta:** 2026-05-05 · **Dies laborables restants: 9** (22, 23, 24 abr + 27, 28, 29, 30 abr + 4, 5 mai — saltant-se cap de setmana i festiu de l'1 maig).
