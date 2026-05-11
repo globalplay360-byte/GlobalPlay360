@@ -24,7 +24,7 @@ export default function OpportunityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, activePlan } = useAuth();
   const { t, i18n } = useTranslation();
 
   // Resol "Tornar" en funció de l'origen de navegació (state.from)
@@ -216,6 +216,15 @@ const handleMessage = async () => {
     );
   }
 
+  const canRevealClubIdentity =
+    user?.uid === opportunity.clubId ||
+    user?.role === 'club' ||
+    activePlan !== 'free';
+
+  const visibleClubName = canRevealClubIdentity
+    ? (clubName || t('opportunityDetail.club'))
+    : t('opportunityDetail.anonymousClubName', 'Club verificat');
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-100 space-y-6">
       {/* Top Nav */}
@@ -236,7 +245,12 @@ const handleMessage = async () => {
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-medium text-gray-100/90 mb-2 tracking-normal leading-tight">{opportunity.title}</h1>
-                {clubName && <p className="text-[#3B82F6] font-medium text-base">{clubName}</p>}
+                <p className="text-[#3B82F6] font-medium text-base">{visibleClubName}</p>
+                {!canRevealClubIdentity && (
+                  <p className="mt-1 text-xs text-[#9CA3AF]">
+                    {t('opportunityDetail.anonymousClubHint', 'La identitat completa del club es desbloqueja amb Premium.')}
+                  </p>
+                )}
               </div>
               <Badge variant={opportunity.status === 'open' ? 'success' : 'default'} className="w-fit uppercase tracking-wider font-semibold">
                 {opportunity.status}
@@ -331,6 +345,26 @@ const handleMessage = async () => {
                     </div>
                   ) : showApplyForm ? (
                       <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                        {activePlan === 'free' && (
+                          <div className="rounded-xl border border-[#3B82F6]/20 bg-[#3B82F6]/10 px-4 py-3.5 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset]">
+                            <div className="flex items-start gap-3">
+                              <div className="mt-0.5 text-[#60A5FA] shrink-0">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-gray-100/90 tracking-tight">
+                                  {t('opportunityDetail.freeApplyMessageTitle')}
+                                </p>
+                                <p className="mt-1 text-sm text-[#CBD5E1] leading-relaxed">
+                                  {t('opportunityDetail.freeApplyMessageDesc')}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">
                               {t('opportunityDetail.coverLetterLabel', 'Carta de presentació *')}
@@ -386,19 +420,25 @@ const handleMessage = async () => {
               <h3 className="font-bold text-gray-100 tracking-wide">{t('opportunityDetail.aboutClub')}</h3>
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-[#1F2937] rounded-full flex items-center justify-center text-xl font-bold text-gray-100 overflow-hidden shadow-inner uppercase">
-                  {clubName?.charAt(0) || 'C'}
+                  {visibleClubName.charAt(0) || 'C'}
                 </div>
                 <div>
-                  <div className="font-bold text-gray-100 text-base leading-tight">{clubName || t('opportunityDetail.club')}</div>
-                  {clubEmail && <div className="text-[#3B82F6] font-medium mt-0.5">{clubEmail}</div>}
+                  <div className="font-bold text-gray-100 text-base leading-tight">{visibleClubName}</div>
+                  {canRevealClubIdentity && clubEmail ? (
+                    <div className="text-[#3B82F6] font-medium mt-0.5">{clubEmail}</div>
+                  ) : (
+                    <div className="text-[#9CA3AF] mt-0.5">{t('opportunityDetail.anonymousClubCardHint', 'El perfil complet i les dades del club formen part de Premium.')}</div>
+                  )}
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="pt-0 pb-6 px-6">
-              <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast" onClick={() => navigate(`/dashboard/profile/${opportunity.clubId}`)}>
-                {t('opportunities.viewFullProfile', 'Veure Perfil Complet')}
-              </Button>
-            </CardFooter>
+            {canRevealClubIdentity && (
+              <CardFooter className="pt-0 pb-6 px-6">
+                <Button variant="outline" size="sm" fullWidth className="transition-all duration-fast" onClick={() => navigate(`/dashboard/profile/${opportunity.clubId}`)}>
+                  {t('opportunities.viewFullProfile', 'Veure Perfil Complet')}
+                </Button>
+              </CardFooter>
+            )}
           </Card>
         </div>
       </div>

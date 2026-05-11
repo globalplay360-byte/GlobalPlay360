@@ -34,7 +34,7 @@ const MS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 function isPremiumUser(u: User): boolean {
   if (u.plan === 'premium' || u.plan === 'pro') return true;
   if (u.subscriptionStatus === 'active') return true;
-  if (u.subscriptionStatus === 'trialing' && u.trialEndsAt) {
+  if (u.plan === 'trial' && u.trialEndsAt) {
     return new Date(u.trialEndsAt).getTime() > Date.now();
   }
   return false;

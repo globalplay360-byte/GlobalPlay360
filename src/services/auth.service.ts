@@ -198,7 +198,7 @@ export function hasActiveSubscription(user: User | null): boolean {
   if (user.subscriptionStatus === 'active') return true;
   
   // If they are in a trial, ensure it hasn't expired
-  if (user.plan === 'trial' || user.subscriptionStatus === 'trialing') {
+  if (user.plan === 'trial') {
     if (user.trialEndsAt) {
       const trialEnds = new Date(user.trialEndsAt).getTime();
       return trialEnds > Date.now();

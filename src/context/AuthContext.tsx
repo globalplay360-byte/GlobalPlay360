@@ -39,7 +39,7 @@ function mirrorUserFromSubscription(
 ): User | null {
   if (!user) return null;
 
-  if (subscription) {
+  if (subscription && (hasTrialAccess || hasPaidAccess)) {
     return {
       ...user,
       plan: subscription.status === 'trialing' ? 'trial' : 'premium',
@@ -111,19 +111,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         lastSubStatus = currentStatus;
 
         setState((s) => {
-          const hasStripeTrialAccess = sub?.status === 'trialing' && !!sub.trial_end_seconds && sub.trial_end_seconds * 1000 > Date.now();
+          const hasStripeTrialAccess =
+            sub?.status === 'trialing' &&
+            !sub.cancel_at_period_end &&
+            !!sub.trial_end_seconds &&
+            sub.trial_end_seconds * 1000 > Date.now();
+
+          const hasStripePaidAccess =
+            sub?.status === 'active' &&
+            !sub.cancel_at_period_end &&
+            !!sub.current_period_end_seconds &&
+            sub.current_period_end_seconds * 1000 > Date.now();
 
           const hasProfileTrialAccess =
             !sub &&
             !!s.user &&
-            (s.user.plan === 'trial' || s.user.subscriptionStatus === 'trialing') &&
+            s.user.plan === 'trial' &&
             !!s.user.trialEndsAt &&
             new Date(s.user.trialEndsAt).getTime() > Date.now();
 
           const hasTrialAccess = hasStripeTrialAccess || hasProfileTrialAccess;
 
           const hasPaidAccess =
-            sub?.status === 'active' ||
+            hasStripePaidAccess ||
             s.user?.plan === 'pro';
 
           const computedPlan: ActivePlan = hasPaidAccess || hasTrialAccess ? 'premium' : 'free';
