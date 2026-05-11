@@ -1,13 +1,17 @@
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   query,
   orderBy,
   limit as fbLimit,
+  serverTimestamp,
+  writeBatch,
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { mapDocs } from '@/utils/firestoreHelpers';
-import type { User, Opportunity, Application } from '@/types';
+import type { User, Opportunity, Application, UserRole } from '@/types';
 
 export interface AdminMetrics {
   users: {
@@ -34,7 +38,7 @@ const MS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 function isPremiumUser(u: User): boolean {
   if (u.plan === 'premium' || u.plan === 'pro') return true;
   if (u.subscriptionStatus === 'active') return true;
-  if (u.subscriptionStatus === 'trialing' && u.trialEndsAt) {
+  if (u.plan === 'trial' && u.trialEndsAt) {
     return new Date(u.trialEndsAt).getTime() > Date.now();
   }
   return false;
@@ -114,4 +118,111 @@ export async function listAllOpportunitiesWithStats(): Promise<OpportunityWithSt
   }
 
   return opps.map((o) => ({ ...o, applicationsCount: countByOppId.get(o.id) ?? 0 }));
+}
+
+export async function adminUpdateUserRole(targetUserId: string, nextRole: UserRole, actorUserId: string): Promise<void> {
+  const userRef = doc(db, 'users', targetUserId);
+  const snap = await getDoc(userRef);
+
+  if (!snap.exists()) {
+    throw new Error('L\'usuari no existeix.');
+  }
+
+  const currentUser = { uid: snap.id, ...snap.data() } as User;
+  if (currentUser.role === nextRole) {
+    return;
+  }
+
+  const batch = writeBatch(db);
+  const auditRef = doc(collection(db, 'admin_audit_logs'));
+
+  batch.update(userRef, { role: nextRole });
+  batch.set(auditRef, {
+    actorUserId,
+    action: 'user.role_changed',
+    targetType: 'user',
+    targetId: targetUserId,
+    metadata: {
+      previousRole: currentUser.role,
+      nextRole,
+      displayName: currentUser.displayName,
+    },
+    createdAt: new Date().toISOString(),
+    _createdAt: serverTimestamp(),
+  });
+
+  await batch.commit();
+}
+
+export async function adminUpdateOpportunity(
+  id: string,
+  data: Partial<Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>>,
+  actorUserId: string,
+): Promise<void> {
+  const opportunityRef = doc(db, 'opportunities', id);
+  const snap = await getDoc(opportunityRef);
+
+  if (!snap.exists()) {
+    throw new Error('L\'oportunitat no existeix.');
+  }
+
+  const previous = { id: snap.id, ...snap.data() } as Opportunity;
+  const changedFields = Object.keys(data).filter((field) => {
+    const key = field as keyof typeof data;
+    return JSON.stringify(previous[key as keyof Opportunity]) !== JSON.stringify(data[key]);
+  });
+
+  const batch = writeBatch(db);
+  const auditRef = doc(collection(db, 'admin_audit_logs'));
+
+  batch.update(opportunityRef, {
+    ...data,
+    _updatedAt: serverTimestamp(),
+  });
+  batch.set(auditRef, {
+    actorUserId,
+    action: 'opportunity.updated',
+    targetType: 'opportunity',
+    targetId: id,
+    metadata: {
+      title: previous.title,
+      clubId: previous.clubId,
+      changedFields,
+    },
+    createdAt: new Date().toISOString(),
+    _createdAt: serverTimestamp(),
+  });
+
+  await batch.commit();
+}
+
+export async function adminDeleteOpportunity(id: string, actorUserId: string): Promise<void> {
+  const opportunityRef = doc(db, 'opportunities', id);
+  const snap = await getDoc(opportunityRef);
+
+  if (!snap.exists()) {
+    throw new Error('L\'oportunitat no existeix.');
+  }
+
+  const previous = { id: snap.id, ...snap.data() } as Opportunity;
+  const batch = writeBatch(db);
+  const auditRef = doc(collection(db, 'admin_audit_logs'));
+
+  batch.delete(opportunityRef);
+  batch.set(auditRef, {
+    actorUserId,
+    action: 'opportunity.deleted',
+    targetType: 'opportunity',
+    targetId: id,
+    metadata: {
+      title: previous.title,
+      clubId: previous.clubId,
+      sport: previous.sport,
+      status: previous.status,
+    },
+    createdAt: new Date().toISOString(),
+    _createdAt: serverTimestamp(),
+  });
+
+  await batch.commit();
 }

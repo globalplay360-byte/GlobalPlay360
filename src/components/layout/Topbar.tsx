@@ -5,9 +5,19 @@ import { Link } from 'react-router-dom';
 
 interface TopbarProps {
   onMobileMenuClick?: () => void;
+  isVerified?: boolean;
+  sendingVerificationEmail?: boolean;
+  verificationEmailSent?: boolean;
+  onResendVerificationEmail?: () => void;
 }
 
-export default function Topbar({ onMobileMenuClick }: TopbarProps) {
+export default function Topbar({
+  onMobileMenuClick,
+  isVerified = true,
+  sendingVerificationEmail = false,
+  verificationEmailSent = false,
+  onResendVerificationEmail,
+}: TopbarProps) {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const unreadMessages = useUnreadCount();
@@ -15,31 +25,42 @@ export default function Topbar({ onMobileMenuClick }: TopbarProps) {
   return (
     <header className="h-16 bg-[#0B1120] border-b border-[#1F2937] flex items-center justify-between px-4 sm:px-6 z-10 sticky top-0">
 
-      {/* Mobile Menu Button */}
-      <div className="flex lg:hidden items-center">
+      <div className="flex items-center min-w-0">
         <button
           type="button"
           onClick={onMobileMenuClick}
-          className="text-[#9CA3AF] hover:text-gray-100/90 hover:bg-[#1F2937]/60 p-2 -ml-1 rounded-lg transition-all duration-fast ease-out"
+          className="lg:hidden text-[#9CA3AF] hover:text-gray-100/90 hover:bg-[#1F2937]/60 p-2 -ml-1 rounded-lg transition-all duration-fast ease-out"
           aria-label={t('topbar.openMenu', 'Obrir menú')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-      </div>
 
-      {/* Global Search */}
-      <div className="hidden md:flex flex-1 max-w-md ml-4 lg:ml-0 relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg className="w-4 h-4 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        </div>
-        <input
-          type="search"
-          aria-label={t('topbar.searchPlaceholder', 'Cerca jugadors, clubs, estadístiques...')}
-          placeholder={t('topbar.searchPlaceholder', 'Cerca jugadors, clubs, estadístiques...')}
-          className="w-full bg-[#0F172A] text-gray-100 border border-[#1F2937] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[#3B82F6] focus-visible:ring-2 focus-visible:ring-[#3B82F6]/40 transition-colors duration-fast ease-out"
-        />
+        {!isVerified && (
+          <div className="ml-2 sm:ml-3 flex items-center gap-2 rounded-lg border border-[#3B82F6]/25 bg-[#3B82F6]/10 px-2.5 py-1.5 sm:px-3 min-w-0">
+            <svg className="w-4 h-4 text-[#60A5FA] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span className="hidden md:block text-xs text-[#CBD5E1] truncate">
+              {t('dashboardLayout.banner.unverifiedText')}
+            </span>
+            <button
+              type="button"
+              onClick={onResendVerificationEmail}
+              disabled={sendingVerificationEmail || verificationEmailSent}
+              className={`text-xs font-semibold whitespace-nowrap transition-colors ${
+                verificationEmailSent
+                  ? 'text-green-400 cursor-default'
+                  : 'text-[#60A5FA] hover:text-[#93C5FD]'
+              }`}
+            >
+              {sendingVerificationEmail
+                ? t('dashboardLayout.banner.sending')
+                : verificationEmailSent
+                  ? t('dashboardLayout.banner.sent')
+                  : t('dashboardLayout.banner.resend')}
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">

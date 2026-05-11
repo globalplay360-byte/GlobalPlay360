@@ -295,12 +295,18 @@ export default function ApplicationsPage() {
                       </span>
                     </>
                   ) : (
-                    <span
-                      className="text-gray-200 font-medium hover:text-[#3B82F6] cursor-pointer transition-colors duration-fast"
-                      onClick={() => app.club?.uid && navigate(`/dashboard/profile/${app.club.uid}`)}
-                    >
-                      {app.club?.displayName || t('applications.unknownClub')}
-                    </span>
+                    isFree ? (
+                      <span className="text-gray-200 font-medium">
+                        {t('applications.anonymousClub', 'Club verificat')}
+                      </span>
+                    ) : (
+                      <span
+                        className="text-gray-200 font-medium hover:text-[#3B82F6] cursor-pointer transition-colors duration-fast"
+                        onClick={() => app.club?.uid && navigate(`/dashboard/profile/${app.club.uid}`)}
+                      >
+                        {app.club?.displayName || t('applications.unknownClub')}
+                      </span>
+                    )
                   )}
                 </p>
 

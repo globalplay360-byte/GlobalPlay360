@@ -428,9 +428,16 @@ export default function OpportunitiesPage() {
                   {user?.role !== 'club' && (
                     <button
                       onClick={() => navigate(`/dashboard/opportunities/${opp.id}`, { state: { from: 'marketplace' } })}
-                      className="inline-flex items-center px-3.5 py-2 text-[13px] font-semibold tracking-wide text-[#0B1220] bg-[#EAB308] hover:bg-[#F5C518] rounded-lg shadow-sm hover:shadow-[0_8px_20px_-10px_rgba(234,179,8,0.55)] transition-all duration-base active:scale-[0.98]"
+                      disabled={appliedOppIds.has(opp.id)}
+                      className={`inline-flex items-center px-3.5 py-2 text-[13px] font-semibold tracking-wide rounded-lg transition-all duration-base ${
+                        appliedOppIds.has(opp.id)
+                          ? 'text-[#9CA3AF] bg-[#1F2937]/70 border border-[#2A3447]/70 cursor-not-allowed shadow-none'
+                          : 'text-[#0B1220] bg-[#EAB308] hover:bg-[#F5C518] shadow-sm hover:shadow-[0_8px_20px_-10px_rgba(234,179,8,0.55)] active:scale-[0.98]'
+                      }`}
                     >
-                      {t('opportunities.apply')}
+                      {appliedOppIds.has(opp.id)
+                        ? t('opportunities.alreadyApplied', 'Candidatura enviada')
+                        : t('opportunities.apply')}
                     </button>
                   )}
                 </div>

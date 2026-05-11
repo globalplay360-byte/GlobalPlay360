@@ -1,21 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import PageHeader from '@/components/ui/PageHeader';
 import { Spinner } from '@/components/ui/Spinner';
 import { Badge } from '@/components/ui/Badge';
-import { listAllOpportunitiesWithStats, type OpportunityWithStats } from '@/services/admin.service';
+import { adminDeleteOpportunity, listAllOpportunitiesWithStats, type OpportunityWithStats } from '@/services/admin.service';
 import { formatLocation } from '@/utils/location';
 
 type StatusFilter = 'all' | 'open' | 'closed';
 
 export default function AdminOpportunitiesPage() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [opps, setOpps] = useState<OpportunityWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [search, setSearch] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,6 +51,29 @@ export default function AdminOpportunitiesPage() {
 
   const totalApplications = useMemo(() => opps.reduce((sum, o) => sum + o.applicationsCount, 0), [opps]);
   const avgPerOpp = opps.length > 0 ? (totalApplications / opps.length).toFixed(1) : '0';
+
+  const handleDelete = async (opportunity: OpportunityWithStats) => {
+    if (!user?.uid) {
+      setError(t('admin.opps.deleteError', 'No s\'ha pogut eliminar l\'oportunitat.'));
+      return;
+    }
+
+    if (!window.confirm(t('admin.opps.deleteConfirm', 'Segur que vols eliminar aquesta oferta? Aquesta acció no es pot desfer.'))) {
+      return;
+    }
+
+    try {
+      setDeletingId(opportunity.id);
+      await adminDeleteOpportunity(opportunity.id, user.uid);
+      setOpps((prev) => prev.filter((item) => item.id !== opportunity.id));
+      setError(null);
+    } catch (err) {
+      console.error('[admin] failed to delete opportunity:', err);
+      setError(t('admin.opps.deleteError', 'No s\'ha pogut eliminar l\'oportunitat.'));
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -117,13 +143,29 @@ export default function AdminOpportunitiesPage() {
                     <td className="px-5 py-3 text-[#9CA3AF] tabular-nums">
                       {o.createdAt ? new Date(o.createdAt).toLocaleDateString() : '—'}
                     </td>
-                    <td className="px-5 py-3 text-right">
-                      <Link
-                        to={`/dashboard/opportunities/${o.id}`}
-                        className="text-[12px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors"
-                      >
-                        {t('admin.opps.view', 'Veure')}
-                      </Link>
+                    <td className="px-5 py-3">
+                      <div className="flex items-center justify-end gap-3">
+                        <Link
+                          to={`/dashboard/opportunities/${o.id}`}
+                          className="text-[12px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors"
+                        >
+                          {t('admin.opps.view', 'Veure')}
+                        </Link>
+                        <Link
+                          to={`/dashboard/opportunities/${o.id}/edit`}
+                          className="text-[12px] font-semibold text-amber-300 hover:text-amber-200 transition-colors"
+                        >
+                          {t('admin.opps.edit', 'Editar')}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => void handleDelete(o)}
+                          disabled={deletingId === o.id}
+                          className="text-[12px] font-semibold text-red-300 hover:text-red-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {deletingId === o.id ? t('admin.opps.deleting', 'Eliminant...') : t('admin.opps.delete', 'Eliminar')}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
