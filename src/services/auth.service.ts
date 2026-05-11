@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  getAdditionalUserInfo,
   signOut,
   updateProfile,
   sendPasswordResetEmail,
@@ -15,6 +16,7 @@ import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import type { User, UserRole, PlanType } from '@/types';
 import { getUserPrivateProfile, migrateLegacyPrivateFields } from './profile.service';
+import { activateSingleSession } from './session.service';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -61,6 +63,7 @@ async function createUserDoc(
   displayName: string,
   role: UserRole,
   plan: PlanType = 'trial',
+  photoURL?: string | null,
 ): Promise<User> {
   const trialEnd = trialEndDate();
   const createdAt = new Date().toISOString();
@@ -68,6 +71,7 @@ async function createUserDoc(
   // Doc públic: camps no sensibles del marketplace
   const publicUserData = {
     displayName,
+    ...(photoURL ? { photoURL } : {}),
     role,
     plan,
     subscriptionStatus: 'trialing' as const,
@@ -112,6 +116,7 @@ export async function loginWithEmail(
   password: string,
 ): Promise<User> {
   const cred: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+  await activateSingleSession();
   const userDoc = await getUserDoc(cred.user.uid);
   if (!userDoc) throw new Error('User document not found in Firestore');
   return userDoc;
@@ -133,7 +138,9 @@ export async function registerWithEmail(
   await sendEmailVerification(cred.user, { url });
 
   // Create Firestore user document with trial
-  return createUserDoc(cred.user.uid, email, displayName, role);
+  const user = await createUserDoc(cred.user.uid, email, displayName, role, 'trial', cred.user.photoURL);
+  await activateSingleSession();
+  return user;
 }
 
 export async function loginWithGoogle(
@@ -141,29 +148,31 @@ export async function loginWithGoogle(
 ): Promise<User> {
   const cred = await signInWithPopup(auth, googleProvider);
   const { uid, email, displayName, photoURL } = cred.user;
+  const isNewUser = getAdditionalUserInfo(cred)?.isNewUser === true;
 
-  // If user doc already exists, return it (returning user)
-  const existing = await getUserDoc(uid);
-  if (existing) return existing;
-
-  // First-time Google login → create user doc
-  const user = await createUserDoc(
-    uid,
-    email ?? '',
-    displayName ?? 'User',
-    role,
-  );
-
-  if (photoURL) {
-    await setDoc(doc(db, 'users', uid), { photoURL }, { merge: true });
-    user.photoURL = photoURL;
+  if (isNewUser) {
+    await createUserDoc(
+      uid,
+      email ?? '',
+      displayName ?? 'User',
+      role,
+      'trial',
+      photoURL,
+    );
   }
 
-  return user;
+  await activateSingleSession();
+  const userDoc = await getUserDoc(uid);
+  if (!userDoc) throw new Error('User document not found in Firestore');
+  return userDoc;
 }
 
 export async function logout(): Promise<void> {
   await signOut(auth);
+}
+
+export async function ensureSingleSession(): Promise<void> {
+  await activateSingleSession();
 }
 
 // ── Custom Auth flows ────────────────────────────────────

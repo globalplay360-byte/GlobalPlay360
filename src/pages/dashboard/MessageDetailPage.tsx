@@ -120,6 +120,7 @@ export default function MessageDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation();
   const { user, activePlan, subscriptionLoading } = useAuth();
+  const retentionDays = 90;
 
   const currentUserId = user?.uid || '';
 
@@ -251,6 +252,18 @@ export default function MessageDetailPage() {
           </p>
         </div>
       )}
+
+      <div className="border-b border-[#2A3447]/70 bg-[#0F172A]/80 px-4 py-3 shrink-0 flex items-start gap-3">
+        <div className="mt-0.5 text-[#60A5FA] shrink-0">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <p className="text-[13px] leading-relaxed text-[#9CA3AF]">
+          <span className="font-medium text-gray-100/90">{t('messages.retentionTitle', 'Retenció de converses')}.</span>{' '}
+          {t('messages.retentionDesc', 'Les converses inactives s\'eliminen automàticament després de {{days}} dies sense activitat.', { days: retentionDays })}
+        </p>
+      </div>
 
       {/* Timeline Zone */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col gap-1 custom-scrollbar">

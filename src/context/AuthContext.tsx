@@ -1,8 +1,15 @@
 import { createContext, useContext, useState, useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/services/firebase';
+import i18n from '@/i18n';
 import type { User, UserRole } from '@/types';
 import * as authService from '@/services/auth.service';
+import {
+  getLocalDeviceId,
+  getCurrentAuthTimeSeconds,
+  isSessionRevokedError,
+  subscribeToAuthSession,
+} from '@/services/session.service';
 import { subscribeToActiveSubscription, type StripeSubscription } from '@/services/stripe.service';
 
 export type ActivePlan = 'free' | 'premium';
@@ -25,6 +32,7 @@ interface AuthContextValue extends AuthState {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+const SESSION_REVOKED_MESSAGE = i18n.t('authSession.revoked');
 
 function toIsoDate(seconds: number | null | undefined, fallback: string): string {
   if (!seconds) return fallback;
@@ -73,8 +81,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        const userDoc = await authService.getUserDoc(firebaseUser.uid);
-        setState((s) => ({ ...s, user: userDoc, loading: false, error: null }));
+        try {
+          await authService.ensureSingleSession();
+          const userDoc = await authService.getUserDoc(firebaseUser.uid);
+          setState((s) => ({ ...s, user: userDoc, loading: false, error: null }));
+        } catch (err) {
+          const message = isSessionRevokedError(err)
+            ? SESSION_REVOKED_MESSAGE
+            : err instanceof Error
+              ? err.message
+              : 'No s\'ha pogut iniciar la sessió.';
+
+          await authService.logout().catch(() => undefined);
+          setState((s) => ({
+            ...s,
+            user: null,
+            activePlan: 'free',
+            subscription: null,
+            subscriptionLoading: false,
+            loading: false,
+            error: message,
+          }));
+        }
       } else {
         setState((s) => ({
           ...s,
@@ -89,6 +117,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const uid = state.user?.uid;
+    if (!uid) return;
+
+    const unsubscribe = subscribeToAuthSession(
+      uid,
+      (session) => {
+        if (!session?.validAfterSeconds) return;
+
+        if (session.lastLoginDeviceId && session.lastLoginDeviceId !== getLocalDeviceId()) {
+          void (async () => {
+            await authService.logout().catch(() => undefined);
+            setState({
+              user: null,
+              activePlan: 'free',
+              subscription: null,
+              subscriptionLoading: false,
+              loading: false,
+              error: SESSION_REVOKED_MESSAGE,
+            });
+          })();
+          return;
+        }
+
+        void (async () => {
+          const authTimeSeconds = await getCurrentAuthTimeSeconds();
+          if (authTimeSeconds > 0 && authTimeSeconds < session.validAfterSeconds) {
+            await authService.logout().catch(() => undefined);
+            setState({
+              user: null,
+              activePlan: 'free',
+              subscription: null,
+              subscriptionLoading: false,
+              loading: false,
+              error: SESSION_REVOKED_MESSAGE,
+            });
+          }
+        })();
+      },
+      () => undefined,
+    );
+
+    return unsubscribe;
+  }, [state.user?.uid]);
 
   // Listen to Stripe subscription in real-time — font de veritat del pla actiu
   useEffect(() => {

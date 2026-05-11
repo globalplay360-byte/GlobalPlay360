@@ -88,6 +88,7 @@ export default function MessagesPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
   const [conversations, setConversations] = useState<ConversationExtended[]>([]);
   const [loading, setLoading] = useState(true);
+  const retentionDays = 90;
 
   useEffect(() => {
     if (!user) return;
@@ -125,6 +126,22 @@ export default function MessagesPage() {
         title={t('messages.pageTitle', 'Missatges Directes')}
         description={t('messages.pageSubtitle', 'Comunica\'t amb els clubs i entrenadors per gestionar les teves oportunitats.')}
       />
+
+      <div className="mb-6 rounded-2xl border border-[#2A3447]/70 bg-gradient-to-b from-[#141C2E] to-[#101827] px-4 py-4 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_24px_-18px_rgba(0,0,0,0.75)]">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 text-[#60A5FA] shrink-0">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-100/90">{t('messages.retentionTitle', 'Retenció de converses')}</p>
+            <p className="mt-1 text-sm leading-relaxed text-[#9CA3AF]">
+              {t('messages.retentionDesc', 'Les converses inactives s\'eliminen automàticament després de {{days}} dies sense activitat.', { days: retentionDays })}
+            </p>
+          </div>
+        </div>
+      </div>
 
       {activePlan === 'free' && (
         <div className="mb-6">
