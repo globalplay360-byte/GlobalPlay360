@@ -138,6 +138,7 @@ export interface Conversation {
   participants: string[];
   lastMessage: string;
   updatedAt: string;
+  hasMessages?: boolean;
   isPremiumLocked?: boolean;
   unreadCount?: Record<string, number>;
 }
@@ -149,6 +150,21 @@ export interface Message {
   text: string;
   createdAt: string;
   read: boolean;
+}
+
+export type AdminAuditAction =
+  | 'user.role_changed'
+  | 'opportunity.updated'
+  | 'opportunity.deleted';
+
+export interface AdminAuditLog {
+  id: string;
+  actorUserId: string;
+  action: AdminAuditAction;
+  targetType: 'user' | 'opportunity';
+  targetId: string;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
 }
 
 export interface Subscription {

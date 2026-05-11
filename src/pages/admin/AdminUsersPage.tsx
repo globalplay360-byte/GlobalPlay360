@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import PageHeader from '@/components/ui/PageHeader';
 import { Spinner } from '@/components/ui/Spinner';
 import { Badge } from '@/components/ui/Badge';
-import { listAllUsers } from '@/services/admin.service';
+import { adminUpdateUserRole, listAllUsers } from '@/services/admin.service';
 import type { User, UserRole, PlanType } from '@/types';
 
 type RoleFilter = 'all' | UserRole;
@@ -12,12 +13,15 @@ type PlanFilter = 'all' | PlanType;
 
 export default function AdminUsersPage() {
   const { t } = useTranslation();
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
   const [planFilter, setPlanFilter] = useState<PlanFilter>('all');
   const [search, setSearch] = useState('');
+  const [draftRoles, setDraftRoles] = useState<Record<string, UserRole>>({});
+  const [savingUserId, setSavingUserId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,6 +30,7 @@ export default function AdminUsersPage() {
       .then((u) => {
         if (!cancelled) {
           setUsers(u);
+          setDraftRoles(Object.fromEntries(u.map((item) => [item.uid, item.role])));
           setError(null);
         }
       })
@@ -48,6 +53,34 @@ export default function AdminUsersPage() {
       return true;
     });
   }, [users, roleFilter, planFilter, search]);
+
+  const handleRoleSave = async (targetUser: User) => {
+    const nextRole = draftRoles[targetUser.uid] ?? targetUser.role;
+    if (!currentUser?.uid || nextRole === targetUser.role) {
+      return;
+    }
+
+    if (
+      targetUser.uid === currentUser.uid
+      && targetUser.role === 'admin'
+      && nextRole !== 'admin'
+      && !window.confirm(t('admin.users.confirmSelfRoleChange', 'Si et treus el rol admin, perdràs accés al panell. Vols continuar?'))
+    ) {
+      return;
+    }
+
+    try {
+      setSavingUserId(targetUser.uid);
+      await adminUpdateUserRole(targetUser.uid, nextRole, currentUser.uid);
+      setUsers((prev) => prev.map((item) => item.uid === targetUser.uid ? { ...item, role: nextRole } : item));
+      setError(null);
+    } catch (err) {
+      console.error('[admin] failed to update user role:', err);
+      setError(t('admin.users.roleUpdateError', 'No s\'ha pogut actualitzar el rol.'));
+    } finally {
+      setSavingUserId(null);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -125,7 +158,20 @@ export default function AdminUsersPage() {
                       </div>
                     </Td>
                     <Td>
-                      <Badge variant="default">{t(`admin.role.${u.role}`, u.role)}</Badge>
+                      <div className="flex items-center gap-3 justify-between">
+                        <Badge variant="default">{t(`admin.role.${u.role}`, u.role)}</Badge>
+                        <select
+                          value={draftRoles[u.uid] ?? u.role}
+                          onChange={(e) => setDraftRoles((prev) => ({ ...prev, [u.uid]: e.target.value as UserRole }))}
+                          className="bg-[#0F172A] border border-[#1F2937] text-gray-100 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6]"
+                          disabled={savingUserId === u.uid}
+                        >
+                          <option value="player">{t('admin.role.player', 'Jugadors')}</option>
+                          <option value="coach">{t('admin.role.coach', 'Entrenadors')}</option>
+                          <option value="club">{t('admin.role.club', 'Clubs')}</option>
+                          <option value="admin">{t('admin.role.admin', 'Administradors')}</option>
+                        </select>
+                      </div>
                     </Td>
                     <Td>
                       <PlanBadge plan={u.plan} />
@@ -136,12 +182,22 @@ export default function AdminUsersPage() {
                       </span>
                     </Td>
                     <Td align="right">
-                      <Link
-                        to={`/profile/${u.uid}`}
-                        className="text-[12px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors"
-                      >
-                        {t('admin.users.viewProfile', 'Veure perfil')}
-                      </Link>
+                      <div className="flex items-center justify-end gap-3">
+                        <Link
+                          to={`/profile/${u.uid}`}
+                          className="text-[12px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors"
+                        >
+                          {t('admin.users.viewProfile', 'Veure perfil')}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => void handleRoleSave(u)}
+                          disabled={savingUserId === u.uid || (draftRoles[u.uid] ?? u.role) === u.role}
+                          className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-[12px] font-semibold text-gray-100 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          {savingUserId === u.uid ? t('admin.users.savingRole', 'Guardant...') : t('admin.users.saveRole', 'Guardar rol')}
+                        </button>
+                      </div>
                     </Td>
                   </tr>
                 ))}

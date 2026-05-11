@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
+import { adminUpdateOpportunity } from '@/services/admin.service';
 import { getOpportunityById, updateOpportunity } from '@/services/opportunities.service';
 import { Button } from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
@@ -72,8 +73,9 @@ export default function EditOpportunityPage() {
     );
   }
 
-  // Only the owner club can edit
-  if (user?.uid !== opportunity.clubId) {
+  const canEditOpportunity = user?.uid === opportunity.clubId || user?.role === 'admin';
+
+  if (!canEditOpportunity) {
     return (
       <div className="p-4 sm:p-6 max-w-3xl mx-auto">
         <EmptyState
@@ -91,6 +93,12 @@ export default function EditOpportunityPage() {
   }
 
   const handleUpdate = async (data: Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>) => {
+    if (user?.role === 'admin' && user.uid) {
+      await adminUpdateOpportunity(opportunity.id, data, user.uid);
+      navigate('/admin/opportunities');
+      return;
+    }
+
     await updateOpportunity(opportunity.id, data);
     navigate(`/dashboard/opportunities/${opportunity.id}`, { state: { from: 'mine' } });
   };
@@ -102,17 +110,17 @@ export default function EditOpportunityPage() {
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full">
       <div className="mb-6 lg:mb-8">
         <button
-          onClick={() => navigate(`/dashboard/opportunities/mine`)}
+          onClick={() => navigate(user?.role === 'admin' ? '/admin/opportunities' : '/dashboard/opportunities/mine')}
           className="inline-flex items-center text-sm font-medium text-[#9CA3AF] hover:text-gray-100 transition-all duration-fast ease-out active:scale-[0.98] hover:-translate-x-1 mb-4"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Tornar a Les Meves Ofertes
+          {user?.role === 'admin' ? 'Tornar a Administració d\'Oportunitats' : 'Tornar a Les Meves Ofertes'}
         </button>
         <PageHeader 
           title={t("opportunityForm.editTitle")}
-          description="Modifica els detalls de la teva oferta publicada."
+          description={user?.role === 'admin' ? "Modera i corregeix una oferta publicada." : "Modifica els detalls de la teva oferta publicada."}
         />
       </div>
 
@@ -122,7 +130,7 @@ export default function EditOpportunityPage() {
           onSubmit={handleUpdate}
           submitLabel={t("opportunityForm.saveChangesBtn")}
           submittingLabel={t("opportunityForm.savingBtn")}
-          onCancel={() => navigate(`/dashboard/opportunities/mine`)}
+          onCancel={() => navigate(user?.role === 'admin' ? '/admin/opportunities' : '/dashboard/opportunities/mine')}
         />
       </div>
     </div>
