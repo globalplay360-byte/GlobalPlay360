@@ -184,7 +184,7 @@ export default function AdminUsersPage() {
                     <Td align="right">
                       <div className="flex items-center justify-end gap-3">
                         <Link
-                          to={`/profile/${u.uid}`}
+                          to={`/dashboard/profile/${u.uid}`}
                           className="text-[12px] font-semibold text-[#60A5FA] hover:text-[#93C5FD] transition-colors"
                         >
                           {t('admin.users.viewProfile', 'Veure perfil')}
