@@ -4,6 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from '@/components/ui/Spinner';
 
+const LOGIN_BACKGROUND_VIDEO = 'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/global_home.mp4?alt=media&token=d56dab23-e1be-4f3a-a9b6-bd7faeba7b4b';
+
 export default function LoginPage() {
   const { login, loginWithGoogle, error: authError } = useAuth();
   const navigate = useNavigate();
@@ -56,8 +58,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-gray-100">
-      <div className="w-full max-w-md bg-[#111827] rounded-xl border border-[#1F2937] shadow-xl p-6 sm:p-8 relative overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center bg-[#0B1120] p-4 font-sans text-gray-100 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      >
+        <source src={LOGIN_BACKGROUND_VIDEO} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-[#0B1120]/72" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_42%),linear-gradient(180deg,rgba(11,17,32,0.28)_0%,rgba(11,17,32,0.78)_100%)]" aria-hidden="true" />
+
+      <div className="w-full max-w-md bg-[#111827]/92 backdrop-blur-sm rounded-xl border border-[#1F2937] shadow-xl p-6 sm:p-8 relative overflow-hidden z-10">
         
         {/* Glow de decoració per donar toc SaaS */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-50" />

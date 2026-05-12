@@ -75,9 +75,14 @@
   },
   "navbar": {
     "banner": {
+      "badge": "Founder Members",
       "title": "Founding Members – Free Access",
+      "active": "Active campaign",
       "description": "Be one of the first 100 members to join and get free Premium access until July 1, 2026!",
-      "cta": "Claim Your Status"
+      "cta": "Claim Your Status",
+      "remainingDetailed": "{{count}} of {{total}} spots left",
+      "claimedCount": "{{count}} members already confirmed",
+      "orderNote": "Automatic assignment by real claim order validated on the backend."
     },
     "brand": "Global Play 360",
     "home": "Home",

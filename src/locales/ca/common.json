@@ -75,9 +75,14 @@
   },
   "navbar": {
     "banner": {
+      "badge": "Founder Members",
       "title": "Membres Fundadors – Accés Gratuït",
+      "active": "Campanya activa",
       "description": "Sigues un dels primers 100 membres en unir-te i obtén accés Premium gratuït fins al 1 de juliol de 2026!",
-      "cta": "Reclama el teu Estatus"
+      "cta": "Reclama el teu Estatus",
+      "remainingDetailed": "Queden {{count}} de {{total}} places",
+      "claimedCount": "{{count}} membres ja confirmats",
+      "orderNote": "Assignació automàtica per ordre real de reclamació validada al backend."
     },
     "brand": "Global Play 360",
     "home": "Inici",
