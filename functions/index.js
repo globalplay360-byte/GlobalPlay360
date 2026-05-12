@@ -3,12 +3,12 @@ import { FieldValue, Timestamp, getFirestore } from 'firebase-admin/firestore';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { MESSAGE_RETENTION_DAYS, getRetentionCutoffDate } from './retention.js';
 
 initializeApp();
 setGlobalOptions({ region: 'europe-west1', maxInstances: 10 });
 
 const db = getFirestore();
-const MESSAGE_RETENTION_DAYS = 90;
 const CLEANUP_BATCH_LIMIT = 25;
 
 async function deleteConversationWithMessages(conversationId) {
@@ -71,7 +71,7 @@ export const cleanupInactiveConversations = onSchedule({
   timeZone: 'Europe/Madrid',
   retryCount: 1,
 }, async () => {
-  const cutoffDate = new Date(Date.now() - MESSAGE_RETENTION_DAYS * 24 * 60 * 60 * 1000);
+  const cutoffDate = getRetentionCutoffDate();
   const cutoffTimestamp = Timestamp.fromDate(cutoffDate);
 
   let deletedCount = 0;

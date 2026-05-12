@@ -57,7 +57,11 @@ function ConversationListItem({ conv, currentUserId, activePlan }: { conv: Conve
         </div>
 
         <p className={`text-sm truncate leading-relaxed ${isLocked ? 'text-[#4B5563] blur-[2px] select-none' : hasUnread ? 'text-gray-300 font-medium' : 'text-[#9CA3AF] group-hover:text-gray-300 transition-colors duration-fast'}`}>
-          {isLocked ? t('messages.protectedMessage', 'Missatge protegit') : conv.lastMessage || t('messages.newConversation', 'Nova conversa')}
+          {isLocked
+            ? t('messages.protectedMessage', 'Missatge protegit')
+            : conv.hasMessages
+              ? t('messages.activeConversationPreview', 'Conversa activa')
+              : t('messages.newConversation', 'Nova conversa')}
         </p>
       </div>
 

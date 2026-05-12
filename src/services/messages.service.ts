@@ -30,12 +30,14 @@ export function subscribeToUserConversations(
   return onSnapshot(q, (snapshot) => {
     const convs: Conversation[] = snapshot.docs.map(d => {
       const data = d.data();
+      const hasMessages = data.hasMessages === true || (typeof data.lastMessage === 'string' && data.lastMessage.trim() !== '');
       return {
         id: d.id,
         participants: data.participants || [],
         lastMessage: data.lastMessage || '',
         // Use standard date if timestamp is missing or resolving
         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+        hasMessages,
         isPremiumLocked: data.isPremiumLocked || false,
         unreadCount: data.unreadCount || {}
       };
@@ -94,7 +96,8 @@ export async function sendMessage(conversationId: string, senderId: string, text
   });
 
   await updateDoc(conversationRef, {
-    lastMessage: text,
+    lastMessage: '',
+    hasMessages: true,
     updatedAt: now,
     ...unreadUpdates
   });
@@ -129,6 +132,7 @@ export async function getOrCreateConversation(userId1: string, userId2: string):
   await setDoc(newRef, {
     participants: [userId1, userId2],
     lastMessage: '',
+    hasMessages: false,
     updatedAt: serverTimestamp(),
     isPremiumLocked: false,
     unreadCount: { [userId1]: 0, [userId2]: 0 }
