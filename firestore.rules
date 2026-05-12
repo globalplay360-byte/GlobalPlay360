@@ -87,7 +87,8 @@ service cloud.firestore {
       match /private/{docId} {
         allow read: if hasValidSingleSession()
                     && (request.auth.uid == userId || hasPremium());
-        allow create, update: if hasValidSingleSession() && request.auth.uid == userId;
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update: if hasValidSingleSession() && request.auth.uid == userId;
         allow delete: if false;
       }
     }
