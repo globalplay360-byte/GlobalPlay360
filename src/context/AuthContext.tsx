@@ -17,6 +17,7 @@ export type ActivePlan = 'free' | 'premium';
 interface AuthState {
   user: User | null;
   activePlan: ActivePlan;
+  hasFounderAccess: boolean;
   subscription: StripeSubscription | null;
   subscriptionLoading: boolean;
   loading: boolean;
@@ -71,10 +72,26 @@ function hasStripeRoleEntitlement(role: unknown): role is 'premium' | 'pro' {
   return role === 'premium' || role === 'pro';
 }
 
+function hasFounderAccessClaim(claims: Record<string, unknown> | undefined): boolean {
+  if (!claims || claims.founderAccess !== true) {
+    return false;
+  }
+
+  const founderAccessUntil = claims.founderAccessUntil;
+  return typeof founderAccessUntil === 'number' && founderAccessUntil * 1000 > Date.now();
+}
+
+function hasStripeTrialWindow(subscription: StripeSubscription | null): boolean {
+  return !!subscription?.trial_end_seconds
+    && subscription.trial_end_seconds * 1000 > Date.now()
+    && !subscription.cancel_at_period_end;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
     activePlan: 'free',
+    hasFounderAccess: false,
     subscription: null,
     subscriptionLoading: false,
     loading: true,   // starts true until onAuthStateChanged resolves
@@ -101,6 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             ...s,
             user: null,
             activePlan: 'free',
+            hasFounderAccess: false,
             subscription: null,
             subscriptionLoading: false,
             loading: false,
@@ -112,6 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ...s,
           user: null,
           activePlan: 'free',
+          hasFounderAccess: false,
           subscription: null,
           subscriptionLoading: false,
           loading: false,
@@ -137,6 +156,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setState({
               user: null,
               activePlan: 'free',
+              hasFounderAccess: false,
               subscription: null,
               subscriptionLoading: false,
               loading: false,
@@ -153,6 +173,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setState({
               user: null,
               activePlan: 'free',
+              hasFounderAccess: false,
               subscription: null,
               subscriptionLoading: false,
               loading: false,
@@ -187,6 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             (lastSubStatus === undefined || lastSubStatus !== currentStatus);
 
           let stripeRole: string | null = null;
+          let tokenClaims: Record<string, unknown> | undefined;
           try {
             const tokenResult = auth.currentUser
               ? await auth.currentUser.getIdTokenResult(shouldRefreshToken)
@@ -194,26 +216,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             stripeRole = typeof tokenResult?.claims?.stripeRole === 'string'
               ? tokenResult.claims.stripeRole
               : null;
+            tokenClaims = tokenResult?.claims as Record<string, unknown> | undefined;
           } catch {
             stripeRole = null;
+            tokenClaims = undefined;
           }
 
           lastSubStatus = currentStatus;
 
           setState((s) => {
-            const hasStripeTrialAccess =
-              sub?.status === 'trialing' &&
-              !sub.cancel_at_period_end &&
-              !!sub.trial_end_seconds &&
-              sub.trial_end_seconds * 1000 > Date.now();
+            const hasStripeTrialAccess = hasStripeTrialWindow(sub);
 
             const hasStripePaidAccess =
               sub?.status === 'active' &&
               !sub.cancel_at_period_end &&
+              !hasStripeTrialAccess &&
               !!sub.current_period_end_seconds &&
               sub.current_period_end_seconds * 1000 > Date.now();
 
-            const hasClaimAccess = hasStripeRoleEntitlement(stripeRole);
+            const hasFounderAccess = hasFounderAccessClaim(tokenClaims);
+            const hasClaimAccess = hasStripeRoleEntitlement(stripeRole) || hasFounderAccess;
             const computedPlan: ActivePlan = hasClaimAccess ? 'premium' : 'free';
             const mirroredUser = mirrorUserFromSubscription(s.user, sub, hasStripeTrialAccess, hasStripePaidAccess);
 
@@ -222,6 +244,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               user: mirroredUser,
               subscription: sub,
               activePlan: computedPlan,
+              hasFounderAccess,
               subscriptionLoading: false,
             };
           });
@@ -278,6 +301,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState({
       user: null,
       activePlan: 'free',
+      hasFounderAccess: false,
       subscription: null,
       subscriptionLoading: false,
       loading: false,

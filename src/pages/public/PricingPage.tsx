@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {
   listActiveProductsWithPrices,
   createCheckoutSession,
+  isTrialStripePrice,
   type StripePrice,
 } from '@/services/stripe.service';
 
@@ -36,8 +37,9 @@ export default function PricingPage() {
         const products = await listActiveProductsWithPrices();
         const premium = products.find((p) => p.role === 'premium') ?? products[0];
         if (!premium) throw new Error(t('pricingPage.noPremiumActive'));
-        const month = premium.prices.find((p) => p.interval === 'month') ?? null;
-        const year = premium.prices.find((p) => p.interval === 'year') ?? null;
+        const displayPrices = premium.prices.filter((price) => !isTrialStripePrice(price));
+        const month = displayPrices.find((p) => p.interval === 'month') ?? null;
+        const year = displayPrices.find((p) => p.interval === 'year') ?? null;
         if (!cancelled) setPrices({ month, year });
       } catch (err) {
         if (!cancelled) {
@@ -68,7 +70,10 @@ export default function PricingPage() {
         ? `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}&returnUrl=${encodeURIComponent(returnUrl)}`
         : `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
 
-      const url = await createCheckoutSession(user.uid, price.id, { successUrl });
+      const url = await createCheckoutSession(user.uid, price.id, {
+        productId: price.productId,
+        successUrl,
+      });
       window.location.assign(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('pricingPage.errorCheckout'));

@@ -76,9 +76,11 @@
 - `products/{productId}` — sync automàtic des de Stripe
 - `products/{productId}/prices/{priceId}` — sync automàtic des de Stripe
 - `customers/{uid}` — es crea al primer checkout de l'usuari (lazy)
-- `customers/{uid}/checkout_sessions/{id}` — el client crea la doc i l'extensió hi escriu la URL de checkout
+- `customers/{uid}/checkout_sessions/{id}` — la crea la Cloud Function `createBillingCheckoutSession`; l'extensió hi escriu la URL de checkout
 - `customers/{uid}/subscriptions/{id}` — sync des del webhook
 - `customers/{uid}/payments/{id}` — sync des del webhook
+- `billing_state/{uid}` — estat intern d'entitlements (`trialConsumedAt`, founder access, auditable)
+- `campaigns/founding_members_2026` — comptador públic de la campanya Founder Members
 
 ### Fitxers al repo (commit `8316734`)
 
@@ -106,9 +108,14 @@
 1. **Fase 3**: exportar les regles actuals de Firestore (Firebase Console → Firestore → Rules), portar-les a `firestore.rules` local, afegir regles per a Stripe (`customers`, `products`, `checkout_sessions`, `subscriptions`), registrar el fitxer a `firebase.json`, i desplegar amb `firebase deploy --only firestore:rules`.
 2. **Principis de les regles a implementar**:
    - `products/**`: lectura pública, cap escriptura de client.
-   - `customers/{uid}/**`: només el propi `uid` llegeix els seus docs; cap escriptura excepte `checkout_sessions` (creació autoritzada al propi uid).
-   - Cap regla ha de permetre mai al client escriure camps que determinin el plan (principi: plan deriva de subscriptions via webhook, no l'escriu mai el client).
-3. Quan Fase 3 estigui validada, **obrir PR 1** (`feat/stripe-payments-setup` → `main`).
+
+- `customers/{uid}/**`: només el propi `uid` llegeix els seus docs; `checkout_sessions` ja no es creen des del client, només lectura del propi `uid`.
+- `billing_state/{uid}`: només lectura del propietari; cap escriptura del client.
+- `campaigns/{campaignId}`: lectura pública per poder mostrar l'estat de la promoció Founder.
+- Cap regla ha de permetre mai al client escriure camps que determinin el plan (principi: plan deriva de subscriptions via webhook, no l'escriu mai el client).
+
+3. **Política one-trial-only**: el trial ja no s'ha de deixar incrustat al Price de Stripe. La decisió surt del backend (`createBillingCheckoutSession`) amb `trial_period_days: 30` només quan `billing_state/{uid}.trialConsumedAt` encara no existeix.
+4. Quan Fase 3 estigui validada, **obrir PR 1** (`feat/stripe-payments-setup` → `main`).
 
 ## 8. Validació webhook — 2026-04-23 (QA Bloc 2)
 

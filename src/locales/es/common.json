@@ -423,6 +423,11 @@
     "seeMore": "Ver más",
     "reviewCV": "Revisar CV",
     "enter": "+ Entrar",
+    "planNames": {
+      "free": "FREE",
+      "premium": "PREMIUM",
+      "trial": "TRIAL"
+    },
     "activePlan": {
       "title": "Plan Activo",
       "description": "Disfruta de posicionamiento prioritario y acceso total a contactos directos y ofertas exclusivas.",
@@ -806,6 +811,7 @@
   "checkoutSuccess": {
     "title": "¡Bienvenido/a a Premium!",
     "desc": "Tu suscripción se ha activado correctamente. Tienes <1>30 días de prueba gratuitos</1>  el primer cargo se hará cuando finalice el período. Puedes cancelar en cualquier momento desde el panel de facturación.",
+    "continueManagement": "Continuar con tu gestión",
     "goToDashboard": "Ir al panel",
     "completeProfile": "Completar mi perfil"
   },

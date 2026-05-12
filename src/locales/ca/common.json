@@ -423,6 +423,11 @@
     "seeMore": "Veure més",
     "reviewCV": "Revisar CV",
     "enter": "+ Entrar",
+    "planNames": {
+      "free": "FREE",
+      "premium": "PREMIUM",
+      "trial": "TRIAL"
+    },
     "activePlan": {
       "title": "Pla Actiu",
       "description": "Gaudeix de posicionament prioritari i accés total a contactes directes i ofertes exclusives.",
@@ -807,6 +812,7 @@
   "checkoutSuccess": {
     "title": "Benvingut/da a Premium!",
     "desc": "La teva subscripció s'ha activat correctament. Tens <1>30 dies de prova gratuïts</1>  el primer càrrec es farà quan finalitzi el període. Pots cancel·lar en qualsevol moment des del panell de facturació.",
+    "continueManagement": "Continuar la teva gestió",
     "goToDashboard": "Anar al panell",
     "completeProfile": "Completar el meu perfil"
   },

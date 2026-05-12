@@ -1,18 +1,74 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '@/components/ui/Logo';
+import {
+  claimFounderAccess,
+  subscribeToFounderCampaign,
+  type FounderCampaign,
+} from '@/services/stripe.service';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, hasFounderAccess } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [campaign, setCampaign] = useState<FounderCampaign | null>(null);
+  const [claimingFounderAccess, setClaimingFounderAccess] = useState(false);
+  const [bannerMessage, setBannerMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    return subscribeToFounderCampaign(
+      (nextCampaign) => setCampaign(nextCampaign),
+      () => setCampaign(null),
+    );
+  }, []);
 
   const handleLogout = async () => {
     await logout();
     navigate('/');
   };
+
+  const handleFounderCta = async () => {
+    if (!user) {
+      navigate('/register');
+      return;
+    }
+
+    if (hasFounderAccess) {
+      navigate('/dashboard/billing');
+      return;
+    }
+
+    setClaimingFounderAccess(true);
+    setBannerMessage(null);
+
+    try {
+      const result = await claimFounderAccess();
+      setBannerMessage(
+        result.alreadyClaimed
+          ? t('navbar.banner.alreadyClaimed', 'Ja tens l’accés Founder actiu al teu compte.')
+          : t('navbar.banner.claimSuccess', 'Accés Founder activat correctament.'),
+      );
+      navigate('/dashboard/billing');
+    } catch (error) {
+      const message = error instanceof Error && error.message.includes('FOUNDER_ACCESS_UNAVAILABLE')
+        ? t('navbar.banner.claimUnavailable', 'La promoció Founder ja no està disponible.')
+        : t('navbar.banner.claimError', 'No s’ha pogut activar l’accés Founder ara mateix.');
+      setBannerMessage(message);
+    } finally {
+      setClaimingFounderAccess(false);
+    }
+  };
+
+  const remainingFounderSlots = campaign?.remainingClaims ?? 100;
+  const founderCampaignOpen = (campaign?.active ?? true) && remainingFounderSlots > 0;
+  const founderBannerButtonLabel = hasFounderAccess
+    ? t('navbar.banner.claimedCta', 'Veure accés')
+    : user
+      ? t('navbar.banner.cta', 'Reclama el teu Estatus')
+      : t('navbar.banner.joinCta', 'Crea el teu compte');
 
   return (
     <>
@@ -27,9 +83,26 @@ export default function Navbar() {
           <span className="md:ml-2 font-medium">
             {t('navbar.banner.description', 'Sigues un dels primers 100 membres en unir-te i obtén accés Premium gratuït fins al 1 de juliol de 2026!')}
           </span>
-          <Link to="/register" className="ml-0 md:ml-4 bg-[#0A192F] text-gray-100 px-4 py-1.5 rounded-full text-xs hover:bg-[#172A45] transition-colors whitespace-nowrap mt-2 md:mt-0">
-            {t('navbar.banner.cta', 'Reclama el teu Estatus')}
-          </Link>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-black/65 md:ml-2">
+            {t('navbar.banner.remaining', '{{count}} places disponibles', { count: remainingFounderSlots })}
+          </span>
+          <button
+            type="button"
+            onClick={handleFounderCta}
+            disabled={claimingFounderAccess || (!founderCampaignOpen && !hasFounderAccess)}
+            className="ml-0 md:ml-4 bg-[#0A192F] text-gray-100 px-4 py-1.5 rounded-full text-xs hover:bg-[#172A45] transition-colors whitespace-nowrap mt-2 md:mt-0 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {claimingFounderAccess
+              ? t('navbar.banner.claiming', 'Activant...')
+              : founderCampaignOpen || hasFounderAccess
+                ? founderBannerButtonLabel
+                : t('navbar.banner.closedCta', 'Promoció tancada')}
+          </button>
+          {bannerMessage && (
+            <span className="w-full md:w-auto text-[11px] font-semibold text-black/70 mt-1 md:mt-0">
+              {bannerMessage}
+            </span>
+          )}
         </div>
       </div>
 

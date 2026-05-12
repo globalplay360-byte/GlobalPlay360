@@ -11,9 +11,19 @@ service cloud.firestore {
     // Valors esperats: 'premium' (inclou trialing), 'pro', o absent/null per free.
     // NOTA operativa: després d'un checkout, el client ha de forçar refresh del token
     // (auth.currentUser.getIdToken(true)) perquè la claim apareixi al JWT actiu.
+    function hasFounderAccess() {
+      return request.auth != null
+             && request.auth.token.founderAccess == true
+             && request.auth.token.founderAccessUntil is int
+             && request.auth.token.founderAccessUntil > request.time.toMillis() / 1000;
+    }
+
     function hasPremium() {
       return request.auth != null
-             && request.auth.token.stripeRole in ['premium', 'pro'];
+             && (
+               request.auth.token.stripeRole in ['premium', 'pro']
+               || hasFounderAccess()
+             );
     }
 
     function hasValidSingleSession() {
@@ -179,6 +189,16 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /billing_state/{uid} {
+      allow read: if hasValidSingleSession() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /campaigns/{campaignId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // ── STRIPE: PRODUCTS ───────────────────────────────────
     // Sincronitzats des de Stripe via webhook (extensió escriu amb Admin SDK, bypassa rules).
     // Lectura pública: la PricingPage ha de mostrar els plans fins i tot a usuaris no registrats.
@@ -212,7 +232,7 @@ service cloud.firestore {
       // `ext-firestore-stripe-payments-createPortalLink`.
       match /checkout_sessions/{sessionId} {
         allow read: if hasValidSingleSession() && request.auth.uid == uid;
-        allow create: if hasValidSingleSession() && request.auth.uid == uid;
+        allow create: if false;
         allow update, delete: if false;
       }
 
