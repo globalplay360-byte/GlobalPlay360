@@ -19,7 +19,8 @@ import type { Conversation, Message } from '@/types';
 // Subscribe to user's conversations
 export function subscribeToUserConversations(
   userId: string, 
-  callback: (conversations: Conversation[]) => void
+  callback: (conversations: Conversation[]) => void,
+  onError?: (err: Error) => void,
 ) {
   const q = query(
     collection(db, 'conversations'),
@@ -27,49 +28,58 @@ export function subscribeToUserConversations(
     orderBy('updatedAt', 'desc')
   );
 
-  return onSnapshot(q, (snapshot) => {
-    const convs: Conversation[] = snapshot.docs.map(d => {
-      const data = d.data();
-      const hasMessages = data.hasMessages === true || (typeof data.lastMessage === 'string' && data.lastMessage.trim() !== '');
-      return {
-        id: d.id,
-        participants: data.participants || [],
-        lastMessage: data.lastMessage || '',
-        // Use standard date if timestamp is missing or resolving
-        updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-        hasMessages,
-        isPremiumLocked: data.isPremiumLocked || false,
-        unreadCount: data.unreadCount || {}
-      };
-    });
-    callback(convs);
-  });
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const convs: Conversation[] = snapshot.docs.map(d => {
+        const data = d.data();
+        const hasMessages = data.hasMessages === true || (typeof data.lastMessage === 'string' && data.lastMessage.trim() !== '');
+        return {
+          id: d.id,
+          participants: data.participants || [],
+          lastMessage: data.lastMessage || '',
+          // Use standard date if timestamp is missing or resolving
+          updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+          hasMessages,
+          isPremiumLocked: data.isPremiumLocked || false,
+          unreadCount: data.unreadCount || {}
+        };
+      });
+      callback(convs);
+    },
+    (err) => onError?.(err as Error),
+  );
 }
 
 // Subscribe to messages in a conversation
 export function subscribeToMessages(
   conversationId: string,
-  callback: (messages: Message[]) => void
+  callback: (messages: Message[]) => void,
+  onError?: (err: Error) => void,
 ) {
   const q = query(
     collection(db, `conversations/${conversationId}/messages`),
     orderBy('createdAt', 'asc')
   );
 
-  return onSnapshot(q, (snapshot) => {
-    const msgs: Message[] = snapshot.docs.map(d => {
-      const data = d.data();
-      return {
-        id: d.id,
-        conversationId,
-        senderId: data.senderId,
-        text: data.text,
-        createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-        read: data.read || false
-      };
-    });
-    callback(msgs);
-  });
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const msgs: Message[] = snapshot.docs.map(d => {
+        const data = d.data();
+        return {
+          id: d.id,
+          conversationId,
+          senderId: data.senderId,
+          text: data.text,
+          createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+          read: data.read || false
+        };
+      });
+      callback(msgs);
+    },
+    (err) => onError?.(err as Error),
+  );
 }
 
 // Send a message (creates message document in subcollection and updates parent conversation)

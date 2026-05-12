@@ -822,6 +822,8 @@
     "newConversation": "New conversation",
     "lockTitle": "Direct messaging · Premium",
     "lockDesc": "With Premium you can read and reply to messages from coaches and scouts without limits. Start your free 30-day trial.",
+    "accessError": "You do not currently have permission to access this conversation. Check your subscription or sign in again.",
+    "genericError": "There was a problem loading this conversation. Please try again in a moment.",
     "retentionTitle": "Conversation retention",
     "retentionDesc": "Inactive conversations are automatically deleted after {{days}} days without activity.",
     "basicAccount": "{{name}} has a basic account.",

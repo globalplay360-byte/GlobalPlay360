@@ -20,6 +20,12 @@ import {
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
+function isPermissionDeniedError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  const message = error.message.toLowerCase();
+  return message.includes('permission-denied') || message.includes('missing or insufficient permissions');
+}
+
 export default function OpportunityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -74,9 +80,17 @@ export default function OpportunityDetailPage() {
         setOpportunity(opp);
 
         // Fetch club info + check if already applied in parallel
+        const shouldCheckApplication = !!user && user.role !== 'club' && user.uid !== opp.clubId;
+
         const [clubDoc, app] = await Promise.all([
-          getUserDoc(opp.clubId),
-          user ? getUserApplicationForOpportunity(user.uid, opp.id) : null,
+          getUserDoc(opp.clubId).catch((err) => {
+            if (isPermissionDeniedError(err)) {
+              return null;
+            }
+
+            throw err;
+          }),
+          shouldCheckApplication ? getUserApplicationForOpportunity(user.uid, opp.id) : null,
         ]);
         if (!cancelled) {
           if (clubDoc) {

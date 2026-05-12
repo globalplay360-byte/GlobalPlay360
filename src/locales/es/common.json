@@ -822,6 +822,8 @@
     "newConversation": "Nueva conversación",
     "lockTitle": "Mensajería directa · Premium",
     "lockDesc": "Con Premium puedes leer y responder a los mensajes de entrenadores y cazatalentos sin límites. Empieza la prueba gratuita de 30 días.",
+    "accessError": "No tienes permisos para acceder a esta conversación ahora mismo. Revisa tu suscripción o vuelve a iniciar sesión.",
+    "genericError": "Ha habido un problema al cargar la conversación. Vuelve a intentarlo en unos instantes.",
     "retentionTitle": "Retención de conversaciones",
     "retentionDesc": "Las conversaciones inactivas se eliminan automáticamente después de {{days}} días sin actividad.",
     "basicAccount": "{{name}} tiene una cuenta básica.",

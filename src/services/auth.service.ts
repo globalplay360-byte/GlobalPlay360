@@ -22,12 +22,6 @@ const googleProvider = new GoogleAuthProvider();
 
 // ── Helpers ──────────────────────────────────────────────
 
-function trialEndDate(): string {
-  const d = new Date();
-  d.setDate(d.getDate() + 30);
-  return d.toISOString();
-}
-
 /**
  * Read the Firestore user document and return our app User.
  * Merge automàtic amb la subcol·lecció privada `users/{uid}/private/profile`
@@ -62,10 +56,9 @@ async function createUserDoc(
   email: string,
   displayName: string,
   role: UserRole,
-  plan: PlanType = 'trial',
+  plan: PlanType = 'free',
   photoURL?: string | null,
 ): Promise<User> {
-  const trialEnd = trialEndDate();
   const createdAt = new Date().toISOString();
 
   // Doc públic: camps no sensibles del marketplace
@@ -74,8 +67,8 @@ async function createUserDoc(
     ...(photoURL ? { photoURL } : {}),
     role,
     plan,
-    subscriptionStatus: 'trialing' as const,
-    trialEndsAt: trialEnd,
+    subscriptionStatus: 'none' as const,
+    trialEndsAt: '',
     onboardingCompleted: false,
     createdAt,
   };
@@ -102,8 +95,8 @@ async function createUserDoc(
     displayName,
     role,
     plan,
-    subscriptionStatus: 'trialing',
-    trialEndsAt: trialEnd,
+    subscriptionStatus: 'none',
+    trialEndsAt: '',
     onboardingCompleted: false,
     createdAt,
   };
@@ -137,8 +130,8 @@ export async function registerWithEmail(
   const url = `${window.location.origin}/auth/action`;
   await sendEmailVerification(cred.user, { url });
 
-  // Create Firestore user document with trial
-  const user = await createUserDoc(cred.user.uid, email, displayName, role, 'trial', cred.user.photoURL);
+  // Create Firestore user document. Premium/trial access only comes from Stripe.
+  const user = await createUserDoc(cred.user.uid, email, displayName, role, 'free', cred.user.photoURL);
   await activateSingleSession();
   return user;
 }
@@ -156,7 +149,7 @@ export async function loginWithGoogle(
       email ?? '',
       displayName ?? 'User',
       role,
-      'trial',
+      'free',
       photoURL,
     );
   }

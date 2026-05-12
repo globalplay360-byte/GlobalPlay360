@@ -10,6 +10,17 @@ import PremiumLockCard from '@/components/ui/PremiumLockCard';
 import EmptyState from '@/components/ui/EmptyState';
 import type { Conversation, Message, User } from '@/types';
 
+function getMessagingErrorMessage(t: ReturnType<typeof useTranslation>['t'], error: unknown) {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    if (message.includes('permission-denied') || message.includes('missing or insufficient permissions')) {
+      return t('messages.accessError', 'No tens permisos per accedir a aquesta conversa ara mateix. Revisa la teva subscripció o torna a iniciar sessió.');
+    }
+  }
+
+  return t('messages.genericError', 'Hi ha hagut un problema carregant la conversa. Torna-ho a provar en uns instants.');
+}
+
 interface ChatHeaderProps {
   displayName: string;
   role: string;
@@ -60,7 +71,8 @@ function ChatMessageBubble({ text, isSender, timestamp }: { text: string, isSend
   );
 }
 
-function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }) {
+function MessageComposer({ onSend, onError }: { onSend: (text: string) => Promise<void>; onError: (message: string) => void }) {
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
 
@@ -73,7 +85,7 @@ function MessageComposer({ onSend }: { onSend: (text: string) => Promise<void> }
       await onSend(text.trim());
       setText('');
     } catch (err) {
-      console.error(err);
+      onError(getMessagingErrorMessage(t, err));
     } finally {
       setSending(false);
     }
@@ -128,6 +140,7 @@ export default function MessageDetailPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [otherUser, setOtherUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll a l'últim missatge
@@ -141,6 +154,7 @@ export default function MessageDetailPage() {
     let unsubscribeMessages: () => void;
 
     const initChat = async () => {
+      setError(null);
       try {
         // Obtenir la conversa
         const snap = await getDoc(doc(db, 'conversations', id));
@@ -165,17 +179,23 @@ export default function MessageDetailPage() {
 
         // Reset del comptador de no llegits per aquest usuari
         markConversationAsRead(id, user.uid).catch((err) => {
+          setError(getMessagingErrorMessage(t, err));
           console.warn("No s'ha pogut marcar la conversa com a llegida:", err);
         });
 
         // Subscripció als missatges
         unsubscribeMessages = subscribeToMessages(id, (newMessages) => {
+          setError(null);
           setMessages(newMessages);
           // Donem una mica de temps per renderitzar i fer scroll
           setTimeout(scrollToBottom, 100);
+        }, (err) => {
+          setError(getMessagingErrorMessage(t, err));
+          setLoading(false);
         });
 
       } catch (err) {
+        setError(getMessagingErrorMessage(t, err));
         console.error("Error loading chat:", err);
       } finally {
         setLoading(false);
@@ -187,7 +207,7 @@ export default function MessageDetailPage() {
     return () => {
       if (unsubscribeMessages) unsubscribeMessages();
     };
-  }, [id, user]);
+  }, [id, user, t]);
 
   const handleSend = async (text: string) => {
     if (!id || !user) return;
@@ -265,6 +285,12 @@ export default function MessageDetailPage() {
         </p>
       </div>
 
+      {error && (
+        <div className="border-b border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          {error}
+        </div>
+      )}
+
       {/* Timeline Zone */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 flex flex-col gap-1 custom-scrollbar">
         {/* Inici de conversa */}
@@ -291,7 +317,7 @@ export default function MessageDetailPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      <MessageComposer onSend={handleSend} />
+      <MessageComposer onSend={handleSend} onError={setError} />
     </div>
   );
 }
