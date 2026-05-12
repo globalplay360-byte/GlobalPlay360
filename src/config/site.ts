@@ -3,3 +3,8 @@
 // al .env.local (que NO es puja al repo). En producció, en absència de la
 // variable, es manté `true` fins que tinguem dades legals i Stripe live.
 export const PRELAUNCH_MODE = import.meta.env.VITE_PRELAUNCH_MODE !== 'false';
+
+// Private preview: permet accés només a comptes administradors dins la
+// plataforma interna, mantenint la landing pública tancada mentre no hi hagi
+// llançament oficial, dades fiscals o Stripe live complet.
+export const PRIVATE_PREVIEW_MODE = import.meta.env.VITE_PRIVATE_PREVIEW_MODE === 'true';
