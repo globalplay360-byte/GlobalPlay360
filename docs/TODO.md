@@ -10,6 +10,14 @@ Aquest document recopila tasques, funcionalitats futures o sistemes inacabats qu
 - [ ] **Optimització del bundle inicial del frontend**: el build actual genera un chunk principal JS d'aproximadament `9.95 MB` (`~2.69 MB gzip`), acceptable temporalment per a la landing pre-launch però massa pesat per al llançament públic. Accions recomanades més endavant: lazy loading de rutes públiques i dashboard, `Suspense`, revisió de dependències grans i, si cal, `manualChunks` a Vite per dividir millor el codi inicial.
 - [x] **Hardening real del paywall Premium (S6-T5) amb defense in depth** — ✅ RESOLT 2026-04-23
   - **Estat actual QA:** ✅ PASS complet (missatgeria + perfils). Validat amb suite automatitzada `tests/rules-s6-t5.mjs` (10/10 assertions contra emulador).
+  - **Decisió de producte tancada — retenció de converses:**
+    - Es manté una política de retenció de `90 dies` per **conversa inactiva**, no per “usuari inactiu”.
+    - El criteri real és `conversations.updatedAt`: si una conversa no rep cap missatge nou durant 90 dies, es considera caducada.
+    - Obrir el xat o marcar-lo com a llegit **no** renova la retenció; només l'enviament d'un nou missatge reinicia el comptador.
+    - La neteja s'executa al backend amb una Cloud Function programada diàriament i elimina el fil complet (`conversation` + subcol·lecció `messages`) quan supera el llindar.
+    - Aquesta és la decisió considerada correcta per a GlobalPlay360 MVP perquè el valor del xat és operatiu i vinculat a oportunitats actives, no d'arxiu permanent.
+    - L'usuari queda informat mitjançant banner visible tant a la llista de converses com dins del detall del xat, amb el missatge que les converses inactives s'eliminen automàticament després de 90 dies sense activitat.
+    - Si en una fase futura es vol més suavitat UX, la millora natural seria un preavís addicional abans de la caducitat, però **sense canviar** la regla base de 90 dies.
   - **Resolució part perfils premium:**
     - Schema split aplicat: `users/{uid}` manté camps públics (marketplace), `users/{uid}/private/profile` conté PII (`email`, `phone`, `instagram`, `youtubeVideoUrl`, `dateOfBirth`).
     - Rule: `match /users/{uid}/private/{docId} { allow read: if owner || hasPremium(); allow create, update: if owner; allow delete: if false; }`

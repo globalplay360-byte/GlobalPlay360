@@ -163,7 +163,7 @@ export default function OverviewPage() {
     const newOppsMonth = opportunities.filter(o => o.createdAt && (now - new Date(o.createdAt).getTime() <= msInMonth)).length;
 
     // Obviar els canals creats buits on encara no hi ha missatges reals enviats
-    const activeConversations = conversations.filter(c => c.lastMessage && c.lastMessage.trim() !== '');
+    const activeConversations = conversations.filter(c => c.hasMessages);
     const hasRecentConvs = activeConversations.some(c => c.updatedAt && (now - new Date(c.updatedAt).getTime() <= msInWeek));
 
     const profileStrength = getProfileStrength(user);
@@ -496,7 +496,7 @@ function ActivityTimeline({
     });
   }
 
-  const activeConv = conversations.find((c) => c.lastMessage && c.lastMessage.trim() !== '');
+  const activeConv = conversations.find((c) => c.hasMessages);
   if (activeConv?.updatedAt) {
     entries.push({
       key: `conv-${activeConv.id}`,

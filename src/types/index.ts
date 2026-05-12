@@ -152,6 +152,12 @@ export interface Message {
   read: boolean;
 }
 
+export interface AuthSession {
+  validAfterSeconds: number;
+  lastLoginAt?: string | null;
+  lastLoginDeviceId?: string | null;
+}
+
 export type AdminAuditAction =
   | 'user.role_changed'
   | 'opportunity.updated'

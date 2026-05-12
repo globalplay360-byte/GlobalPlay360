@@ -88,6 +88,9 @@
     "register": "Registre",
     "dashboard": "Panell"
   },
+  "authSession": {
+    "revoked": "Aquest compte s'ha iniciat en un altre dispositiu. Torna a iniciar sessió."
+  },
   "footer": {
     "description": "Global Play 360 és la plataforma principal que connecta atletes, entrenadors i organitzacions esportives de tot el món.",
     "contact": "Contacte",
@@ -816,9 +819,12 @@
     "emptyDesc": "Cerca oportunitats o inicia converses per començar a parlar amb clubs de tot el món.",
     "unknownUser": "Usuari desconegut",
     "protectedMessage": "Missatge protegit",
+    "activeConversationPreview": "Conversa activa",
     "newConversation": "Nova conversa",
     "lockTitle": "Missatgeria directa · Premium",
     "lockDesc": "Amb Premium pots llegir i respondre als missatges d'entrenadors i caçatalents sense límits. Comença la prova de 30 dies gratuïts.",
+    "retentionTitle": "Retenció de converses",
+    "retentionDesc": "Les converses inactives s'eliminen automàticament després de {{days}} dies sense activitat.",
     "basicAccount": "{{name}} té un compte bàsic.",
     "basicAccountNotified": "L'hem notificat. Et podrà respondre quan activi Premium."
   },

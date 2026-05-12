@@ -96,7 +96,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '7. Conservació de les dades',
         html: `
-          <p>Conservem les teves dades mentre tinguis un compte actiu. Un cop el suprimeixis, eliminarem les dades en un termini màxim de 30 dies, excepte aquelles que estiguem obligats a conservar per obligacions legals (fiscalitat: 6 anys).</p>
+          <p>Conservem les teves dades mentre tinguis un compte actiu. Les converses de missatgeria directa inactives es poden eliminar automàticament després de 90 dies sense activitat. Un cop suprimeixis el compte, eliminarem la resta de dades en un termini màxim de 30 dies, excepte aquelles que estiguem obligats a conservar per obligacions legals (fiscalitat: 6 anys).</p>
         `
       },
       {
@@ -209,7 +209,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '7. Conservación de los datos',
         html: `
-          <p>Conservamos tus datos mientras tengas una cuenta activa. Una vez la suprimas, eliminaremos los datos en un plazo máximo de 30 días, excepto aquellos que estemos obligados a conservar por obligaciones legales (fiscalidad: 6 años).</p>
+          <p>Conservamos tus datos mientras tengas una cuenta activa. Las conversaciones de mensajería directa inactivas pueden eliminarse automáticamente después de 90 días sin actividad. Una vez suprimas tu cuenta, eliminaremos el resto de los datos en un plazo máximo de 30 días, excepto aquellos que estemos obligados a conservar por obligaciones legales (fiscalidad: 6 años).</p>
         `
       },
       {
@@ -322,7 +322,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '7. Data retention',
         html: `
-          <p>We keep your data while you have an active account. Once you delete it, we will remove the data within a maximum of 30 days, except for that which we are legally required to keep (tax obligations: 6 years).</p>
+          <p>We keep your data while you have an active account. Inactive direct-message conversations may be automatically deleted after 90 days without activity. Once you delete your account, we will remove the remaining data within a maximum of 30 days, except for that which we are legally required to keep (tax obligations: 6 years).</p>
         `
       },
       {

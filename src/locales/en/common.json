@@ -88,6 +88,9 @@
     "register": "Sign Up",
     "dashboard": "Dashboard"
   },
+  "authSession": {
+    "revoked": "This account has been signed in on another device. Please log in again."
+  },
   "footer": {
     "description": "Global Play 360 is the leading platform connecting athletes, coaches, and sports organizations worldwide.",
     "contact": "Contact",
@@ -815,9 +818,12 @@
     "emptyDesc": "Search for opportunities or start conversations to begin talking with clubs worldwide.",
     "unknownUser": "Unknown user",
     "protectedMessage": "Protected message",
+    "activeConversationPreview": "Active conversation",
     "newConversation": "New conversation",
     "lockTitle": "Direct messaging · Premium",
     "lockDesc": "With Premium you can read and reply to messages from coaches and scouts without limits. Start your free 30-day trial.",
+    "retentionTitle": "Conversation retention",
+    "retentionDesc": "Inactive conversations are automatically deleted after {{days}} days without activity.",
     "basicAccount": "{{name}} has a basic account.",
     "basicAccountNotified": "We've notified them. They'll be able to reply once they activate Premium."
   },
