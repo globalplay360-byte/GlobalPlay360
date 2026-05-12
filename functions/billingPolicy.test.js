@@ -52,6 +52,52 @@ test('selectCheckoutPrice returns the standard price after trial was consumed', 
   assert.equal(isTrialPrice(selectedPrice), false);
 });
 
+test('selectCheckoutPrice keeps the requested billing interval when granting a trial', () => {
+  const selectedPrice = selectCheckoutPrice(
+    [
+      { id: 'price_standard_monthly', lookup_key: 'premium_monthly', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: null } },
+      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
+      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
+      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
+    ],
+    null,
+    'price_standard_yearly',
+  );
+
+  assert.equal(selectedPrice?.id, 'price_trial_yearly');
+  assert.equal(isTrialPrice(selectedPrice), true);
+});
+
+test('selectCheckoutPrice keeps the requested billing interval after trial consumption', () => {
+  const selectedPrice = selectCheckoutPrice(
+    [
+      { id: 'price_standard_monthly', lookup_key: 'premium_monthly', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: null } },
+      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
+      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
+      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
+    ],
+    { trialConsumedAt: '2026-05-12T10:57:22.000Z' },
+    'price_standard_yearly',
+  );
+
+  assert.equal(selectedPrice?.id, 'price_standard_yearly');
+  assert.equal(isTrialPrice(selectedPrice), false);
+});
+
+test('selectCheckoutPrice matches yearly trial sibling by lookup_key', () => {
+  const selectedPrice = selectCheckoutPrice(
+    [
+      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
+      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
+      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
+    ],
+    null,
+    'price_standard_yearly',
+  );
+
+  assert.equal(selectedPrice?.id, 'price_trial_yearly');
+});
+
 test('canClaimFounderAccess allows an eligible user before the deadline', () => {
   assert.equal(
     canClaimFounderAccess({

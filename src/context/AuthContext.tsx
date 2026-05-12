@@ -51,9 +51,9 @@ function mirrorUserFromSubscription(
   if (subscription && (hasTrialAccess || hasPaidAccess)) {
     return {
       ...user,
-      plan: subscription.status === 'trialing' ? 'trial' : 'premium',
-      subscriptionStatus: subscription.status,
-      trialEndsAt: toIsoDate(subscription.trial_end_seconds, user.trialEndsAt),
+      plan: hasTrialAccess ? 'trial' : 'premium',
+      subscriptionStatus: hasTrialAccess ? 'trialing' : subscription.status,
+      trialEndsAt: hasTrialAccess ? toIsoDate(subscription.trial_end_seconds, user.trialEndsAt) : '',
     };
   }
 
@@ -62,6 +62,7 @@ function mirrorUserFromSubscription(
       ...user,
       plan: 'free',
       subscriptionStatus: user.subscriptionStatus === 'none' ? 'none' : 'expired',
+      trialEndsAt: '',
     };
   }
 

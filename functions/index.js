@@ -28,6 +28,10 @@ function getBillingStateRef(uid) {
   return db.doc(`billing_state/${uid}`);
 }
 
+function getUserRef(uid) {
+  return db.doc(`users/${uid}`);
+}
+
 function getFoundingMembersCampaignRef() {
   return db.doc(`campaigns/${FOUNDING_MEMBERS_CAMPAIGN_ID}`);
 }
@@ -45,6 +49,11 @@ function getTimestampMillis(value) {
     return value.seconds * 1000;
   }
   return null;
+}
+
+function toIsoStringFromTimestamp(value) {
+  const millis = getTimestampMillis(value);
+  return typeof millis === 'number' ? new Date(millis).toISOString() : '';
 }
 
 async function getActiveProductPrices(productId) {
@@ -199,16 +208,36 @@ export const syncBillingStateFromSubscription = onDocumentWritten({
 
   const subscription = afterSnap.data();
   const trialEndMillis = getTimestampMillis(subscription?.trial_end);
+  const currentPeriodEndMillis = getTimestampMillis(subscription?.current_period_end);
   const hasActiveTrialWindow = typeof trialEndMillis === 'number' && trialEndMillis > Date.now();
+  const hasPaidAccess =
+    subscription?.status === 'active'
+    && !subscription?.cancel_at_period_end
+    && !hasActiveTrialWindow
+    && typeof currentPeriodEndMillis === 'number'
+    && currentPeriodEndMillis > Date.now();
 
-  if (!hasActiveTrialWindow) {
-    return;
-  }
-
-  const billingStateRef = getBillingStateRef(event.params.uid);
+  const uid = event.params.uid;
+  const billingStateRef = getBillingStateRef(uid);
+  const userRef = getUserRef(uid);
   await db.runTransaction(async (transaction) => {
-    const billingStateSnap = await transaction.get(billingStateRef);
-    if (billingStateSnap.data()?.trialConsumedAt) {
+    const [billingStateSnap, userSnap] = await Promise.all([
+      transaction.get(billingStateRef),
+      transaction.get(userRef),
+    ]);
+
+    if (!userSnap.exists) {
+      return;
+    }
+
+    transaction.set(userRef, {
+      plan: hasActiveTrialWindow ? 'trial' : hasPaidAccess ? 'premium' : 'free',
+      subscriptionStatus: hasActiveTrialWindow ? 'trialing' : (subscription?.status ?? 'none'),
+      trialEndsAt: hasActiveTrialWindow ? toIsoStringFromTimestamp(subscription?.trial_end) : '',
+      updatedAt: FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    if (!hasActiveTrialWindow || billingStateSnap.data()?.trialConsumedAt) {
       return;
     }
 

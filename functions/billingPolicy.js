@@ -32,19 +32,64 @@ export function isTrialPrice(price) {
   return getPriceTrialDays(price) > 0;
 }
 
+function getRecurringInterval(price) {
+  return price?.interval ?? price?.recurring?.interval ?? null;
+}
+
+function getRecurringIntervalCount(price) {
+  return price?.interval_count ?? price?.recurring?.interval_count ?? null;
+}
+
+function getPriceLookupKey(price) {
+  return typeof price?.lookup_key === 'string' ? price.lookup_key : null;
+}
+
+function sameRecurringShape(left, right) {
+  return getRecurringInterval(left) === getRecurringInterval(right)
+    && getRecurringIntervalCount(left) === getRecurringIntervalCount(right)
+    && left?.currency === right?.currency
+    && left?.unit_amount === right?.unit_amount;
+}
+
+function isTrialSiblingForRequestedPrice(candidate, requestedPrice) {
+  if (!candidate || !requestedPrice || !isTrialPrice(candidate)) {
+    return false;
+  }
+
+  const requestedLookupKey = getPriceLookupKey(requestedPrice);
+  const candidateLookupKey = getPriceLookupKey(candidate);
+
+  if (requestedLookupKey && candidateLookupKey === `${requestedLookupKey}_trial`) {
+    return true;
+  }
+
+  return sameRecurringShape(candidate, requestedPrice);
+}
+
 export function selectCheckoutPrice(prices, billingState, fallbackPriceId = null) {
-  const trialPrice = prices.find((price) => isTrialPrice(price)) ?? null;
-  const standardPrice = prices.find((price) => !isTrialPrice(price)) ?? null;
+  const fallbackPrice = fallbackPriceId
+    ? prices.find((price) => price.id === fallbackPriceId) ?? null
+    : null;
+
+  const siblingTrialPrice = fallbackPrice
+    ? prices.find((price) => price.id !== fallbackPrice.id && isTrialSiblingForRequestedPrice(price, fallbackPrice)) ?? null
+    : null;
+
+  const siblingStandardPrice = fallbackPrice
+    ? prices.find((price) => price.id !== fallbackPrice.id && !isTrialPrice(price) && sameRecurringShape(price, fallbackPrice)) ?? null
+    : null;
+
+  const trialPrice = siblingTrialPrice ?? prices.find((price) => isTrialPrice(price)) ?? null;
+  const standardPrice = fallbackPrice && !isTrialPrice(fallbackPrice)
+    ? fallbackPrice
+    : siblingStandardPrice ?? prices.find((price) => !isTrialPrice(price)) ?? null;
 
   if (shouldGrantTrial(billingState) && trialPrice) {
     return trialPrice;
   }
 
-  if (fallbackPriceId) {
-    const fallbackPrice = prices.find((price) => price.id === fallbackPriceId) ?? null;
-    if (fallbackPrice) {
-      return fallbackPrice;
-    }
+  if (fallbackPrice) {
+    return fallbackPrice;
   }
 
   return standardPrice ?? trialPrice ?? null;
