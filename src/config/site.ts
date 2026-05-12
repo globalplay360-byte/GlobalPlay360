@@ -8,3 +8,7 @@ export const PRELAUNCH_MODE = import.meta.env.VITE_PRELAUNCH_MODE !== 'false';
 // plataforma interna, mantenint la landing pública tancada mentre no hi hagi
 // llançament oficial, dades fiscals o Stripe live complet.
 export const PRIVATE_PREVIEW_MODE = import.meta.env.VITE_PRIVATE_PREVIEW_MODE === 'true';
+
+// Correu públic de contacte visible a la web. Quan existeixi la bústia real,
+// només caldrà actualitzar aquest valor.
+export const CONTACT_EMAIL = 'info@globalplay360.com';
