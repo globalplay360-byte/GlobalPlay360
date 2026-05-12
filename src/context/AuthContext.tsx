@@ -67,6 +67,10 @@ function mirrorUserFromSubscription(
   return user;
 }
 
+function hasStripeRoleEntitlement(role: unknown): role is 'premium' | 'pro' {
+  return role === 'premium' || role === 'pro';
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -173,53 +177,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsub = subscribeToActiveSubscription(
       uid,
       (sub) => {
-        // Quan la subscripció apareix/desapareix/canvia d'estat, forcem refresh
-        // del JWT perquè l'extensió Stripe acaba d'escriure/treure la custom claim
-        // `stripeRole`. Sense això, les Firestore rules bloquejarien missatgeria
-        // fins que l'usuari tanqués i tornés a obrir sessió.
-        const currentStatus = sub?.status ?? null;
-        if (lastSubStatus !== undefined && lastSubStatus !== currentStatus) {
-          auth.currentUser?.getIdToken(true).catch(() => { /* silent */ });
-        }
-        lastSubStatus = currentStatus;
+        void (async () => {
+          // Quan la subscripció apareix per primer cop o canvia d'estat, forcem
+          // refresh del JWT perquè `stripeRole` quedi alineada abans d'obrir
+          // superfícies protegides per Firestore rules.
+          const currentStatus = sub?.status ?? null;
+          const shouldRefreshToken =
+            currentStatus !== null &&
+            (lastSubStatus === undefined || lastSubStatus !== currentStatus);
 
-        setState((s) => {
-          const hasStripeTrialAccess =
-            sub?.status === 'trialing' &&
-            !sub.cancel_at_period_end &&
-            !!sub.trial_end_seconds &&
-            sub.trial_end_seconds * 1000 > Date.now();
+          let stripeRole: string | null = null;
+          try {
+            const tokenResult = auth.currentUser
+              ? await auth.currentUser.getIdTokenResult(shouldRefreshToken)
+              : null;
+            stripeRole = typeof tokenResult?.claims?.stripeRole === 'string'
+              ? tokenResult.claims.stripeRole
+              : null;
+          } catch {
+            stripeRole = null;
+          }
 
-          const hasStripePaidAccess =
-            sub?.status === 'active' &&
-            !sub.cancel_at_period_end &&
-            !!sub.current_period_end_seconds &&
-            sub.current_period_end_seconds * 1000 > Date.now();
+          lastSubStatus = currentStatus;
 
-          const hasProfileTrialAccess =
-            !sub &&
-            !!s.user &&
-            s.user.plan === 'trial' &&
-            !!s.user.trialEndsAt &&
-            new Date(s.user.trialEndsAt).getTime() > Date.now();
+          setState((s) => {
+            const hasStripeTrialAccess =
+              sub?.status === 'trialing' &&
+              !sub.cancel_at_period_end &&
+              !!sub.trial_end_seconds &&
+              sub.trial_end_seconds * 1000 > Date.now();
 
-          const hasTrialAccess = hasStripeTrialAccess || hasProfileTrialAccess;
+            const hasStripePaidAccess =
+              sub?.status === 'active' &&
+              !sub.cancel_at_period_end &&
+              !!sub.current_period_end_seconds &&
+              sub.current_period_end_seconds * 1000 > Date.now();
 
-          const hasPaidAccess =
-            hasStripePaidAccess ||
-            s.user?.plan === 'pro';
+            const hasClaimAccess = hasStripeRoleEntitlement(stripeRole);
+            const computedPlan: ActivePlan = hasClaimAccess ? 'premium' : 'free';
+            const mirroredUser = mirrorUserFromSubscription(s.user, sub, hasStripeTrialAccess, hasStripePaidAccess);
 
-          const computedPlan: ActivePlan = hasPaidAccess || hasTrialAccess ? 'premium' : 'free';
-          const mirroredUser = mirrorUserFromSubscription(s.user, sub, hasTrialAccess, hasPaidAccess);
-
-          return {
-            ...s,
-            user: mirroredUser,
-            subscription: sub,
-            activePlan: computedPlan,
-            subscriptionLoading: false,
-          };
-        });
+            return {
+              ...s,
+              user: mirroredUser,
+              subscription: sub,
+              activePlan: computedPlan,
+              subscriptionLoading: false,
+            };
+          });
+        })();
       },
       () => {
         setState((s) => ({ ...s, subscriptionLoading: false }));

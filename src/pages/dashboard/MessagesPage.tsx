@@ -92,11 +92,13 @@ export default function MessagesPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
   const [conversations, setConversations] = useState<ConversationExtended[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const retentionDays = 90;
 
   useEffect(() => {
     if (!user) return;
 
+    setError(null);
     const unsubscribe = subscribeToUserConversations(user.uid, async (convs) => {
       const extendedConvs = await Promise.all(
         convs.map(async (c) => {
@@ -111,10 +113,17 @@ export default function MessagesPage() {
 
       setConversations(extendedConvs);
       setLoading(false);
+    }, (err) => {
+      const message = err.message.toLowerCase();
+      const nextError = message.includes('permission-denied') || message.includes('missing or insufficient permissions')
+        ? t('messages.accessError', 'No tens permisos per accedir a aquesta conversa ara mateix. Revisa la teva subscripció o torna a iniciar sessió.')
+        : t('messages.genericError', 'Hi ha hagut un problema carregant la conversa. Torna-ho a provar en uns instants.');
+      setError(nextError);
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [user, activePlan]);
+  }, [user, activePlan, t]);
 
   if (subscriptionLoading || loading) {
     return (
@@ -146,6 +155,12 @@ export default function MessagesPage() {
           </div>
         </div>
       </div>
+
+      {error && (
+        <div className="mb-6 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-4 text-sm text-red-200">
+          {error}
+        </div>
+      )}
 
       {activePlan === 'free' && (
         <div className="mb-6">

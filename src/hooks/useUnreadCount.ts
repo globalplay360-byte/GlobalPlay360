@@ -18,6 +18,8 @@ export function useUnreadCount() {
     const unsubscribe = subscribeToUserConversations(uid, (conversations) => {
       const count = conversations.reduce((acc, conv) => acc + (conv.unreadCount?.[uid] || 0), 0);
       setUnreadCount(count);
+    }, () => {
+      setUnreadCount(0);
     });
 
     return () => unsubscribe();

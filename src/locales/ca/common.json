@@ -823,6 +823,8 @@
     "newConversation": "Nova conversa",
     "lockTitle": "Missatgeria directa · Premium",
     "lockDesc": "Amb Premium pots llegir i respondre als missatges d'entrenadors i caçatalents sense límits. Comença la prova de 30 dies gratuïts.",
+    "accessError": "No tens permisos per accedir a aquesta conversa ara mateix. Revisa la teva subscripció o torna a iniciar sessió.",
+    "genericError": "Hi ha hagut un problema carregant la conversa. Torna-ho a provar en uns instants.",
     "retentionTitle": "Retenció de converses",
     "retentionDesc": "Les converses inactives s'eliminen automàticament després de {{days}} dies sense activitat.",
     "basicAccount": "{{name}} té un compte bàsic.",
