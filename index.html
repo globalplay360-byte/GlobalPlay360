@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GlobalPlay360 — Proximamente</title>
+    <title>GlobalPlay360</title>
     <style>
       html, body { margin: 0; padding: 0; background: #0A192F; color: #fff; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
       #prelaunch-static { position: fixed; inset: 0; overflow: hidden; background: #020617; }
@@ -52,6 +52,15 @@
         </div>
       </div>
     </div>
+    <script>
+      const isPrelaunchMode = '%VITE_PRELAUNCH_MODE%' !== 'false';
+
+      if (isPrelaunchMode) {
+        document.title = 'GlobalPlay360 — Proximamente';
+      } else {
+        document.getElementById('prelaunch-static')?.remove();
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
