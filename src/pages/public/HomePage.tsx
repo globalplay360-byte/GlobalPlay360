@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 export default function HomePage() {
   const { t } = useTranslation();
   const rawTitle = t('homePage.hero.title');
   const titleParts = rawTitle.split('\n');
+  const primaryCtaPath = PUBLIC_REGISTRATION_ENABLED ? '/register?type=jugador' : '/login';
+  const secondaryCtaPath = PUBLIC_REGISTRATION_ENABLED ? '/register?type=entrenador' : '/pricing';
+  const tertiaryCtaPath = PUBLIC_REGISTRATION_ENABLED ? '/register?type=club' : '/about';
 
   return (
     <div className="flex flex-col w-full bg-[#0B1120] text-gray-100">
@@ -66,17 +70,17 @@ export default function HomePage() {
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/register?type=jugador" className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-gray-100 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+            <Link to={primaryCtaPath} className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-gray-100 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              {t('homePage.hero.btnPlayer')}
+              {PUBLIC_REGISTRATION_ENABLED ? t('homePage.hero.btnPlayer') : t('navbar.login', 'Iniciar Sessió')}
             </Link>
-            <Link to="/register?type=entrenador" className="flex items-center justify-center gap-2 border border-gray-100/20 hover:border-gray-100/50 hover:bg-gray-100/5 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
+            <Link to={secondaryCtaPath} className="flex items-center justify-center gap-2 border border-gray-100/20 hover:border-gray-100/50 hover:bg-gray-100/5 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-              {t('homePage.hero.btnCoach')}
+              {PUBLIC_REGISTRATION_ENABLED ? t('homePage.hero.btnCoach') : t('navbar.pricing', 'Pricing')}
             </Link>
-            <Link to="/register?type=club" className="flex items-center justify-center gap-2 bg-[#111827]/80 backdrop-blur-sm border border-gray-100/10 hover:border-[#3B82F6]/50 hover:bg-[#111827] px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
+            <Link to={tertiaryCtaPath} className="flex items-center justify-center gap-2 bg-[#111827]/80 backdrop-blur-sm border border-gray-100/10 hover:border-[#3B82F6]/50 hover:bg-[#111827] px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
               <svg className="w-5 h-5 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-              {t('homePage.hero.btnClub')}
+              {PUBLIC_REGISTRATION_ENABLED ? t('homePage.hero.btnClub') : t('navbar.about', 'Sobre Nosaltres')}
             </Link>
           </div>
         </div>
@@ -153,8 +157,8 @@ export default function HomePage() {
                 <li className="flex items-center gap-3 opacity-40"><svg className="w-5 h-5 text-[#9CA3AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> <s className="line-through">{t('homePage.pricing.free.feat5')}</s></li>
               </ul>
               
-              <Link to="/register" className="block w-full py-3 px-4 text-center rounded-lg border border-gray-100/10 text-gray-100 hover:bg-gray-100/5 font-medium transition-all duration-200 ease-out active:scale-[0.98]">
-                {t('homePage.pricing.free.cta')}
+              <Link to={PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login'} className="block w-full py-3 px-4 text-center rounded-lg border border-gray-100/10 text-gray-100 hover:bg-gray-100/5 font-medium transition-all duration-200 ease-out active:scale-[0.98]">
+                {PUBLIC_REGISTRATION_ENABLED ? t('homePage.pricing.free.cta') : t('navbar.login', 'Iniciar Sessió')}
               </Link>
             </div>
 

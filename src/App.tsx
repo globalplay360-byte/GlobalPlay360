@@ -39,12 +39,10 @@ import ProfilePage from './pages/dashboard/ProfilePage';
 import PublicProfilePage from './pages/dashboard/PublicProfilePage';
 import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
 import BillingPage from './pages/dashboard/BillingPage';
-import PrelaunchPage from './pages/public/PrelaunchPage';
-import { PRELAUNCH_MODE, PRIVATE_PREVIEW_MODE } from './config/site';
+import { PRIVATE_PREVIEW_MODE, PUBLIC_REGISTRATION_ENABLED } from './config/site';
 
 function App() {
-  const publicFallback = PRELAUNCH_MODE ? <PrelaunchPage /> : <HomePage />;
-  const allowPrivatePreviewLogin = PRELAUNCH_MODE && PRIVATE_PREVIEW_MODE;
+  const registrationEnabled = PUBLIC_REGISTRATION_ENABLED && !PRIVATE_PREVIEW_MODE;
   const dashboardRequiredRole = PRIVATE_PREVIEW_MODE ? 'admin' : undefined;
 
   return (
@@ -53,25 +51,25 @@ function App() {
         <Routes>
           {/* Public Routes inside PublicLayout */}
           <Route element={<PublicLayout />}>
-            <Route path="/" element={publicFallback} />
+            <Route path="/" element={<HomePage />} />
             
             {/* Pricing (public) */}
-            <Route path="/pricing" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <PricingPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
             
             {/* About (public) */}
-            <Route path="/about" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <AboutPage />} />
+            <Route path="/about" element={<AboutPage />} />
 
             {/* Legal (public) */}
-            <Route path="/privacy" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <PrivacyPage />} />
-            <Route path="/terms" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <TermsPage />} />
-            <Route path="/cookies" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <CookiesPage />} />
-            <Route path="/contact" element={PRELAUNCH_MODE ? <Navigate to="/" replace /> : <ContactPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             {/* Auth Routes */}
-            <Route path="/login" element={PRELAUNCH_MODE && !allowPrivatePreviewLogin ? <Navigate to="/" replace /> : <LoginPage />} />
-            <Route path="/register" element={PRELAUNCH_MODE || PRIVATE_PREVIEW_MODE ? <Navigate to="/login" replace /> : <RegisterPage />} />
-            <Route path="/forgot-password" element={PRELAUNCH_MODE && !allowPrivatePreviewLogin ? <Navigate to="/" replace /> : <ForgotPasswordPage />} />
-            <Route path="/auth/action" element={PRELAUNCH_MODE && !allowPrivatePreviewLogin ? <Navigate to="/" replace /> : <AuthActionPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={registrationEnabled ? <RegisterPage /> : <Navigate to="/login" replace />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/auth/action" element={<AuthActionPage />} />
           </Route>
 
           {/* Internal Shared Dashboard Routes (Player, Coach, Club) */}

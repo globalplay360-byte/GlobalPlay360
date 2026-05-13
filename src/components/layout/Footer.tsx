@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
-import { CONTACT_EMAIL } from '@/config/site';
+import { CONTACT_EMAIL, PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 export default function Footer() {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
+  const audienceLink = PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login';
 
   return (
     <footer className="bg-[#020C1B] text-[#8892B0] mt-auto relative">
@@ -57,12 +58,12 @@ export default function Footer() {
               {t('footer.col.forYou', 'Per a tu')}
             </h4>
             <ul className="space-y-3 text-sm">
-              <FooterLink to="/register?role=player">{t('footer.col.players', 'Jugadors')}</FooterLink>
-              <FooterLink to="/register?role=club">{t('footer.col.clubs', 'Clubs')}</FooterLink>
-              <FooterLink to="/register?role=coach">{t('footer.col.coaches', 'Entrenadors')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.players', 'Jugadors')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.clubs', 'Clubs')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.coaches', 'Entrenadors')}</FooterLink>
               <li>
                 <Link
-                  to="/register"
+                  to={audienceLink}
                   className="inline-flex items-center gap-2 text-[#FFC107] hover:text-[#FFD54F] transition-colors group"
                 >
                   <span>👑</span>

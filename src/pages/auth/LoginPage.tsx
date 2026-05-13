@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from '@/components/ui/Spinner';
-import { PRIVATE_PREVIEW_MODE } from '@/config/site';
+import { CONTACT_EMAIL, PRIVATE_PREVIEW_MODE, PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 const LOGIN_BACKGROUND_VIDEO = 'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/global_home.mp4?alt=media&token=d56dab23-e1be-4f3a-a9b6-bd7faeba7b4b';
 
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const { login, loginWithGoogle, error: authError } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const showGoogleLogin = !PRIVATE_PREVIEW_MODE && PUBLIC_REGISTRATION_ENABLED;
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -142,7 +143,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {!PRIVATE_PREVIEW_MODE && (
+        {showGoogleLogin && (
           <>
             <div className="mt-8 relative">
               <div className="absolute inset-0 flex items-center">
@@ -177,6 +178,16 @@ export default function LoginPage() {
               </Link>
             </div>
           </>
+        )}
+
+        {!showGoogleLogin && !PRIVATE_PREVIEW_MODE && (
+          <div className="mt-8 text-center text-sm text-[#9CA3AF]">
+            L&apos;accés és només per a comptes existents. Si necessites alta, escriu a{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#3B82F6] hover:text-[#2563EB] font-medium transition-colors">
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </div>
         )}
 
         {PRIVATE_PREVIEW_MODE && (

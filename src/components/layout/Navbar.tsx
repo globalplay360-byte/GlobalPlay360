@@ -9,6 +9,7 @@ import {
   subscribeToFounderCampaign,
   type FounderCampaign,
 } from '@/services/stripe.service';
+import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 export default function Navbar() {
   const { user, logout, hasFounderAccess } = useAuth();
@@ -32,7 +33,7 @@ export default function Navbar() {
 
   const handleFounderCta = async () => {
     if (!user) {
-      navigate('/register');
+      navigate('/login');
       return;
     }
 
@@ -170,12 +171,14 @@ export default function Navbar() {
                   >
                     {t('navbar.login', 'Iniciar Sessió')}
                   </Link>
-                  <Link
-                    to="/register"
-                    className="text-sm font-medium px-5 py-2 bg-[#0070F3] text-gray-100 rounded hover:bg-[#0051B3] transition-colors"
-                  >
-                    {t('navbar.register', 'Registre')}
-                  </Link>
+                  {PUBLIC_REGISTRATION_ENABLED && (
+                    <Link
+                      to="/register"
+                      className="text-sm font-medium px-5 py-2 bg-[#0070F3] text-gray-100 rounded hover:bg-[#0051B3] transition-colors"
+                    >
+                      {t('navbar.register', 'Registre')}
+                    </Link>
+                  )}
                 </div>
               )}
             </div>

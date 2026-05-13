@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
-import { CONTACT_EMAIL } from '@/config/site';
+import { CONTACT_EMAIL, PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 const SectionContainer: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className = '' }) => (
   <div className={`w-full px-4 sm:px-8 lg:px-12 xl:px-16 ${className}`}>
@@ -95,8 +95,8 @@ const AboutPage: React.FC = () => {
               variants={fadeInUp}
               className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Link to="/register" className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-gray-100 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                {t('aboutPage.hero.ctaPrimary', 'Get Started')}
+              <Link to={PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login'} className="flex items-center justify-center gap-2 bg-[#3B82F6] hover:bg-[#2563EB] text-gray-100 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                {PUBLIC_REGISTRATION_ENABLED ? t('aboutPage.hero.ctaPrimary', 'Get Started') : t('navbar.login', 'Iniciar Sessió')}
               </Link>
               <Link to="/" className="flex items-center justify-center gap-2 border border-gray-100/20 hover:border-gray-100/50 hover:bg-gray-100/5 px-7 py-3.5 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98] w-full sm:w-auto text-sm">
                 {t('aboutPage.hero.ctaSecondary', 'Back to Home')}

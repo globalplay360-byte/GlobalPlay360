@@ -8,6 +8,7 @@ import {
   isTrialStripePrice,
   type StripePrice,
 } from '@/services/stripe.service';
+import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 type Interval = 'month' | 'year';
 
@@ -188,10 +189,10 @@ export default function PricingPage() {
               </ul>
 
               <Link
-                to="/register"
+                to={PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login'}
                 className="block w-full py-3.5 px-4 text-center rounded-xl border border-[#374151] text-gray-100 hover:bg-[#1F2937] font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
               >
-                {t('pricingPage.free.cta')}
+                {PUBLIC_REGISTRATION_ENABLED ? t('pricingPage.free.cta') : t('navbar.login', 'Iniciar Sessió')}
               </Link>
             </div>
 
