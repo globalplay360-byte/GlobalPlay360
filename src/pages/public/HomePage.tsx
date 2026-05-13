@@ -56,8 +56,8 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/40 via-[#0B1120]/70 to-[#0B1120]" />
         </div>
         
-        <div className="relative z-10 text-center max-w-5xl px-4 flex flex-col items-center">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-medium mb-6 leading-tight tracking-tighter text-gray-100 whitespace-nowrap drop-shadow-xl">
+        <div className="relative z-10 text-center max-w-5xl px-4 sm:px-6 flex flex-col items-center">
+          <h1 className="max-w-[min(92vw,42rem)] text-3xl md:text-5xl lg:text-6xl font-medium mb-6 leading-tight tracking-tighter text-gray-100 whitespace-normal drop-shadow-xl">
             {titleParts[0]}
             {titleParts[1] && (
               <span className="font-bold animate-shine px-2">

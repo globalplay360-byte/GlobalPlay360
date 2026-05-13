@@ -1,45 +1,54 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 
-// Layouts
+// Layouts (sempre al chunk inicial — lleugers)
 import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/layout/AdminLayout';
 import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-
-// Public Pages
-import HomePage from './pages/public/HomePage';
-import PricingPage from './pages/public/PricingPage';
-import AboutPage from './pages/public/AboutPage';
-import PrivacyPage from './pages/public/PrivacyPage';
-import TermsPage from './pages/public/TermsPage';
-import CookiesPage from './pages/public/CookiesPage';
-import ContactPage from './pages/public/ContactPage';
-
-// Auth Pages
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
-import AuthActionPage from './pages/auth/AuthActionPage';
-
-// Admin / Dashboard Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsersPage from './pages/admin/AdminUsersPage';
-import AdminOpportunitiesPage from './pages/admin/AdminOpportunitiesPage';
-import OverviewPage from './pages/dashboard/OverviewPage';
-import OpportunitiesPage from './pages/dashboard/OpportunitiesPage';
-import OpportunityDetailPage from './pages/dashboard/OpportunityDetailPage';
-import CreateOpportunityPage from './pages/dashboard/CreateOpportunityPage';
-import EditOpportunityPage from './pages/dashboard/EditOpportunityPage';
-import MyOpportunitiesPage from './pages/dashboard/MyOpportunitiesPage';
-import ApplicationsPage from './pages/dashboard/ApplicationsPage';
-import MessagesPage from './pages/dashboard/MessagesPage';
-import MessageDetailPage from './pages/dashboard/MessageDetailPage';
-import ProfilePage from './pages/dashboard/ProfilePage';
-import PublicProfilePage from './pages/dashboard/PublicProfilePage';
-import CheckoutSuccessPage from './pages/dashboard/CheckoutSuccessPage';
-import BillingPage from './pages/dashboard/BillingPage';
 import { PRIVATE_PREVIEW_MODE, PUBLIC_REGISTRATION_ENABLED } from './config/site';
+
+// Pàgines en chunks separats: redueix el JS inicial (crític per a Safari iOS amb monòlits ~10MB+)
+const HomePage = lazy(() => import('./pages/public/HomePage'));
+const PricingPage = lazy(() => import('./pages/public/PricingPage'));
+const AboutPage = lazy(() => import('./pages/public/AboutPage'));
+const PrivacyPage = lazy(() => import('./pages/public/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/public/TermsPage'));
+const CookiesPage = lazy(() => import('./pages/public/CookiesPage'));
+const ContactPage = lazy(() => import('./pages/public/ContactPage'));
+const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
+const AuthActionPage = lazy(() => import('./pages/auth/AuthActionPage'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminOpportunitiesPage = lazy(() => import('./pages/admin/AdminOpportunitiesPage'));
+const OverviewPage = lazy(() => import('./pages/dashboard/OverviewPage'));
+const OpportunitiesPage = lazy(() => import('./pages/dashboard/OpportunitiesPage'));
+const OpportunityDetailPage = lazy(() => import('./pages/dashboard/OpportunityDetailPage'));
+const CreateOpportunityPage = lazy(() => import('./pages/dashboard/CreateOpportunityPage'));
+const EditOpportunityPage = lazy(() => import('./pages/dashboard/EditOpportunityPage'));
+const MyOpportunitiesPage = lazy(() => import('./pages/dashboard/MyOpportunitiesPage'));
+const ApplicationsPage = lazy(() => import('./pages/dashboard/ApplicationsPage'));
+const MessagesPage = lazy(() => import('./pages/dashboard/MessagesPage'));
+const MessageDetailPage = lazy(() => import('./pages/dashboard/MessageDetailPage'));
+const ProfilePage = lazy(() => import('./pages/dashboard/ProfilePage'));
+const PublicProfilePage = lazy(() => import('./pages/dashboard/PublicProfilePage'));
+const CheckoutSuccessPage = lazy(() => import('./pages/dashboard/CheckoutSuccessPage'));
+const BillingPage = lazy(() => import('./pages/dashboard/BillingPage'));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-[50vh] flex items-center justify-center bg-[#0B1120] text-gray-100">
+      <div
+        className="h-9 w-9 rounded-full border-2 border-slate-600 border-t-blue-500 animate-spin"
+        role="status"
+        aria-label="Carregant"
+      />
+    </div>
+  );
+}
 
 function App() {
   const registrationEnabled = PUBLIC_REGISTRATION_ENABLED && !PRIVATE_PREVIEW_MODE;
@@ -48,7 +57,8 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
           {/* Public Routes inside PublicLayout */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
@@ -117,7 +127,8 @@ function App() {
 
           {/* 404 Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );

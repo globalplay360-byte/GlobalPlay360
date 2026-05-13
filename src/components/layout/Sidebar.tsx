@@ -296,7 +296,7 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
       <aside
         ref={drawerRef}
         className={`lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#0B1120] border-r border-[#1F2937] flex flex-col shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-base ease-out overflow-hidden ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          mobileOpen ? 'translate-x-0' : '-translate-x-full pointer-events-none'
         }`}
         /**
          * `inert` quan està tancat: remou focus + interacció de tots els descendents

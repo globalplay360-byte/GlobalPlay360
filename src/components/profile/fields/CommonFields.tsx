@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Select, { type SingleValue } from 'react-select';
-import { Country, State, City } from 'country-state-city';
+import Country from 'country-state-city/lib/country';
+import State from 'country-state-city/lib/state';
 import type { User } from '@/types';
 import { Field, Input, Textarea } from './FormControls';
 import { FormSection } from './FormSection';
@@ -17,6 +18,8 @@ const styles = darkSelectStyles<SelectOption, false>();
 
 export default function CommonFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
+  const [cityOptions, setCityOptions] = useState<SelectOption[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
 
   const countryOptions = useMemo<SelectOption[]>(
     () =>
@@ -24,7 +27,7 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
         value: c.isoCode,
         label: `${c.flag} ${c.name}`,
       })),
-    []
+    [],
   );
 
   const currentCountryObj = useMemo(() => {
@@ -45,12 +48,41 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
     return stateOptions.find((o) => o.value === formData.state) ?? null;
   }, [formData.state, stateOptions]);
 
-  const cityOptions = useMemo<SelectOption[]>(() => {
-    if (!formData.country || !formData.state) return [];
-    return City.getCitiesOfState(formData.country, formData.state).map((c) => ({
-      value: c.name,
-      label: c.name,
-    }));
+  useEffect(() => {
+    if (!formData.country || !formData.state) {
+      setCityOptions([]);
+      setCitiesLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setCitiesLoading(true);
+    setCityOptions([]);
+
+    const countryCode = formData.country;
+    const stateCode = formData.state;
+    void import('country-state-city/lib/city')
+      .then((mod) => {
+        if (cancelled) return;
+        const City = mod.default as {
+          getCitiesOfState: (countryCode: string, stateCode: string) => { name: string }[];
+        };
+        const rows = City.getCitiesOfState(countryCode, stateCode).map((c) => ({
+          value: c.name,
+          label: c.name,
+        }));
+        setCityOptions(rows);
+      })
+      .catch(() => {
+        if (!cancelled) setCityOptions([]);
+      })
+      .finally(() => {
+        if (!cancelled) setCitiesLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [formData.country, formData.state]);
 
   const currentCityObj = useMemo(() => {
@@ -128,8 +160,12 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
             options={cityOptions}
             value={currentCityObj}
             onChange={handleCityChange}
-            placeholder={t('profileEdit.placeholders.city', 'Selecciona ciutat...')}
-            isDisabled={disabled || !formData.state}
+            placeholder={
+              citiesLoading
+                ? t('opportunities.filters.loadingCities', 'Carregant ciutats…')
+                : t('profileEdit.placeholders.city', 'Selecciona ciutat...')
+            }
+            isDisabled={disabled || !formData.state || citiesLoading}
             isClearable
             menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
             noOptionsMessage={() => t('profileEdit.noOptions.city', 'Cap ciutat trobada')}

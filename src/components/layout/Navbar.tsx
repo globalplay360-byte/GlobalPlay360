@@ -71,7 +71,7 @@ export default function Navbar() {
     <>
       {/* Banner Superior Founder */}
       <div className="bg-[#FFC107] text-[#1A1200] py-2 border-b border-[#d19a00]/35 shadow-[inset_0_-1px_0_rgba(0,0,0,0.08)] transition-colors">
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-2.5 lg:gap-3">
+        <div className="safe-area-x w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-2.5 lg:gap-3">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-2.5 min-w-0">
             <p className="m-0 text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.06em] text-[#2b1800] text-center sm:text-left leading-tight">
               {t('navbar.banner.title', 'Miembros Fundadores – Acceso Gratuito')}
@@ -105,7 +105,7 @@ export default function Navbar() {
       </div>
 
       <nav className="bg-[#020C1B] border-b border-gray-100/5 sticky top-0 z-50">
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div className="safe-area-x w-full px-4 sm:px-8 lg:px-12 xl:px-16">
           <div className="flex justify-between items-center h-24">
             {/* Logo y Links Izquierda */}
             <div className="flex items-center gap-14 lg:gap-24">

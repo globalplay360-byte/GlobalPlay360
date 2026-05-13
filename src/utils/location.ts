@@ -1,31 +1,20 @@
-import { Country, State } from "country-state-city";
-import type { Opportunity } from "@/types";
+import type { Opportunity } from '@/types';
 
+/**
+ * Text d’ubicació per a llistats i targetes sense importar `country-state-city`.
+ * Resoldre ISO → nom complet es fa als formularis (react-select + dades); aquí
+ * només es concatena el que ja ve de Firestore per evitar carregar ~600kB+ de
+ * dades globals al chunk de pàgines com Oportunitats (crític a Safari iOS).
+ */
 export function formatLocation(opp: Partial<Opportunity> & { location?: string }): string {
-  // Backwards compatibility for old records
   if (opp.location && !opp.country) {
     return opp.location;
   }
 
   const parts: string[] = [];
-  
-  if (opp.city) {
-    parts.push(opp.city);
-  }
-  
-  if (opp.state && opp.country) {
-    // Optionally resolve state name, though usually raw state name or code is fine.
-    // If opp.state is a state code, we can resolve it:
-    const stateObj = State.getStateByCodeAndCountry(opp.state, opp.country);
-    parts.push(stateObj?.name || opp.state);
-  } else if (opp.state) {
-    parts.push(opp.state);
-  }
-  
-  if (opp.country) {
-    const countryObj = Country.getCountryByCode(opp.country);
-    parts.push(countryObj?.name || opp.country);
-  }
+  if (opp.city) parts.push(opp.city);
+  if (opp.state) parts.push(opp.state);
+  if (opp.country) parts.push(opp.country);
 
   return parts.filter(Boolean).join(', ') || 'Ubicació no especificada';
 }
