@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Select, { type SingleValue } from 'react-select';
 import Country from 'country-state-city/lib/country';
 import State from 'country-state-city/lib/state';
@@ -18,8 +18,6 @@ const styles = darkSelectStyles<SelectOption, false>();
 
 export default function CommonFields({ formData, onChange, disabled }: Props) {
   const { t } = useTranslation();
-  const [cityOptions, setCityOptions] = useState<SelectOption[]>([]);
-  const [citiesLoading, setCitiesLoading] = useState(false);
 
   const countryOptions = useMemo<SelectOption[]>(
     () =>
@@ -48,48 +46,8 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
     return stateOptions.find((o) => o.value === formData.state) ?? null;
   }, [formData.state, stateOptions]);
 
-  useEffect(() => {
-    if (!formData.country || !formData.state) {
-      setCityOptions([]);
-      setCitiesLoading(false);
-      return;
-    }
-
-    let cancelled = false;
-    setCitiesLoading(true);
-    setCityOptions([]);
-
-    const countryCode = formData.country;
-    const stateCode = formData.state;
-    void import('country-state-city/lib/city')
-      .then((mod) => {
-        if (cancelled) return;
-        const City = mod.default as {
-          getCitiesOfState: (countryCode: string, stateCode: string) => { name: string }[];
-        };
-        const rows = City.getCitiesOfState(countryCode, stateCode).map((c) => ({
-          value: c.name,
-          label: c.name,
-        }));
-        setCityOptions(rows);
-      })
-      .catch(() => {
-        if (!cancelled) setCityOptions([]);
-      })
-      .finally(() => {
-        if (!cancelled) setCitiesLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [formData.country, formData.state]);
-
-  const currentCityObj = useMemo(() => {
-    if (!formData.city || !cityOptions.length) return null;
-    return cityOptions.find((o) => o.value === formData.city) ?? null;
-  }, [formData.city, cityOptions]);
-
+  // Quan canvia el país, esborrem estat i ciutat (canvi geogràfic important).
+  // Quan canvia l'estat, mantenim la ciutat (l'usuari l'escriu manualment ara).
   const handleCountryChange = (option: SingleValue<SelectOption>) => {
     onChange({
       country: option ? option.value : '',
@@ -99,14 +57,7 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
   };
 
   const handleStateChange = (option: SingleValue<SelectOption>) => {
-    onChange({
-      state: option ? option.value : '',
-      city: '',
-    });
-  };
-
-  const handleCityChange = (option: SingleValue<SelectOption>) => {
-    onChange({ city: option ? option.value : '' });
+    onChange({ state: option ? option.value : '' });
   };
 
   return (
@@ -155,21 +106,12 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
         </Field>
 
         <Field label={t('profileEdit.fields.city', 'Ciutat')}>
-          <Select
-            styles={styles}
-            options={cityOptions}
-            value={currentCityObj}
-            onChange={handleCityChange}
-            placeholder={
-              citiesLoading
-                ? t('opportunities.filters.loadingCities', 'Carregant ciutats…')
-                : t('profileEdit.placeholders.city', 'Selecciona ciutat...')
-            }
-            isDisabled={disabled || !formData.state || citiesLoading}
-            isClearable
-            menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
-            noOptionsMessage={() => t('profileEdit.noOptions.city', 'Cap ciutat trobada')}
-            classNamePrefix="react-select"
+          <Input
+            type="text"
+            value={formData.city || ''}
+            onChange={(e) => onChange({ city: e.target.value })}
+            placeholder={t('profileEdit.placeholders.city', 'La teva ciutat')}
+            disabled={disabled}
           />
         </Field>
       </div>
