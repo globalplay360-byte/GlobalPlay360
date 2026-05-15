@@ -4,6 +4,7 @@ import '@fontsource-variable/geist'
 import '@fontsource-variable/geist-mono'
 import './index.css'
 import './i18n' // Configurem les traduccions abans no carregui React
+import './services/authLanguage' // Sincronitza l'idioma de Firebase Auth amb i18next
 import App from './App.tsx'
 
 const rootEl = document.getElementById('root')
