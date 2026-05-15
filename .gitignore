@@ -23,6 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 build_output
+.vite/
 vite.config.ts.timestamp-*.mjs
 vite.config.js.timestamp-*.mjs
 
@@ -34,3 +35,9 @@ vite.config.js.timestamp-*.mjs
 # Personal reference docs (inspiration, notes, research)
 docs/*.pdf
 .firebase/
+
+# Temporary one-off scripts / scratch files
+temp-*
+temp_*
+foo.txt
+test.js

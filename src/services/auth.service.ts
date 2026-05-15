@@ -17,6 +17,7 @@ import { auth, db } from './firebase';
 import type { User, UserRole, PlanType } from '@/types';
 import { getUserPrivateProfile, migrateLegacyPrivateFields } from './profile.service';
 import { activateSingleSession } from './session.service';
+import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -121,6 +122,10 @@ export async function registerWithEmail(
   displayName: string,
   role: UserRole = 'player',
 ): Promise<User> {
+  if (!PUBLIC_REGISTRATION_ENABLED) {
+    throw new Error('PUBLIC_REGISTRATION_DISABLED');
+  }
+
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
   // Set displayName on Firebase Auth profile
@@ -139,6 +144,10 @@ export async function registerWithEmail(
 export async function loginWithGoogle(
   role: UserRole = 'player',
 ): Promise<User> {
+  if (!PUBLIC_REGISTRATION_ENABLED) {
+    throw new Error('PUBLIC_REGISTRATION_DISABLED');
+  }
+
   const cred = await signInWithPopup(auth, googleProvider);
   const { uid, email, displayName, photoURL } = cred.user;
   const isNewUser = getAdditionalUserInfo(cred)?.isNewUser === true;

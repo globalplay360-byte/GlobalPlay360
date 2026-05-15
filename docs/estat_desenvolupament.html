@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estat del desenvolupament — GlobalPlay360</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #fafaf8;
+    --bg-white: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #999999;
+    --accent-warm: #c4a882;
+    --accent-warm-light: #f5f0ea;
+    --border: #e5e3de;
+    --border-light: #f0ede8;
+    --highlight-bg: #f7f6f3;
+    --success: #5a8f69;
+    --success-light: #eaf1ec;
+    --info: #4b6cb7;
+    --info-light: #eef3ff;
+    --pending-light: #f5f0ea;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page-wrapper {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .hero {
+    min-height: 82vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 84px 0 64px;
+  }
+
+  .hero-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    margin-bottom: 30px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 5vw, 3.7rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 26px;
+    max-width: 640px;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.85;
+    max-width: 650px;
+    margin-bottom: 44px;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    border-top: 1px solid var(--border);
+    padding-top: 30px;
+    gap: 10px;
+  }
+
+  .hero-meta-item { padding: 10px 0; }
+
+  .hero-meta-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+
+  .hero-meta-value {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 38px;
+  }
+
+  .hero-badge,
+  .hero-badge-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    align-self: flex-start;
+  }
+
+  .hero-badge {
+    background: var(--success-light);
+    border: 1px solid rgba(90, 143, 105, 0.25);
+    color: var(--success);
+  }
+
+  .hero-badge-info {
+    background: var(--info-light);
+    border: 1px solid rgba(75, 108, 183, 0.18);
+    color: var(--info);
+  }
+
+  .hero-badge-dot,
+  .hero-badge-info-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .hero-badge-dot {
+    background: var(--success);
+    box-shadow: 0 0 0 4px rgba(90, 143, 105, 0.15);
+  }
+
+  .hero-badge-info-dot {
+    background: var(--info);
+    box-shadow: 0 0 0 4px rgba(75, 108, 183, 0.12);
+  }
+
+  .section {
+    padding: 72px 0;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .section-number {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(1.65rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    margin-bottom: 26px;
+    color: var(--text-primary);
+  }
+
+  .section-text {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin-bottom: 22px;
+  }
+
+  .section-text:last-child { margin-bottom: 0; }
+
+  .section-text strong,
+  .ops-list-text strong,
+  .highlight-block strong,
+  .access-line strong,
+  .note-card strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .checklist,
+  .quality-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 32px 0;
+  }
+
+  .check-item,
+  .quality-card,
+  .access-card,
+  .note-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 22px;
+  }
+
+  .check-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--success-light);
+    border: 1px solid rgba(90, 143, 105, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .check-icon svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--success);
+    stroke-width: 3;
+    fill: none;
+  }
+
+  .check-text {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .check-text-sub {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    margin-top: 3px;
+  }
+
+  .quality-card,
+  .access-card,
+  .note-card {
+    padding: 24px;
+  }
+
+  .quality-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent-warm-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+  }
+
+  .quality-title,
+  .access-title,
+  .note-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .quality-text,
+  .note-text,
+  .access-line {
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .access-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .access-line + .access-line {
+    margin-top: 12px;
+  }
+
+  .credential-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: var(--highlight-bg);
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-top: 18px;
+  }
+
+  .pending-block {
+    background: var(--pending-light);
+    border: 1px solid rgba(196, 168, 130, 0.3);
+    border-radius: 12px;
+    padding: 36px;
+    margin: 32px 0;
+  }
+
+  .pending-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    margin-bottom: 16px;
+  }
+
+  .pending-intro {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .pending-list { list-style: none; padding: 0; }
+
+  .pending-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid rgba(196, 168, 130, 0.2);
+  }
+
+  .pending-list li:first-child { border-top: 1px solid rgba(196, 168, 130, 0.35); }
+
+  .pending-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-warm);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  .pending-list-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .pending-list-desc {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .ops-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0;
+    counter-reset: ops;
+  }
+
+  .ops-list li {
+    counter-increment: ops;
+    display: flex;
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .ops-list li:last-child { border-bottom: none; }
+
+  .ops-list li::before {
+    content: counter(ops, decimal-leading-zero);
+    flex-shrink: 0;
+    width: 36px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-warm);
+    letter-spacing: 0.05em;
+    padding-top: 1px;
+  }
+
+  .ops-list-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .highlight-block {
+    background: var(--highlight-bg);
+    border-left: 3px solid var(--accent-warm);
+    padding: 24px 28px;
+    margin: 32px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .highlight-block p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .closing {
+    padding: 80px 0;
+    border-top: 1px solid var(--border-light);
+    text-align: center;
+  }
+
+  .closing-text {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto 48px;
+  }
+
+  .closing-signature {
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+    display: inline-block;
+  }
+
+  .closing-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .closing-role {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 760px) {
+    .page-wrapper { padding: 0 20px; }
+    .hero { padding: 62px 0 42px; min-height: auto; }
+    .hero-meta { grid-template-columns: 1fr 1fr; }
+    .section { padding: 58px 0; }
+    .checklist,
+    .quality-grid,
+    .access-grid { grid-template-columns: 1fr; }
+    .pending-block { padding: 28px 24px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .hero { min-height: auto; padding: 40px 0; page-break-after: always; }
+    .section { padding: 40px 0; page-break-inside: avoid; }
+    .check-item, .quality-card, .access-card, .note-card { box-shadow: none; }
+    .pending-block, .hero-badge, .hero-badge-info { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <section class="hero">
+    <div class="hero-label">Confirmació formal · Estat actual del projecte</div>
+    <h1>GlobalPlay360<br>està tancat a nivell de desenvolupament</h1>
+    <p class="hero-subtitle">La plataforma ja està desplegada en producció, en mode de validació privada, perquè la pugueu revisar amb calma durant aquests dies.</p>
+    <p class="hero-description">El codi està complet, la part funcional està resolta i la versió activa actual permet entrar només a l'entorn intern amb el compte compartit de validació. La proposta és utilitzar aquests dies per trastejar la plataforma, recopilar feedback final i, si tot encaixa, fer una reunió divendres per donar el projecte per formalment tancat, quedant només pendents els ajustos legals i l'activació de Stripe live quan arribin les dades fiscals.</p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Estat del codi</div>
+        <div class="hero-meta-value">100% complet</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Producció</div>
+        <div class="hero-meta-value">Desplegada en private preview</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Accés actual</div>
+        <div class="hero-meta-value">Només Aina i Aleix</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Pendent extern</div>
+        <div class="hero-meta-value">Dades fiscals + texts legals</div>
+      </div>
+    </div>
+
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Plataforma operativa i preparada per validació final
+      </div>
+      <div class="hero-badge-info">
+        <span class="hero-badge-info-dot"></span>
+        Producció tancada al públic, oberta només en mode privat
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">01 — Estat real d'avui</div>
+    <h2 class="section-title">On som exactament ara</h2>
+    <p class="section-text">GlobalPlay360 està desenvolupat, revisat i desplegat. El producte ja no es troba en fase de construcció, sinó en una <strong>fase de validació privada</strong> prèvia al tancament formal. Això vol dir que la plataforma ja està disponible en producció perquè la pugueu provar, però encara sense obrir-se públicament a usuaris externs.</p>
+    <p class="section-text">Aquesta és la manera més neta i segura de tancar el projecte: primer es valida en entorn real però controlat, després es recullen les últimes observacions i, un cop arribin les dades fiscals i els textos legals definitius, s'activa la versió comercial amb Stripe live i pàgines legals finals.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-number">02 — Accés actual</div>
+    <h2 class="section-title">Com podeu entrar aquests dies</h2>
+    <p class="section-text">Per tal que pugueu revisar la plataforma sense obrir-la al públic, s'ha activat un mode de <strong>private preview</strong>. Això manté la web pública tancada i, al mateix temps, permet l'accés intern només a qui té credencials específiques.</p>
+
+    <div class="access-grid">
+      <div class="access-card">
+        <div class="access-title">Compte habilitat per a validació</div>
+        <p class="access-line"><strong>Usuari autoritzat:</strong> globalplay360@gmail.com</p>
+        <p class="access-line"><strong>Permís assignat:</strong> admin</p>
+        <p class="access-line"><strong>Accés permès només a Aina i Aleix</strong> durant aquesta finestra de revisió.</p>
+        <div class="credential-pill">La contrasenya provisional s'ha de compartir només per canal privat</div>
+      </div>
+
+      <div class="access-card">
+        <div class="access-title">Condicions de la preview privada</div>
+        <p class="access-line">La home pública continua en mode “Pròximament”, però el <strong>login està obert només per a aquesta validació interna</strong>.</p>
+        <p class="access-line">El registre públic està tancat i el dashboard en producció queda <strong>restringit al rol admin</strong>.</p>
+        <p class="access-line">A més, s'ha mantingut la regla de <strong>sessió única per dispositiu</strong>, de manera que la mateixa compte no es pot utilitzar a la vegada en múltiples dispositius sense tallar la sessió anterior.</p>
+      </div>
+    </div>
+
+    <div class="highlight-block">
+      <p>La proposta és clara: <strong>podeu trastejar la plataforma aquests dies</strong>, revisar fluxos, navegació i continguts, i si tot està validat, <strong>ens podem reunir divendres</strong> per donar el projecte per tancat formalment. A partir d'aquí només quedarien els ajustos legals i fiscals previs al llançament comercial.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">03 — Funcionalitats lliurades</div>
+    <h2 class="section-title">El nucli del producte està entregat</h2>
+    <p class="section-text">La plataforma cobreix el flux complet previst per a jugadors, entrenadors, clubs i administració. No es tracta d'un prototip: és una base funcional, consistent i preparada per evolucionar a partir d'una versió realment utilitzable.</p>
+
+    <div class="checklist">
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Autenticació i rols</div><span class="check-text-sub">Player · Coach · Club · Admin · Reset password · Verificació email</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Perfils multi-esport</div><span class="check-text-sub">Edició, avatar, dades públiques i privades separades</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Marketplace d'oportunitats</div><span class="check-text-sub">Llistat, detall, creació, edició i moderació</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Candidatures</div><span class="check-text-sub">Flux jugador/club amb estats i context de negoci real</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Missatgeria amb paywall</div><span class="check-text-sub">Xat 1-a-1, protecció premium i control per backend</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Free / Premium / Trial</div><span class="check-text-sub">Integració Stripe test, Customer Portal i mirror de subscripció</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Panell admin MVP</div><span class="check-text-sub">KPIs, revisió d'usuaris i moderació d'oportunitats</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Multiidioma complet</div><span class="check-text-sub">Català, castellà i anglès a nivell de plataforma</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Pàgines públiques</div><span class="check-text-sub">Home, About, Pricing, Footer i pàgines legals bàsiques</span></div></div>
+      <div class="check-item"><div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="check-text">Producció en private preview</div><span class="check-text-sub">Landing pública tancada i accés intern només per administració</span></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">04 — Refinaments de demo</div>
+    <h2 class="section-title">Ajustos resolts arran de la demo i de la revisió final</h2>
+    <p class="section-text">Durant la demo i les revisions posteriors s'han anat detectant petits punts de UX, billing i comportament intern. Aquests refinaments ja s'han incorporat al producte i formen part de la versió actual desplegada.</p>
+
+    <div class="quality-grid">
+      <div class="quality-card">
+        <div class="quality-icon">💳</div>
+        <div class="quality-title">Trial i billing alineats</div>
+        <div class="quality-text">S'ha corregit la lògica perquè els usuaris en trial es mostrin correctament com a <strong>TRIAL</strong>, es respecti l'interval mensual/anual i la informació de subscripció quedi sincronitzada a Firestore.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">👑</div>
+        <div class="quality-title">Founder banner refinat</div>
+        <div class="quality-text">S'ha redissenyat el banner de membres fundadors, s'ha simplificat el missatge, s'ha ajustat la jerarquia visual i s'ha aclarit el funcionament de la campanya i del criteri dels primers 100.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">🧭</div>
+        <div class="quality-title">Sidebar i login polits</div>
+        <div class="quality-text">S'ha integrat un fons visual rotatiu al lateral del dashboard, optimitzat perquè no carregui les 4 imatges a la vegada, i s'ha recuperat el clip de fons al login amb una capa uniforme coherent amb la marca.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">🔒</div>
+        <div class="quality-title">Accés privat en producció</div>
+        <div class="quality-text">S'ha desplegat la web en mode <strong>private preview</strong>: login permès només per a validació interna, registre tancat i dashboard accessible només per a comptes amb rol admin.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">🛡️</div>
+        <div class="quality-title">Seguretat i sessions</div>
+        <div class="quality-text">Es manté el control de sessió única per dispositiu i s'han ajustat les rules perquè el registre torni a funcionar correctament després de la neteja de dades i la recreació d'usuaris.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">💬</div>
+        <div class="quality-title">Missatgeria i retenció</div>
+        <div class="quality-text">S'ha consolidat la política de retenció de converses inactives a 90 dies i s'ha mantingut l'avís a usuari sobre l'eliminació automàtica dels fils sense activitat.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">🧹</div>
+        <div class="quality-title">Neteja total de test</div>
+        <div class="quality-text">S'ha fet una neteja completa i controlada de Firebase i Stripe test, conservant productes i preus, reiniciant el context de proves i deixant la base preparada per a la validació final amb dades netes.</div>
+      </div>
+
+      <div class="quality-card">
+        <div class="quality-icon">⚙️</div>
+        <div class="quality-title">Moderació i govern del producte</div>
+        <div class="quality-text">El panell admin incorpora capacitat de revisar i intervenir sobre oportunitats que puguin ser inadequades o malicioses, reforçant el control operatiu del marketplace.</div>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <div class="note-title">Altres decisions aclarides en revisió</div>
+      <div class="note-text">També s'han revisat punts de criteri com la navegació del model Free/Premium, la simplificació de certs elements de la interfície per a l'MVP, la lògica de sessió única i el comportament del flux de missatgeria quan hi intervenen permisos, verificació i paywall.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">05 — Qualitat i solidesa</div>
+    <h2 class="section-title">No només està acabat: està ordenat, segur i validat</h2>
+    <p class="section-text">A més de la part visible, s'ha posat molta cura en la part invisible: coherència de dades, regles, qualitat del codi, estructura escalable i procediments de seguretat perquè el projecte no depengui d'improvisació futura.</p>
+
+    <div class="quality-grid">
+      <div class="quality-card">
+        <div class="quality-icon">✓</div>
+        <div class="quality-title">TypeScript i build nets</div>
+        <div class="quality-text">La base actual compila correctament i s'ha validat amb build de producció després de cada bloc de canvis rellevants.</div>
+      </div>
+      <div class="quality-card">
+        <div class="quality-icon">📚</div>
+        <div class="quality-title">Documentació preparada</div>
+        <div class="quality-text">S'ha creat documentació operativa per a clients i també un protocol de neteja segura per a Firebase i Stripe test, de manera que el projecte queda molt més governable.</div>
+      </div>
+      <div class="quality-card">
+        <div class="quality-icon">🔐</div>
+        <div class="quality-title">Regles Firestore revisades</div>
+        <div class="quality-text">Les rules s'han anat endurint per protegir plans, missatgeria, dades privades i rols, evitant dependència exclusiva de la UI.</div>
+      </div>
+      <div class="quality-card">
+        <div class="quality-icon">🚀</div>
+        <div class="quality-title">Producció controlada</div>
+        <div class="quality-text">La publicació no s'ha fet de forma oberta, sinó amb control d'accés i amb una estratègia de validació que minimitza el risc abans del tancament final.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">06 — El que encara queda</div>
+    <h2 class="section-title">Què falta per obrir-ho comercialment</h2>
+    <p class="section-text">El desenvolupament no té cap blocker intern. El que queda pendent ja no és programació base, sinó inputs externs i una activació final de negoci.</p>
+
+    <div class="pending-block">
+      <div class="pending-title">Pendents externs</div>
+      <p class="pending-intro">Quan arribi aquesta informació, el pas a live es pot executar sense reobrir una fase de desenvolupament llarga.</p>
+
+      <ul class="pending-list">
+        <li>
+          <div class="pending-num">1</div>
+          <div>
+            <div class="pending-list-title">Dades fiscals</div>
+            <div class="pending-list-desc">Necessàries per configurar Stripe live, activar Stripe Tax i deixar la facturació preparada de forma legal i operativa.</div>
+          </div>
+        </li>
+        <li>
+          <div class="pending-num">2</div>
+          <div>
+            <div class="pending-list-title">Textos legals definitius</div>
+            <div class="pending-list-desc">Cal actualitzar la legal page amb textos finals de privacitat, termes i cookies abans de l'obertura pública.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-number">07 — Següent pas recomanat</div>
+    <h2 class="section-title">Com tancar-ho formalment</h2>
+    <p class="section-text">La proposta operativa és molt directa: validar aquests dies la versió privada en producció, recopilar qualsevol observació final i, si tot està correcte, fer una reunió divendres per donar el projecte per tancat. Després, el següent bloc quedarà en pausa fins rebre les dades fiscals i els textos legals finals.</p>
+
+    <ol class="ops-list">
+      <li><div class="ops-list-text"><strong>Aina i Aleix</strong> entren a la versió privada, revisen navegació, textos, panells i flux general.</div></li>
+      <li><div class="ops-list-text">Si detecten algun matís menor, es recull com a refinament final dins d'aquest mateix bloc de validació.</div></li>
+      <li><div class="ops-list-text">Si no apareixen bloquejants, es pot <strong>donar el projecte per tancat a nivell de desenvolupament</strong> en la reunió de divendres.</div></li>
+      <li><div class="ops-list-text">Quan arribin les dades fiscals, s'actualitzen textos legals, s'activa Stripe live i es fa el pas de private preview a llançament real.</div></li>
+    </ol>
+
+    <div class="highlight-block">
+      <p><strong>Conclusió honesta:</strong> el projecte ja està acabat per donar-lo per validat i tancat a nivell de desenvolupament. El que queda després no és “continuar construint”, sinó fer el pas administratiu i comercial necessari per obrir-lo definitivament al mercat.</p>
+    </div>
+  </section>
+
+  <section class="closing">
+    <p class="closing-text">GlobalPlay360 es troba en un punt molt bo: plataforma operativa, refinaments de demo incorporats, producció privada activa i un camí clar cap al tancament formal. Durant aquests dies podeu revisar-la amb tranquil·litat i, si tot està alineat, fer divendres el tancament del projecte, deixant únicament pendent la part legal i fiscal prèvia a l'activació comercial definitiva.</p>
+
+    <div class="closing-signature">
+      <div class="closing-name">Anna Borràs</div>
+      <div class="closing-role">Fullstack Developer &amp; UX/UI Designer</div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

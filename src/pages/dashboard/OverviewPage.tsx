@@ -90,6 +90,8 @@ export default function OverviewPage() {
 
   const isClub = user?.role === 'club';
   const isPremium = activePlan === 'premium';
+  const displayPlan = user?.plan === 'trial' ? 'trial' : activePlan;
+  const displayPlanLabel = t(`overview.planNames.${displayPlan}`);
 
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -244,10 +246,12 @@ export default function OverviewPage() {
             <span className="text-yellow-400/80">{t('overview.hello')}, {user?.displayName || t('overview.sportsman')}</span>
             <span className={"px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] uppercase border " + (
               isPremium
-                ? 'bg-[#3B82F6]/10 text-[#60A5FA] border-[#3B82F6]/30'
+                ? user?.plan === 'trial'
+                  ? 'bg-[#EAB308]/10 text-[#EAB308] border-[#EAB308]/30'
+                  : 'bg-[#3B82F6]/10 text-[#60A5FA] border-[#3B82F6]/30'
                 : 'bg-[#1A2235] text-[#9CA3AF] border-[#2A3447]/70'
             )}>
-              {t('overview.planTag')} {activePlan.toUpperCase()}
+              {t('overview.planTag')} {displayPlanLabel}
             </span>
           </div>
         }
@@ -391,7 +395,9 @@ export default function OverviewPage() {
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircleIcon className="w-4 h-4 text-[#60A5FA]" />
-                    <span className="text-[10.5px] font-semibold text-[#60A5FA] uppercase tracking-[0.14em]">{activePlan}</span>
+                    <span className={`text-[10.5px] font-semibold uppercase tracking-[0.14em] ${user?.plan === 'trial' ? 'text-[#EAB308]' : 'text-[#60A5FA]'}`}>
+                      {displayPlanLabel}
+                    </span>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-100/90 mb-2 tracking-tight">{t('overview.activePlan.title')}</h3>
                   <p className="text-sm text-[#9CA3AF] mb-5 leading-relaxed">{t('overview.activePlan.description')}</p>

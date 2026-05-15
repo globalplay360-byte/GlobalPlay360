@@ -1,10 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { lazy, Suspense, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
-import Select from 'react-select';
-import { Country, State, City } from 'country-state-city';
 import type { Opportunity } from '@/types';
 import { getOpportunitiesByField } from '@/services/opportunities.service';
 import { getUserApplications } from '@/services/applications.service';
@@ -14,77 +12,9 @@ import { useAuth } from '@/context/AuthContext';
 import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
 import { formatLocation } from '@/utils/location';
+import type { MarketplaceFiltersState } from './OpportunitiesMarketplaceFilters';
 
-const darkSelectStyles = {
-  control: (base: any, state: any) => ({
-    ...base,
-    backgroundColor: '#111827',
-    borderColor: state.isFocused ? '#3B82F6' : '#374151',
-    color: '#F3F4F6',
-    boxShadow: state.isFocused ? '0 0 0 1px #3B82F6' : 'none',
-    '&:hover': {
-      borderColor: '#4B5563'
-    },
-    minHeight: '42px',
-  }),
-  menu: (base: any) => ({
-    ...base,
-    backgroundColor: '#1F2937',
-    border: '1px solid #374151',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)',
-    zIndex: 50,
-  }),
-  option: (base: any, state: any) => ({
-    ...base,
-    backgroundColor: state.isSelected ? '#3B82F6' : state.isFocused ? '#374151' : 'transparent',
-    color: state.isSelected ? '#FFFFFF' : '#F3F4F6',
-    fontSize: '13px',
-    cursor: 'pointer',
-    '&:active': {
-      backgroundColor: '#2563EB'
-    },
-  }),
-  singleValue: (base: any) => ({
-    ...base,
-    color: '#F3F4F6',
-    fontSize: '13px',
-  }),
-  placeholder: (base: any) => ({
-    ...base,
-    color: '#9CA3AF',
-    fontSize: '13px',
-  }),
-  input: (base: any) => ({
-    ...base,
-    color: '#F3F4F6',
-    fontSize: '13px',
-  }),
-  indicatorSeparator: (base: any) => ({
-    ...base,
-    backgroundColor: '#374151',
-  }),
-  dropdownIndicator: (base: any) => ({
-    ...base,
-    color: '#9CA3AF',
-    '&:hover': {
-      color: '#D1D5DB'
-    }
-  }),
-};
-
-const SPORT_OPTIONS = [
-  'football',
-  'basketball',
-  'futsal',
-  'volleyball',
-  'handball',
-  'waterpolo',
-  'tennis',
-  'rugby',
-  'american_football',
-  'hockey',
-  'other'
-];
+const OpportunitiesMarketplaceFilters = lazy(() => import('./OpportunitiesMarketplaceFilters'));
 
 export default function OpportunitiesPage() {
   const { user } = useAuth();
@@ -96,45 +26,23 @@ export default function OpportunitiesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [filters, setFilters] = useState<{
-    sport: string;
-    country: string;
-    state: string;
-    city: string;
-    targetRole?: string;
-  }>({
+  const [filters, setFilters] = useState<MarketplaceFiltersState>({
     sport: '',
     country: '',
     state: '',
-    city: '',
-    targetRole: ''
+    targetRole: '',
   });
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const countryOptions = useMemo(() => Country.getAllCountries().map(c => ({ value: c.isoCode, label: c.name })), []);
-  const stateOptions = useMemo(() => filters.country ? State.getStatesOfCountry(filters.country).map(s => ({ value: s.isoCode, label: s.name })) : [], [filters.country]);
-  const cityOptions = useMemo(() => filters.country && filters.state ? City.getCitiesOfState(filters.country, filters.state).map(c => ({ value: c.name, label: c.name })) : [], [filters.country, filters.state]);
-
-  const sportOptions = useMemo(() => {
-    return [
-      { value: '', label: t('opportunities.filters.all') },
-      ...SPORT_OPTIONS.map(s => ({ value: s, label: t(`profile.sports.${s}`) || s }))
-    ];
-  }, [t]);
-
-  const targetRoleOptions = useMemo(() => {
-    return [
-      { value: '', label: t('opportunities.filters.allTargetRoles', "Tots els rols") },
-      { value: 'player', label: t('opportunityForm.targetRole.player', "Jugador/a") },
-      { value: 'coach', label: t('opportunityForm.targetRole.coach', "Entrenador/a") }
-    ];
-  }, [t]);
+  const activeFiltersCount = useMemo(() => {
+    return [filters.sport, filters.country, filters.state, filters.targetRole].filter(Boolean).length;
+  }, [filters]);
 
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter(opp => {
       if (filters.sport && opp.sport?.toLowerCase() !== filters.sport.toLowerCase()) return false;
       if (filters.country && opp.country !== filters.country) return false;
       if (filters.state && opp.state !== filters.state) return false;
-      if (filters.city && opp.city !== filters.city) return false;
       if (filters.targetRole && opp.targetRole && opp.targetRole !== 'both' && opp.targetRole !== filters.targetRole) return false;
       return true;
     });
@@ -216,87 +124,45 @@ export default function OpportunitiesPage() {
         title={t('opportunities.marketplace')}
         description={t('opportunities.discoverOpps')}
         action={
-          user?.role === 'club' && (
-            <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98]">
-              {t('opportunities.createOpportunity')}
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setFiltersOpen((current) => !current)}
+              className="w-full sm:w-auto transition-all duration-base active:scale-[0.98]"
+            >
+              {filtersOpen
+                ? t('opportunities.hideFilters', 'Amaga filtres')
+                : t('opportunities.showFilters', 'Mostra filtres')}
+              {activeFiltersCount > 0 ? ` (${activeFiltersCount})` : ''}
             </Button>
-          )
+
+            {user?.role === 'club' && (
+              <Button variant="primary" onClick={() => navigate('/dashboard/opportunities/new')} className="w-full shadow-md hover:shadow-[#3B82F6]/20 transition-all duration-base active:scale-[0.98] sm:w-auto">
+                {t('opportunities.createOpportunity')}
+              </Button>
+            )}
+          </div>
         }
       />
 
-      {/* Filters */}
-        <div className="relative border border-[#2A3447]/70 p-4 rounded-xl flex flex-col md:flex-row flex-wrap gap-4 bg-gradient-to-b from-[#1A2235] to-[#141C2E] shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)] z-10 w-full md:items-end">
-          <div className="flex-1 min-w-[140px] relative z-50">
-            <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('opportunityForm.fields.targetRoleLabel', 'Rol')}</label>
-            <Select
-              {...{ id: 'role-select', instanceId: 'role-select' }}
-              styles={darkSelectStyles}
-              options={targetRoleOptions}
-              value={targetRoleOptions.find(o => o.value === filters.targetRole) || targetRoleOptions[0]}
-              onChange={(selected: any) => setFilters(f => ({ ...f, targetRole: selected?.value || '' }))}
-              isClearable={false}
+      {filtersOpen ? (
+        <Suspense
+          fallback={
+            <div
+              className="h-[200px] w-full rounded-xl border border-[#2A3447]/60 bg-gradient-to-b from-[#1A2235]/80 to-[#141C2E]/80 animate-pulse"
+              aria-hidden
             />
-          </div>
-          <div className="flex-1 min-w-[140px] relative z-40">
-          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.sport')}</label>
-          <Select
-            {...{ id: 'sport-select', instanceId: 'sport-select' }}
-            styles={darkSelectStyles}
-            options={sportOptions}
-            value={sportOptions.find(o => o.value === filters.sport) || sportOptions[0]}
-            onChange={(selected: any) => setFilters(f => ({ ...f, sport: selected?.value || '' }))}
-            isClearable={false}
-          />
+          }
+        >
+          <OpportunitiesMarketplaceFilters filters={filters} setFilters={setFilters} />
+        </Suspense>
+      ) : (
+        <div className="rounded-xl border border-[#2A3447]/60 bg-gradient-to-b from-[#1A2235]/80 to-[#141C2E]/80 px-4 py-3 text-sm text-[#9CA3AF]">
+          {activeFiltersCount > 0
+            ? t('opportunities.filtersApplied', 'Hi ha filtres actius. Obre els filtres per revisar-los o canviar-los.')
+            : t('opportunities.filtersCollapsed', 'Els filtres es carreguen sota demanda per millorar el rendiment al mòbil.')}
         </div>
-        <div className="flex-1 w-full relative z-30">
-          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.country')}</label>
-          <Select
-            {...{ id: 'country-select', instanceId: 'country-select' }}
-            styles={darkSelectStyles}
-            options={countryOptions}
-            value={countryOptions.find(o => o.value === filters.country) || null}
-            onChange={(selected: any) => setFilters(f => ({ ...f, country: selected?.value || '', state: '', city: '' }))}
-            isClearable
-            placeholder={t('profile.selectCountry')}
-          />
-        </div>
-        <div className="flex-1 w-full relative z-20">
-          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.state')}</label>
-          <Select
-            {...{ id: 'state-select', instanceId: 'state-select' }}
-            styles={darkSelectStyles}
-            options={stateOptions}
-            value={stateOptions.find(o => o.value === filters.state) || null}
-            onChange={(selected: any) => setFilters(f => ({ ...f, state: selected?.value || '', city: '' }))}
-            isClearable
-            isDisabled={!filters.country}
-            placeholder={t('profile.selectState')}
-          />
-        </div>
-        <div className="flex-1 w-full relative z-10">
-          <label className="text-xs font-semibold text-gray-400 mb-1.5 block">{t('profile.city')}</label>
-          <Select
-            {...{ id: 'city-select', instanceId: 'city-select' }}
-            styles={darkSelectStyles}
-            options={cityOptions}
-            value={cityOptions.find(o => o.value === filters.city) || null}
-            onChange={(selected: any) => setFilters(f => ({ ...f, city: selected?.value || '' }))}
-            isClearable
-            isDisabled={!filters.state}
-            placeholder={t('profile.selectCity')}
-          />
-        </div>
-        <div className="w-full md:w-auto shrink-0 z-0">
-          <Button 
-            variant="outline" 
-            onClick={() => setFilters({ sport: '', country: '', state: '', city: '', targetRole: '' })}
-            className="w-full h-[42px] border border-[#374151] hover:bg-[#1F2937] text-gray-300 hover:text-gray-100 transition-colors"
-            disabled={!filters.sport && !filters.country && !filters.state && !filters.city && !filters.targetRole}
-          >
-            {t('opportunities.clearFilters')}
-          </Button>
-        </div>
-      </div>
+      )}
 
       {/* ── Loading state ──────────────────────────────── */}
       {isLoading ? (

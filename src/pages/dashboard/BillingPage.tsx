@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
-import { createPortalSession } from '@/services/stripe.service';
+import { createPortalSession, subscribeToBillingState, type BillingState } from '@/services/stripe.service';
 import {
   CreditCardIcon,
   CalendarIcon,
@@ -14,16 +14,26 @@ import PageHeader from '@/components/ui/PageHeader';
 
 export default function BillingPage() {
   const { t, i18n } = useTranslation();
-  const { user, subscription, activePlan, subscriptionLoading } = useAuth();
+  const { user, subscription, activePlan, hasFounderAccess, subscriptionLoading } = useAuth();
   const navigate = useNavigate();
   const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [billingState, setBillingState] = useState<BillingState | null>(null);
 
   useEffect(() => {
     if (!subscriptionLoading && activePlan !== 'premium') {
       navigate('/pricing', { replace: true });
     }
   }, [subscriptionLoading, activePlan, navigate]);
+
+  useEffect(() => {
+    if (!user || !hasFounderAccess) {
+      setBillingState(null);
+      return;
+    }
+
+    return subscribeToBillingState(user.uid, setBillingState, () => setBillingState(null));
+  }, [user, hasFounderAccess]);
 
   const handleOpenPortal = async () => {
     if (!user) return;
@@ -38,7 +48,7 @@ export default function BillingPage() {
     }
   };
 
-  if (subscriptionLoading || !subscription) {
+  if (subscriptionLoading) {
     return (
       <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-5">
         <div className="h-9 w-56 bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 rounded-lg animate-pulse" />
@@ -46,6 +56,70 @@ export default function BillingPage() {
         <div className="h-32 bg-gradient-to-b from-[#1A2235] to-[#141C2E] border border-[#2A3447]/70 rounded-2xl animate-pulse" />
       </div>
     );
+  }
+
+  const formatDate = (seconds: number | null) => {
+    if (!seconds) return '—';
+    return new Intl.DateTimeFormat(i18n.language === 'en' ? 'en-US' : (i18n.language === 'es' ? 'es-ES' : 'ca-ES'), {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(seconds * 1000));
+  };
+
+  if (!subscription && hasFounderAccess) {
+    return (
+      <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-5">
+        <PageHeader
+          title={t('billing.title', 'Facturació')}
+          description={t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}
+        />
+
+        <div className="relative rounded-2xl border border-[#3B82F6]/30 bg-gradient-to-b from-[#172554] to-[#101828] p-5 sm:p-6 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.7)]">
+          <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#60A5FA]/30 to-transparent" />
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0">
+              <CheckCircleIcon className="w-6 h-6 text-[#60A5FA]" />
+            </div>
+            <div className="space-y-2 min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#93C5FD]">
+                {t('billing.founder.eyebrow', 'Founder Access')}
+              </p>
+              <h2 className="text-lg font-semibold text-gray-100/95 tracking-tight">
+                {t('billing.founder.title', 'Accés Premium actiu sense subscripció de pagament')}
+              </h2>
+              <p className="text-sm text-[#BFDBFE]/85 leading-relaxed">
+                {t('billing.founder.description', 'Aquest compte té l’accés Founder activat. Pots utilitzar les funcionalitats Premium fins a la data límit de la campanya sense passar pel Customer Portal de Stripe.')}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-5 mt-5 border-t border-[#3B82F6]/20">
+            <div className="rounded-xl border border-[#2A3447]/70 bg-[#0F172A]/50 p-4">
+              <p className="text-[10.5px] font-semibold text-[#6B7280] uppercase tracking-[0.14em] mb-1">
+                {t('billing.founder.claim', 'Número de founder')}
+              </p>
+              <p className="text-sm font-semibold text-gray-100/90">
+                {billingState?.founderClaimNumber ? `#${billingState.founderClaimNumber}` : '—'}
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-[#2A3447]/70 bg-[#0F172A]/50 p-4">
+              <p className="text-[10.5px] font-semibold text-[#6B7280] uppercase tracking-[0.14em] mb-1">
+                {t('billing.founder.expires', 'Vàlid fins')}
+              </p>
+              <p className="text-sm font-semibold text-gray-100/90">
+                {formatDate(billingState?.founderAccessUntilSeconds ?? null)}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!subscription) {
+    return null;
   }
 
   const statusLabel: Record<typeof subscription.status, { text: string; className: string }> = {
@@ -59,15 +133,6 @@ export default function BillingPage() {
   };
 
   const status = statusLabel[subscription.status];
-
-  const formatDate = (seconds: number | null) => {
-    if (!seconds) return '—';
-    return new Intl.DateTimeFormat(i18n.language === 'en' ? 'en-US' : (i18n.language === 'es' ? 'es-ES' : 'ca-ES'), {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(seconds * 1000));
-  };
 
   const nextEvent = subscription.status === 'trialing'
     ? { label: t('billing.nextEvent.trialEnd', 'Fi del període de prova'), date: subscription.trial_end_seconds }

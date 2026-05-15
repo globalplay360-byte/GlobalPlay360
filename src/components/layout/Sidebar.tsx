@@ -2,8 +2,18 @@ import { useAuth } from '@/context/AuthContext';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUnreadCount } from '@/hooks/useUnreadCount';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
+
+const SIDEBAR_HEADER_IMAGES = [
+  'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/navbar%20background%2Fvolley_bg.webp?alt=media&token=ebcd35bb-d612-4490-a661-d948496ac1cf',
+  'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/navbar%20background%2Ftennis_bg.webp?alt=media&token=64027131-13f7-4a81-b99f-d02b7adeb604',
+  'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/navbar%20background%2Ffootball_bg.webp?alt=media&token=9156d79d-8870-47e8-82d2-1a2415fa9fe0',
+  'https://firebasestorage.googleapis.com/v0/b/globalplay360-3f9a1.firebasestorage.app/o/navbar%20background%2Fbasketball_Bg.webp?alt=media&token=44f96a6b-5a39-4e49-834d-9c972bd72dd2',
+];
+
+const SIDEBAR_HEADER_INTERVAL_MS = 6000;
+const SIDEBAR_HEADER_FADE_MS = 1800;
 
 interface SidebarProps {
   mobileOpen?: boolean;
@@ -18,6 +28,9 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
   const isPremium = activePlan === 'premium';
   const drawerRef = useRef<HTMLElement | null>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
+  const [activeBackgroundIndex, setActiveBackgroundIndex] = useState(0);
+  const [previousBackgroundIndex, setPreviousBackgroundIndex] = useState<number | null>(null);
+  const [loadedBackgrounds, setLoadedBackgrounds] = useState<Set<number>>(() => new Set([0]));
 
   // Tancar drawer mòbil quan canvia la ruta. `onMobileClose` queda fora de deps
   // a propòsit: és un callback que el pare recrea cada render i forçaria un
@@ -81,6 +94,55 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
     };
   }, [mobileOpen, onMobileClose]);
 
+  useEffect(() => {
+    if (SIDEBAR_HEADER_IMAGES.length <= 1) return;
+
+    const intervalId = window.setInterval(() => {
+      const nextIndex = (activeBackgroundIndex + 1) % SIDEBAR_HEADER_IMAGES.length;
+
+      const activateNext = () => {
+        setPreviousBackgroundIndex(activeBackgroundIndex);
+        setActiveBackgroundIndex(nextIndex);
+      };
+
+      if (loadedBackgrounds.has(nextIndex)) {
+        activateNext();
+        return;
+      }
+
+      const image = new Image();
+      image.src = SIDEBAR_HEADER_IMAGES[nextIndex];
+      image.onload = () => {
+        setLoadedBackgrounds((currentLoaded) => new Set(currentLoaded).add(nextIndex));
+        activateNext();
+      };
+      image.onerror = activateNext;
+    }, SIDEBAR_HEADER_INTERVAL_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [activeBackgroundIndex, loadedBackgrounds]);
+
+  useEffect(() => {
+    const nextIndex = (activeBackgroundIndex + 1) % SIDEBAR_HEADER_IMAGES.length;
+    if (loadedBackgrounds.has(nextIndex)) return;
+
+    const image = new Image();
+    image.src = SIDEBAR_HEADER_IMAGES[nextIndex];
+    image.onload = () => {
+      setLoadedBackgrounds((currentLoaded) => new Set(currentLoaded).add(nextIndex));
+    };
+  }, [activeBackgroundIndex, loadedBackgrounds]);
+
+  useEffect(() => {
+    if (previousBackgroundIndex === null) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setPreviousBackgroundIndex(null);
+    }, SIDEBAR_HEADER_FADE_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [previousBackgroundIndex]);
+
   const navItems = [
     { label: t('sidebar.nav.overview', 'Inici'), path: '/dashboard', icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
@@ -110,14 +172,18 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
   ];
 
   const sidebarContent = (
-    <>
-      <div className="py-8 flex items-center justify-center border-b border-[#1F2937] px-4 overflow-hidden relative">
+    <div className="relative z-10 flex h-full flex-col">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,17,32,0.2)_0%,rgba(11,17,32,0.42)_18%,rgba(11,17,32,0.68)_46%,rgba(11,17,32,0.9)_100%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[#0B1120]/30 mix-blend-multiply" aria-hidden="true" />
+
+      <div className="relative z-10 flex h-full flex-col">
+        <div className="py-8 flex items-center justify-center border-b border-[#1F2937] px-4 min-h-[152px]">
         <NavLink
           to="/dashboard"
           className="flex items-center justify-center group transition-opacity duration-200 hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1120] focus-visible:ring-[#3B82F6] rounded-sm"
           aria-label={t('sidebar.gotoDashboard', "Anar al panell d'Inici")}
         >
-          <Logo className="h-20 md:h-24 w-auto text-yellow-500 transform scale-[1.55] md:scale-[1.45] origin-center" />
+          <Logo className="h-20 md:h-24 w-auto text-yellow-500 drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)] transform scale-[1.55] md:scale-[1.45] origin-center" />
         </NavLink>
         {onMobileClose && (
           <button
@@ -131,9 +197,9 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
             </svg>
           </button>
         )}
-      </div>
+        </div>
 
-      <div className="px-6 py-4 mt-2 flex-1 overflow-y-auto custom-scrollbar">
+        <div className="px-6 py-4 mt-2 flex-1 overflow-y-auto custom-scrollbar">
         <p className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wider mb-4 px-2">
           {t('sidebar.mainMenu', 'Menú Principal')}
         </p>
@@ -147,7 +213,7 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
                 `flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-fast ease-out ${
                   isActive
                     ? 'bg-[#3B82F6]/10 text-[#3B82F6] shadow-sm transform scale-[1.02]'
-                    : 'text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937] hover:translate-x-1'
+                    : 'text-[#9CA3AF] hover:text-gray-100 hover:bg-[#1F2937]/72 hover:translate-x-1'
                 }`
               }
             >
@@ -165,10 +231,10 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
             </NavLink>
           ))}
         </nav>
-      </div>
+        </div>
 
-      <div className="mt-auto p-4 border-t border-[#1F2937]">
-        <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#0F172A] border border-[#1F2937]">
+        <div className="mt-auto p-4 border-t border-[#1F2937]">
+        <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#0F172A]/88 backdrop-blur-[2px] border border-[#1F2937]">
           <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center text-[#3B82F6] font-bold text-sm shrink-0">
             {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
           </div>
@@ -180,13 +246,42 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
           </div>
         </div>
       </div>
+      </div>
+    </div>
+  );
+
+  const renderSidebarBackgroundLayers = (scope: 'desktop' | 'mobile') => (
+    <>
+      {previousBackgroundIndex !== null && loadedBackgrounds.has(previousBackgroundIndex) && (
+        <div
+          key={`${scope}-previous-${previousBackgroundIndex}`}
+          className="absolute inset-0 bg-cover bg-no-repeat opacity-0 transition-opacity ease-out"
+          style={{
+            backgroundImage: `url(${SIDEBAR_HEADER_IMAGES[previousBackgroundIndex]})`,
+            backgroundPosition: 'center 74%',
+            transitionDuration: `${SIDEBAR_HEADER_FADE_MS}ms`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+      <div
+        key={`${scope}-active-${activeBackgroundIndex}`}
+        className="absolute inset-0 bg-cover bg-no-repeat opacity-100 transition-opacity ease-out"
+        style={{
+          backgroundImage: `url(${SIDEBAR_HEADER_IMAGES[activeBackgroundIndex]})`,
+          backgroundPosition: 'center 74%',
+          transitionDuration: `${SIDEBAR_HEADER_FADE_MS}ms`,
+        }}
+        aria-hidden="true"
+      />
     </>
   );
 
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="w-64 bg-[#0B1120] border-r border-[#1F2937] flex-shrink-0 flex-col hidden lg:flex">
+      <aside className="relative w-64 bg-[#0B1120] border-r border-[#1F2937] flex-shrink-0 flex-col hidden lg:flex overflow-hidden">
+        {renderSidebarBackgroundLayers('desktop')}
         {sidebarContent}
       </aside>
 
@@ -200,8 +295,8 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
       />
       <aside
         ref={drawerRef}
-        className={`lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#0B1120] border-r border-[#1F2937] flex flex-col shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-base ease-out ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#0B1120] border-r border-[#1F2937] flex flex-col shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-base ease-out overflow-hidden ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full pointer-events-none'
         }`}
         /**
          * `inert` quan està tancat: remou focus + interacció de tots els descendents
@@ -214,6 +309,7 @@ export default function Sidebar({ mobileOpen = false, onMobileClose }: SidebarPr
         aria-modal="true"
         aria-label="Menú de navegació"
       >
+        {renderSidebarBackgroundLayers('mobile')}
         {sidebarContent}
       </aside>
     </>

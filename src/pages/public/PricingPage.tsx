@@ -5,8 +5,10 @@ import { useTranslation } from 'react-i18next';
 import {
   listActiveProductsWithPrices,
   createCheckoutSession,
+  isTrialStripePrice,
   type StripePrice,
 } from '@/services/stripe.service';
+import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 type Interval = 'month' | 'year';
 
@@ -36,8 +38,9 @@ export default function PricingPage() {
         const products = await listActiveProductsWithPrices();
         const premium = products.find((p) => p.role === 'premium') ?? products[0];
         if (!premium) throw new Error(t('pricingPage.noPremiumActive'));
-        const month = premium.prices.find((p) => p.interval === 'month') ?? null;
-        const year = premium.prices.find((p) => p.interval === 'year') ?? null;
+        const displayPrices = premium.prices.filter((price) => !isTrialStripePrice(price));
+        const month = displayPrices.find((p) => p.interval === 'month') ?? null;
+        const year = displayPrices.find((p) => p.interval === 'year') ?? null;
         if (!cancelled) setPrices({ month, year });
       } catch (err) {
         if (!cancelled) {
@@ -68,7 +71,10 @@ export default function PricingPage() {
         ? `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}&returnUrl=${encodeURIComponent(returnUrl)}`
         : `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
 
-      const url = await createCheckoutSession(user.uid, price.id, { successUrl });
+      const url = await createCheckoutSession(user.uid, price.id, {
+        productId: price.productId,
+        successUrl,
+      });
       window.location.assign(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('pricingPage.errorCheckout'));
@@ -183,10 +189,10 @@ export default function PricingPage() {
               </ul>
 
               <Link
-                to="/register"
+                to={PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login'}
                 className="block w-full py-3.5 px-4 text-center rounded-xl border border-[#374151] text-gray-100 hover:bg-[#1F2937] font-semibold transition-all duration-fast ease-out active:scale-[0.98]"
               >
-                {t('pricingPage.free.cta')}
+                {PUBLIC_REGISTRATION_ENABLED ? t('pricingPage.free.cta') : t('navbar.login', 'Iniciar Sessió')}
               </Link>
             </div>
 

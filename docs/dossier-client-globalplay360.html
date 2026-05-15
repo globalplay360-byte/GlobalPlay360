@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlobalPlay360 · Dossier de Projecte</title>
+  <style>
+    :root {
+      --bg: #edf2f7;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5d6a7d;
+      --line: #d8e0ea;
+      --navy: #0b1120;
+      --navy-2: #111a2e;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #0f9f6e;
+      --gold: #c78a1d;
+      --shadow: 0 18px 45px rgba(11, 17, 32, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30%),
+        linear-gradient(180deg, #f5f7fb 0%, #eaf0f7 100%);
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.65;
+      padding: 28px;
+    }
+
+    .document {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .sheet {
+      background: var(--paper);
+      border: 1px solid rgba(23, 32, 51, 0.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .sheet-inner {
+      padding: 54px 58px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover {
+      background:
+        radial-gradient(circle at 85% 12%, rgba(37, 99, 235, 0.22), transparent 22%),
+        radial-gradient(circle at 15% 85%, rgba(199, 138, 29, 0.16), transparent 18%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 58%, #1d2a43 100%);
+      color: #f8fbff;
+      min-height: 1180px;
+    }
+
+    .cover::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      color: #d9e8ff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 34px;
+      align-items: end;
+      min-height: 980px;
+    }
+
+    h1 {
+      margin: 24px 0 18px;
+      font-size: 54px;
+      line-height: 1.03;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+
+    .lead {
+      font-size: 19px;
+      color: rgba(248, 251, 255, 0.84);
+      max-width: 56ch;
+      margin: 0 0 30px;
+    }
+
+    .cover-card,
+    .info-card,
+    .metric,
+    .stack-card,
+    .module,
+    .timeline-card,
+    .note,
+    .quote,
+    .closing {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .cover-card {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #f8fbff;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+    }
+
+    .cover-card h2 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #bfd4ff;
+    }
+
+    .cover-card p,
+    .cover-card li {
+      color: rgba(248, 251, 255, 0.86);
+      font-size: 14px;
+    }
+
+    .cover-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .signature {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .signature div {
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 13px;
+      color: rgba(248, 251, 255, 0.78);
+    }
+
+    h2.section-title {
+      margin: 0 0 10px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+    }
+
+    .section-kicker {
+      margin: 0 0 24px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0 0 26px;
+    }
+
+    .two-col,
+    .three-col,
+    .metrics,
+    .stack-grid,
+    .modules,
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .two-col {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .three-col {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 22px;
+    }
+
+    .metric {
+      padding: 20px 18px;
+      background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+    }
+
+    .metric .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .metric .value {
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .metric p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .info-card,
+    .stack-card,
+    .module,
+    .timeline-card,
+    .note,
+    .closing,
+    .quote {
+      padding: 22px;
+    }
+
+    .info-card h3,
+    .stack-card h3,
+    .module h3,
+    .timeline-card h3,
+    .closing h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+    }
+
+    .info-card p,
+    .stack-card p,
+    .module p,
+    .timeline-card p,
+    .note p,
+    .closing p,
+    .quote p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #1849b5;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .stack-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stack-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .stack-card .sub {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .modules {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .module {
+      border-top: 4px solid var(--blue);
+    }
+
+    .module.alt {
+      border-top-color: var(--green);
+    }
+
+    .module.gold {
+      border-top-color: var(--gold);
+    }
+
+    .timeline {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .timeline-card {
+      min-height: 210px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+    }
+
+    .timeline-card .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .quote {
+      margin-top: 22px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
+      border-color: #c9dcff;
+    }
+
+    .quote p {
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    .quote strong {
+      color: var(--blue);
+    }
+
+    .note {
+      margin-top: 22px;
+      background: linear-gradient(135deg, #fff8ea 0%, #fffdf8 100%);
+      border-color: #eddcb4;
+    }
+
+    .note strong {
+      color: #8a5d0d;
+    }
+
+    .footer-line {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .page-break {
+      break-before: page;
+      page-break-before: always;
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .document {
+        max-width: none;
+        gap: 0;
+      }
+
+      .sheet {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        overflow: visible;
+      }
+
+      .sheet + .sheet {
+        margin-top: 0;
+      }
+
+      .sheet-inner {
+        padding: 18mm 16mm;
+      }
+
+      .cover {
+        min-height: auto;
+      }
+
+      .cover-grid {
+        min-height: auto;
+      }
+
+      .info-card,
+      .stack-card,
+      .module,
+      .timeline-card,
+      .metric,
+      .note,
+      .quote,
+      .closing,
+      .cover-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 16px;
+      }
+
+      .sheet-inner {
+        padding: 32px 24px;
+      }
+
+      .cover-grid,
+      .two-col,
+      .three-col,
+      .metrics,
+      .stack-grid,
+      .modules,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="document">
+    <section class="sheet cover">
+      <div class="sheet-inner">
+        <div class="eyebrow">Dossier de Projecte · GlobalPlay360</div>
+        <div class="cover-grid">
+          <div>
+            <h1>Una plataforma digital pensada per connectar talent esportiu, clubs i oportunitats reals.</h1>
+            <p class="lead">Document de presentació preparat per a Aina i Aleix amb l'objectiu d'explicar, d'una manera clara i professional, què és GlobalPlay360, com està construït i quin valor aporta el projecte tant a nivell de producte com a nivell tecnològic.</p>
+
+            <div class="signature">
+              <div>
+                <strong>Projecte</strong><br>
+                GlobalPlay360
+              </div>
+              <div>
+                <strong>Preparat per</strong><br>
+                Anna Borras
+              </div>
+              <div>
+                <strong>Destinataris</strong><br>
+                Aina i Aleix
+              </div>
+              <div>
+                <strong>Data</strong><br>
+                Maig 2026
+              </div>
+            </div>
+          </div>
+
+          <aside class="cover-card">
+            <h2>Què resumeix aquest dossier</h2>
+            <ul>
+              <li>La visió general del projecte i el problema que resol.</li>
+              <li>Com s'ha dissenyat l'experiència per a cada tipus d'usuari.</li>
+              <li>Quina arquitectura i quines tecnologies s'han utilitzat.</li>
+              <li>Quines funcionalitats s'han desenvolupat i entregat.</li>
+              <li>Quin valor estratègic aporta la plataforma a curt i mig termini.</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Resum Executiu</div>
+        <h2 class="section-title">GlobalPlay360 en una sola pàgina</h2>
+        <p class="intro">GlobalPlay360 és una plataforma web preparada per estructurar, ordenar i professionalitzar la relació entre esportistes, entrenadors i clubs. El projecte s'ha concebut com una base sòlida, escalable i orientada a negoci, amb una experiència d'ús clara i una infraestructura moderna capaç de suportar autenticació, dades en temps real, pagaments i creixement funcional.</p>
+
+        <div class="metrics">
+          <article class="metric">
+            <div class="label">Tipus de plataforma</div>
+            <div class="value">Web App</div>
+            <p>Aplicació responsive pensada per desktop i mòbil.</p>
+          </article>
+          <article class="metric">
+            <div class="label">Models d'usuari</div>
+            <div class="value">3 rols</div>
+            <p>Player, Coach i Club amb experiència diferenciada.</p>
+          </article>
+          <article class="metric">
+            <div class="label">Idiomes</div>
+            <div class="value">3</div>
+            <p>Català, castellà i anglès integrats al producte.</p>
+          </article>
+          <article class="metric">
+            <div class="label">Pagament</div>
+            <div class="value">Stripe</div>
+            <p>Subscripcions, trial i portal de client integrats.</p>
+          </article>
+        </div>
+
+        <div class="two-col" style="margin-top: 22px;">
+          <article class="info-card">
+            <h3>Objectiu del projecte</h3>
+            <p>Crear un entorn digital on el talent esportiu pugui presentar-se amb criteri professional, on els clubs puguin publicar oportunitats i gestionar candidatures, i on la relació entre les parts es pugui convertir en un flux ordenat, traçable i monetitzable.</p>
+            <div class="tag-row">
+              <span class="tag">Marketplace esportiu</span>
+              <span class="tag">Multirol</span>
+              <span class="tag">Temps real</span>
+              <span class="tag">Subscripcions</span>
+            </div>
+          </article>
+
+          <article class="info-card">
+            <h3>Enfocament de disseny</h3>
+            <p>La plataforma s'ha desenvolupat amb una estètica premium, fosca i corporativa, prioritzant claredat, confiança i rapidesa d'ús. L'objectiu no ha estat només que funcioni, sinó que projecti una imatge de producte seriós, coherent i preparat per créixer.</p>
+          </article>
+        </div>
+
+        <div class="quote">
+          <p><strong>GlobalPlay360</strong> no és només una web informativa: és una base de producte real preparada per operar amb usuaris, dades, pagaments i fluxos de negoci.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Producte</div>
+        <h2 class="section-title">Com està dissenyada la plataforma</h2>
+        <p class="intro">El projecte s'ha estructurat perquè cada perfil tingui una experiència pròpia, però dins d'un mateix sistema coherent. Això permet que la plataforma sigui fàcil d'utilitzar avui i fàcil d'ampliar demà.</p>
+
+        <div class="modules">
+          <article class="module">
+            <h3>Perfil Player</h3>
+            <p>Els esportistes poden crear un perfil professional, completar la seva informació esportiva, pujar avatar, veure oportunitats, enviar candidatures i comunicar-se amb clubs quan el model de negoci ho permet.</p>
+          </article>
+
+          <article class="module alt">
+            <h3>Perfil Coach</h3>
+            <p>Els entrenadors disposen d'un perfil específic, amb els seus propis camps d'informació, i comparteixen la lògica de visibilitat, candidatures i accés a oportunitats segons el rol i el pla actiu.</p>
+          </article>
+
+          <article class="module gold">
+            <h3>Perfil Club</h3>
+            <p>Els clubs poden editar el seu perfil, publicar ofertes, gestionar l'estat de les candidatures rebudes i iniciar converses amb els perfils seleccionats, centralitzant el flux de reclutament dins la mateixa plataforma.</p>
+          </article>
+
+          <article class="module">
+            <h3>Missatgeria i seguiment</h3>
+            <p>El sistema incorpora xat en temps real, actualització d'estats de candidatura i indicadors de missatges no llegits, de manera que la plataforma no es limita a generar interès: acompanya el procés complet.</p>
+          </article>
+        </div>
+
+        <div class="note">
+          <p><strong>Clau de producte:</strong> la plataforma no es construeix només al voltant de pàgines, sinó al voltant de fluxos: registre, onboarding, perfil, oferta, candidatura, estat, conversa i subscripció.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Arquitectura</div>
+        <h2 class="section-title">Com està construït tècnicament</h2>
+        <p class="intro">L'arquitectura s'ha plantejat perquè el projecte tingui una base moderna, segura i mantenible. Això permet escalar funcionalitats sense reescriure el nucli del sistema.</p>
+
+        <div class="three-col">
+          <article class="info-card">
+            <h3>Frontend</h3>
+            <p>Interfície desenvolupada amb React i TypeScript, amb componentització reutilitzable, navegació per rutes i una capa visual coherent per a pàgines públiques, auth i dashboard privat.</p>
+          </article>
+          <article class="info-card">
+            <h3>Backend / BaaS</h3>
+            <p>Firebase centralitza autenticació, base de dades, storage, cloud functions i sincronització. Això accelera desenvolupament i simplifica l'operativa sense renunciar a control tècnic.</p>
+          </article>
+          <article class="info-card">
+            <h3>Pagaments</h3>
+            <p>Stripe gestiona el model de subscripció, el trial, el portal de client i la sincronització d'estat del pla, mantenint la lògica de billing alineada amb una infraestructura professional.</p>
+          </article>
+        </div>
+
+        <div class="timeline" style="margin-top: 22px;">
+          <article class="timeline-card">
+            <div class="step">1</div>
+            <h3>Autenticació</h3>
+            <p>L'usuari es registra, verifica email i entra al flux segons el seu rol. La plataforma controla l'accés amb rutes protegides i estat autenticat.</p>
+          </article>
+          <article class="timeline-card">
+            <div class="step">2</div>
+            <h3>Dades i lògica</h3>
+            <p>Firestore gestiona perfils, oportunitats, candidatures, xats i missatges. Les regles de seguretat delimiten què pot llegir o modificar cada actor.</p>
+          </article>
+          <article class="timeline-card">
+            <div class="step">3</div>
+            <h3>Billing i permisos</h3>
+            <p>Stripe i Cloud Functions decideixen quin accés correspon a cada usuari, evitant inconsistències i centralitzant la veritat del sistema al nivell correcte.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Programari Utilitzat</div>
+        <h2 class="section-title">Tecnologies i eines de treball</h2>
+        <p class="intro">Per construir GlobalPlay360 s'ha utilitzat un stack actual i àmpliament adoptat, pensat per combinar rapidesa de desenvolupament, qualitat de codi i capacitat de manteniment.</p>
+
+        <div class="stack-grid">
+          <article class="stack-card">
+            <span class="sub">Frontend</span>
+            <h3>React + TypeScript + Vite</h3>
+            <p>Base moderna per crear una aplicació ràpida, modular i tipada. Vite aporta velocitat de desenvolupament i build, mentre que TypeScript ajuda a reduir errors i augmentar la robustesa del codi.</p>
+          </article>
+
+          <article class="stack-card">
+            <span class="sub">Estil i experiència</span>
+            <h3>Tailwind CSS + Framer Motion</h3>
+            <p>Tailwind permet construir una interfície consistent i escalable; Framer Motion s'ha utilitzat per aportar transicions i microinteraccions amb una sensació més premium i cuidada.</p>
+          </article>
+
+          <article class="stack-card">
+            <span class="sub">Backend i dades</span>
+            <h3>Firebase</h3>
+            <p>Auth, Firestore, Storage, Hosting i Cloud Functions formen el nucli operatiu del projecte. Això permet tenir autenticació, dades en temps real, pujada de fitxers i lògica de servidor en un únic ecosistema.</p>
+          </article>
+
+          <article class="stack-card">
+            <span class="sub">Pagaments</span>
+            <h3>Stripe</h3>
+            <p>Gestió professional de plans, trials, canvi de subscripcions i customer portal. La integració s'ha pensat perquè el sistema de billing sigui fiable i alineat amb bones pràctiques.</p>
+          </article>
+
+          <article class="stack-card">
+            <span class="sub">Idiomes</span>
+            <h3>i18next</h3>
+            <p>El projecte inclou internacionalització real per permetre una operativa natural en català, castellà i anglès sense duplicar pantalles ni lògica.</p>
+          </article>
+
+          <article class="stack-card">
+            <span class="sub">Entorn professional</span>
+            <h3>Git, GitHub i Visual Studio Code</h3>
+            <p>Control de versions, treball per branques, commits semàntics i entorn de desenvolupament modern per garantir traçabilitat, ordre i evolució professional del projecte.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Funcionalitats Entregades</div>
+        <h2 class="section-title">Què inclou GlobalPlay360 avui</h2>
+        <p class="intro">A data d'aquest dossier, GlobalPlay360 ja disposa d'una base funcional sòlida, amb els fluxos principals treballats de punta a punta.</p>
+
+        <div class="two-col">
+          <article class="info-card">
+            <h3>Àrea pública</h3>
+            <ul class="bullet-list">
+              <li>Homepage i pàgines de presentació.</li>
+              <li>Pricing amb integració a Stripe Checkout.</li>
+              <li>Pàgines legals i footer corporatiu.</li>
+              <li>Canvi d'idioma integrat.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <h3>Àrea privada</h3>
+            <ul class="bullet-list">
+              <li>Dashboard per rols.</li>
+              <li>Perfils editables per Player, Coach i Club.</li>
+              <li>Gestió d'oportunitats i candidatures.</li>
+              <li>Xat en temps real i seguiment d'estats.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="two-col" style="margin-top: 18px;">
+          <article class="info-card">
+            <h3>Model de subscripció</h3>
+            <ul class="bullet-list">
+              <li>Trial inicial controlat i limitat a una sola vegada.</li>
+              <li>Pagament mensual i anual.</li>
+              <li>Customer Portal per cancel·lar o canviar pla.</li>
+              <li>Sincronització entre Stripe i estat intern del producte.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <h3>Qualitat i consistència</h3>
+            <ul class="bullet-list">
+              <li>Interfície coherent en públic, auth i dashboard.</li>
+              <li>Comportament responsive per dispositius mòbils.</li>
+              <li>Internacionalització integrada.</li>
+              <li>Build de producció validada.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Seguretat i Fiabilitat</div>
+        <h2 class="section-title">Criteris tècnics aplicats</h2>
+        <p class="intro">Un dels objectius del projecte ha estat evitar solucions superficials. Per això s'han aplicat decisions que reforcen la consistència del producte i la confiança en el seu funcionament.</p>
+
+        <div class="three-col">
+          <article class="info-card">
+            <h3>Regles d'accés</h3>
+            <p>Les dades no depenen només del que permet la interfície. Firestore Rules reforcen què pot fer cada usuari per rol i per context.</p>
+          </article>
+          <article class="info-card">
+            <h3>Font de veritat del billing</h3>
+            <p>El pla actiu no depèn d'un camp editat manualment, sinó de l'estat real sincronitzat amb Stripe, evitant inconsistències de permisos.</p>
+          </article>
+          <article class="info-card">
+            <h3>Base escalable</h3>
+            <p>La separació de capes i la componentització permeten ampliar funcionalitats sense comprometre la base existent.</p>
+          </article>
+        </div>
+
+        <div class="quote">
+          <p>El resultat és una plataforma amb aparença de producte acabat, però també amb una base tècnica preparada per continuar evolucionant sense perdre ordre.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Valor del Projecte</div>
+        <h2 class="section-title">Per què aquest desenvolupament aporta valor real</h2>
+        <p class="intro">Un dossier com aquest ajuda a traslladar una idea important: GlobalPlay360 no és només una entrega tècnica, sinó una peça de producte amb valor de negoci, d'imatge i d'estructura operativa.</p>
+
+        <div class="modules">
+          <article class="module">
+            <h3>Valor per a marca</h3>
+            <p>La qualitat visual, el to i la coherència de l'experiència projecten professionalitat i confiança, reforçant la percepció de projecte seriós davant usuaris i partners.</p>
+          </article>
+          <article class="module alt">
+            <h3>Valor operatiu</h3>
+            <p>Centralitza processos que abans podien dependre de canals dispersos: captació, publicació, candidatura, seguiment i contacte.</p>
+          </article>
+          <article class="module gold">
+            <h3>Valor comercial</h3>
+            <p>Ja incorpora una base de monetització amb Stripe, la qual cosa converteix el producte en una plataforma no només usable, sinó també explotable comercialment.</p>
+          </article>
+          <article class="module">
+            <h3>Valor de futur</h3>
+            <p>La infraestructura i el model de dades deixen oberta la porta a analítica, automatitzacions, nous plans, millores de matching o mòduls administratius més avançats.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet page-break">
+      <div class="sheet-inner">
+        <div class="section-kicker">Tancament</div>
+        <h2 class="section-title">Conclusió</h2>
+        <div class="closing">
+          <h3>Un projecte amb forma de producte</h3>
+          <p>GlobalPlay360 s'ha desenvolupat amb una mirada completa: disseny, experiència, arquitectura, seguretat, model de negoci i preparació per créixer. Això permet presentar-lo no com una demo, sinó com una plataforma digital amb base real i amb una feina de desenvolupament darrere que aporta valor tangible.</p>
+        </div>
+
+        <div class="note">
+          <p><strong>Recomanació d'entrega:</strong> aquest document es pot imprimir en color o exportar a PDF per enviar-lo com a dossier de presentació. Aporta context, credibilitat i ajuda a posar en valor tota la feina real que hi ha darrere del projecte.</p>
+        </div>
+
+        <div class="footer-line">
+          <span>GlobalPlay360 · Dossier de Projecte</span>
+          <span>Preparat per a Aina i Aleix · Maig 2026</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

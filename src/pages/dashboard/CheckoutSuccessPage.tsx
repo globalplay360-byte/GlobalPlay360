@@ -1,6 +1,8 @@
+import { Trans, useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 
 export default function CheckoutSuccessPage() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const returnUrl = searchParams.get('returnUrl');
 
@@ -18,12 +20,13 @@ export default function CheckoutSuccessPage() {
           </svg>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-100 mb-3">Benvinguda a Premium!</h1>
+        <h1 className="text-3xl font-bold text-gray-100 mb-3">{t('checkoutSuccess.title')}</h1>
 
         <p className="text-[#8892B0] mb-6 leading-relaxed">
-          La teva subscripció s'ha activat correctament. Tens{' '}
-          <strong className="text-gray-100">30 dies de prova gratuïts</strong> — el primer càrrec es farà
-          quan finalitzi el període. Pots cancel·lar en qualsevol moment des del panell de facturació.
+          <Trans
+            i18nKey="checkoutSuccess.desc"
+            components={[<span key="unused" />, <strong key="trial" className="text-gray-100" />]}
+          />
         </p>
 
         <div className="flex flex-col gap-3">
@@ -32,14 +35,14 @@ export default function CheckoutSuccessPage() {
               to={returnUrl}
               className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-gray-100 font-semibold transition-colors"
             >
-              Continuar la teva gestió
+              {t('checkoutSuccess.continueManagement')}
             </Link>
           ) : (
             <Link
               to="/dashboard"
               className="w-full py-3 px-4 rounded-lg bg-[#0070F3] hover:bg-[#0051B3] text-gray-100 font-semibold transition-colors"
             >
-              Anar al panell
+              {t('checkoutSuccess.goToDashboard')}
             </Link>
           )}
 
@@ -47,7 +50,7 @@ export default function CheckoutSuccessPage() {
             to="/dashboard/profile"
             className="text-sm text-[#8892B0] hover:text-gray-100 transition-colors"
           >
-            Completar el meu perfil
+            {t('checkoutSuccess.completeProfile')}
           </Link>
         </div>
       </div>

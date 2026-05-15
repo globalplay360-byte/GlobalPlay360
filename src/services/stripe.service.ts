@@ -1,6 +1,6 @@
 import {
   collection,
-  addDoc,
+  doc,
   getDocs,
   onSnapshot,
   query,
@@ -8,7 +8,9 @@ import {
   limit,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import { db, functions } from './firebase';
+import { auth, db, functions } from './firebase';
+
+export const FOUNDING_MEMBERS_CAMPAIGN_ID = 'founding_members_2026';
 
 // ── Types ───────────────────────────────────────────────
 
@@ -20,6 +22,7 @@ export interface StripePrice {
   unit_amount: number;
   interval: 'day' | 'week' | 'month' | 'year' | null;
   interval_count: number | null;
+  trial_period_days: number | null;
   description: string | null;
   metadata: Record<string, string>;
 }
@@ -55,6 +58,30 @@ export interface StripeSubscription {
   metadata: Record<string, string>;
 }
 
+export interface BillingState {
+  trialConsumedAt: number | null;
+  founderClaimedAt: number | null;
+  founderClaimNumber: number | null;
+  founderCampaignId: string | null;
+  founderAccessUntilSeconds: number | null;
+}
+
+export interface FounderCampaign {
+  id: string;
+  active: boolean;
+  claimedCount: number;
+  maxClaims: number;
+  remainingClaims: number;
+  accessEndsAtSeconds: number | null;
+}
+
+export interface ClaimFounderAccessResult {
+  alreadyClaimed: boolean;
+  claimNumber: number | null;
+  remainingClaims: number;
+  accessEndsAt: string;
+}
+
 // ── Read: Products + Prices ─────────────────────────────
 
 export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
@@ -79,6 +106,7 @@ export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
           unit_amount: p.unit_amount ?? 0,
           interval: p.interval ?? null,
           interval_count: p.interval_count ?? null,
+          trial_period_days: getPriceTrialDays(p),
           description: p.description ?? null,
           metadata: p.metadata ?? {},
         };
@@ -100,16 +128,32 @@ export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
 
 export interface CheckoutSessionOptions {
   allowPromotionCodes?: boolean;
+  productId?: string;
   successUrl?: string;
   cancelUrl?: string;
 }
 
+function getPriceTrialDays(data: Record<string, unknown>): number | null {
+  const topLevelTrialDays = toNumber(data.trial_period_days);
+  if (topLevelTrialDays !== null) {
+    return topLevelTrialDays;
+  }
+
+  const recurring = data.recurring;
+  if (typeof recurring === 'object' && recurring !== null && 'trial_period_days' in recurring) {
+    return toNumber((recurring as { trial_period_days: unknown }).trial_period_days);
+  }
+
+  return null;
+}
+
+export function isTrialStripePrice(price: StripePrice): boolean {
+  return (price.trial_period_days ?? 0) > 0;
+}
+
 /**
- * Client creates the doc; the Firebase extension writes back `url` (or `error`)
- * using Admin SDK. We listen for that write and resolve with the Stripe URL.
- *
- * El període de prova està configurat al Price de Stripe (`recurring.trial_period_days`).
- * L'extensió envia `trial_from_plan: true` a Stripe, que llegeix el trial del Price.
+ * The app now asks our callable backend to create the checkout document so the
+ * trial decision is server-side and can't be bypassed from the browser.
  */
 export async function createCheckoutSession(
   uid: string,
@@ -117,19 +161,26 @@ export async function createCheckoutSession(
   options: CheckoutSessionOptions = {},
 ): Promise<string> {
   const {
-    allowPromotionCodes = true,
+    productId,
     successUrl = `${window.location.origin}/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl = `${window.location.origin}/pricing?checkout=cancel`,
   } = options;
 
-  const sessionsCol = collection(db, 'customers', uid, 'checkout_sessions');
-  const sessionRef = await addDoc(sessionsCol, {
-    price: priceId,
-    mode: 'subscription',
-    success_url: successUrl,
-    cancel_url: cancelUrl,
-    allow_promotion_codes: allowPromotionCodes,
+  if (!productId) {
+    throw new Error('Missing productId for checkout session creation.');
+  }
+
+  const fn = httpsCallable<
+    { priceId: string; productId: string; successUrl: string; cancelUrl: string },
+    { sessionId: string; trialGranted: boolean }
+  >(functions, 'createBillingCheckoutSession');
+  const { data } = await fn({
+    priceId,
+    productId,
+    successUrl,
+    cancelUrl,
   });
+  const sessionRef = doc(db, 'customers', uid, 'checkout_sessions', data.sessionId);
 
   return new Promise((resolve, reject) => {
     const unsub = onSnapshot(
@@ -177,6 +228,15 @@ export async function createPortalSession(
   return data.url;
 }
 
+export async function claimFounderAccess(): Promise<ClaimFounderAccessResult> {
+  const fn = httpsCallable<Record<string, never>, ClaimFounderAccessResult>(functions, 'claimFounderAccess');
+  const { data } = await fn({});
+  if (auth.currentUser) {
+    await auth.currentUser.getIdToken(true);
+  }
+  return data;
+}
+
 // ── Subscriptions: real-time listener ───────────────────
 
 function toSeconds(value: unknown): number | null {
@@ -197,6 +257,79 @@ function toRefId(value: unknown): string | null {
     return typeof id === 'string' ? id : null;
   }
   return null;
+}
+
+function toNumber(value: unknown): number | null {
+  return typeof value === 'number' ? value : null;
+}
+
+export function subscribeToBillingState(
+  uid: string,
+  callback: (state: BillingState | null) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  const billingStateRef = doc(db, 'billing_state', uid);
+  return onSnapshot(
+    billingStateRef,
+    (snap) => {
+      if (!snap.exists()) {
+        callback(null);
+        return;
+      }
+
+      const data = snap.data();
+      callback({
+        trialConsumedAt: toSeconds(data.trialConsumedAt),
+        founderClaimedAt: toSeconds(data.founderClaimedAt),
+        founderClaimNumber: toNumber(data.founderClaimNumber),
+        founderCampaignId: typeof data.founderCampaignId === 'string' ? data.founderCampaignId : null,
+        founderAccessUntilSeconds: toSeconds(data.founderAccessUntil),
+      });
+    },
+    (err) => {
+      if (onError) onError(err);
+    },
+  );
+}
+
+export function subscribeToFounderCampaign(
+  callback: (campaign: FounderCampaign) => void,
+  onError?: (err: Error) => void,
+): () => void {
+  const campaignRef = doc(db, 'campaigns', FOUNDING_MEMBERS_CAMPAIGN_ID);
+  return onSnapshot(
+    campaignRef,
+    (snap) => {
+      if (!snap.exists()) {
+        callback({
+          id: FOUNDING_MEMBERS_CAMPAIGN_ID,
+          active: true,
+          claimedCount: 0,
+          maxClaims: 100,
+          remainingClaims: 100,
+          accessEndsAtSeconds: null,
+        });
+        return;
+      }
+
+      const data = snap.data();
+      const maxClaims = toNumber(data.maxClaims) ?? 100;
+      const claimedCount = toNumber(data.claimedCount) ?? 0;
+      const remainingClaims = toNumber(data.remainingClaims) ?? Math.max(maxClaims - claimedCount, 0);
+
+      callback({
+        id: snap.id,
+        active: data.active !== false,
+        claimedCount,
+        maxClaims,
+        remainingClaims,
+        accessEndsAtSeconds: toSeconds(data.accessEndsAt),
+      });
+    },
+    (err) => {
+      if (onError) onError(err);
+    },
+  );
 }
 
 /**

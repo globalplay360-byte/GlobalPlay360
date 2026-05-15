@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import Select, { type SingleValue } from 'react-select';
-import { Country, State, City } from 'country-state-city';
+import Country from 'country-state-city/lib/country';
+import State from 'country-state-city/lib/state';
 import type { User } from '@/types';
 import { Field, Input, Textarea } from './FormControls';
 import { FormSection } from './FormSection';
@@ -24,7 +25,7 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
         value: c.isoCode,
         label: `${c.flag} ${c.name}`,
       })),
-    []
+    [],
   );
 
   const currentCountryObj = useMemo(() => {
@@ -45,19 +46,8 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
     return stateOptions.find((o) => o.value === formData.state) ?? null;
   }, [formData.state, stateOptions]);
 
-  const cityOptions = useMemo<SelectOption[]>(() => {
-    if (!formData.country || !formData.state) return [];
-    return City.getCitiesOfState(formData.country, formData.state).map((c) => ({
-      value: c.name,
-      label: c.name,
-    }));
-  }, [formData.country, formData.state]);
-
-  const currentCityObj = useMemo(() => {
-    if (!formData.city || !cityOptions.length) return null;
-    return cityOptions.find((o) => o.value === formData.city) ?? null;
-  }, [formData.city, cityOptions]);
-
+  // Quan canvia el país, esborrem estat i ciutat (canvi geogràfic important).
+  // Quan canvia l'estat, mantenim la ciutat (l'usuari l'escriu manualment ara).
   const handleCountryChange = (option: SingleValue<SelectOption>) => {
     onChange({
       country: option ? option.value : '',
@@ -67,14 +57,7 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
   };
 
   const handleStateChange = (option: SingleValue<SelectOption>) => {
-    onChange({
-      state: option ? option.value : '',
-      city: '',
-    });
-  };
-
-  const handleCityChange = (option: SingleValue<SelectOption>) => {
-    onChange({ city: option ? option.value : '' });
+    onChange({ state: option ? option.value : '' });
   };
 
   return (
@@ -123,17 +106,12 @@ export default function CommonFields({ formData, onChange, disabled }: Props) {
         </Field>
 
         <Field label={t('profileEdit.fields.city', 'Ciutat')}>
-          <Select
-            styles={styles}
-            options={cityOptions}
-            value={currentCityObj}
-            onChange={handleCityChange}
-            placeholder={t('profileEdit.placeholders.city', 'Selecciona ciutat...')}
-            isDisabled={disabled || !formData.state}
-            isClearable
-            menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
-            noOptionsMessage={() => t('profileEdit.noOptions.city', 'Cap ciutat trobada')}
-            classNamePrefix="react-select"
+          <Input
+            type="text"
+            value={formData.city || ''}
+            onChange={(e) => onChange({ city: e.target.value })}
+            placeholder={t('profileEdit.placeholders.city', 'La teva ciutat')}
+            disabled={disabled}
           />
         </Field>
       </div>

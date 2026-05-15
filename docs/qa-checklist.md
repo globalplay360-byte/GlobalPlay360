@@ -220,7 +220,7 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
   - **CTA Premium** → `handleSubscribe()`:
     - Si no hi ha sessió → `navigate('/login?redirect=/pricing')` ✅
     - Si hi ha sessió → crida `createCheckoutSession(user.uid, price.id, { successUrl })` amb el **Price ID real de Stripe** (no hardcoded, evita desincronitzacions). Redirigeix a Stripe Checkout.
-  - **Price IDs actius verificats** (veure `docs/stripe-setup.md` + S5-T7): `price_1TNtCLGs...` (Premium monthly 25€) i `price_1TNtV2Gs...` (Premium yearly 250€). Ambdós amb `trial_period_days: 30`.
+  - **Price IDs actius verificats** (veure `docs/stripe-setup.md` + S5-T7): `price_1TNtCLGs...` (Premium monthly 25€) i `price_1TNtV2Gs...` (Premium yearly 250€). Si volem blindatge real de `one trial only`, aquests Prices no han de portar el trial incrustat a Stripe; el trial l'afegeix el backend per usuari elegible.
   - **Estats UI**: loading spinner, error banner, cancel banner (`?checkout=cancel`), `isAlreadyPremium` → `<Link to="/dashboard">`, unauthenticated → redirect login.
   - **Bug real corregit**: el `<video>` de fons reutilitzava `globalHome.mp4` (31 MB) sense optimització (mateix problema que S8-T1 abans). Aplicat `preload="metadata"` + `poster` SVG data URI + `aria-hidden="true"`. Ara la Pricing carrega sense descarregar els 31 MB abans del FCP.
   - **Toggle mensual/anual**: preu actualitzat reactiu + badge "Estalvia X€/any" si `monthlyTotalIfAnnual > 0`.

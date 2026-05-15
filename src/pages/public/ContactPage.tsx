@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-
-const CONTACT_EMAIL = 'hello@globalplay360.com';
+import { CONTACT_EMAIL } from '@/config/site';
 
 export default function ContactPage() {
   const { t } = useTranslation();

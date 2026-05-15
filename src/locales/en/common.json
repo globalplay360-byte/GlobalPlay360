@@ -75,9 +75,14 @@
   },
   "navbar": {
     "banner": {
+      "badge": "Founder Members",
       "title": "Founding Members – Free Access",
+      "active": "Active campaign",
       "description": "Be one of the first 100 members to join and get free Premium access until July 1, 2026!",
-      "cta": "Claim Your Status"
+      "cta": "Claim Your Status",
+      "remainingDetailed": "{{count}} of {{total}} spots left",
+      "claimedCount": "{{count}} members already confirmed",
+      "orderNote": "Automatic assignment by real claim order validated on the backend."
     },
     "brand": "Global Play 360",
     "home": "Home",
@@ -423,6 +428,11 @@
     "seeMore": "See more",
     "reviewCV": "Review CV",
     "enter": "+ Enter",
+    "planNames": {
+      "free": "FREE",
+      "premium": "PREMIUM",
+      "trial": "TRIAL"
+    },
     "activePlan": {
       "title": "Active Plan",
       "description": "Enjoy priority positioning, full access to direct contacts, and exclusive offers.",
@@ -806,6 +816,7 @@
   "checkoutSuccess": {
     "title": "Welcome to Premium!",
     "desc": "Your subscription has been successfully activated. You have a <1>30-day free trial</1>  the first charge will be made when the period ends. You can cancel anytime from the billing panel.",
+    "continueManagement": "Continue your flow",
     "goToDashboard": "Go to dashboard",
     "completeProfile": "Complete my profile"
   },

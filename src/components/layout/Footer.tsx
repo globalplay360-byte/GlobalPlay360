@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
+import { CONTACT_EMAIL, PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 export default function Footer() {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
+  const audienceLink = PUBLIC_REGISTRATION_ENABLED ? '/register' : '/login';
 
   return (
     <footer className="bg-[#020C1B] text-[#8892B0] mt-auto relative">
@@ -22,13 +24,13 @@ export default function Footer() {
 
             <div className="text-sm space-y-3">
               <a
-                href="mailto:hello@globalplay360.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="flex items-center gap-3 hover:text-gray-100 transition-colors group"
               >
                 <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#0070F3]/10 border border-[#0070F3]/20 text-[#0070F3] group-hover:bg-[#0070F3]/20 transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 </span>
-                hello@globalplay360.com
+                {CONTACT_EMAIL}
               </a>
               <p className="flex items-center gap-3">
                 <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#0070F3]/10 border border-[#0070F3]/20 text-[#0070F3]">
@@ -56,12 +58,12 @@ export default function Footer() {
               {t('footer.col.forYou', 'Per a tu')}
             </h4>
             <ul className="space-y-3 text-sm">
-              <FooterLink to="/register?role=player">{t('footer.col.players', 'Jugadors')}</FooterLink>
-              <FooterLink to="/register?role=club">{t('footer.col.clubs', 'Clubs')}</FooterLink>
-              <FooterLink to="/register?role=coach">{t('footer.col.coaches', 'Entrenadors')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.players', 'Jugadors')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.clubs', 'Clubs')}</FooterLink>
+              <FooterLink to={audienceLink}>{t('footer.col.coaches', 'Entrenadors')}</FooterLink>
               <li>
                 <Link
-                  to="/register"
+                  to={audienceLink}
                   className="inline-flex items-center gap-2 text-[#FFC107] hover:text-[#FFD54F] transition-colors group"
                 >
                   <span>👑</span>

@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import type { Opportunity } from '@/types';
 import Select from 'react-select';
-import { Country, State, City } from 'country-state-city';
+import Country from 'country-state-city/lib/country';
+import State from 'country-state-city/lib/state';
 
 type FormData = Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>;
 
@@ -150,18 +151,6 @@ export default function OpportunityForm({
     return stateOptions.find(o => o.value === form.state) || null;
   }, [form.state, stateOptions]);
 
-  const cityOptions = useMemo(() => {
-    if (!form.country || !form.state) return [];
-    return City.getCitiesOfState(form.country, form.state).map(c => ({
-      value: c.name,
-      label: c.name
-    }));
-  }, [form.country, form.state]);
-
-  const currentCityObj = useMemo(() => {
-    if (!form.city || !cityOptions.length) return null;
-    return cityOptions.find(o => o.value === form.city) || null;
-  }, [form.city, cityOptions]);
 
   const updateField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -284,13 +273,12 @@ export default function OpportunityForm({
           </div>
           <div>
             <label className={labelClass}>{t("opportunityForm.fields.city", "City")}</label>
-            <Select
-              styles={darkSelectStyles}
-              options={cityOptions}
-              value={currentCityObj}
-              placeholder={t('opportunityForm.placeholders.city', 'Select city...')}
-              onChange={(selected: any) => updateField('city', selected ? selected.value : '')}
-              isDisabled={!form.state}
+            <input
+              type="text"
+              className={inputClass}
+              value={form.city || ''}
+              placeholder={t('opportunityForm.placeholders.city', 'City')}
+              onChange={(e) => updateField('city', e.target.value)}
             />
           </div>
         </div>

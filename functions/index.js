@@ -1,15 +1,74 @@
 import { initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, Timestamp, getFirestore } from 'firebase-admin/firestore';
+import { onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import {
+  FOUNDING_MEMBERS_ACCESS_END_ISO,
+  FOUNDING_MEMBERS_CAMPAIGN_ID,
+  FOUNDING_MEMBERS_LIMIT,
+  canClaimFounderAccess,
+  getFoundingMembersAccessEndDate,
+  isTrialPrice,
+  selectCheckoutPrice,
+} from './billingPolicy.js';
 import { MESSAGE_RETENTION_DAYS, getRetentionCutoffDate } from './retention.js';
 
 initializeApp();
 setGlobalOptions({ region: 'europe-west1', maxInstances: 10 });
 
+const auth = getAuth();
 const db = getFirestore();
 const CLEANUP_BATCH_LIMIT = 25;
+const FOUNDING_MEMBERS_ACCESS_END_DATE = getFoundingMembersAccessEndDate();
+
+function getBillingStateRef(uid) {
+  return db.doc(`billing_state/${uid}`);
+}
+
+function getUserRef(uid) {
+  return db.doc(`users/${uid}`);
+}
+
+function getFoundingMembersCampaignRef() {
+  return db.doc(`campaigns/${FOUNDING_MEMBERS_CAMPAIGN_ID}`);
+}
+
+function normalizeOptionalUrl(value, fallback) {
+  return typeof value === 'string' && value.trim() !== ''
+    ? value.trim()
+    : fallback;
+}
+
+function getTimestampMillis(value) {
+  if (!value) return null;
+  if (value instanceof Timestamp) return value.toMillis();
+  if (typeof value === 'object' && value !== null && typeof value.seconds === 'number') {
+    return value.seconds * 1000;
+  }
+  return null;
+}
+
+function toIsoStringFromTimestamp(value) {
+  const millis = getTimestampMillis(value);
+  return typeof millis === 'number' ? new Date(millis).toISOString() : '';
+}
+
+async function getActiveProductPrices(productId) {
+  const pricesSnap = await db
+    .collection('products')
+    .doc(productId)
+    .collection('prices')
+    .where('active', '==', true)
+    .get();
+
+  return pricesSnap.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  }));
+}
 
 async function deleteConversationWithMessages(conversationId) {
   const conversationRef = db.doc(`conversations/${conversationId}`);
@@ -64,6 +123,220 @@ export const activateSingleSession = onCall({
   );
 
   return { validAfterSeconds: authTime };
+});
+
+export const createBillingCheckoutSession = onCall({
+  cors: true,
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const uid = request.auth.uid;
+  const rawPriceId = request.data?.priceId;
+  const priceId = typeof rawPriceId === 'string' && rawPriceId.trim() !== ''
+    ? rawPriceId.trim()
+    : null;
+  const rawProductId = request.data?.productId;
+  const productId = typeof rawProductId === 'string' && rawProductId.trim() !== ''
+    ? rawProductId.trim()
+    : null;
+
+  if (!priceId || !productId) {
+    throw new HttpsError('invalid-argument', 'Missing priceId or productId.');
+  }
+
+  const successUrl = normalizeOptionalUrl(
+    request.data?.successUrl,
+    'https://globalplay360.com/dashboard/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+  );
+  const cancelUrl = normalizeOptionalUrl(
+    request.data?.cancelUrl,
+    'https://globalplay360.com/pricing?checkout=cancel',
+  );
+
+  const billingStateRef = getBillingStateRef(uid);
+  const billingStateSnap = await billingStateRef.get();
+  const billingState = billingStateSnap.exists ? billingStateSnap.data() : null;
+  const activeProductPrices = await getActiveProductPrices(productId);
+  const selectedPrice = selectCheckoutPrice(activeProductPrices, billingState, priceId);
+
+  if (!selectedPrice) {
+    throw new HttpsError('failed-precondition', 'No eligible price is active for this product.');
+  }
+
+  const trialGranted = isTrialPrice(selectedPrice);
+
+  const sessionRef = await db.collection('customers').doc(uid).collection('checkout_sessions').add({
+    client: 'web',
+    price: selectedPrice.id,
+    mode: 'subscription',
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+    allow_promotion_codes: true,
+    metadata: {
+      source: 'globalplay360',
+      requestedPriceId: priceId,
+      selectedPriceId: selectedPrice.id,
+      trialEligible: String(trialGranted),
+    },
+  });
+
+  const billingStateUpdate = {
+    updatedAt: FieldValue.serverTimestamp(),
+  };
+
+  if (!billingStateSnap.exists) {
+    billingStateUpdate.createdAt = FieldValue.serverTimestamp();
+  }
+
+  await billingStateRef.set(billingStateUpdate, { merge: true });
+
+  return {
+    sessionId: sessionRef.id,
+    trialGranted,
+  };
+});
+
+export const syncBillingStateFromSubscription = onDocumentWritten({
+  document: 'customers/{uid}/subscriptions/{subscriptionId}',
+}, async (event) => {
+  const afterSnap = event.data?.after;
+  if (!afterSnap?.exists) {
+    return;
+  }
+
+  const subscription = afterSnap.data();
+  const trialEndMillis = getTimestampMillis(subscription?.trial_end);
+  const currentPeriodEndMillis = getTimestampMillis(subscription?.current_period_end);
+  const hasActiveTrialWindow = typeof trialEndMillis === 'number' && trialEndMillis > Date.now();
+  const hasPaidAccess =
+    subscription?.status === 'active'
+    && !subscription?.cancel_at_period_end
+    && !hasActiveTrialWindow
+    && typeof currentPeriodEndMillis === 'number'
+    && currentPeriodEndMillis > Date.now();
+
+  const uid = event.params.uid;
+  const billingStateRef = getBillingStateRef(uid);
+  const userRef = getUserRef(uid);
+  await db.runTransaction(async (transaction) => {
+    const [billingStateSnap, userSnap] = await Promise.all([
+      transaction.get(billingStateRef),
+      transaction.get(userRef),
+    ]);
+
+    if (!userSnap.exists) {
+      return;
+    }
+
+    transaction.set(userRef, {
+      plan: hasActiveTrialWindow ? 'trial' : hasPaidAccess ? 'premium' : 'free',
+      subscriptionStatus: hasActiveTrialWindow ? 'trialing' : (subscription?.status ?? 'none'),
+      trialEndsAt: hasActiveTrialWindow ? toIsoStringFromTimestamp(subscription?.trial_end) : '',
+      updatedAt: FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    if (!hasActiveTrialWindow || billingStateSnap.data()?.trialConsumedAt) {
+      return;
+    }
+
+    const billingStateUpdate = {
+      trialConsumedAt: FieldValue.serverTimestamp(),
+      lastTrialSubscriptionId: event.params.subscriptionId,
+      updatedAt: FieldValue.serverTimestamp(),
+    };
+
+    if (!billingStateSnap.exists) {
+      billingStateUpdate.createdAt = FieldValue.serverTimestamp();
+    }
+
+    transaction.set(billingStateRef, billingStateUpdate, { merge: true });
+  });
+});
+
+export const claimFounderAccess = onCall({
+  cors: true,
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const uid = request.auth.uid;
+  const campaignRef = getFoundingMembersCampaignRef();
+  const billingStateRef = getBillingStateRef(uid);
+  const now = new Date();
+
+  const claimResult = await db.runTransaction(async (transaction) => {
+    const campaignSnap = await transaction.get(campaignRef);
+    const billingStateSnap = await transaction.get(billingStateRef);
+
+    const campaignData = campaignSnap.exists ? campaignSnap.data() : {};
+    const billingState = billingStateSnap.exists ? billingStateSnap.data() : null;
+    const claimedCount = typeof campaignData?.claimedCount === 'number' ? campaignData.claimedCount : 0;
+    const maxClaims = typeof campaignData?.maxClaims === 'number' ? campaignData.maxClaims : FOUNDING_MEMBERS_LIMIT;
+    const remainingClaims = Math.max(maxClaims - claimedCount, 0);
+
+    if (billingState?.founderClaimedAt) {
+      return {
+        alreadyClaimed: true,
+        claimNumber: typeof billingState.founderClaimNumber === 'number' ? billingState.founderClaimNumber : null,
+        remainingClaims,
+      };
+    }
+
+    if (!canClaimFounderAccess({ billingState, claimedCount, maxClaims, now })) {
+      throw new HttpsError('failed-precondition', 'FOUNDER_ACCESS_UNAVAILABLE');
+    }
+
+    const claimNumber = claimedCount + 1;
+    const nextRemainingClaims = Math.max(maxClaims - claimNumber, 0);
+    const campaignUpdate = {
+      active: true,
+      title: 'Founding Members 2026',
+      maxClaims,
+      claimedCount: claimNumber,
+      remainingClaims: nextRemainingClaims,
+      accessEndsAt: Timestamp.fromDate(FOUNDING_MEMBERS_ACCESS_END_DATE),
+      updatedAt: FieldValue.serverTimestamp(),
+    };
+    const billingStateUpdate = {
+      founderCampaignId: FOUNDING_MEMBERS_CAMPAIGN_ID,
+      founderClaimedAt: FieldValue.serverTimestamp(),
+      founderClaimNumber: claimNumber,
+      founderAccessUntil: Timestamp.fromDate(FOUNDING_MEMBERS_ACCESS_END_DATE),
+      updatedAt: FieldValue.serverTimestamp(),
+    };
+
+    if (!campaignSnap.exists) {
+      campaignUpdate.createdAt = FieldValue.serverTimestamp();
+    }
+
+    if (!billingStateSnap.exists) {
+      billingStateUpdate.createdAt = FieldValue.serverTimestamp();
+    }
+
+    transaction.set(campaignRef, campaignUpdate, { merge: true });
+    transaction.set(billingStateRef, billingStateUpdate, { merge: true });
+
+    return {
+      alreadyClaimed: false,
+      claimNumber,
+      remainingClaims: nextRemainingClaims,
+    };
+  });
+
+  const userRecord = await auth.getUser(uid);
+  await auth.setCustomUserClaims(uid, {
+    ...(userRecord.customClaims ?? {}),
+    founderAccess: true,
+    founderAccessUntil: Math.floor(FOUNDING_MEMBERS_ACCESS_END_DATE.getTime() / 1000),
+  });
+
+  return {
+    ...claimResult,
+    accessEndsAt: FOUNDING_MEMBERS_ACCESS_END_ISO,
+  };
 });
 
 export const cleanupInactiveConversations = onSchedule({

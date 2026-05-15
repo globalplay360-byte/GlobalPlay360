@@ -1,12 +1,21 @@
-import { useState, useRef } from 'react';
+import { lazy, Suspense, useState, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import PageHeader from '@/components/ui/PageHeader';
-import ProfileEditForm from '@/components/profile/ProfileEditForm';
 import ProfileView from '@/components/profile/ProfileView';
 import { uploadAvatar, updateUserProfile } from '@/services/profile.service';
+
+const ProfileEditForm = lazy(() => import('@/components/profile/ProfileEditForm'));
+
+function EditFormFallback() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center rounded-xl border border-[#2A3447]/60 bg-[#0F172A]/50">
+      <div className="h-9 w-9 rounded-full border-2 border-slate-600 border-t-blue-500 animate-spin" role="status" aria-label="Carregant" />
+    </div>
+  );
+}
 
 export default function ProfilePage() {
   const { user, activePlan, refreshUser } = useAuth();
@@ -68,14 +77,16 @@ export default function ProfilePage() {
           }
         />
 
-        <ProfileEditForm
-          user={user}
-          onCancel={() => setMode('view')}
-          onSaved={async () => {
-            await refreshUser();
-            setMode('view');
-          }}
-        />
+        <Suspense fallback={<EditFormFallback />}>
+          <ProfileEditForm
+            user={user}
+            onCancel={() => setMode('view')}
+            onSaved={async () => {
+              await refreshUser();
+              setMode('view');
+            }}
+          />
+        </Suspense>
       </div>
     );
   }
