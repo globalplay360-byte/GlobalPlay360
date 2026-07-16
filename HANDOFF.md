@@ -27,9 +27,11 @@ En crear els Products a la consola es va confirmar que **Stripe ja no permet pos
 1. **Trial a nivell de checkout** (no preus `_trial`). → només 4 Prices a Stripe.
 2. **Migrar l'extensió** `stripe/firestore-stripe-payments@0.3.4` → `invertase/firestore-stripe-payments` última: a la 0.3.4 el `trial_period_days` al doc de checkout és inestable (informes públics); la versió `invertase/` el suporta netament (PR #605) i també desbloqueja `automatic_tax`/`consent_collection`. **Ho fa Anna a la consola de Firebase** abans del QA.
 
-### Pendent immediat (detectat, encara NO fet)
+### PricingPage selecció per segment ✅ (fet)
 
-- ⚠️ **`PricingPage` selecció per segment**: amb 2 Products premium, `products.find(p => p.role === 'premium')` (`PricingPage.tsx:39`) és ambigu (agafa el primer). Cal seleccionar el Product pel `segment` creuat amb `user.role` (i decidir UX per a visitants anònims). Ja documentat a `PLA_PRICING_STRIPE.md §1`. **És bloquejant per al QA de checkout** — següent tasca de codi.
+Resolt el mateix vespre: `PricingPage` ara selecciona el Product pel `metadata.segment` creuat amb `user.role` (club → club; player/coach → individual). Els visitants anònims tenen un **selector de segment** (default individual); els usuaris identificats queden fixats al segment del seu rol. S'ha afegit `segment` a `StripeProduct` (`stripe.service.ts`, llegint `stripe_metadata_segment` de l'extensió) i claus i18n `pricingPage.segment.*` (3 idiomes). `tsc`/build/lint verds. Commit `feat: selecciona el Product de pricing pel segment del rol`.
+
+**Nota UX menor (P2, no bloquejant):** els textos de features/descripció de la card Premium són genèrics per als dos segments; el preu sí que canvia correctament (9,99/99,99 vs 24,99/249,99). Si es vol copy específic per a clubs, és una millora futura.
 
 ---
 
