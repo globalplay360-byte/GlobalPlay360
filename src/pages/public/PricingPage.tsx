@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -7,10 +7,20 @@ import {
   createCheckoutSession,
   isTrialStripePrice,
   type StripePrice,
+  type StripeProduct,
 } from '@/services/stripe.service';
+import type { UserRole } from '@/types';
 import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 type Interval = 'month' | 'year';
+type Segment = 'individual' | 'club';
+
+// El rol de l'usuari determina el segment de pricing que li correspon.
+// Els clubs paguen el pla club; jugadors i entrenadors, l'individual.
+// Admin/anònim → individual per defecte (l'admin no pot subscriure's igualment).
+function segmentForRole(role?: UserRole): Segment {
+  return role === 'club' ? 'club' : 'individual';
+}
 
 export default function PricingPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
@@ -21,27 +31,31 @@ export default function PricingPage() {
   const isAlreadyPremium = activePlan === 'premium';
 
   const [interval, setBillingInterval] = useState<Interval>('month');
-  const [prices, setPrices] = useState<Record<Interval, StripePrice | null>>({
-    month: null,
-    year: null,
-  });
+  const [segment, setSegment] = useState<Segment>(segmentForRole(user?.role));
+  const [products, setProducts] = useState<StripeProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const canceled = searchParams.get('checkout') === 'cancel';
 
+  // Els usuaris identificats queden fixats al segment del seu rol (un club no
+  // pot comprar el pla individual: el checkout ho rebutjaria). Els visitants
+  // anònims poden alternar amb el selector.
+  const canChooseSegment = !user;
+
+  useEffect(() => {
+    if (user) {
+      setSegment(segmentForRole(user.role));
+    }
+  }, [user]);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const products = await listActiveProductsWithPrices();
-        const premium = products.find((p) => p.role === 'premium') ?? products[0];
-        if (!premium) throw new Error(t('pricingPage.noPremiumActive'));
-        const displayPrices = premium.prices.filter((price) => !isTrialStripePrice(price));
-        const month = displayPrices.find((p) => p.interval === 'month') ?? null;
-        const year = displayPrices.find((p) => p.interval === 'year') ?? null;
-        if (!cancelled) setPrices({ month, year });
+        const activeProducts = await listActiveProductsWithPrices();
+        if (!cancelled) setProducts(activeProducts);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : t('pricingPage.errorPrice'));
@@ -54,6 +68,35 @@ export default function PricingPage() {
       cancelled = true;
     };
   }, [t]);
+
+  // Selecció del Product pel segment (metadata `segment`), no pel simple
+  // `role === 'premium'`: amb 2 Products premium (individual + club) el find
+  // per rol era ambigu i podia mostrar preus del segment equivocat.
+  const selectedProduct = useMemo(() => {
+    const premiumProducts = products.filter((p) => p.role === 'premium');
+    return (
+      premiumProducts.find((p) => p.segment === segment)
+      ?? premiumProducts.find((p) => p.segment == null)
+      ?? premiumProducts[0]
+      ?? null
+    );
+  }, [products, segment]);
+
+  const prices = useMemo<Record<Interval, StripePrice | null>>(() => {
+    const displayPrices = (selectedProduct?.prices ?? []).filter(
+      (price) => !isTrialStripePrice(price),
+    );
+    return {
+      month: displayPrices.find((p) => p.interval === 'month') ?? null,
+      year: displayPrices.find((p) => p.interval === 'year') ?? null,
+    };
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    if (!loading && products.length > 0 && !selectedProduct) {
+      setError(t('pricingPage.noPremiumActive'));
+    }
+  }, [loading, products, selectedProduct, t]);
 
   const handleSubscribe = async () => {
     if (!user) {
@@ -151,6 +194,37 @@ export default function PricingPage() {
           {error && (
             <div className="max-w-2xl mx-auto mb-8 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm text-center">
               {error}
+            </div>
+          )}
+
+          {/* Segment selector — només per a visitants anònims. Els usuaris
+              identificats queden fixats al segment del seu rol. */}
+          {canChooseSegment && (
+            <div className="flex justify-center mb-6 relative">
+              <div className="inline-flex bg-[#111827] border border-[#1F2937] rounded-full p-1.5 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setSegment('individual')}
+                  className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    segment === 'individual'
+                      ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                      : 'text-[#9CA3AF] hover:text-gray-100'
+                  }`}
+                >
+                  {t('pricingPage.segment.individual')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSegment('club')}
+                  className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    segment === 'club'
+                      ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                      : 'text-[#9CA3AF] hover:text-gray-100'
+                  }`}
+                >
+                  {t('pricingPage.segment.club')}
+                </button>
+              </div>
             </div>
           )}
 

@@ -252,6 +252,10 @@
     "noPremiumActive": "No hi ha cap producte Premium actiu.",
     "monthly": "Mensual",
     "annual": "Anual",
+    "segment": {
+      "individual": "Jugadors i entrenadors",
+      "club": "Clubs"
+    },
     "save": "Estalvia {{amount}}€",
     "free": {
       "title": "Gratuït",

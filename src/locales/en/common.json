@@ -252,6 +252,10 @@
     "noPremiumActive": "No active Premium product found.",
     "monthly": "Monthly",
     "annual": "Annual",
+    "segment": {
+      "individual": "Players & coaches",
+      "club": "Clubs"
+    },
     "save": "Save €{{amount}}",
     "free": {
       "title": "Free",
