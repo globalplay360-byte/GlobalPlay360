@@ -291,7 +291,13 @@
       "manage": "Manage your subscription from the dashboard.",
       "cancelAnytime": "Cancel anytime. No long-term commitments."
     },
-    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable"
+    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable",
+    "legal": {
+      "pre": "By subscribing you agree to the",
+      "terms": "Terms & Conditions",
+      "and": "and the",
+      "privacy": "Privacy Policy"
+    }
   },
   "loginPage": {
     "title": "Welcome back",

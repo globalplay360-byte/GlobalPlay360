@@ -291,7 +291,13 @@
       "manage": "Gestiona la teva subscripció des del dashboard.",
       "cancelAnytime": "Cancel·la quan vulguis. Sense permanència."
     },
-    "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui"
+    "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui",
+    "legal": {
+      "pre": "En subscriure't acceptes els",
+      "terms": "Termes i condicions",
+      "and": "i la",
+      "privacy": "Política de privacitat"
+    }
   },
   "loginPage": {
     "title": "Benvingut de nou",

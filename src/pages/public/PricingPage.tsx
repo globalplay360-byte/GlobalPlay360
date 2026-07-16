@@ -263,6 +263,18 @@ export default function PricingPage() {
                 <FeatureRow included>{t('pricingPage.premium.features.f6')}</FeatureRow>
               </ul>
 
+              {/* Enllaços legals visibles ABANS del CTA (Art. 13 RGPD + LSSI) */}
+              <p className="text-xs text-[#9CA3AF] text-center mb-3">
+                {t('pricingPage.legal.pre', "En subscriure't acceptes els")}{' '}
+                <Link to="/terms" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                  {t('pricingPage.legal.terms', 'Termes i condicions')}
+                </Link>{' '}
+                {t('pricingPage.legal.and', 'i la')}{' '}
+                <Link to="/privacy" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                  {t('pricingPage.legal.privacy', 'Política de privacitat')}
+                </Link>.
+              </p>
+
               {isAlreadyPremium ? (
                 <Link
                   to="/dashboard"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { createPortalSession, subscribeToBillingState, type BillingState } from '@/services/stripe.service';
@@ -28,11 +28,15 @@ export default function BillingPage() {
 
   useEffect(() => {
     if (!user || !hasFounderAccess) {
-      setBillingState(null);
       return;
     }
 
-    return subscribeToBillingState(user.uid, setBillingState, () => setBillingState(null));
+    const unsubscribe = subscribeToBillingState(user.uid, setBillingState, () => setBillingState(null));
+    return () => {
+      unsubscribe();
+      // Reset al cleanup (no al cos de l'efecte) per evitar renders en cascada.
+      setBillingState(null);
+    };
   }, [user, hasFounderAccess]);
 
   const handleOpenPortal = async () => {
@@ -210,6 +214,18 @@ export default function BillingPage() {
           <h2 className="font-semibold text-gray-100/90 text-[15px] tracking-tight mb-1">{t('billing.portal.title', 'Gestionar subscripció')}</h2>
           <p className="text-sm text-[#9CA3AF] leading-relaxed">{t('billing.portal.desc', 'Cancel·la, actualitza el mètode de pagament o descarrega factures al portal segur de Stripe.')}</p>
         </div>
+
+        {/* Enllaços legals visibles ABANS del CTA (Art. 13 RGPD + LSSI) */}
+        <p className="text-xs text-[#9CA3AF]">
+          {t('pricingPage.legal.pre', "En subscriure't acceptes els")}{' '}
+          <Link to="/terms" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+            {t('pricingPage.legal.terms', 'Termes i condicions')}
+          </Link>{' '}
+          {t('pricingPage.legal.and', 'i la')}{' '}
+          <Link to="/privacy" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+            {t('pricingPage.legal.privacy', 'Política de privacitat')}
+          </Link>.
+        </p>
 
         <button
           type="button"

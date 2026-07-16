@@ -291,7 +291,13 @@
       "manage": "Gestiona tu suscripción desde el dashboard.",
       "cancelAnytime": "Cancela cuando quieras. Sin permanencia."
     },
-    "trustText": "Pago seguro gestionado por Stripe · Facturación en EUR · IVA incluido según corresponda"
+    "trustText": "Pago seguro gestionado por Stripe · Facturación en EUR · IVA incluido según corresponda",
+    "legal": {
+      "pre": "Al suscribirte aceptas los",
+      "terms": "Términos y condiciones",
+      "and": "y la",
+      "privacy": "Política de privacidad"
+    }
   },
   "loginPage": {
     "title": "Bienvenido de nuevo",
