@@ -10,7 +10,9 @@ import {
   FOUNDING_MEMBERS_CAMPAIGN_ID,
   FOUNDING_MEMBERS_LIMIT,
   canClaimFounderAccess,
+  getExpectedSegmentForRole,
   getFoundingMembersAccessEndDate,
+  getProductSegment,
   isTrialPrice,
   selectCheckoutPrice,
 } from './billingPolicy.js';
@@ -154,6 +156,36 @@ export const createBillingCheckoutSession = onCall({
     request.data?.cancelUrl,
     'https://globalplay360.com/pricing?checkout=cancel',
   );
+
+  // Validació rol↔segment: el rol es llegeix del doc Firestore de l'usuari
+  // (server-side), mai del payload del client. Cada Product porta metadata
+  // `segment` (individual|club); un rol només pot comprar el seu segment.
+  const [userSnap, productSnap] = await Promise.all([
+    getUserRef(uid).get(),
+    db.doc(`products/${productId}`).get(),
+  ]);
+
+  if (!userSnap.exists) {
+    throw new HttpsError('failed-precondition', 'USER_PROFILE_NOT_FOUND');
+  }
+  if (!productSnap.exists) {
+    throw new HttpsError('not-found', 'PRODUCT_NOT_FOUND');
+  }
+
+  const expectedSegment = getExpectedSegmentForRole(userSnap.data()?.role);
+  if (!expectedSegment) {
+    throw new HttpsError('permission-denied', 'ROLE_NOT_ELIGIBLE_FOR_CHECKOUT');
+  }
+
+  const productSegment = getProductSegment(productSnap.data());
+  if (!productSegment) {
+    // Products sense metadata `segment` (p. ex. el catàleg antic) no es poden
+    // comprar: obliga a fer servir el catàleg segmentat nou.
+    throw new HttpsError('failed-precondition', 'PRODUCT_SEGMENT_MISSING');
+  }
+  if (productSegment !== expectedSegment) {
+    throw new HttpsError('permission-denied', 'PRODUCT_NOT_ALLOWED_FOR_ROLE');
+  }
 
   const billingStateRef = getBillingStateRef(uid);
   const billingStateSnap = await billingStateRef.get();

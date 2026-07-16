@@ -75,6 +75,11 @@ service cloud.firestore {
                       || (
                         isAdmin()
                         && request.resource.data.diff(resource.data).changedKeys().hasOnly(['role'])
+                        // Amb el pricing segmentat (individual vs club), el rol
+                        // determina quin Product pot comprar l'usuari. Bloquegem
+                        // el canvi de rol mentre hi ha subscripció o trial actius:
+                        // primer cancel·lar/canviar el pla a Stripe, després el rol.
+                        && resource.data.get('plan', 'free') == 'free'
                       )
                     );
 

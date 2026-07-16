@@ -2,10 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   BILLING_TRIAL_DAYS,
+  CLUB_SEGMENT,
   FOUNDING_MEMBERS_LIMIT,
+  INDIVIDUAL_SEGMENT,
   canClaimFounderAccess,
   getCheckoutSessionTrialDays,
+  getExpectedSegmentForRole,
   getPriceTrialDays,
+  getProductSegment,
+  isBlockingSubscriptionStatus,
   isTrialPrice,
   selectCheckoutPrice,
 } from './billingPolicy.js';
@@ -96,6 +101,45 @@ test('selectCheckoutPrice matches yearly trial sibling by lookup_key', () => {
   );
 
   assert.equal(selectedPrice?.id, 'price_trial_yearly');
+});
+
+test('getExpectedSegmentForRole maps player and coach to the individual segment', () => {
+  assert.equal(getExpectedSegmentForRole('player'), INDIVIDUAL_SEGMENT);
+  assert.equal(getExpectedSegmentForRole('coach'), INDIVIDUAL_SEGMENT);
+});
+
+test('getExpectedSegmentForRole maps club to the club segment', () => {
+  assert.equal(getExpectedSegmentForRole('club'), CLUB_SEGMENT);
+});
+
+test('getExpectedSegmentForRole rejects admin and unknown roles', () => {
+  assert.equal(getExpectedSegmentForRole('admin'), null);
+  assert.equal(getExpectedSegmentForRole(undefined), null);
+  assert.equal(getExpectedSegmentForRole(''), null);
+});
+
+test('getProductSegment reads nested and flattened extension metadata', () => {
+  assert.equal(getProductSegment({ metadata: { segment: 'club' } }), 'club');
+  assert.equal(getProductSegment({ stripe_metadata_segment: 'individual' }), 'individual');
+  assert.equal(getProductSegment({ metadata: { segment: ' club ' } }), 'club');
+});
+
+test('getProductSegment returns null when the product has no segment metadata', () => {
+  assert.equal(getProductSegment({}), null);
+  assert.equal(getProductSegment({ metadata: {} }), null);
+  assert.equal(getProductSegment(null), null);
+});
+
+test('isBlockingSubscriptionStatus blocks live subscriptions including past_due', () => {
+  assert.equal(isBlockingSubscriptionStatus('trialing'), true);
+  assert.equal(isBlockingSubscriptionStatus('active'), true);
+  assert.equal(isBlockingSubscriptionStatus('past_due'), true);
+});
+
+test('isBlockingSubscriptionStatus lets canceled and incomplete subscriptions retry', () => {
+  assert.equal(isBlockingSubscriptionStatus('canceled'), false);
+  assert.equal(isBlockingSubscriptionStatus('incomplete'), false);
+  assert.equal(isBlockingSubscriptionStatus('incomplete_expired'), false);
 });
 
 test('canClaimFounderAccess allows an eligible user before the deadline', () => {
