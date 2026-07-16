@@ -20,11 +20,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servei',
         html: `
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominació social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicili:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correu:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresari individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicili:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Espanya</li>
+            <li><strong>Correu:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },
@@ -118,11 +117,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servicio',
         html: `
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominación social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicilio:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correo:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresario individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicilio:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), España</li>
+            <li><strong>Correo:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },
@@ -216,11 +214,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Service provider',
         html: `
           <ul>
-            <li><strong>Owner:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Legal entity:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Tax ID:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Address:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Email:</strong> <em style="color:#6B7280">[pending configuration]</em></li>
+            <li><strong>Owner:</strong> Aleix Pérez Jané (sole trader)</li>
+            <li><strong>Tax ID:</strong> 47939862L</li>
+            <li><strong>Address:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Spain</li>
+            <li><strong>Email:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },

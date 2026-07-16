@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { CONTACT_EMAIL } from '@/config/site';
+import { CONTACT_EMAIL, LEGAL_EMAIL, LEGAL_ADDRESS } from '@/config/site';
 
 export default function ContactPage() {
   const { t } = useTranslation();
@@ -66,18 +66,16 @@ export default function ContactPage() {
                   {t('contact.legal.emailLabel', 'Email legal')}:
                 </span>
                 <br />
-                <span className="italic text-[#6B7280]">
-                  {t('contact.legal.pending', 'Pendent de configuració')}
-                </span>
+                <a href={`mailto:${LEGAL_EMAIL}`} className="text-[#D1D5DB] hover:text-gray-100 transition-colors">
+                  {LEGAL_EMAIL}
+                </a>
               </p>
               <p className="pt-2">
                 <span className="text-[#6B7280] uppercase text-xs font-bold tracking-wider">
                   {t('contact.legal.address', 'Adreça')}:
                 </span>
                 <br />
-                <span className="italic text-[#6B7280]">
-                  {t('contact.legal.pending', 'Pendent de configuració')}
-                </span>
+                <span className="text-[#D1D5DB]">{LEGAL_ADDRESS}</span>
               </p>
             </div>
           </div>
