@@ -14,7 +14,7 @@ type Interval = 'month' | 'year';
 
 export default function PricingPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -82,8 +82,24 @@ export default function PricingPage() {
     }
   };
 
+  // Preus amb decimals reals (9,99 €), formatats segons l'idioma actiu.
+  // Mai toFixed(0): arrodonir 9,99 € a "10€" seria un sobrepreu visual.
+  const formatEuros = (cents: number): string =>
+    new Intl.NumberFormat(i18n.language, {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(cents / 100);
+
+  const formatAmount = (euros: number): string =>
+    new Intl.NumberFormat(i18n.language, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(euros);
+
   const priceLabel = (price: StripePrice | null): string =>
-    price ? `${(price.unit_amount / 100).toFixed(0)}€` : '—';
+    price ? formatEuros(price.unit_amount) : '—';
 
   const monthlyTotalIfAnnual =
     prices.month && prices.year
@@ -207,7 +223,7 @@ export default function PricingPage() {
                 <div className="flex items-baseline gap-2 mb-3">
                   {interval === 'year' && prices.month && (
                     <span className="text-2xl sm:text-3xl font-medium text-[#6B7280] line-through decoration-2 decoration-[#6B7280] mr-1">
-                      {((prices.month.unit_amount * 12) / 100).toFixed(0)}€
+                      {formatEuros(prices.month.unit_amount * 12)}
                     </span>
                   )}
                   <span className="text-5xl font-medium text-[#3B82F6] tracking-tight">
@@ -221,7 +237,7 @@ export default function PricingPage() {
                 {interval === 'year' && monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 ? (
                   <div className="flex flex-col gap-1.5 mb-2">
                     <span className="inline-block w-fit bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 text-xs font-semibold px-2.5 py-1 rounded-md mb-1">
-                      {t('pricingPage.premium.saveToday', { amount: monthlyTotalIfAnnual.toFixed(0) })}
+                      {t('pricingPage.premium.saveToday', { amount: formatAmount(monthlyTotalIfAnnual) })}
                     </span>
                     <p className="text-sm text-[#9CA3AF] font-medium tracking-wide">
                       {t('pricingPage.premium.trial')}
