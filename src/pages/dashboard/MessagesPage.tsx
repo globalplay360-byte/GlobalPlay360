@@ -98,6 +98,8 @@ export default function MessagesPage() {
   useEffect(() => {
     if (!user) return;
 
+    // Neteja d'errors previs en canviar d'usuari, abans de resubscriure.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setError(null);
     const unsubscribe = subscribeToUserConversations(user.uid, async (convs) => {
       const extendedConvs = await Promise.all(

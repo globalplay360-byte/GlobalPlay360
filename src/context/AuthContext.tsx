@@ -194,6 +194,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const uid = state.user?.uid;
     if (!uid) return;
 
+    // Reinici de l'estat de càrrega en canviar d'usuari, abans de resubscriure.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState((s) => ({ ...s, subscriptionLoading: true }));
     let lastSubStatus: string | null | undefined = undefined;
     const unsub = subscribeToActiveSubscription(
@@ -328,6 +330,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// El hook conviu amb el provider (patró de context habitual). Només afecta el
+// fast-refresh en dev, no la correctesa; moure'l trencaria desenes d'imports.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');

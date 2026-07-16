@@ -53,7 +53,7 @@ export default function ApplicationsPage() {
     try {
       await deleteApplication(appId);
       setApplications(prev => prev.filter(a => a.id !== appId));
-    } catch (err) {
+    } catch {
       alert("Error eliminant la candidatura.");
     } finally {
       setDeletingId(null);

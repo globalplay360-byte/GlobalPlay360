@@ -19,5 +19,17 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Convenció estàndard: un prefix "_" marca una variable/argument
+      // intencionadament no usat (p. ex. camps descartats en un destructuring).
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
 ])

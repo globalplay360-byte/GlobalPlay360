@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import {
   BriefcaseIcon,
   ChatBubbleLeftEllipsisIcon,
@@ -33,7 +34,7 @@ type BaseStats = {
   trendUp?: boolean;
 };
 
-const RecentApplicationItem = ({ app, t }: { app: Application, t: any }) => {
+const RecentApplicationItem = ({ app, t }: { app: Application, t: TFunction }) => {
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
@@ -146,7 +147,7 @@ export default function OverviewPage() {
       unsubscribeConvs = subscribeToUserConversations(user.uid, (convs) => {
         if (isMounted) setConversations(convs);
       });
-    } catch(err) {}
+    } catch { /* la subscripció a converses és opcional a l'overview */ }
 
     return () => {
       isMounted = false;
@@ -471,7 +472,7 @@ function ActivityTimeline({
   applications: Application[];
   conversations: Conversation[];
   isClub: boolean;
-  t: any;
+  t: TFunction;
 }) {
   const entries: ActivityEntry[] = [];
 
