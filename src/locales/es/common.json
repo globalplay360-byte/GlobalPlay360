@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR desde el día uno",
-        "desc": "Datos alojados en europe-west1. Reglas de seguridad restrictivas en cada colección. Controles de privacidad transparentes."
+        "desc": "Datos alojados en europe-west1. Reglas de seguridad restrictivas en cada colección. Exportación de datos y eliminación de cuenta disponibles desde tu perfil."
       },
       "realtime": {
         "title": "Sincronización en tiempo real",
@@ -386,7 +386,9 @@
     "deleting": "Eliminando la cuenta…",
     "cancel": "Cancelar",
     "goToBilling": "Ir a Facturación",
-    "errorSubscriptionActive": "Tienes una suscripción activa. Cancélala primero desde Facturación y vuelve a intentarlo cuando haya finalizado.",
+    "cancelSubscription": "Cancela la suscripción para continuar",
+    "openingPortal": "Abriendo el portal…",
+    "errorSubscriptionActive": "Tienes una suscripción activa. Cancélala primero en el portal de Stripe y vuelve a intentarlo cuando haya finalizado.",
     "errorRecentLogin": "Por seguridad, cierra la sesión, vuelve a iniciarla y repite la operación en los 5 minutos siguientes.",
     "deleteError": "No se ha podido eliminar la cuenta. Inténtalo de nuevo."
   },

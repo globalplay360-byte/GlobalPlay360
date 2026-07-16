@@ -490,6 +490,12 @@ export const claimFounderAccess = onCall({
  * NOTA Stripe: el customer de Stripe NO s'esborra des d'aquí (les factures
  * s'han de conservar 6 anys per obligació fiscal, tal com declara la
  * política de privacitat §7). El vincle uid→customer desapareix de Firestore.
+ *
+ * NOTA consentiment: `consent_history` NO s'esborra (Art. 17.3.e — conservació
+ * per a la formulació/exercici/defensa de reclamacions). És l'única prova que
+ * l'usuari va acceptar termes i privacitat; destruir-la ens deixaria sense
+ * defensa davant una reclamació. Queda com a registre pseudonimitzat (només
+ * uid + metadades del consentiment, sense la resta de dades personals).
  */
 export const deleteUserAccount = onCall({
   cors: true,
@@ -539,8 +545,8 @@ export const deleteUserAccount = onCall({
   counts.conversations = conversationCount;
 
   // 4. Docs amb subcol·leccions: recursiveDelete els neteja sencers.
+  //    `consent_history` es CONSERVA a propòsit (Art. 17.3.e, vegeu capçalera).
   await db.recursiveDelete(db.doc(`customers/${uid}`));
-  await db.recursiveDelete(db.doc(`consent_history/${uid}`));
   await db.recursiveDelete(db.doc(`users/${uid}`));
 
   // 5. Docs simples.
@@ -556,6 +562,7 @@ export const deleteUserAccount = onCall({
     uidHash: createHash('sha256').update(uid).digest('hex'),
     deletedAt: FieldValue.serverTimestamp(),
     counts,
+    consentHistoryConserved: true,
   });
 
   // 8. Compte d'Auth: l'últim, perquè si res anterior falla l'usuari pugui reintentar.
@@ -640,6 +647,9 @@ export const exportUserData = onCall({
       };
     }),
     consentHistory: consentSnap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() })),
+    // URL de descàrrega amb token de l'avatar (Art. 20: dada personal exportable).
+    // `photoURL` ja és la download URL signada que genera Storage a la pujada.
+    avatarUrl: userSnap.exists ? (userSnap.data()?.photoURL ?? null) : null,
     avatarStoragePath: `users/${uid}/avatar.jpg`,
   };
 });

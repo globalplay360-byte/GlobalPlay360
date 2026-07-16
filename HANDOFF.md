@@ -23,9 +23,18 @@ Mateixa branca `fix/bloc1-pre-cobros` (3 commits nous, 10 en total; no fusionada
 ### Decisions de disseny (per si algú les qüestiona)
 
 - **Stripe customer NO s'esborra** amb el compte: les factures s'han de conservar 6 anys per obligació fiscal (declarat a privacy §7). El vincle uid→customer desapareix de Firestore; el customer object queda a Stripe. Si l'Aleix vol purgar-lo manualment més endavant, es fa des del Dashboard de Stripe.
-- **Esborrat bloquejat amb subscripció viva**: evita seguir cobrant un compte esborrat. L'usuari cancel·la primer (Customer Portal) i després elimina. La UI ho explica i enllaça a Facturació.
+- **`consent_history` es CONSERVA** en esborrar el compte (Art. 17.3.e — defensa de reclamacions). És l'única prova que l'usuari va acceptar termes i privacitat; destruir-la ens deixaria indefensos davant una reclamació. Queda pseudonimitzada (uid + metadades del consentiment, sense la resta de dades). Documentat a privacy §7. *Decisió conscient (feedback revisió), no efecte col·lateral.*
+- **Esborrat bloquejat amb subscripció viva**: evita seguir cobrant un compte esborrat. Davant l'error `SUBSCRIPTION_ACTIVE`, la UI mostra un **botó directe al Customer Portal** («Cancel·la la subscripció per continuar», Art. 12.2 — facilitar l'exercici), no un error sec. *Millora futura (P2): que la CF cancel·li automàticament la subscripció abans d'esborrar.*
 - **Converses s'esborren senceres** (amb els missatges de l'altre participant): mateix patró que les oportunitats òrfenes; una conversa amb un sol participant no té sentit funcional.
 - **Si `recordConsent` falla** després del registre, no es bloqueja l'usuari (ja existeix a Auth); es deixa constància a la consola del client. Risc residual acceptat i documentat.
+
+### Refinaments post-revisió (16/07 tarda)
+
+Feedback de revisió aplicat (cap era bloquejant):
+- ✅ **UI Art. 12.2**: botó directe al Customer Portal davant `SUBSCRIPTION_ACTIVE` (reutilitza `createPortalSession`).
+- ✅ **`consent_history` conservada** (Art. 17.3.e) en comptes d'esborrada; `deletion_logs` ho marca (`consentHistoryConserved: true`); privacy §7 actualitzada (3 idiomes).
+- ✅ **Export Art. 20 complet**: s'hi afegeix `avatarUrl` (download URL amb token, ja present com a `photoURL`).
+- ✅ **Textos restaurats**: `AboutPage` + locales tornen a esmentar els drets (exportació + eliminació), ara que existeixen de veritat; privacy §6 informa que es poden exercir des del perfil.
 
 ### Estat dels 14 P0 després del BLOC 2
 

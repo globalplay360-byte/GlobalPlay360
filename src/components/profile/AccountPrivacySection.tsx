@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { deleteMyAccount, downloadAsJsonFile, exportMyData } from '@/services/privacy.service';
+import { createPortalSession } from '@/services/stripe.service';
 
 function getCallableErrorKey(err: unknown): string | null {
   const message = err instanceof Error ? err.message : '';
@@ -30,6 +31,18 @@ export default function AccountPrivacySection() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [deleteErrorKey, setDeleteErrorKey] = useState<string | null>(null);
+  const [isOpeningPortal, setIsOpeningPortal] = useState(false);
+
+  const handleOpenPortal = async () => {
+    setIsOpeningPortal(true);
+    try {
+      const url = await createPortalSession();
+      window.location.assign(url);
+    } catch (err) {
+      console.error(err);
+      setIsOpeningPortal(false);
+    }
+  };
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -134,14 +147,21 @@ export default function AccountPrivacySection() {
             </label>
 
             {deleteError && (
-              <p className="text-sm text-[#F59E0B]">
-                {deleteError}{' '}
+              <div className="flex flex-col gap-3">
+                <p className="text-sm text-[#F59E0B]">{deleteError}</p>
                 {deleteErrorKey === 'SUBSCRIPTION_ACTIVE' && (
-                  <Link to="/dashboard/billing" className="underline underline-offset-2 text-[#93C5FD]">
-                    {t('profilePrivacy.goToBilling', 'Anar a Facturació')}
-                  </Link>
+                  <Button
+                    variant="outline"
+                    onClick={handleOpenPortal}
+                    disabled={isOpeningPortal}
+                    className="self-start"
+                  >
+                    {isOpeningPortal
+                      ? t('profilePrivacy.openingPortal', 'Obrint el portal…')
+                      : t('profilePrivacy.cancelSubscription', 'Cancel·la la subscripció per continuar')}
+                  </Button>
                 )}
-              </p>
+              </div>
             )}
 
             <div className="flex flex-col sm:flex-row gap-3">

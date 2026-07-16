@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR-first by design",
-        "desc": "Data hosted in europe-west1. Restrictive security rules on every collection. Transparent privacy controls."
+        "desc": "Data hosted in europe-west1. Restrictive security rules on every collection. Self-service data export and account deletion from your profile."
       },
       "realtime": {
         "title": "Real-time synchronization",
@@ -386,7 +386,9 @@
     "deleting": "Deleting account…",
     "cancel": "Cancel",
     "goToBilling": "Go to Billing",
-    "errorSubscriptionActive": "You have an active subscription. Cancel it first from Billing and try again once it has ended.",
+    "cancelSubscription": "Cancel your subscription to continue",
+    "openingPortal": "Opening the portal…",
+    "errorSubscriptionActive": "You have an active subscription. Cancel it first in the Stripe portal and try again once it has ended.",
     "errorRecentLogin": "For security, sign out, sign back in, and repeat this action within the next 5 minutes.",
     "deleteError": "Your account could not be deleted. Please try again."
   },

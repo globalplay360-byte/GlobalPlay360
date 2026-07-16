@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR des del primer dia",
-        "desc": "Dades allotjades a europe-west1. Regles de seguretat restrictives a cada col·lecció. Controls de privacitat transparents."
+        "desc": "Dades allotjades a europe-west1. Regles de seguretat restrictives a cada col·lecció. Exportació de dades i eliminació de compte disponibles des del teu perfil."
       },
       "realtime": {
         "title": "Sincronització en temps real",
@@ -386,7 +386,9 @@
     "deleting": "Eliminant el compte…",
     "cancel": "Cancel·lar",
     "goToBilling": "Anar a Facturació",
-    "errorSubscriptionActive": "Tens una subscripció activa. Cancel·la-la primer des de Facturació i torna-ho a provar quan hagi finalitzat.",
+    "cancelSubscription": "Cancel·la la subscripció per continuar",
+    "openingPortal": "Obrint el portal…",
+    "errorSubscriptionActive": "Tens una subscripció activa. Cancel·la-la primer al portal de Stripe i torna-ho a provar quan hagi finalitzat.",
     "errorRecentLogin": "Per seguretat, tanca la sessió, torna a iniciar-la i repeteix l'operació en els 5 minuts següents.",
     "deleteError": "No s'ha pogut eliminar el compte. Torna-ho a provar."
   },
