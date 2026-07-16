@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR des del primer dia",
-        "desc": "Dades allotjades a europe-west1. Dret a l'oblit implementat via Cloud Functions. Controls de privacitat transparents."
+        "desc": "Dades allotjades a europe-west1. Regles de seguretat restrictives a cada col·lecció. Controls de privacitat transparents."
       },
       "realtime": {
         "title": "Sincronització en temps real",

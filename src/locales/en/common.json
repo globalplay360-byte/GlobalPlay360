@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR-first by design",
-        "desc": "Data hosted in europe-west1. Right to erasure implemented via Cloud Functions. Transparent privacy controls."
+        "desc": "Data hosted in europe-west1. Restrictive security rules on every collection. Transparent privacy controls."
       },
       "realtime": {
         "title": "Real-time synchronization",

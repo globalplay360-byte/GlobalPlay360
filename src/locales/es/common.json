@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR desde el día uno",
-        "desc": "Datos alojados en europe-west1. Derecho al olvido implementado vía Cloud Functions. Controles de privacidad transparentes."
+        "desc": "Datos alojados en europe-west1. Reglas de seguridad restrictivas en cada colección. Controles de privacidad transparentes."
       },
       "realtime": {
         "title": "Sincronización en tiempo real",
