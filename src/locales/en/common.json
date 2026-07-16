@@ -370,6 +370,26 @@
     "hasAccount": "Already have an account?",
     "loginLink": "Log in"
   },
+  "profilePrivacy": {
+    "title": "Privacy & data",
+    "exportTitle": "Download your data",
+    "exportDesc": "Get a JSON copy of all your personal data (Art. 20 GDPR). Maximum one export every 24 hours.",
+    "exportButton": "Download my data",
+    "exporting": "Preparing your export…",
+    "exportRateLimited": "You already exported your data less than 24 hours ago. Please try again later.",
+    "exportError": "Your data could not be exported. Please try again.",
+    "deleteTitle": "Delete account",
+    "deleteDesc": "Permanently delete your account and all your data (Art. 17 GDPR). This action is irreversible.",
+    "deleteButton": "Delete my account",
+    "confirmLabel": "I understand this action is irreversible and all my data (profile, applications, conversations and files) will be permanently deleted.",
+    "confirmButton": "Delete permanently",
+    "deleting": "Deleting account…",
+    "cancel": "Cancel",
+    "goToBilling": "Go to Billing",
+    "errorSubscriptionActive": "You have an active subscription. Cancel it first from Billing and try again once it has ended.",
+    "errorRecentLogin": "For security, sign out, sign back in, and repeat this action within the next 5 minutes.",
+    "deleteError": "Your account could not be deleted. Please try again."
+  },
   "sidebar": {
     "nav": {
       "overview": "Overview",

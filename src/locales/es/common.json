@@ -370,6 +370,26 @@
     "hasAccount": "¿Ya tienes cuenta?",
     "loginLink": "Iniciar sesión"
   },
+  "profilePrivacy": {
+    "title": "Privacidad y datos",
+    "exportTitle": "Descarga tus datos",
+    "exportDesc": "Obtén una copia en formato JSON de todos tus datos personales (Art. 20 RGPD). Máximo una exportación cada 24 horas.",
+    "exportButton": "Descargar mis datos",
+    "exporting": "Preparando la exportación…",
+    "exportRateLimited": "Ya has exportado tus datos hace menos de 24 horas. Inténtalo de nuevo más tarde.",
+    "exportError": "No se han podido exportar los datos. Inténtalo de nuevo.",
+    "deleteTitle": "Eliminar la cuenta",
+    "deleteDesc": "Elimina permanentemente tu cuenta y todos tus datos (Art. 17 RGPD). Esta acción es irreversible.",
+    "deleteButton": "Eliminar mi cuenta",
+    "confirmLabel": "Entiendo que esta acción es irreversible y que todos mis datos (perfil, candidaturas, conversaciones y archivos) se eliminarán definitivamente.",
+    "confirmButton": "Eliminar definitivamente",
+    "deleting": "Eliminando la cuenta…",
+    "cancel": "Cancelar",
+    "goToBilling": "Ir a Facturación",
+    "errorSubscriptionActive": "Tienes una suscripción activa. Cancélala primero desde Facturación y vuelve a intentarlo cuando haya finalizado.",
+    "errorRecentLogin": "Por seguridad, cierra la sesión, vuelve a iniciarla y repite la operación en los 5 minutos siguientes.",
+    "deleteError": "No se ha podido eliminar la cuenta. Inténtalo de nuevo."
+  },
   "sidebar": {
     "nav": {
       "overview": "Vista General",

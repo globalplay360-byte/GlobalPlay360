@@ -205,6 +205,17 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ── RGPD OPS (Art. 17 / Art. 20) ───────────────────────
+    // Gestionats exclusivament per les CFs deleteUserAccount i exportUserData
+    // amb Admin SDK. Cap accés des del client.
+    match /deletion_logs/{logId} {
+      allow read, write: if false;
+    }
+
+    match /export_logs/{uid} {
+      allow read, write: if false;
+    }
+
     match /billing_state/{uid} {
       allow read: if hasValidSingleSession() && request.auth.uid == uid;
       allow write: if false;

@@ -1,6 +1,8 @@
+import { createHash } from 'node:crypto';
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, Timestamp, getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 import { onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
@@ -44,6 +46,43 @@ function getRequestIp(rawRequest) {
 function getRequestHeader(rawRequest, name, maxLength) {
   const value = rawRequest?.headers?.[name];
   return typeof value === 'string' ? value.slice(0, maxLength) : '';
+}
+
+// Reauth recent per a operacions destructives: el token ha d'haver estat
+// emès amb un login de fa menys de 5 minuts.
+const RECENT_AUTH_MAX_AGE_SECONDS = 5 * 60;
+
+function assertRecentAuth(request) {
+  const authTime = Number(request.auth?.token?.auth_time ?? 0);
+  const ageSeconds = Date.now() / 1000 - authTime;
+  if (!Number.isFinite(authTime) || authTime <= 0 || ageSeconds > RECENT_AUTH_MAX_AGE_SECONDS) {
+    throw new HttpsError('failed-precondition', 'RECENT_LOGIN_REQUIRED');
+  }
+}
+
+async function hasBlockingSubscription(uid) {
+  const snap = await db
+    .collection('customers')
+    .doc(uid)
+    .collection('subscriptions')
+    .where('status', 'in', BLOCKING_SUBSCRIPTION_STATUSES)
+    .limit(1)
+    .get();
+  return !snap.empty;
+}
+
+/** Esborra paginadament tots els docs que retorna una query. Retorna el recompte. */
+async function deleteQueryDocs(buildQuery) {
+  let deletedCount = 0;
+  while (true) {
+    const snap = await buildQuery().limit(200).get();
+    if (snap.empty) break;
+    const batch = db.batch();
+    snap.docs.forEach((docSnap) => batch.delete(docSnap.ref));
+    await batch.commit();
+    deletedCount += snap.size;
+  }
+  return deletedCount;
 }
 
 function getBillingStateRef(uid) {
@@ -435,6 +474,173 @@ export const claimFounderAccess = onCall({
   return {
     ...claimResult,
     accessEndsAt: FOUNDING_MEMBERS_ACCESS_END_ISO,
+  };
+});
+
+/**
+ * Esborrat total del compte (Art. 17 RGPD — dret a l'oblit).
+ *
+ * Precondicions: reauth recent (<5 min) i cap subscripció viva (l'usuari ha
+ * de cancel·lar primer via Customer Portal; evita seguir cobrant un compte
+ * esborrat). Esborra: Firestore (users + private, applications, opportunities
+ * pròpies, conversations + missatges, customers/*, billing_state,
+ * auth_sessions, consent_history, export_logs), Storage (users/{uid}/*) i el
+ * compte d'Auth. Deixa un log immutable amb el HASH del uid (mai en clar).
+ *
+ * NOTA Stripe: el customer de Stripe NO s'esborra des d'aquí (les factures
+ * s'han de conservar 6 anys per obligació fiscal, tal com declara la
+ * política de privacitat §7). El vincle uid→customer desapareix de Firestore.
+ */
+export const deleteUserAccount = onCall({
+  cors: true,
+  timeoutSeconds: 300,
+  memory: '512MiB',
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+  assertRecentAuth(request);
+
+  const uid = request.auth.uid;
+
+  if (await hasBlockingSubscription(uid)) {
+    throw new HttpsError('failed-precondition', 'SUBSCRIPTION_ACTIVE');
+  }
+
+  const counts = {};
+
+  // 1. Candidatures: com a candidat i com a club receptor.
+  counts.applicationsAsUser = await deleteQueryDocs(
+    () => db.collection('applications').where('userId', '==', uid),
+  );
+  counts.applicationsAsClub = await deleteQueryDocs(
+    () => db.collection('applications').where('clubId', '==', uid),
+  );
+
+  // 2. Oportunitats pròpies (rol club).
+  counts.opportunities = await deleteQueryDocs(
+    () => db.collection('opportunities').where('clubId', '==', uid),
+  );
+
+  // 3. Converses on participa (amb tots els missatges).
+  let conversationCount = 0;
+  while (true) {
+    const convSnap = await db
+      .collection('conversations')
+      .where('participants', 'array-contains', uid)
+      .limit(CLEANUP_BATCH_LIMIT)
+      .get();
+    if (convSnap.empty) break;
+    for (const convDoc of convSnap.docs) {
+      await deleteConversationWithMessages(convDoc.id);
+      conversationCount += 1;
+    }
+  }
+  counts.conversations = conversationCount;
+
+  // 4. Docs amb subcol·leccions: recursiveDelete els neteja sencers.
+  await db.recursiveDelete(db.doc(`customers/${uid}`));
+  await db.recursiveDelete(db.doc(`consent_history/${uid}`));
+  await db.recursiveDelete(db.doc(`users/${uid}`));
+
+  // 5. Docs simples.
+  await db.doc(`billing_state/${uid}`).delete();
+  await db.doc(`auth_sessions/${uid}`).delete();
+  await db.doc(`export_logs/${uid}`).delete();
+
+  // 6. Storage: avatar i qualsevol fitxer del directori de l'usuari.
+  await getStorage().bucket().deleteFiles({ prefix: `users/${uid}/` });
+
+  // 7. Log immutable amb hash del uid (verificable sense exposar-lo).
+  await db.collection('deletion_logs').add({
+    uidHash: createHash('sha256').update(uid).digest('hex'),
+    deletedAt: FieldValue.serverTimestamp(),
+    counts,
+  });
+
+  // 8. Compte d'Auth: l'últim, perquè si res anterior falla l'usuari pugui reintentar.
+  await auth.deleteUser(uid);
+
+  return { deleted: true };
+});
+
+/**
+ * Exportació de dades (Art. 20 RGPD — portabilitat).
+ *
+ * Retorna un JSON estructurat amb totes les dades personals de l'usuari:
+ * perfil públic i privat, candidatures, oportunitats pròpies, converses amb
+ * els SEUS missatges (els dels altres participants són dades de tercers),
+ * resum de subscripcions i historial de consentiments. Rate limit: 1 export
+ * cada 24 h (minimització de càrrega i d'abús).
+ */
+export const exportUserData = onCall({
+  cors: true,
+  timeoutSeconds: 300,
+  memory: '512MiB',
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const uid = request.auth.uid;
+
+  const exportLogRef = db.doc(`export_logs/${uid}`);
+  const exportLogSnap = await exportLogRef.get();
+  const lastExportMillis = getTimestampMillis(exportLogSnap.data()?.lastExportAt);
+  if (typeof lastExportMillis === 'number' && Date.now() - lastExportMillis < 24 * 60 * 60 * 1000) {
+    throw new HttpsError('resource-exhausted', 'EXPORT_RATE_LIMITED');
+  }
+
+  const [userSnap, privateSnap, applicationsSnap, opportunitiesSnap, conversationsSnap, subscriptionsSnap, consentSnap] =
+    await Promise.all([
+      db.doc(`users/${uid}`).get(),
+      db.doc(`users/${uid}/private/profile`).get(),
+      db.collection('applications').where('userId', '==', uid).get(),
+      db.collection('opportunities').where('clubId', '==', uid).get(),
+      db.collection('conversations').where('participants', 'array-contains', uid).get(),
+      db.collection('customers').doc(uid).collection('subscriptions').get(),
+      db.collection('consent_history').doc(uid).collection('entries').get(),
+    ]);
+
+  const conversations = [];
+  for (const convDoc of conversationsSnap.docs) {
+    const ownMessagesSnap = await convDoc.ref
+      .collection('messages')
+      .where('senderId', '==', uid)
+      .get();
+    conversations.push({
+      id: convDoc.id,
+      participants: convDoc.data()?.participants ?? [],
+      myMessages: ownMessagesSnap.docs.map((msgDoc) => ({ id: msgDoc.id, ...msgDoc.data() })),
+    });
+  }
+
+  await exportLogRef.set({
+    lastExportAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return {
+    exportedAt: new Date().toISOString(),
+    format: 'GlobalPlay360 personal data export (Art. 20 GDPR)',
+    profile: userSnap.exists ? userSnap.data() : null,
+    privateProfile: privateSnap.exists ? privateSnap.data() : null,
+    applications: applicationsSnap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() })),
+    opportunities: opportunitiesSnap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() })),
+    conversations,
+    subscriptions: subscriptionsSnap.docs.map((docSnap) => {
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        status: data?.status ?? null,
+        cancelAtPeriodEnd: data?.cancel_at_period_end ?? null,
+        created: toIsoStringFromTimestamp(data?.created),
+        currentPeriodEnd: toIsoStringFromTimestamp(data?.current_period_end),
+        trialEnd: toIsoStringFromTimestamp(data?.trial_end),
+      };
+    }),
+    consentHistory: consentSnap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() })),
+    avatarStoragePath: `users/${uid}/avatar.jpg`,
   };
 });
 

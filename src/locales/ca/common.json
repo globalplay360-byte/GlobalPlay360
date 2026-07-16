@@ -370,6 +370,26 @@
     "hasAccount": "Ja tens compte?",
     "loginLink": "Inicia sessió"
   },
+  "profilePrivacy": {
+    "title": "Privacitat i dades",
+    "exportTitle": "Descarrega les teves dades",
+    "exportDesc": "Obtén una còpia en format JSON de totes les teves dades personals (Art. 20 RGPD). Màxim una exportació cada 24 hores.",
+    "exportButton": "Descarregar les meves dades",
+    "exporting": "Preparant l'exportació…",
+    "exportRateLimited": "Ja has exportat les teves dades fa menys de 24 hores. Torna-ho a provar més tard.",
+    "exportError": "No s'han pogut exportar les dades. Torna-ho a provar.",
+    "deleteTitle": "Eliminar el compte",
+    "deleteDesc": "Elimina permanentment el teu compte i totes les teves dades (Art. 17 RGPD). Aquesta acció és irreversible.",
+    "deleteButton": "Eliminar el meu compte",
+    "confirmLabel": "Entenc que aquesta acció és irreversible i que totes les meves dades (perfil, candidatures, converses i fitxers) s'eliminaran definitivament.",
+    "confirmButton": "Eliminar definitivament",
+    "deleting": "Eliminant el compte…",
+    "cancel": "Cancel·lar",
+    "goToBilling": "Anar a Facturació",
+    "errorSubscriptionActive": "Tens una subscripció activa. Cancel·la-la primer des de Facturació i torna-ho a provar quan hagi finalitzat.",
+    "errorRecentLogin": "Per seguretat, tanca la sessió, torna a iniciar-la i repeteix l'operació en els 5 minuts següents.",
+    "deleteError": "No s'ha pogut eliminar el compte. Torna-ho a provar."
+  },
   "sidebar": {
     "nav": {
       "overview": "Vista General",
