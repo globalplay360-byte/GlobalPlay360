@@ -6,6 +6,7 @@ import { setGlobalOptions } from 'firebase-functions/v2';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import {
+  BLOCKING_SUBSCRIPTION_STATUSES,
   FOUNDING_MEMBERS_ACCESS_END_ISO,
   FOUNDING_MEMBERS_CAMPAIGN_ID,
   FOUNDING_MEMBERS_LIMIT,
@@ -185,6 +186,21 @@ export const createBillingCheckoutSession = onCall({
   }
   if (productSegment !== expectedSegment) {
     throw new HttpsError('permission-denied', 'PRODUCT_NOT_ALLOWED_FOR_ROLE');
+  }
+
+  // Guard antidoble subscripció: si l'usuari ja té una subscripció viva
+  // (trialing, active o past_due amb reintents pendents), no obrim una segona
+  // checkout session. Canvis de pla o d'interval: via Customer Portal.
+  const blockingSubscriptionSnap = await db
+    .collection('customers')
+    .doc(uid)
+    .collection('subscriptions')
+    .where('status', 'in', BLOCKING_SUBSCRIPTION_STATUSES)
+    .limit(1)
+    .get();
+
+  if (!blockingSubscriptionSnap.empty) {
+    throw new HttpsError('failed-precondition', 'SUBSCRIPTION_ALREADY_ACTIVE');
   }
 
   const billingStateRef = getBillingStateRef(uid);
