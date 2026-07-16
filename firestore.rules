@@ -195,6 +195,16 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ── CONSENT HISTORY (Art. 7 RGPD) ──────────────────────
+    // Log immutable de consentiments, escrit NOMÉS per la CF recordConsent
+    // (Admin SDK). El propietari i l'admin poden consultar-lo; ningú no pot
+    // escriure-hi ni esborrar-lo des del client.
+    match /consent_history/{uid}/entries/{entryId} {
+      allow read: if hasValidSingleSession()
+                  && (request.auth.uid == uid || isAdmin());
+      allow write: if false;
+    }
+
     match /billing_state/{uid} {
       allow read: if hasValidSingleSession() && request.auth.uid == uid;
       allow write: if false;

@@ -334,7 +334,14 @@
       "passwordMismatch": "Les contrasenyes no coincideixen.",
       "weakPassword": "Sisplau, indica una contrasenya segura (mín. 8 caràcters, majúscules i símbols).",
       "registerError": "Hi ha hagut un error en crear el compte. Torna-ho a provar més tard.",
-      "googleError": "Error en registrar-se amb Google."
+      "googleError": "Error en registrar-se amb Google.",
+      "consentRequired": "Has d'acceptar els Termes i condicions i la Política de privacitat per crear el compte."
+    },
+    "consent": {
+      "pre": "He llegit i accepto els",
+      "terms": "Termes i condicions",
+      "and": "i la",
+      "privacy": "Política de privacitat"
     },
     "passwordStrength": {
       "veryWeak": "Molt feble",

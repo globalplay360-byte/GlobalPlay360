@@ -334,7 +334,14 @@
       "passwordMismatch": "Las contraseñas no coinciden.",
       "weakPassword": "Por favor, indica una contraseña segura (mín. 8 caracteres, mayúsculas y símbolos).",
       "registerError": "Ocurrió un error al crear la cuenta. Inténtalo más tarde.",
-      "googleError": "Error al registrarse con Google."
+      "googleError": "Error al registrarse con Google.",
+      "consentRequired": "Debes aceptar los Términos y condiciones y la Política de privacidad para crear la cuenta."
+    },
+    "consent": {
+      "pre": "He leído y acepto los",
+      "terms": "Términos y condiciones",
+      "and": "y la",
+      "privacy": "Política de privacidad"
     },
     "passwordStrength": {
       "veryWeak": "Muy débil",

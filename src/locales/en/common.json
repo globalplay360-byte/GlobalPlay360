@@ -334,7 +334,14 @@
       "passwordMismatch": "Passwords do not match.",
       "weakPassword": "Please enter a secure password (min. 8 characters, uppercase, and symbols).",
       "registerError": "An error occurred while creating your account. Please try again later.",
-      "googleError": "Error registering with Google."
+      "googleError": "Error registering with Google.",
+      "consentRequired": "You must accept the Terms & Conditions and the Privacy Policy to create your account."
+    },
+    "consent": {
+      "pre": "I have read and accept the",
+      "terms": "Terms & Conditions",
+      "and": "and the",
+      "privacy": "Privacy Policy"
     },
     "passwordStrength": {
       "veryWeak": "Very weak",

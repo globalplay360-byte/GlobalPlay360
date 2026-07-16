@@ -27,6 +27,25 @@ const db = getFirestore();
 const CLEANUP_BATCH_LIMIT = 25;
 const FOUNDING_MEMBERS_ACCESS_END_DATE = getFoundingMembersAccessEndDate();
 
+// Versió dels textos legals vigents (data de l'última revisió de
+// privacy/terms/cookies a src/content/legal). Actualitzar quan canviïn.
+const LEGAL_TEXTS_VERSION = '2026-07-16';
+
+const CONSENT_TYPES = ['registration'];
+
+function getRequestIp(rawRequest) {
+  const forwarded = rawRequest?.headers?.['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.trim() !== '') {
+    return forwarded.split(',')[0].trim().slice(0, 64);
+  }
+  return typeof rawRequest?.ip === 'string' ? rawRequest.ip.slice(0, 64) : '';
+}
+
+function getRequestHeader(rawRequest, name, maxLength) {
+  const value = rawRequest?.headers?.[name];
+  return typeof value === 'string' ? value.slice(0, maxLength) : '';
+}
+
 function getBillingStateRef(uid) {
   return db.doc(`billing_state/${uid}`);
 }
@@ -126,6 +145,38 @@ export const activateSingleSession = onCall({
   );
 
   return { validAfterSeconds: authTime };
+});
+
+/**
+ * Registre de consentiment (Art. 7 RGPD): log immutable server-side amb
+ * timestamp, versió dels textos legals, IP i user agent. El client només
+ * declara el tipus de consentiment; la resta s'extreu de la petició al
+ * servidor. Les rules de `consent_history` són write-only-Admin.
+ */
+export const recordConsent = onCall({
+  cors: true,
+}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const uid = request.auth.uid;
+  const consentType = CONSENT_TYPES.includes(request.data?.consentType)
+    ? request.data.consentType
+    : 'registration';
+
+  await db.collection('consent_history').doc(uid).collection('entries').add({
+    consentType,
+    legalTextsVersion: LEGAL_TEXTS_VERSION,
+    acceptedTerms: true,
+    acceptedPrivacy: true,
+    ip: getRequestIp(request.rawRequest),
+    userAgent: getRequestHeader(request.rawRequest, 'user-agent', 256),
+    locale: getRequestHeader(request.rawRequest, 'accept-language', 32),
+    acceptedAt: FieldValue.serverTimestamp(),
+  });
+
+  return { recorded: true, legalTextsVersion: LEGAL_TEXTS_VERSION };
 });
 
 export const createBillingCheckoutSession = onCall({

@@ -13,13 +13,30 @@ import {
   type UserCredential,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { httpsCallable } from 'firebase/functions';
+import { auth, db, functions } from './firebase';
 import type { User, UserRole, PlanType } from '@/types';
 import { getUserPrivateProfile, migrateLegacyPrivateFields } from './profile.service';
 import { activateSingleSession } from './session.service';
 import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 const googleProvider = new GoogleAuthProvider();
+
+/**
+ * Registra el consentiment (Art. 7 RGPD) via CF: el servidor hi afegeix
+ * timestamp, versió dels textos legals, IP i user agent, i escriu al log
+ * immutable `consent_history`. El checkbox del formulari és el consentiment;
+ * això n'és l'evidència. Si la crida falla no bloquegem el registre (l'usuari
+ * ja existeix a Auth), però en deixem constància a la consola.
+ */
+async function recordRegistrationConsent(): Promise<void> {
+  try {
+    const fn = httpsCallable<{ consentType: string }, { recorded: boolean }>(functions, 'recordConsent');
+    await fn({ consentType: 'registration' });
+  } catch (err) {
+    console.error('No s\'ha pogut registrar el consentiment:', err);
+  }
+}
 
 // ── Helpers ──────────────────────────────────────────────
 
@@ -138,6 +155,7 @@ export async function registerWithEmail(
   // Create Firestore user document. Premium/trial access only comes from Stripe.
   const user = await createUserDoc(cred.user.uid, email, displayName, role, 'free', cred.user.photoURL);
   await activateSingleSession();
+  await recordRegistrationConsent();
   return user;
 }
 
@@ -164,6 +182,10 @@ export async function loginWithGoogle(
   }
 
   await activateSingleSession();
+
+  if (isNewUser) {
+    await recordRegistrationConsent();
+  }
   const userDoc = await getUserDoc(uid);
   if (!userDoc) throw new Error('User document not found in Firestore');
   return userDoc;
