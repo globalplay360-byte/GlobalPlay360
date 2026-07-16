@@ -199,13 +199,13 @@ Polish:
 - [ ] Case study escrit al portfoli: problema, decisions, stack, reptes (Stripe trial, multi-rol, i18n), abans/després.
 - [ ] GIF o Loom curt (60-90 s) del flux complet per LinkedIn.
 - [ ] Captures abans/després + scores Lighthouse.
-- [ ] Document d'entrega per Aina: credencials admin, manual bàsic d'ús, com gestionar subscripcions Stripe.
+- [ ] Document d'entrega per l'Aleix (Aleix Pérez Jané, client/titular): credencials admin, manual bàsic d'ús, com gestionar subscripcions Stripe.
 
 ---
 
 #### 🎬 Bloc 8 — Entrega oficial (Dia 9 · Dm 5 mai)
 
-- [ ] Reunió final amb Aina: demo guiada + entrega de credencials i documentació.
+- [ ] Reunió final amb l'Aleix: demo guiada + entrega de credencials i documentació.
 - [ ] Publicar case study al portfoli d'Anna.
 - [ ] Post LinkedIn amb el llançament (enllaç viu + Loom).
 
