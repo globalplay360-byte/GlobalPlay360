@@ -1,7 +1,50 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **16 juliol 2026**.
+> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (tarda — BLOC 1)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
+> **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
+
+---
+
+## 16 jul 2026 (tarda) — BLOC 1: fixos crítics + textos legals
+
+Branca: `fix/bloc1-pre-cobros` (7 commits, no fusionada a `main` ni pushejada). **Stripe segueix en TEST. Cap deploy.**
+
+### Fet en aquesta sessió
+
+| P0 | Acció | Commit |
+|---|---|---|
+| #1 (parcial) | Retirat el **claim fals d'Art. 17** a `AboutPage` + locales CA/ES/EN («dret a l'oblit implementat» → «regles de seguretat restrictives»). La CF d'esborrat real queda per al BLOC 2 | `fix: retira l'afirmació falsa...` |
+| #4 ✅ | **Dades del titular** injectades a `privacy.content.ts`, `terms.content.ts`, `cookies.content.ts` (3 idiomes) + `ContactPage` (constants `LEGAL_EMAIL`/`LEGAL_ADDRESS` a `src/config/site.ts`). Titular: Aleix Pérez Jané · NIF 47939862L · C. Joan Maragall 9 CS, 08754 El Papiol · aleix.perez@hotmail.com · DPO: no designat (no obligatori, art. 37) | `feat: incorpora les dades reals del titular...` |
+| #7 ✅ | **Terms §4** amb el pricing segmentat nou (9,99/99,99 individus · 24,99/249,99 clubs · 1r mes gratuït · IVA inclòs), 3 idiomes | `fix: actualitza els termes...` |
+| #8 ✅ | **Validació rol↔segment server-side** a `createBillingCheckoutSession`: rol llegit de `users/{uid}` (mai del payload), Product ha de portar metadata `segment` (`individual`\|`club`); errors `ROLE_NOT_ELIGIBLE_FOR_CHECKOUT`, `PRODUCT_SEGMENT_MISSING`, `PRODUCT_NOT_ALLOWED_FOR_ROLE`. Products sense `segment` (catàleg antic) queden bloquejats per disseny | `feat: valida rol-segment...` |
+| #9 ✅ | **Guard antidoble subscripció**: si hi ha subscripció `trialing`/`active`/`past_due` → `SUBSCRIPTION_ALREADY_ACTIVE` (no es crea checkout session). `incomplete` no bloqueja (permet reintent de 3DS abandonat) | `feat: impedeix una segona checkout session...` |
+| #11 ✅ | **Format de preu** amb `Intl.NumberFormat` segons idioma actiu (9,99 € — mai `toFixed(0)`), als 3 punts de `PricingPage` | `fix: mostra els preus amb dos decimals...` |
+| #6 ✅ | **Enllaços a `/terms` i `/privacy` abans del CTA** a PricingPage i BillingPage (claus i18n `pricingPage.legal.*` en 3 idiomes). Fix col·lateral: lint `set-state-in-effect` a BillingPage | `feat: enllaços legals visibles abans del CTA...` |
+
+**Tests**: functions 23/23 PASS (8 tests nous de `billingPolicy`: segments, metadata aplanada de l'extensió, estats bloquejants) · `tsc --noEmit` ✅ · `npm run build` ✅ · lint net a tots els fitxers tocats.
+
+### Decisió de negoci: canvi de rol amb subscripció activa → BLOQUEJAT
+
+Amb pricing per segments, el rol determina el preu. S'ha decidit **bloquejar el canvi de rol mentre hi ha subscripció o trial actius** (a `firestore.rules`, la branca admin d'update de `users` ara exigeix `plan == 'free'`). Motius: (1) els usuaris no poden canviar-se el rol ells mateixos (ja era així); (2) permetre que l'admin canviï el rol d'un premium crearia un desajust rol↔preu sense passar per Stripe, violant la política del projecte («els canvis de pla es fan a Stripe»). Operativa correcta: cancel·lar/canviar el pla a Stripe primer, després canviar el rol.
+
+### Verificacions demanades (sense codi)
+
+- **Retract waiver UE**: ✅ ja cobert al `PLA_PRICING_STRIPE.md` (checklist Test→Live, punt 7: l'extensió 0.3.4 no exposa `consent_collection`; mitigació via Terms — que **ja contenen** la renúncia expressa al desistiment (art. 103.m LGDCU) en 3 idiomes (`terms.content.ts:67/166/265`) — i ara també enllaçats abans del CTA pel P0 #6).
+- **Cookies/analytics a l'auditoria**: ✅ cobert a `docs/AUDITORIA_RGPD.md` («Ja OK» punt 7: cap tracking al client, cookies tècniques exemptes, banner no obligatori avui; P1 exigeix CMP abans d'activar cap analytics futur).
+
+### Estat dels 14 P0 després del BLOC 1
+
+**Tancats (6):** #4 dades titular · #6 enllaços legals · #7 terms pricing · #8 rol↔segment · #9 antidoble · #11 format preu.
+**Parcials (2):** #1 (claim fals retirat; la CF d'esborrat Art. 17 → BLOC 2) · #14 lint (de 26 a **25 errors**; la resta són fitxers no tocats — `OpportunityForm`, etc.).
+**Oberts — BLOC 2 (codi):** #2 Art. 17/20 (CFs esborrat + exportació) · #3 storage.rules + bloc a firebase.json · #5 consentiment Art. 7 al registre.
+**Oberts — consola (Anna):** #10 crear els 8 Prices en TEST amb lookup_keys exactes **+ metadata `segment` a cada Product (ara obligatòria pel #8!)** · #12 secrets extensió pin-ats a `versions/1` · #13 URLs legals al Customer Portal.
+
+### Pròxima acció
+
+1. **BLOC 2**: Art. 17 (CF `deleteUserAccount`, patró El Visionat) + Art. 20 (export) + `storage.rules` + consentiment al registre.
+2. **Anna a Stripe TEST**: crear els 2 Products (amb `firebaseRole: premium` **i** `segment: individual`/`club` a la metadata) + 8 Prices segons el mapping. Sense el `segment`, el checkout ara falla amb `PRODUCT_SEGMENT_MISSING` — és intencionat.
+3. Re-executar la porta release-gate quan BLOC 2 estigui tancat.
 
 ---
 
