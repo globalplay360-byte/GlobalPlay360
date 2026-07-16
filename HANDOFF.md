@@ -1,8 +1,35 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (tarda — BLOC 2)**.
+> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (vespre — trial refactor + config Stripe)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
+
+---
+
+## 16 jul 2026 (vespre) — Refactor del trial + decisions Stripe
+
+Mateixa branca `fix/bloc1-pre-cobros`. **Stripe segueix en TEST. Cap deploy.**
+
+### Descobriment durant la config de Stripe
+
+En crear els Products a la consola es va confirmar que **Stripe ja no permet posar el trial a nivell de preu** (ni al dashboard ni a l'API moderna): els trials són cosa de la subscripció/checkout. El codi anterior depenia de Prices `_trial` amb `trial_period_days` incrustat (`selectCheckoutPrice` + trial siblings), un patró **no fabricable** des del dashboard i que Stripe considera legacy. Era la fragilitat R6 de l'auditoria.
+
+### Canvi aplicat (codi)
+
+- **`functions/billingPolicy.js`**: eliminada tota la maquinària de trial-siblings (`selectCheckoutPrice`, `isTrialPrice`, `getPriceTrialDays`, matching per `lookup_key`/`recurring shape`). Es manté la política one-trial-only via `getCheckoutSessionTrialDays(billingState)` (30 dies si `trialConsumedAt` no existeix).
+- **`functions/index.js`** (`createBillingCheckoutSession`): ara valida que el `priceId` demanat sigui un preu ACTIU del product, i afegeix `trial_period_days: 30` al doc de `checkout_sessions` **només** si l'usuari no ha consumit el trial. El trial s'aplica a nivell de checkout — via oficial de Stripe.
+- **Tests**: `functions/billingPolicy.test.js` actualitzat (fora els 5 tests de `selectCheckoutPrice`/preus trial; afegit test de `shouldGrantTrial`). **18/18 PASS.**
+- **Docs actualitzats**: `PLA_PRICING_STRIPE.md` (mapping ara **4 Prices, cap `_trial`**; R6 marcat resolt), `RELEASE_GATE_COBROS.md` (test M4).
+- Frontend intacte: `PricingPage` ja filtrava preus `_trial` (ara no-op) i el text del trial ve d'i18n, no del preu.
+
+### Decisions preses amb l'Aleix/Anna
+
+1. **Trial a nivell de checkout** (no preus `_trial`). → només 4 Prices a Stripe.
+2. **Migrar l'extensió** `stripe/firestore-stripe-payments@0.3.4` → `invertase/firestore-stripe-payments` última: a la 0.3.4 el `trial_period_days` al doc de checkout és inestable (informes públics); la versió `invertase/` el suporta netament (PR #605) i també desbloqueja `automatic_tax`/`consent_collection`. **Ho fa Anna a la consola de Firebase** abans del QA.
+
+### Pendent immediat (detectat, encara NO fet)
+
+- ⚠️ **`PricingPage` selecció per segment**: amb 2 Products premium, `products.find(p => p.role === 'premium')` (`PricingPage.tsx:39`) és ambigu (agafa el primer). Cal seleccionar el Product pel `segment` creuat amb `user.role` (i decidir UX per a visitants anònims). Ja documentat a `PLA_PRICING_STRIPE.md §1`. **És bloquejant per al QA de checkout** — següent tasca de codi.
 
 ---
 

@@ -50,92 +50,18 @@ export function getFoundingMembersAccessEndDate() {
   return new Date(FOUNDING_MEMBERS_ACCESS_END_ISO);
 }
 
+// Política 1-trial-per-usuari: el trial es concedeix un sol cop. El consum
+// es marca a `billing_state.trialConsumedAt` quan la subscripció entra en
+// finestra de trial (syncBillingStateFromSubscription).
 export function shouldGrantTrial(billingState) {
   return !billingState?.trialConsumedAt;
 }
 
+// Dies de trial a passar a la checkout session (via l'extensió,
+// `trial_period_days`). null = sense trial. El trial ja NO viu en preus
+// dedicats: s'aplica a nivell de checkout, que és la via oficial de Stripe.
 export function getCheckoutSessionTrialDays(billingState) {
   return shouldGrantTrial(billingState) ? BILLING_TRIAL_DAYS : null;
-}
-
-export function getPriceTrialDays(price) {
-  if (!price || typeof price !== 'object') {
-    return 0;
-  }
-
-  if (typeof price.trial_period_days === 'number') {
-    return price.trial_period_days;
-  }
-
-  const recurringTrialDays = price.recurring?.trial_period_days;
-  return typeof recurringTrialDays === 'number' ? recurringTrialDays : 0;
-}
-
-export function isTrialPrice(price) {
-  return getPriceTrialDays(price) > 0;
-}
-
-function getRecurringInterval(price) {
-  return price?.interval ?? price?.recurring?.interval ?? null;
-}
-
-function getRecurringIntervalCount(price) {
-  return price?.interval_count ?? price?.recurring?.interval_count ?? null;
-}
-
-function getPriceLookupKey(price) {
-  return typeof price?.lookup_key === 'string' ? price.lookup_key : null;
-}
-
-function sameRecurringShape(left, right) {
-  return getRecurringInterval(left) === getRecurringInterval(right)
-    && getRecurringIntervalCount(left) === getRecurringIntervalCount(right)
-    && left?.currency === right?.currency
-    && left?.unit_amount === right?.unit_amount;
-}
-
-function isTrialSiblingForRequestedPrice(candidate, requestedPrice) {
-  if (!candidate || !requestedPrice || !isTrialPrice(candidate)) {
-    return false;
-  }
-
-  const requestedLookupKey = getPriceLookupKey(requestedPrice);
-  const candidateLookupKey = getPriceLookupKey(candidate);
-
-  if (requestedLookupKey && candidateLookupKey === `${requestedLookupKey}_trial`) {
-    return true;
-  }
-
-  return sameRecurringShape(candidate, requestedPrice);
-}
-
-export function selectCheckoutPrice(prices, billingState, fallbackPriceId = null) {
-  const fallbackPrice = fallbackPriceId
-    ? prices.find((price) => price.id === fallbackPriceId) ?? null
-    : null;
-
-  const siblingTrialPrice = fallbackPrice
-    ? prices.find((price) => price.id !== fallbackPrice.id && isTrialSiblingForRequestedPrice(price, fallbackPrice)) ?? null
-    : null;
-
-  const siblingStandardPrice = fallbackPrice
-    ? prices.find((price) => price.id !== fallbackPrice.id && !isTrialPrice(price) && sameRecurringShape(price, fallbackPrice)) ?? null
-    : null;
-
-  const trialPrice = siblingTrialPrice ?? prices.find((price) => isTrialPrice(price)) ?? null;
-  const standardPrice = fallbackPrice && !isTrialPrice(fallbackPrice)
-    ? fallbackPrice
-    : siblingStandardPrice ?? prices.find((price) => !isTrialPrice(price)) ?? null;
-
-  if (shouldGrantTrial(billingState) && trialPrice) {
-    return trialPrice;
-  }
-
-  if (fallbackPrice) {
-    return fallbackPrice;
-  }
-
-  return standardPrice ?? trialPrice ?? null;
 }
 
 export function canClaimFounderAccess({

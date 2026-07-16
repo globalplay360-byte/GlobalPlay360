@@ -17,14 +17,14 @@ Preus B2C amb IVA inclòs → `tax_behavior: inclusive`. Els Prices nous **encar
 
 - El gating és **binari**: la claim `stripeRole` del JWT val `'premium'` o `'pro'` (`firestore.rules:21-27`, `src/context/AuthContext.tsx:72-74`). L'extensió l'assigna copiant `metadata.firebaseRole` del Product de Stripe quan la subscripció és `active`/`trialing`.
 - El frontend **no usa cap `VITE_STRIPE_*` ni priceId hardcoded** (no existeix `.env.example`; verificat amb cerca global). La `PricingPage` llegeix els Products/Prices sincronitzats a Firestore (`src/services/stripe.service.ts:87-125`) i tria el producte amb `products.find((p) => p.role === 'premium')` (`src/pages/public/PricingPage.tsx:39`).
-- El checkout passa per la callable pròpia `createBillingCheckoutSession` (`functions/index.js:128-199`), que aplica la política **one-trial-only**: si `billing_state/{uid}.trialConsumedAt` no existeix, substitueix el price demanat pel seu **"trial sibling"** — un Price paral·lel amb `trial_period_days=30` i lookup_key `<base>_trial` (`functions/billingPolicy.js:54-96`, tests a `functions/billingPolicy.test.js:58-98`). **El trial NO es passa com a paràmetre del checkout: viu incrustat en Prices dedicats.** Això condiciona la taula de mapping (cal crear els prices trial).
+- El checkout passa per la callable pròpia `createBillingCheckoutSession` (`functions/index.js`), que aplica la política **one-trial-only**: si `billing_state/{uid}.trialConsumedAt` no existeix, afegeix `trial_period_days: 30` al doc de `checkout_sessions` i l'extensió el passa a Stripe (`functions/billingPolicy.js` → `getCheckoutSessionTrialDays`, tests a `functions/billingPolicy.test.js`). **El trial s'aplica a nivell de checkout — la via oficial de Stripe.** ⚠️ **ACTUALITZAT 16/07** — abans el trial vivia en Prices `_trial` dedicats; s'ha refactoritzat perquè Stripe **ja no permet posar trials a nivell de preu** (ni dashboard ni API moderna). Conseqüència directa a la taula de mapping: **NO cal crear cap Price `_trial`.**
 - La diferenciació per rol d'usuari (`player`/`coach`/`club`) viu a `users/{uid}.role`, mai al pla. Cap regla de Firestore distingeix un premium-club d'un premium-jugador: `hasPremium()` s'usa igual per a tots (`firestore.rules:59, 89, 160, 164, 174`).
 
 ---
 
 ## 1. Taula de mapping — Products/Prices a crear a Stripe (live)
 
-> Tots els Prices: `currency=eur`, `tax_behavior=inclusive`, recurring. El patró de lookup_keys `<base>` / `<base>_trial` és **obligatori** perquè `selectCheckoutPrice()` trobi el sibling (`functions/billingPolicy.js:62`).
+> Tots els Prices: `currency=eur`, `tax_behavior=inclusive`, recurring. **Cap Price `_trial`** — el trial de 30 dies l'aplica la Cloud Function al checkout (`trial_period_days`), no el preu.
 
 ### Product 1 — Jugadors i entrenadors
 
@@ -35,12 +35,10 @@ Preus B2C amb IVA inclòs → `tax_behavior: inclusive`. Els Prices nous **encar
 | Metadata | `firebaseRole: premium` · `segment: individual` (nova, per a la selecció al frontend) |
 | Statement descriptor | `GLOBALPLAY360` |
 
-| Price (lookup_key) | Import (cèntims) | Interval | trial_period_days | tax_behavior |
-|---|---|---|---|---|
-| `individual_monthly` | **999** | month | — | inclusive |
-| `individual_monthly_trial` | 999 | month | **30** | inclusive |
-| `individual_yearly` | **9999** | year | — | inclusive |
-| `individual_yearly_trial` | 9999 | year | **30** | inclusive |
+| Price (lookup_key) | Import (cèntims) | Interval | tax_behavior |
+|---|---|---|---|
+| `individual_monthly` | **999** | month | inclusive |
+| `individual_yearly` | **9999** | year | inclusive |
 
 ### Product 2 — Clubs
 
@@ -51,14 +49,12 @@ Preus B2C amb IVA inclòs → `tax_behavior: inclusive`. Els Prices nous **encar
 | Metadata | `firebaseRole: premium` · `segment: club` |
 | Statement descriptor | `GLOBALPLAY360` |
 
-| Price (lookup_key) | Import (cèntims) | Interval | trial_period_days | tax_behavior |
-|---|---|---|---|---|
-| `club_monthly` | **2499** | month | — | inclusive |
-| `club_monthly_trial` | 2499 | month | **30** | inclusive |
-| `club_yearly` | **24999** | year | — | inclusive |
-| `club_yearly_trial` | 24999 | year | **30** | inclusive |
+| Price (lookup_key) | Import (cèntims) | Interval | tax_behavior |
+|---|---|---|---|
+| `club_monthly` | **2499** | month | inclusive |
+| `club_yearly` | **24999** | year | inclusive |
 
-**Total: 2 Products × 4 Prices = 8 Prices.** El Product antic (25 €/250 €) s'ha d'**arxivar** (`active=false`): la PricingPage llegeix `where('active','==',true)` (`src/services/stripe.service.ts:88`) i l'extensió sincronitza l'estat — si queda actiu, sortirà com a candidat al `find()` de `PricingPage.tsx:39`.
+**Total: 2 Products × 2 Prices = 4 Prices.** El Product antic (25 €/250 €) s'ha d'**arxivar** (`active=false`): la PricingPage llegeix `where('active','==',true)` (`src/services/stripe.service.ts:88`) i l'extensió sincronitza l'estat — si queda actiu, sortirà com a candidat al `find()` de `PricingPage.tsx:39`.
 
 ### Com selecciona el price el frontend avui i què cal canviar
 
@@ -107,7 +103,7 @@ Cap canvi necessari a `firestore.rules`, `AuthContext` ni tests de rules amb aqu
 
 ## 3. Checklist Test→Live (extensió `firestore-stripe-payments@0.3.4`)
 
-1. **Products + 8 Prices en live mode** segons la taula (Anna, manual o script). No oblidar els 4 prices `_trial` — sense ells, `selectCheckoutPrice()` retorna el price estàndard i **el trial no s'aplica silenciosament** (`functions/billingPolicy.js:87-92`).
+1. **Products + 4 Prices** segons la taula (Anna, manual o script). **Cap Price `_trial`**: el trial l'aplica la CF al checkout via `trial_period_days` (requereix que l'extensió el deixi passar — vegeu punt 0 i la migració a `invertase/firestore-stripe-payments` acordada).
 2. **Restricted API key live** (`rk_live_...`) amb els mateixos permisos que la de test, i **Webhook Endpoints: Ninguno** (tech debt ja documentat a `docs/stripe-setup.md:101`).
 3. **Secrets**: `extensions/firestore-stripe-payments.env:6-8` apunta a `versions/1` dels secrets. Cal afegir una **versió nova** a `ext-firestore-stripe-payments-STRIPE_API_KEY` amb la clau live i **actualitzar la referència de versió** (o reconfigurar l'extensió des de consola) + `firebase deploy --only extensions`. Si només es puja el secret sense tocar la referència pin-ada, l'extensió seguirà amb la clau de test.
 4. **Webhook live**: crear endpoint en live mode apuntant a la mateixa URL (`https://europe-west1-globalplay360-3f9a1.cloudfunctions.net/ext-firestore-stripe-payments-handleWebhookEvents`), amb els mateixos events que en test (sense `invoice.payment_succeeded` — eliminat per duplicats, `docs/stripe-setup.md:137`), i posar el `whsec_...` live com a versió nova del secret `STRIPE_WEBHOOK_SECRET`.
@@ -135,13 +131,13 @@ Cap canvi necessari a `firestore.rules`, `AuthContext` ni tests de rules amb aqu
 
 **R5 — Doble subscripció accidental (BUG 3).** Res no ho impedeix avui: `createBillingCheckoutSession` no comprova subscripcions existents (`functions/index.js:128-199`), i el listener fa `limit(1)` (`src/services/stripe.service.ts:348`) → un usuari amb 2 subscripcions actives (p. ex. mensual + anual, o individual + club) **pagaria dues vegades i la UI només n'ensenyaria una**. L'única protecció actual és que la PricingPage amaga el CTA si `activePlan==='premium'` (`PricingPage.tsx:250`), trivialment esquivable i vulnerable a race conditions post-checkout. **Mitigació**: a la CF, abans de crear la sessió, consultar `customers/{uid}/subscriptions` amb `status in ['trialing','active','past_due']` i rebutjar amb `HttpsError('already-exists')`.
 
-**R6 — Trial sibling absent per interval.** Si a live falta un dels prices `_trial`, `selectCheckoutPrice()` pot fer fallback a *qualsevol* price amb trial del product (`functions/billingPolicy.js:82`), potencialment d'un altre interval (usuari demana mensual, se li activa l'anual amb trial). **Mitigació**: crear sempre els 4 siblings i verificar els 8 lookup_keys abans d'obrir.
+**R6 — RESOLT (16/07).** El risc del "trial sibling" ha desaparegut: el trial ja no viu en Prices dedicats sinó que s'aplica a nivell de checkout (`trial_period_days`) a la CF. Nou punt de verificació que el substitueix: **confirmar en TEST que l'extensió aplica realment el `trial_period_days`** (la 0.3.4 tenia informes d'inconsistència; per això s'ha acordat migrar a `invertase/firestore-stripe-payments` nova). QA: fer un checkout i comprovar que la subscripció neix amb `status='trialing'` i `trial_end` a +30 dies.
 
 ---
 
 ## 5. PENDENT DE VERIFICAR PER ANNA A LA CONSOLA
 
-1. Que el test mode actual **té realment els prices `_trial`** (el codi els exigeix; `docs/stripe-setup.md:53-54` només en documenta 2, però la QA de trial va passar — probablement la doc està desactualitzada).
+1. ~~Prices `_trial` en test mode~~ **JA NO APLICA** (16/07): el codi ja no exigeix prices `_trial`; el trial s'aplica al checkout. Verificar en canvi que l'extensió (nova versió `invertase/`) aplica `trial_period_days` correctament (vegeu R6).
 2. Configuració actual de l'extensió (versió de secrets pin-ada, webhook events actius) abans de replicar-la en live.
 3. Si l'extensió 0.3.4 (o la versió nova d'`invertase/`) suporta `automatic_tax` i `consent_collection` al doc de checkout_session (punts 5 i 7 de la checklist).
 4. Emails natius de Stripe: recordatori de fi de trial i de pagament fallit (punts 8 de la checklist i risc R3).

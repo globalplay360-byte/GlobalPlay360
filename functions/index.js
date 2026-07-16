@@ -13,11 +13,10 @@ import {
   FOUNDING_MEMBERS_CAMPAIGN_ID,
   FOUNDING_MEMBERS_LIMIT,
   canClaimFounderAccess,
+  getCheckoutSessionTrialDays,
   getExpectedSegmentForRole,
   getFoundingMembersAccessEndDate,
   getProductSegment,
-  isTrialPrice,
-  selectCheckoutPrice,
 } from './billingPolicy.js';
 import { MESSAGE_RETENTION_DAYS, getRetentionCutoffDate } from './retention.js';
 
@@ -296,16 +295,22 @@ export const createBillingCheckoutSession = onCall({
   const billingStateRef = getBillingStateRef(uid);
   const billingStateSnap = await billingStateRef.get();
   const billingState = billingStateSnap.exists ? billingStateSnap.data() : null;
+
+  // El priceId demanat ha de ser un preu ACTIU d'aquest producte (evita que el
+  // client demani un price arbitrari o d'un producte que no li correspon).
   const activeProductPrices = await getActiveProductPrices(productId);
-  const selectedPrice = selectCheckoutPrice(activeProductPrices, billingState, priceId);
+  const selectedPrice = activeProductPrices.find((price) => price.id === priceId) ?? null;
 
   if (!selectedPrice) {
     throw new HttpsError('failed-precondition', 'No eligible price is active for this product.');
   }
 
-  const trialGranted = isTrialPrice(selectedPrice);
+  // Trial de 30 dies aplicat a nivell de checkout (l'extensió el passa a Stripe
+  // com a `trial_period_days`). Només si l'usuari no l'ha consumit mai.
+  const trialDays = getCheckoutSessionTrialDays(billingState);
+  const trialGranted = typeof trialDays === 'number' && trialDays > 0;
 
-  const sessionRef = await db.collection('customers').doc(uid).collection('checkout_sessions').add({
+  const checkoutSessionData = {
     client: 'web',
     price: selectedPrice.id,
     mode: 'subscription',
@@ -318,7 +323,13 @@ export const createBillingCheckoutSession = onCall({
       selectedPriceId: selectedPrice.id,
       trialEligible: String(trialGranted),
     },
-  });
+  };
+
+  if (trialGranted) {
+    checkoutSessionData.trial_period_days = trialDays;
+  }
+
+  const sessionRef = await db.collection('customers').doc(uid).collection('checkout_sessions').add(checkoutSessionData);
 
   const billingStateUpdate = {
     updatedAt: FieldValue.serverTimestamp(),
