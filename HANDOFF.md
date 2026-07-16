@@ -1,8 +1,66 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (vespre — trial refactor + config Stripe)**.
+> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (nit — pausa a sync webhook → Firestore)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
+
+---
+
+## ▶️ REPRESA AQUÍ — 16 jul 2026 nit
+
+### Fase del projecte
+
+**Pre-cobros / TEST.** Codi de BLOC 1+2 + trial-at-checkout + PricingPage per segment a la branca `fix/bloc1-pre-cobros` (no fusionada, no pushejada, **cap deploy a prod**, **Stripe LIVE no obert**).
+
+Bloquejant actual: **els 2 Products nous de Stripe encara no apareixen correctament a Firestore** → sense això no hi ha QA de checkout ni PricingPage amb preus reals.
+
+### Fet a la consola (sessió vespre)
+
+| Ítem | Estat |
+|---|---|
+| 2 Products Stripe TEST (Players & Coaches + Clubs) | ✅ metadata `firebaseRole=premium` + `segment=individual\|club` |
+| 4 Prices (sense `_trial`) | ✅ 9,99/99,99 i 24,99/249,99 · lookup_keys correctes |
+| Product antic 25€/250€ | ✅ arxivat a Stripe |
+| Extensió `invertase/firestore-stripe-payments@0.3.12` | ✅ instal·lada (ID instància `firestore-stripe-payments`, regió `europe-west1`) |
+| Clau API extensió | ✅ `sk_test_...` (TEST) |
+| Webhook Stripe TEST `Firebase GP360 TEST` | ✅ URL correcta, 17 events, `whsec` posat a l’extensió i guardat |
+| Sync Products → Firestore | 🔴 **PENDENT / ROMPT** — a Firestore només es veia el producte antic `prod_ULxLPJvpWpH7vc` (25/250, sense `segment`); els nous no confirmats |
+
+### Codi ja fet (no cal refer)
+
+- Trial a nivell de checkout (`trial_period_days` a la CF) — commits `a9f3def`+
+- PricingPage selecció per `segment` + i18n — commits `5f112d2`+
+- BLOC 1+2 RGPD (Art. 7/17/20, storage.rules, texts legals, rol↔segment, antidoble…)
+
+### Primeres accions en reprendre (ordre)
+
+1. **Diagnosi webhook → Firestore**
+   - Stripe Test → Webhooks → `Firebase GP360 TEST` → entregues (`product.updated` = 200 o error?).
+   - Si cal: editar descripció dels 2 Products nous a Stripe per forçar sync.
+   - Firestore → `products`: calen 2 docs amb `segment`/`stripe_metadata_segment` i preus 999/9999 i 2499/24999. L’antic ha de quedar `active: false`.
+   - Si falllen entregues: Functions → logs de `ext-firestore-stripe-payments-handleWebhookEvents` (firma `whsec` / payload Resumen).
+2. **Customer Portal** (TEST): URLs `/terms` + `/privacy`; només canvi mensual↔anual del mateix Product (no Individual↔Clubs).
+3. **Emails Stripe**: recordatori fi de trial + pagament fallit.
+4. Després (quan sync OK): merge branca + `firebase deploy --only firestore:rules,storage,functions` + QA E2E TEST. **Encara no LIVE.**
+
+### Enllaços ràpids (consola)
+
+| Què | URL |
+|---|---|
+| Firebase Extensions | https://console.firebase.google.com/project/globalplay360-3f9a1/extensions |
+| Firestore `products` | https://console.firebase.google.com/project/globalplay360-3f9a1/firestore/databases/-default-/data/~2Fproducts |
+| Cloud Functions (logs webhook) | https://console.firebase.google.com/project/globalplay360-3f9a1/functions |
+| Stripe Products (TEST) | https://dashboard.stripe.com/test/products |
+| Stripe Webhooks (TEST) | https://dashboard.stripe.com/test/webhooks |
+| Stripe API keys (TEST) | https://dashboard.stripe.com/test/apikeys |
+| Stripe Customer Portal | https://dashboard.stripe.com/test/settings/billing/portal |
+| Stripe emails / Billing | https://dashboard.stripe.com/test/settings/billing |
+| Extensió Invertase (docs) | https://extensions.dev/extensions/invertase/firestore-stripe-payments |
+| URL webhook (funció) | `https://europe-west1-globalplay360-3f9a1.cloudfunctions.net/ext-firestore-stripe-payments-handleWebhookEvents` |
+
+### Prompt per al proper xat
+
+> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ**. Projecte GlobalPlay360. Continuem al punt: webhook Stripe TEST creat + extensió invertase 0.3.12 instal·lada, però **Products nous no sincronitzen a Firestore**. Diagnosi entregues webhook + forçar sync + verificar `products` amb `segment`. Després Customer Portal + emails. Stripe TEST only, no Live, no deploy fins sync OK. Català.
 
 ---
 
@@ -25,7 +83,7 @@ En crear els Products a la consola es va confirmar que **Stripe ja no permet pos
 ### Decisions preses amb l'Aleix/Anna
 
 1. **Trial a nivell de checkout** (no preus `_trial`). → només 4 Prices a Stripe.
-2. **Migrar l'extensió** `stripe/firestore-stripe-payments@0.3.4` → `invertase/firestore-stripe-payments` última: a la 0.3.4 el `trial_period_days` al doc de checkout és inestable (informes públics); la versió `invertase/` el suporta netament (PR #605) i també desbloqueja `automatic_tax`/`consent_collection`. **Ho fa Anna a la consola de Firebase** abans del QA.
+2. **Migrar l'extensió** `stripe/…@0.3.4` → `invertase/firestore-stripe-payments@0.3.12` — ✅ **fet** el mateix vespre (desinstal·lada l’antiga, reinstal·lada amb ID `firestore-stripe-payments`, `europe-west1`, clau TEST + webhook). Pendent confirmar que el sync a Firestore funciona (vegeu **REPRESA AQUÍ**).
 
 ### PricingPage selecció per segment ✅ (fet)
 
