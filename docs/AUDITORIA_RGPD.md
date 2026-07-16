@@ -10,13 +10,20 @@
 
 ## 1. Resum executiu — veredicte
 
-# 🔴 NO-GO per a COBROS
+# 🟡 NO-GO condicionat — codi tancat, pendent de deploy + QA
+
+> **Actualització 16/07/2026 (tarda — BLOCS 1 i 2):** els **7 P0 RGPD estan resolts al codi** a la branca `fix/bloc1-pre-cobros` (vegeu `HANDOFF.md`): CF `deleteUserAccount` (Art. 17, amb log `deletion_logs` per hash), CF `exportUserData` (Art. 20, rate limit 24 h), CF `recordConsent` + checkbox al registre (Art. 7, log immutable `consent_history`), `storage.rules` + bloc a `firebase.json`, textos legals amb les dades reals del titular, enllaços legals abans dels CTA i Terms §4 amb el pricing nou. **El veredicte passa a GO quan:** (1) la branca es fusioni i es desplegui (`firestore:rules`, `storage`, `functions`), (2) el QA de la Capa 1/2 (§9) passi en TEST, i (3) es tanquin els punts de consola (§8: Prices amb metadata `segment`, secrets pin-ats, URLs legals al Portal).
+
+<details>
+<summary>Veredicte original del matí (històric)</summary>
 
 Hi ha **7 bloquejants P0 oberts**. Els tres drets fonamentals operatius (esborrat Art. 17, portabilitat Art. 20, consentiment Art. 7) **no existeixen enlloc del codi**, les regles de Storage **no estan versionades ni es despleguen des del repo**, i els textos legals publicats tenen el responsable del tractament literalment com a `[pendiente de configuración]` — no hi ha ni una adreça de correu real per exercir drets.
 
 Agreujant reputacional: la pàgina About **afirma públicament** «Right to erasure implemented via Cloud Functions» quan aquesta Cloud Function **no existeix**. És una declaració de conformitat falsa visible a producció, en 3 idiomes.
 
-El nivell tècnic de seguretat (rules Firestore, split de PII, claims Stripe) és alt — el problema és exclusivament la **capa de compliance**, que no s'ha construït mai.
+</details>
+
+El nivell tècnic de seguretat (rules Firestore, split de PII, claims Stripe) és alt — el problema era exclusivament la **capa de compliance**, que ara ja està construïda al codi.
 
 ---
 
@@ -141,14 +148,15 @@ El nivell tècnic de seguretat (rules Firestore, split de PII, claims Stripe) é
 
 ## 7. Checklist Go/No-Go per hito
 
-### Hito COBROS (Stripe live) — 🔴 NO-GO
-- [ ] P0-1 CF esborrat Art. 17 + retirar/fer certa la claim de l'AboutPage
-- [ ] P0-2 Exportació Art. 20 (CF, o mínim procediment email operatiu amb bústia real)
-- [ ] P0-3 `storage.rules` al repo + bloc `storage` a `firebase.json` + deploy verificat
-- [ ] P0-4 Textos legals complets (dades de l'Aleix) + email RGPD real a ContactPage
-- [ ] P0-5 Checkbox consentiment al registre + `consent_history` immutable
-- [ ] P0-6 Enllaços legals a PricingPage + BillingPage + Customer Portal Stripe
-- [ ] P0-7 Terms §4 amb el pricing nou (9,99/99,99 · 24,99/249,99 · trial 30 dies · IVA inclòs)
+### Hito COBROS (Stripe live) — 🟡 codi tancat (16/07 tarda), pendent deploy + QA + consola
+- [x] P0-1 CF esborrat Art. 17 (`deleteUserAccount`) + claim de l'AboutPage retirada (BLOC 1) i ara certa (BLOC 2)
+- [x] P0-2 Exportació Art. 20 (CF `exportUserData`, JSON descarregable des del perfil, rate limit 24 h)
+- [x] P0-3 `storage.rules` al repo + bloc `storage` a `firebase.json` — **deploy pendent de verificar**
+- [x] P0-4 Textos legals complets (dades de l'Aleix) + email RGPD real a ContactPage
+- [x] P0-5 Checkbox consentiment al registre + `consent_history` immutable (CF `recordConsent`)
+- [x] P0-6 Enllaços legals a PricingPage + BillingPage — **Customer Portal Stripe pendent (consola)**
+- [x] P0-7 Terms §4 amb el pricing nou (9,99/99,99 · 24,99/249,99 · 1r mes gratuït · IVA inclòs)
+- [ ] Deploy de rules + storage + functions i QA Capa 1/2 en TEST (§9)
 - [ ] Verificacions de consola (secció 9) tancades per Anna
 
 ### Hito REOBERTURA REGISTRE PÚBLIC — 🔴 NO-GO addicional

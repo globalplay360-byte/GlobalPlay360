@@ -1,8 +1,44 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (tarda — BLOC 1)**.
+> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (tarda — BLOC 2)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
+
+---
+
+## 16 jul 2026 (tarda) — BLOC 2: drets RGPD (Art. 7, 17, 20) + storage.rules
+
+Mateixa branca `fix/bloc1-pre-cobros` (3 commits nous, 10 en total; no fusionada ni pushejada). **Stripe segueix en TEST. Cap deploy.**
+
+### Fet en aquesta sessió
+
+| P0 | Acció | Commit |
+|---|---|---|
+| #3 ✅ | **`storage.rules`** noves: `users/{uid}/**` escriptura només propietari (imatges reals, <5 MB), lectura només autenticats; tota la resta del bucket denegada per defecte (els assets de màrqueting van amb URL amb token, no passen per rules). Bloc `storage` afegit a `firebase.json` | `feat: storage rules per propietat...` |
+| #5 ✅ | **Consentiment Art. 7**: checkbox obligatori al `RegisterPage` (email i Google) amb enllaços a `/terms` i `/privacy`; CF `recordConsent` escriu log immutable a `consent_history/{uid}/entries` amb timestamp servidor, versió de textos legals (`LEGAL_TEXTS_VERSION = 2026-07-16`), IP i user-agent extrets del request (mai del client). Rules: lectura propietari/admin, escriptura només Admin SDK | `feat: consentiment Art. 7 al registre...` |
+| #2 ✅ | **Art. 17** — CF `deleteUserAccount`: exigeix reauth recent (<5 min) i cap subscripció viva (`SUBSCRIPTION_ACTIVE` → cancel·lar primer al Portal); esborra applications (com a candidat i com a club), opportunities pròpies, conversations+missatges, `customers/*`, `users/*` (amb `private`), `billing_state`, `auth_sessions`, `consent_history`, Storage `users/{uid}/` i el compte d'Auth; deixa log immutable a `deletion_logs` amb **hash SHA-256 del uid** (mai en clar). **Art. 20** — CF `exportUserData`: JSON amb perfil públic+privat, candidatures, oportunitats, converses amb **només els missatges propis** (els dels altres són dades de tercers), resum de subscripcions i historial de consentiments; rate limit 1/24 h via `export_logs/{uid}`. UI: secció «Privacitat i dades» al perfil (`AccountPrivacySection`, lazy) amb descàrrega de JSON i flux d'eliminació amb confirmació explícita, i18n 3 idiomes | `feat: dret a l'oblit (Art. 17) i exportacio...` |
+
+**Tests**: functions 23/23 PASS · `tsc --noEmit` ✅ · `npm run build` ✅ · lint net als fitxers tocats.
+
+### Decisions de disseny (per si algú les qüestiona)
+
+- **Stripe customer NO s'esborra** amb el compte: les factures s'han de conservar 6 anys per obligació fiscal (declarat a privacy §7). El vincle uid→customer desapareix de Firestore; el customer object queda a Stripe. Si l'Aleix vol purgar-lo manualment més endavant, es fa des del Dashboard de Stripe.
+- **Esborrat bloquejat amb subscripció viva**: evita seguir cobrant un compte esborrat. L'usuari cancel·la primer (Customer Portal) i després elimina. La UI ho explica i enllaça a Facturació.
+- **Converses s'esborren senceres** (amb els missatges de l'altre participant): mateix patró que les oportunitats òrfenes; una conversa amb un sol participant no té sentit funcional.
+- **Si `recordConsent` falla** després del registre, no es bloqueja l'usuari (ja existeix a Auth); es deixa constància a la consola del client. Risc residual acceptat i documentat.
+
+### Estat dels 14 P0 després del BLOC 2
+
+**Tancats (10):** #1 (el claim de l'About ja no és fals: ara l'esborrat existeix) · #2 Art. 17/20 · #3 storage.rules · #4 dades titular · #5 consentiment · #6 enllaços legals · #7 terms pricing · #8 rol↔segment · #9 antidoble · #11 format preu.
+**Parcials (1):** #14 lint (25 errors en fitxers no tocats — `OpportunityForm`, etc.).
+**Oberts — consola (Anna):** #10 crear 2 Products (metadata `firebaseRole` + `segment`) + 8 Prices en TEST · #12 secrets extensió pin-ats a `versions/1` · #13 URLs legals al Customer Portal.
+
+### Pròxima acció
+
+1. **Anna a Stripe TEST** (avui tarda-vespre): 2 Products + 8 Prices segons `docs/PLA_PRICING_STRIPE.md`. **Recordatori: TEST, no live** — el pas a live és l'últim, després del QA.
+2. **Deploy a TEST quan es fusioni la branca**: `firebase deploy --only firestore:rules,storage,functions` (les CFs noves `recordConsent`, `deleteUserAccount`, `exportUserData` no existeixen fins que es despleguin).
+3. **QA end-to-end en TEST**: registre amb consentiment → checkout amb targeta test → cancel·lació → export de dades → esborrat de compte.
+4. Escombrada #14 lint + re-executar release-gate → si tot verd, transició Test→Live seguint el checklist del pla.
 
 ---
 
