@@ -1,30 +1,31 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **16 juliol 2026 (nit — pausa a sync webhook → Firestore)**.
+> Document de traspàs entre sessions. Última actualització: **17 juliol 2026 (nit — sync TEST OK)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
 
 ---
 
-## ▶️ REPRESA AQUÍ — 16 jul 2026 nit
+## ▶️ REPRESA AQUÍ — 17 jul 2026 nit
 
 ### Fase del projecte
 
-**Pre-cobros / TEST.** Codi de BLOC 1+2 + trial-at-checkout + PricingPage per segment a la branca `fix/bloc1-pre-cobros` (no fusionada, no pushejada, **cap deploy a prod**, **Stripe LIVE no obert**).
+**Pre-cobros / TEST.** Codi a `fix/bloc1-pre-cobros` (no fusionada, no pushejada). **Stripe LIVE no obert per a cobros** (hi ha catàleg LIVE creat per error; el treball actiu és TEST).
 
-Bloquejant actual: **els 2 Products nous de Stripe encara no apareixen correctament a Firestore** → sense això no hi ha QA de checkout ni PricingPage amb preus reals.
+Bloquejant sync **RESOLT** (17/07 nit). Següent: Customer Portal + emails + prova Pricing/checkout en local/TEST → després deploy rules/functions.
 
-### Fet a la consola (sessió vespre)
+### Fet a la consola (17 jul)
 
 | Ítem | Estat |
 |---|---|
-| 2 Products Stripe TEST (Players & Coaches + Clubs) | ✅ metadata `firebaseRole=premium` + `segment=individual\|club` |
-| 4 Prices (sense `_trial`) | ✅ 9,99/99,99 i 24,99/249,99 · lookup_keys correctes |
-| Product antic 25€/250€ | ✅ arxivat a Stripe |
-| Extensió `invertase/firestore-stripe-payments@0.3.12` | ✅ instal·lada (ID instància `firestore-stripe-payments`, regió `europe-west1`) |
-| Clau API extensió | ✅ `sk_test_...` (TEST) |
-| Webhook Stripe TEST `Firebase GP360 TEST` | ✅ URL correcta, 17 events, `whsec` posat a l’extensió i guardat |
-| Sync Products → Firestore | 🔴 **PENDENT / ROMPT** — a Firestore només es veia el producte antic `prod_ULxLPJvpWpH7vc` (25/250, sense `segment`); els nous no confirmats |
+| Diagnosi sync | ✅ Productes eren a **LIVE** per error; TEST estava buit. Recreats en TEST. |
+| Webhook `401 Invalid Secret` | ✅ Arreglat: `whsec` nou a l’extensió → entregues **200 OK** |
+| 2 Products + 4 Prices TEST a Firestore | ✅ amb `segment` / `stripe_metadata_segment` + `prices` |
+| Extensió `invertase/…@0.3.12` | ✅ `europe-west1`, ID `firestore-stripe-payments` |
+| Catàleg LIVE (Clubs + Players) | ⚠️ Existeix (creat sense voler). **No usar per QA.** Deixar per al go-live. |
+| **IVA / `tax_behavior` / Stripe Tax** | ⏳ **AJORNAT al go-live.** Els Prices TEST tenen `tax_behavior: unspecified`. No s’ha trobat via clara a la UI per gestionar IVA ara; els imports (9,99/99,99/24,99/249,99) ja estan pensats **IVA inclòs**. Abans de LIVE: activar Stripe Tax + dades fiscals Aleix + OSS UE + `tax_behavior: inclusive` (o equivalent). Documentat a consciència 17/07. |
+| Customer Portal + emails trial | ⏳ Pendent |
+| Alert Stripe «2 tareas / transferencias» | ℹ️ Sense impacte en TEST; completar abans de LIVE |
 
 ### Codi ja fet (no cal refer)
 
@@ -34,14 +35,12 @@ Bloquejant actual: **els 2 Products nous de Stripe encara no apareixen correctam
 
 ### Primeres accions en reprendre (ordre)
 
-1. **Diagnosi webhook → Firestore**
-   - Stripe Test → Webhooks → `Firebase GP360 TEST` → entregues (`product.updated` = 200 o error?).
-   - Si cal: editar descripció dels 2 Products nous a Stripe per forçar sync.
-   - Firestore → `products`: calen 2 docs amb `segment`/`stripe_metadata_segment` i preus 999/9999 i 2499/24999. L’antic ha de quedar `active: false`.
-   - Si falllen entregues: Functions → logs de `ext-firestore-stripe-payments-handleWebhookEvents` (firma `whsec` / payload Resumen).
-2. **Customer Portal** (TEST): URLs `/terms` + `/privacy`; només canvi mensual↔anual del mateix Product (no Individual↔Clubs).
+1. Neteja Firestore: eliminar o `active: false` l’antic `prod_ULxLPJvpWpH7vc` si encara hi és.
+2. **Customer Portal** (TEST): https://dashboard.stripe.com/test/settings/billing/portal — URLs `/terms` + `/privacy`; només canvi mensual↔anual del mateix Product (no Individual↔Clubs).
 3. **Emails Stripe**: recordatori fi de trial + pagament fallit.
-4. Després (quan sync OK): merge branca + `firebase deploy --only firestore:rules,storage,functions` + QA E2E TEST. **Encara no LIVE.**
+4. Prova Pricing/checkout en local (targeta test `4242`) amb usuari player i club.
+5. Merge branca + `firebase deploy --only firestore:rules,storage,functions` + QA E2E TEST. **Encara no LIVE.**
+6. Al go-live: Stripe Tax + IVA (`tax_behavior` / inclusive) — vegeu fila IVA amunt.
 
 ### Enllaços ràpids (consola)
 
