@@ -40,10 +40,10 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 | # | Acció | Estat |
 |---|---|---|
 | A | Pricing + sync TEST + QA rols | ✅ |
-| B | Customer Portal TEST | ✅ 18/07 — cancel al final període; canvi de pla OFF; privacy/terms + support (`info@globalplay360.com`) a info pública empresa (nom legal Aleix Pérez Jané). |
-| C | Emails Stripe: fi de trial + pagament fallit | ⏳ confirmar si ja ON |
+| B | Customer Portal TEST | ✅ 18/07 — cancel al final període; canvi de pla OFF; support `info@globalplay360.com` + raó social Aleix Perez Jane. ⚠️ adreça suport a Stripe = Angel Guimera (textos legals app = Joan Maragall 9 CS) — alinear quan es pugui. |
+| C | Emails Stripe: fi de trial + pagament fallit | ⚠️ 18/07 — UI no deixa activar toggles a `/test/settings/billing/subscriptions` (possible bloqueig per compte incomplet «2 tareas»). **No bloqueja checkout TEST.** Reintentar abans de LIVE (o via Empresa → Correos electrónicos de clientes). |
 | D | Deploy branca: `firestore:rules,storage,functions` + hosting | ✅ 18/07 — rules, storage, CFs noves (recordConsent/delete/export + checkout trial) + hosting |
-| E | Checkout E2E TEST `4242` (player + club → trial → Portal cancel) | ⏳ següent després de B/C |
+| E | Checkout E2E TEST `4242` | ✅ 18/07 — player + **club** OK (Clubs mensual, trial fins 17 ago, proper càrrec 24,99 €). Cancel via Portal opcional/QA residual. |
 | F | Merge `fix/bloc1-pre-cobros` → `main` | ⏳ |
 | G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ |
 | H | Document entrega Aleix + demo | ⏳ |
