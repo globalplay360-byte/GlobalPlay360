@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlobalPlay360 · Informe de situació — 18 juliol 2026</title>
+  <style>
+    :root {
+      --bg: #edf2f7;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5d6a7d;
+      --line: #d8e0ea;
+      --navy: #0b1120;
+      --navy-2: #111a2e;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #0f9f6e;
+      --green-soft: #e8f7f1;
+      --gold: #c78a1d;
+      --gold-soft: #fdf6e7;
+      --amber: #b45309;
+      --amber-soft: #fff7ed;
+      --shadow: 0 18px 45px rgba(11, 17, 32, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30%),
+        linear-gradient(180deg, #f5f7fb 0%, #eaf0f7 100%);
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.65;
+      padding: 28px;
+    }
+    .document { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+    .sheet {
+      background: var(--paper);
+      border: 1px solid rgba(23, 32, 51, 0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .sheet-inner { padding: 42px 48px; }
+    .cover {
+      background:
+        radial-gradient(circle at 85% 12%, rgba(37, 99, 235, 0.22), transparent 22%),
+        radial-gradient(circle at 15% 85%, rgba(199, 138, 29, 0.16), transparent 18%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 58%, #1d2a43 100%);
+      color: #f8fbff;
+    }
+    .eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(248, 251, 255, 0.55); margin-bottom: 18px;
+    }
+    .cover h1 {
+      font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15;
+      margin: 0 0 14px; letter-spacing: -0.02em;
+    }
+    .cover .lead {
+      font-size: 1.05rem; color: rgba(248, 251, 255, 0.78);
+      max-width: 660px; margin: 0 0 28px;
+    }
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px; margin-top: 8px;
+    }
+    .meta-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .meta-card span {
+      display: block; font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: rgba(248, 251, 255, 0.5); margin-bottom: 4px;
+    }
+    .meta-card strong { font-size: 0.95rem; font-weight: 600; }
+    h2 { font-size: 1.35rem; margin: 0 0 12px; letter-spacing: -0.02em; }
+    h3 { font-size: 1.05rem; margin: 22px 0 10px; }
+    p { margin: 0 0 12px; color: var(--muted); }
+    .ink { color: var(--ink); }
+    .callout {
+      border-radius: 14px; padding: 16px 18px; margin: 16px 0;
+      border: 1px solid var(--line);
+    }
+    .callout.blue { background: var(--blue-soft); border-color: #bfdbfe; }
+    .callout.green { background: var(--green-soft); border-color: #a7e3cb; }
+    .callout.amber { background: var(--amber-soft); border-color: #fed7aa; }
+    .callout.gold { background: var(--gold-soft); border-color: #f5e0b0; }
+    .callout strong { color: var(--ink); }
+    .callout p:last-child { margin-bottom: 0; }
+    a { color: var(--blue); text-decoration: none; word-break: break-all; }
+    a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-block; margin-top: 8px; padding: 11px 18px;
+      border-radius: 999px; background: var(--blue); color: #fff !important;
+      font-weight: 600; font-size: 0.92rem; text-decoration: none !important;
+    }
+    .status-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 8px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+    }
+    .pill.ok { background: var(--green-soft); color: #0b6b4a; }
+    .pill.wait { background: var(--amber-soft); color: var(--amber); }
+    .pill.info { background: var(--blue-soft); color: #1d4ed8; }
+    ul.check, ul.todo { list-style: none; padding: 0; margin: 12px 0 0; }
+    ul.check li, ul.todo li {
+      position: relative; padding: 10px 12px 10px 36px;
+      border-bottom: 1px solid var(--line); color: var(--ink); font-size: 0.95rem;
+    }
+    ul.check li:last-child, ul.todo li:last-child { border-bottom: none; }
+    ul.check li::before {
+      content: "✓"; position: absolute; left: 8px; top: 10px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--green-soft); color: var(--green);
+      font-size: 0.75rem; font-weight: 700; text-align: center; line-height: 20px;
+    }
+    ul.todo li::before {
+      content: ""; position: absolute; left: 10px; top: 14px;
+      width: 14px; height: 14px; border-radius: 4px;
+      border: 2px solid #f59e0b; background: #fffbeb;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92rem;
+    }
+    th, td {
+      text-align: left; padding: 12px 10px;
+      border-bottom: 1px solid var(--line); vertical-align: top;
+    }
+    th {
+      color: var(--muted); font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .footer-note { font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
+    .toc a {
+      display: block; padding: 8px 0; border-bottom: 1px solid var(--line);
+      color: var(--ink); font-weight: 500;
+    }
+    .toc a:last-child { border-bottom: none; }
+    @media (max-width: 720px) {
+      body { padding: 14px; }
+      .sheet-inner { padding: 28px 22px; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet { box-shadow: none; break-inside: avoid; }
+      .btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="document">
+
+    <section class="sheet cover">
+      <div class="sheet-inner">
+        <div class="eyebrow">GlobalPlay360 · Informe de situació · Versió client</div>
+        <h1>Plataforma a punt per activar cobros: estat actual i què falta de la teva part</h1>
+        <p class="lead">
+          Document per a <strong style="color:#fff">Aleix Pérez Jané</strong>, titular del servei.
+          Resum honest i actualitzat: què està operatiu, què s’ha validat en proves Stripe (TEST)
+          —incloent errors de targeta i impagaments— i què cal de la teva part abans de cobrar
+          amb diners reals (Live).
+        </p>
+        <div class="meta-grid">
+          <div class="meta-card">
+            <span>Data</span>
+            <strong>18 de juliol de 2026 (tarda)</strong>
+          </div>
+          <div class="meta-card">
+            <span>Preparat per</span>
+            <strong>Anna Borràs · desenvolupament</strong>
+          </div>
+          <div class="meta-card">
+            <span>Veredicte tècnic</span>
+            <strong>QA billing TEST complet (N3)</strong>
+          </div>
+          <div class="meta-card">
+            <span>URL plataforma</span>
+            <strong>globalplay360-3f9a1.web.app</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet">
+      <div class="sheet-inner">
+        <h2>Contingut</h2>
+        <nav class="toc">
+          <a href="#resum">1. Resum executiu (1 minut)</a>
+          <a href="#situacio">2. Situació actual de la plataforma</a>
+          <a href="#qa">3. Què s’ha validat a Stripe TEST</a>
+          <a href="#pressupost">4. Pressupost de dos dies</a>
+          <a href="#stripe">5. Acció teva: compte Stripe</a>
+          <a href="#pendent-tu">6. Pendent legal / fiscal (titular)</a>
+          <a href="#checklist">7. Checklist tècnic (RGPD, drets, seguretat, QA)</a>
+          <a href="#proper">8. Properes passes</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="sheet" id="resum">
+      <div class="sheet-inner">
+        <h2>1. Resum executiu</h2>
+        <div class="callout green">
+          <p>
+            <strong>La plataforma està preparada tècnicament per a cobros en mode de proves.</strong>
+            Producte, seguretat, drets RGPD operatius i billing TEST (incloent fallades de targeta
+            i impagament) han estat validats. El pas a <strong>diners reals (Stripe Live)</strong>
+            depèn ara sobretot de <strong>completar el teu compte Stripe</strong> i la
+            <strong>part fiscal</strong> (Tax / IVA), dins l’abast del pressupost de dos dies.
+          </p>
+        </div>
+        <div class="status-row">
+          <span class="pill ok">Producte operatiu</span>
+          <span class="pill ok">RGPD tècnic fet</span>
+          <span class="pill ok">Stripe TEST N3</span>
+          <span class="pill wait">Stripe LIVE pendent</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" id="situacio">
+      <div class="sheet-inner">
+        <h2>2. Situació actual de la plataforma</h2>
+        <p class="ink">
+          GlobalPlay360 està <strong>operativa</strong>: autenticació, perfils multi-rol
+          (jugador / entrenador / club), marketplace d’oportunitats, candidatures, missatgeria
+          amb paywall, facturació i pàgines públiques (home, about, pricing, legals) en
+          <strong>català, castellà i anglès</strong>.
+        </p>
+        <ul class="check">
+          <li>Plans: Individuals <strong>9,99 €/mes · 99,99 €/any</strong> · Clubs <strong>24,99 €/mes · 249,99 €/any</strong> (preus pensats amb IVA inclòs).</li>
+          <li>Prova gratuïta de <strong>30 dies</strong> al checkout.</li>
+          <li>Customer Portal: cancel·lació al final del període; canvi de pla entre Individuals↔Clubs desactivat (evita errors de preu/rol).</li>
+          <li>Registre públic <strong>tancat</strong> de moment (accés controlat) fins a l’obertura comercial acordada.</li>
+          <li>Codi a <code>main</code> i desplegat a Firebase (rules, storage, functions, hosting).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sheet" id="qa">
+      <div class="sheet-inner">
+        <h2>3. Què s’ha validat a Stripe TEST (18/07)</h2>
+        <p>
+          No només s’ha provat el pagament “feliç”. S’ha completat una matriu de QA de billing
+          en mode prova:
+        </p>
+        <table>
+          <thead>
+            <tr><th>Prova</th><th>Resultat</th><th>Nota</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Checkout OK (jugador i club) + trial 30 dies</td>
+              <td><span class="pill ok">PASS</span></td>
+              <td>Targeta de prova 4242</td>
+            </tr>
+            <tr>
+              <td>Pla anual Individual (99,99 €)</td>
+              <td><span class="pill ok">PASS</span></td>
+              <td>Interval year + trial</td>
+            </tr>
+            <tr>
+              <td>Targeta rebutjada / sense fons / caducada</td>
+              <td><span class="pill ok">PASS</span></td>
+              <td>Sense Premium fantasma ni subscripció viva</td>
+            </tr>
+            <tr>
+              <td>Cancel·lació via Customer Portal</td>
+              <td><span class="pill ok">PASS</span></td>
+              <td>Al final del període, sense cobrament al trial</td>
+            </tr>
+            <tr>
+              <td>Impagament (<code>past_due</code>)</td>
+              <td><span class="pill ok">PASS</span></td>
+              <td>L’usuari veu l’avís i pot obrir Facturació / Portal per actualitzar la targeta</td>
+            </tr>
+            <tr>
+              <td>Correus automàtics Stripe (fi de trial / pagament fallit)</td>
+              <td><span class="pill wait">Pendent</span></td>
+              <td>Bloquejats mentre el compte tingui les «2 tareas» incompletes</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout blue">
+          <p>
+            <strong>En termes clars:</strong> el circuit de venda i de recuperació d’impagament
+            en TEST està validat. El que falta per cobrar de veritat és la configuració
+            <strong>Live + fiscal</strong> del compte titular.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" id="pressupost">
+      <div class="sheet-inner">
+        <h2>4. Pressupost de dos dies</h2>
+        <div class="callout gold">
+          <p>
+            S’ha elaborat un <strong>pressupost de dos dies de feina</strong> per tancar el tram
+            final: activació Stripe Live, Tax/IVA, webhooks i secrets, verificacions de consola,
+            documentació d’entrega i acompanyament a l’activació comercial.
+          </p>
+          <p>
+            Aquest pressupost cobreix el treball tècnic necessari per passar de l’estat actual
+            (TEST validat) a cobros reals, sempre que les dades fiscals i les tasques del compte
+            Stripe estiguin disponibles per part teva.
+          </p>
+        </div>
+        <p>Si vols el desglossament en PDF o correu formal, es pot enviar a part.</p>
+      </div>
+    </section>
+
+    <section class="sheet" id="stripe">
+      <div class="sheet-inner">
+        <h2>5. Acció teva: completar el compte Stripe</h2>
+        <p class="ink">
+          Stripe mostra <strong>«2 tareas necesitan atención»</strong> (dades de compte / transferències).
+          Això <strong>no bloqueja les proves TEST</strong>, però <strong>sí cal completar-ho abans de Live</strong>
+          i desbloqueja correus automàtics de subscripció.
+        </p>
+        <div class="callout amber">
+          <p><strong>Enllaç directe (estat del compte):</strong></p>
+          <p>
+            <a href="https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status" target="_blank" rel="noopener noreferrer">
+              https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status
+            </a>
+          </p>
+          <a class="btn" href="https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status" target="_blank" rel="noopener noreferrer">
+            Obrir estat del compte Stripe
+          </a>
+        </div>
+        <p>
+          Completa el que demani Stripe (negoci, compte bancari, verificació d’identitat, etc.).
+          Quan estigui en verd, es pot avançar a Live + Stripe Tax amb tranquil·litat.
+        </p>
+        <h3>Nota d’adreces</h3>
+        <p>
+          Als textos legals de la web: <strong class="ink">Carrer Joan Maragall, 9 CS, 08754 El Papiol</strong>.
+          Si a Stripe n’hi ha una altra, convé <strong>alinear-les</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="sheet" id="pendent-tu">
+      <div class="sheet-inner">
+        <h2>6. Què queda pendent per part teva (legal / fiscal)</h2>
+        <p>
+          La programació i el compliance tècnic pre-cobros estan fets. El que segueix és del
+          <strong class="ink">responsable del tractament</strong> (tu) i de l’activació comercial:
+        </p>
+        <ul class="todo">
+          <li><strong>Completar el compte Stripe</strong> (apartat 5).</li>
+          <li><strong>Stripe Tax + IVA</strong> (i OSS UE si escau) amb les teves dades fiscals. Els preus web ja estan pensats amb IVA inclòs.</li>
+          <li><strong>Confirmar els DPA</strong> de Stripe i Google Cloud / Firebase al teu compte.</li>
+          <li><strong>Registre d’activitats de tractament (Art. 30 RGPD)</strong> — document intern del titular (es pot ajudar amb plantilla tècnica).</li>
+          <li><strong>Abans de reobrir el registre públic massiu:</strong> política de menors (edat mínima i validació). Mentrestant el registre tancat redueix el risc.</li>
+          <li><strong>Revisió legal / fiscal externa (recomanat)</strong> — aquest informe no substitueix un advocat o assessor.</li>
+        </ul>
+        <div class="callout blue">
+          <p>
+            <strong>Ja incorporat a la web:</strong> titular Aleix Pérez Jané, NIF, domicili,
+            <code>info@globalplay360.com</code>, correu per a drets RGPD, condicions i privacitat
+            amb el pricing real.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" id="checklist">
+      <div class="sheet-inner">
+        <h2>7. Checklist de compliment tècnic (desenvolupament)</h2>
+        <p>
+          El que la plataforma <strong class="ink">ja cobreix per implementació</strong>
+          (RGPD / LOPDGDD, drets, seguretat i QA). No és un dictamen jurídic oficial.
+        </p>
+
+        <h3>A. Transparència (Art. 13–14)</h3>
+        <ul class="check">
+          <li>Privacitat, termes i cookies publicats (CA / ES / EN) amb titular real.</li>
+          <li>Contacte i via per exercir drets.</li>
+          <li>Enllaços legals abans dels CTA de pagament; preus i trial coherents amb Stripe.</li>
+        </ul>
+
+        <h3>B. Consentiment (Art. 7)</h3>
+        <ul class="check">
+          <li>Checkbox obligatori al registre + log immutable al servidor.</li>
+        </ul>
+
+        <h3>C. Drets (ARCO+)</h3>
+        <ul class="check">
+          <li>Rectificació al perfil; esborrat de compte (Art. 17); exportació JSON (Art. 20).</li>
+          <li>Cancel·lació de subscripció via Portal Stripe; UI de privacitat al perfil.</li>
+        </ul>
+
+        <h3>D. Seguretat</h3>
+        <ul class="check">
+          <li>Rules Firestore/Storage; pla infalsificable des del client (Stripe + JWT).</li>
+          <li>Functions a la UE; retenció de missatgeria; sense analytics de tercers al codi.</li>
+        </ul>
+
+        <h3>E. QA cobros TEST</h3>
+        <ul class="check">
+          <li>Camí feliç, anual, errors de targeta, cancel·lació Portal i recuperació d’impagament validats (apartat 3).</li>
+        </ul>
+
+        <table>
+          <thead>
+            <tr><th>Àrea</th><th>Estat</th><th>Nota</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RGPD drets operatius</td>
+              <td><span class="pill ok">Fet</span></td>
+              <td>Art. 7, 17, 20</td>
+            </tr>
+            <tr>
+              <td>Textos legals + pricing</td>
+              <td><span class="pill ok">Fet</span></td>
+              <td>Dades titular</td>
+            </tr>
+            <tr>
+              <td>QA Stripe TEST (N3)</td>
+              <td><span class="pill ok">Fet</span></td>
+              <td>Inclou errors i past_due</td>
+            </tr>
+            <tr>
+              <td>Stripe LIVE + Tax</td>
+              <td><span class="pill wait">Pendent</span></td>
+              <td>Compte + fiscal titular</td>
+            </tr>
+            <tr>
+              <td>Art. 30</td>
+              <td><span class="pill wait">Pendent titular</span></td>
+              <td>Registre intern</td>
+            </tr>
+            <tr>
+              <td>Registre públic + menors</td>
+              <td><span class="pill info">Contingut</span></td>
+              <td>No reobrir sense política d’edat</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Aquest checklist acredita el treball tècnic. No és certificació oficial RGPD ni assessoria legal.
+        </p>
+      </div>
+    </section>
+
+    <section class="sheet" id="proper">
+      <div class="sheet-inner">
+        <h2>8. Properes passes recomanades</h2>
+        <ol style="color: var(--ink); padding-left: 1.2rem; margin: 0;">
+          <li style="margin-bottom: 10px;">
+            Completar l’estat del compte Stripe
+            (<a href="https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status" target="_blank" rel="noopener noreferrer">(enllaç)</a>.
+          </li>
+          <li style="margin-bottom: 10px;">
+            Confirmar dades fiscals → activar Stripe Tax i pas a Live (pressupost 2 dies).
+          </li>
+          <li style="margin-bottom: 10px;">
+            Activació Live: catàleg, webhook, secrets Firebase i una prova controlada de pagament real.
+          </li>
+          <li style="margin-bottom: 10px;">
+            Entrega: manual d’ús, gestió de subscripcions al Portal i demo guiada.
+          </li>
+        </ol>
+        <div class="callout green" style="margin-top: 22px;">
+          <p>
+            <strong>Missatge clau:</strong> el producte i el billing en proves ja no són el blocker.
+            El tram que queda és <strong>activar el negoci amb Stripe en viu</strong> amb el compte
+            i la fiscalitat del titular a punt — cobert pel pressupost de dos dies.
+          </p>
+        </div>
+        <p class="footer-note" style="margin-top: 28px;">
+          GlobalPlay360 · Informe de situació · 18 juliol 2026 (tarda) · Anna Borràs per a Aleix Pérez Jané<br>
+          Contacte públic: info@globalplay360.com · Plataforma: https://globalplay360-3f9a1.web.app
+        </p>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
