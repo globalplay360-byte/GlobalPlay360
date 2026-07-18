@@ -1,18 +1,18 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **17 juliol 2026 (nit — sync TEST OK)**.
+> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (matí — camí entrega completa)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
 
 ---
 
-## ▶️ REPRESA AQUÍ — 17 jul 2026 nit
+## ▶️ REPRESA AQUÍ — 18 jul 2026 matí
 
 ### Fase del projecte
 
-**Pre-cobros / TEST.** Codi a `fix/bloc1-pre-cobros` (no fusionada, no pushejada). **Stripe LIVE no obert per a cobros** (hi ha catàleg LIVE creat per error; el treball actiu és TEST).
+**Pre-entrega / TEST → després LIVE.** Codi a `fix/bloc1-pre-cobros` (no fusionada, no pushejada). Decisió: **cap retall** — tot ha de quedar fet abans d’entregar a l’Aleix (encara que calgui més temps).
 
-Bloquejant sync **RESOLT** (17/07 nit). Següent: Customer Portal + emails + prova Pricing/checkout en local/TEST → després deploy rules/functions.
+Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → go-live Stripe → document entrega.
 
 ### Fet a la consola (17 jul)
 
@@ -26,7 +26,7 @@ Bloquejant sync **RESOLT** (17/07 nit). Següent: Customer Portal + emails + pro
 | **IVA / `tax_behavior` / Stripe Tax** | ⏳ **AJORNAT al go-live.** Els Prices TEST tenen `tax_behavior: unspecified`. No s’ha trobat via clara a la UI per gestionar IVA ara; els imports (9,99/99,99/24,99/249,99) ja estan pensats **IVA inclòs**. Abans de LIVE: activar Stripe Tax + dades fiscals Aleix + OSS UE + `tax_behavior: inclusive` (o equivalent). Documentat a consciència 17/07. |
 | Sync Products → Firestore (TEST) | ✅ 17/07 nit — webhook 200; 2 products + 4 prices; Clubs `prices` OK després de reintent/propagació |
 | Customer Portal + emails trial | ⏳ Següent consola |
-| Prova Pricing local | ⏳ Següent ara (validar UI amb Firestore) |
+| Prova Pricing local | ✅ 17/07 — anònim + player/coach/club (preus/segment OK). Checkout 4242 encara no. |
 | Alert Stripe «2 tareas / transferencias» | ℹ️ Sense impacte en TEST; completar abans de LIVE |
 
 ### Codi ja fet (no cal refer)

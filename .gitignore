@@ -41,3 +41,5 @@ temp-*
 temp_*
 foo.txt
 test.js
+scripts/qa-accounts.generated.json
+scripts/qa-pricing-*.png
