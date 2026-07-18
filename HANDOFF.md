@@ -40,7 +40,7 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 | # | Acció | Estat |
 |---|---|---|
 | A | Pricing + sync TEST + QA rols | ✅ |
-| B | Customer Portal TEST (URLs legals + pla mensual↔anual mateix producte) | ⏳ en curs (Anna consola) |
+| B | Customer Portal TEST | ⏳ en curs — **decisió 18/07:** «Los clientes pueden cambiar de plan» = **OFF** (evita Individual↔Clubs; canvis d’interval els fa Anna/Aleix a Stripe Dashboard si cal). Cancel·lació al final del període. URLs legals via info pública empresa. |
 | C | Emails Stripe: fi de trial + pagament fallit | ⏳ |
 | D | Deploy branca: `firestore:rules,storage,functions` + hosting | ✅ 18/07 — rules, storage, CFs noves (recordConsent/delete/export + checkout trial) + hosting |
 | E | Checkout E2E TEST `4242` (player + club → trial → Portal cancel) | ⏳ següent després de B/C |
