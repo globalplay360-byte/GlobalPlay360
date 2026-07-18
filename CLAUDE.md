@@ -223,5 +223,16 @@ Polish:
 
 **Claude:** Llegeix aquest document sempre abans d'iniciar tasques relacionades amb Git i per entendre en quin punt ens trobem del desenvolupament global. L'usuari compta amb tu per adquirir bons hàbits i avançar de forma estructurada!
 
+### Skills de projecte (Cursor + Claude Code) — PORTA DURA
+
+Abans de declarar «Stripe / billing OK», «podem cobrar» o go-live, **OBLIGATORI** llegir i aplicar:
+
+- `.claude/skills/stripe-billing-qa/SKILL.md` (còpia també a `~/.cursor/skills` i `~/.claude/skills`)
+- `docs/BIBLIA_QA_STRIPE.md`
+- Protocol: `docs/QA_STRIPE_PROTOCOLO_N3.md`
+
+**Hard stop:** sense PASS de targetes errònies + `past_due` amb Portal obrible, el veredicte màxim és N2. Inflar el nivell és inacceptable (risc legal / carrera).  
+`4242` sol **no** és QA de billing.
+
 ### 📝 Update 22/04/2026: Auditoria de lògica i rols completada
 S'ha auditat correctament l'accés a les ofertes (Clubs no poden aplicar a ofertes com si fossin candidats). S'ha assegurat el comportament en cas que una oportunitat sigui esborrada pel Club i quedi 'òrfena'. Aquesta funcionalitat permet a la resta de rols eliminar l'element de la BD correctament. S'ha assegurat i sanejat _firestore.rules_ assegurant-ho.

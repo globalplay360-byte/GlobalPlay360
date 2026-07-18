@@ -10,9 +10,13 @@
 
 ### Fase del projecte
 
-**Pre-entrega / TEST → després LIVE.** Codi a `fix/bloc1-pre-cobros` (no fusionada, no pushejada). Decisió: **cap retall** — tot ha de quedar fet abans d’entregar a l’Aleix (encara que calgui més temps).
+**Pre-entrega / TEST → després LIVE.** Codi fusionat a `main` via [PR #47](https://github.com/globalplay360-byte/GlobalPlay360/pull/47) (18/07). Decisió: **cap retall** — tot ha de quedar fet abans d’entregar a l’Aleix.
 
-Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → go-live Stripe → document entrega.
+**Ara:** merge/PR `fix/past-due-billing-portal` → go-live Stripe (N4) → document entrega.
+
+**QA Stripe N3 ✅ 18/07** (errors targeta + anual + `past_due` UI). Skills durs: Cursor + Claude + `.claude/skills/stripe-billing-qa`.  
+Bíblia: `docs/BIBLIA_QA_STRIPE.md` · Protocol: `docs/QA_STRIPE_PROTOCOLO_N3.md` · Guia: `docs/guia_qa_stripe_n3.html`  
+Informe client: `docs/informe-situacio-client-juliol-2026.html`
 
 ### Fet a la consola (17 jul)
 
@@ -25,8 +29,9 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 | Catàleg LIVE (Clubs + Players) | ⚠️ Existeix (creat sense voler). **No usar per QA.** Deixar per al go-live. |
 | **IVA / `tax_behavior` / Stripe Tax** | ⏳ **AJORNAT al go-live.** Els Prices TEST tenen `tax_behavior: unspecified`. No s’ha trobat via clara a la UI per gestionar IVA ara; els imports (9,99/99,99/24,99/249,99) ja estan pensats **IVA inclòs**. Abans de LIVE: activar Stripe Tax + dades fiscals Aleix + OSS UE + `tax_behavior: inclusive` (o equivalent). Documentat a consciència 17/07. |
 | Sync Products → Firestore (TEST) | ✅ 17/07 nit — webhook 200; 2 products + 4 prices; Clubs `prices` OK després de reintent/propagació |
-| Customer Portal + emails trial | ⏳ Següent consola |
-| Prova Pricing local | ✅ 17/07 — anònim + player/coach/club (preus/segment OK). Checkout 4242 encara no. |
+| Customer Portal TEST | ✅ cancel fi període; canvi de pla OFF |
+| Emails trial / pagament fallit | ⚠️ UI bloquejada — reintentar abans de LIVE |
+| Prova Pricing + checkout E2E TEST | ✅ 18/07 — anònim/rols + player/club 4242 + cancel Portal |
 | Alert Stripe «2 tareas / transferencias» | ℹ️ Sense impacte en TEST; completar abans de LIVE |
 
 ### Codi ja fet (no cal refer)
@@ -44,8 +49,8 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 | C | Emails Stripe: fi de trial + pagament fallit | ⚠️ 18/07 — UI no deixa activar toggles a `/test/settings/billing/subscriptions` (possible bloqueig per compte incomplet «2 tareas»). **No bloqueja checkout TEST.** Reintentar abans de LIVE (o via Empresa → Correos electrónicos de clientes). |
 | D | Deploy branca: `firestore:rules,storage,functions` + hosting | ✅ 18/07 — rules, storage, CFs noves (recordConsent/delete/export + checkout trial) + hosting |
 | E | Checkout E2E TEST `4242` | ✅ 18/07 — player + club OK; cancel Portal Clubs OK (cancel programada 17 ago, sense propera factura). |
-| F | Merge `fix/bloc1-pre-cobros` → `main` | ⏳ en curs |
-| G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ |
+| F | Merge `fix/bloc1-pre-cobros` → `main` | ✅ 18/07 — [PR #47](https://github.com/globalplay360-byte/GlobalPlay360/pull/47) |
+| G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ **següent** |
 | H | Document entrega Aleix + demo | ⏳ |
 
 Codi verificat 18/07: `tsc` ✅ · functions 18/18 ✅ · `npm run build` ✅
@@ -67,7 +72,7 @@ Codi verificat 18/07: `tsc` ✅ · functions 18/18 ✅ · `npm run build` ✅
 
 ### Prompt per al proper xat
 
-> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ**. Projecte GlobalPlay360. Continuem al punt: webhook Stripe TEST creat + extensió invertase 0.3.12 instal·lada, però **Products nous no sincronitzen a Firestore**. Diagnosi entregues webhook + forçar sync + verificar `products` amb `segment`. Després Customer Portal + emails. Stripe TEST only, no Live, no deploy fins sync OK. Català.
+> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ**. Projecte GlobalPlay360. `main` té PR #47 mergejat (pricing segmentat, RGPD, Stripe TEST OK). Continuem al **go-live Stripe (G)**: completar compte («2 tareas»), Stripe Tax + IVA inclusive, catàleg/webhook/secrets LIVE, emails trial/fallido. Després document entrega + demo Aleix (H). Català.
 
 ---
 

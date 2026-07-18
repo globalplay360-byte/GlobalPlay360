@@ -6,6 +6,7 @@ import {
   listActiveProductsWithPrices,
   createCheckoutSession,
   isTrialStripePrice,
+  subscriptionNeedsPaymentAttention,
   type StripePrice,
   type StripeProduct,
 } from '@/services/stripe.service';
@@ -23,12 +24,13 @@ function segmentForRole(role?: UserRole): Segment {
 }
 
 export default function PricingPage() {
-  const { user, activePlan, subscriptionLoading } = useAuth();
+  const { user, activePlan, subscription, subscriptionLoading } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const isAlreadyPremium = activePlan === 'premium';
+  const needsPaymentFix = subscriptionNeedsPaymentAttention(subscription);
 
   const [interval, setBillingInterval] = useState<Interval>('month');
   const [segment, setSegment] = useState<Segment>(segmentForRole(user?.role));
@@ -187,6 +189,24 @@ export default function PricingPage() {
           {canceled && (
             <div className="max-w-2xl mx-auto mb-8 p-4 rounded-lg bg-[#FFC107]/10 border border-[#FFC107]/30 text-[#FFC107] text-sm text-center">
               {t('pricingPage.cancelBanner')}
+            </div>
+          )}
+
+          {/* Impagament: enllaç directe a Billing → Portal */}
+          {needsPaymentFix && (
+            <div className="max-w-2xl mx-auto mb-8 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm text-center space-y-3">
+              <p>
+                {t(
+                  'pricingPage.pastDueBanner',
+                  'Hi ha un pagament pendent a la teva subscripció. Actualitza la targeta per recuperar Premium.',
+                )}
+              </p>
+              <Link
+                to="/dashboard/billing"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-red-500/20 border border-red-400/40 text-red-100 font-medium hover:bg-red-500/30 transition-colors"
+              >
+                {t('pricingPage.pastDueCta', 'Anar a facturació')}
+              </Link>
             </div>
           )}
 

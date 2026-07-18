@@ -247,6 +247,8 @@
     "subtitleBold": "30 días sin compromiso",
     "subtitle2": ".",
     "cancelBanner": "La suscripción no se ha completado. Puedes volver a intentarlo cuando quieras.",
+    "pastDueBanner": "Hay un pago pendiente en tu suscripción. Actualiza la tarjeta para recuperar Premium.",
+    "pastDueCta": "Ir a facturación",
     "errorPrice": "Error cargando los precios.",
     "errorCheckout": "No se ha podido iniciar el checkout.",
     "noPremiumActive": "No hay ningún producto Premium activo.",
@@ -834,6 +836,10 @@
       "title": "Suscripción cancelada",
       "message1": "Tu suscripción está programada para finalizar el",
       "message2": "Hasta entonces puedes seguir disfrutando de todas las funciones Premium."
+    },
+    "pastDueBanner": {
+      "title": "Pago pendiente",
+      "message": "No hemos podido cobrar la suscripción. Actualiza el método de pago en el portal de Stripe para recuperar el acceso Premium."
     },
     "card": {
       "premiumPlan": "Plan Premium",

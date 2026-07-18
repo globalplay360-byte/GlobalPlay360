@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guia · QA Stripe N3 (dues capes) — GlobalPlay360</title>
+<style>
+  :root{
+    --navy:#0b1120; --navy2:#111a2e; --celeste:#3b82f6; --celeste-soft:#dbeafe;
+    --ink:#172033; --gray:#5d6a7d; --line:#d8e0ea; --bg:#f5f7fb; --ok:#0f9f6e;
+    --code-bg:#0f1e3d; --code-ink:#dbe6ff; --r:14px; --warn-bg:#fbf2dc; --warn-bd:#f0e0b8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:16.5px;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:26px 18px 64px}
+  .kicker{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--celeste);background:var(--celeste-soft);padding:5px 11px;border-radius:6px}
+  h1{font-size:28px;line-height:1.2;color:var(--navy);margin:16px 0 10px}
+  .sub{font-size:16px;color:var(--gray);margin:0}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:22px 0}
+  .toc p{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy)}
+  .toc ol{margin:0;padding-left:20px}
+  .toc a{color:var(--ink);text-decoration:none}
+  section{margin-top:34px;scroll-margin-top:14px}
+  h2{font-size:20px;color:var(--navy);margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  h2 .n{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  h3{font-size:16px;color:var(--navy2);margin:22px 0 6px}
+  p{margin:10px 0}
+  ul,ol.steps{margin:10px 0;padding-left:22px}
+  li{margin:6px 0}
+  .lead{font-size:16.5px;color:var(--gray)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0}
+  .tip{background:var(--celeste-soft);border:1px solid #bfdbfe;border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:15px}
+  .tip b{color:var(--navy)}
+  .warn{background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:15px}
+  .ok{background:#e8f7f1;border:1px solid #a7e3cb;border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:15px}
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:13px;line-height:1.55;margin:12px 0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  p code,li code{background:#eef2f8;color:var(--navy);padding:1px 6px;border-radius:5px;font-size:.9em}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .mini{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .mini .h{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:4px}
+  .mini p{font-size:14px;color:var(--gray);margin:0}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0;background:#fff;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--gray)}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--gray);text-align:center}
+  @media (max-width:520px){.two{grid-template-columns:1fr} h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">Mètode · 2 capes (com ViviaLiving)</span>
+    <h1>QA Stripe N3 — GlobalPlay360</h1>
+    <p class="sub">Mateixa mentalitat que la guia professional: Capa 1 (motor) + Capa 2 (interfície). Aquí aplicada a billing / Stripe TEST.</p>
+  </header>
+
+  <nav class="toc">
+    <p>Contingut</p>
+    <ol>
+      <li><a href="#idea">Per què dues capes</a></li>
+      <li><a href="#qui">Què pot fer l’agent vs tu</a></li>
+      <li><a href="#prep">Preparació (ja feta / comprovar)</a></li>
+      <li><a href="#capa1">Capa 1 — Motor</a></li>
+      <li><a href="#capa2">Capa 2 — Interfície (6 proves targeta)</a></li>
+      <li><a href="#veredicte">Veredicte N1–N4</a></li>
+    </ol>
+  </nav>
+
+  <section id="idea">
+    <h2><span class="n">1</span> Per què dues capes</h2>
+    <p class="lead">Stripe pot fallar al <strong>motor</strong> (webhook, claims, filtre <code>past_due</code>) o a la <strong>UI</strong> (Checkout, Portal, banners). Provar només <code>4242</code> deixa els errors a cegues.</p>
+    <div class="two">
+      <div class="mini"><div class="h">Capa 1 · Motor</div><p>Codi, CF, rules, sync Firestore. Ràpid, repetible, sense obrir Checkout.</p></div>
+      <div class="mini"><div class="h">Capa 2 · Interfície</div><p>Navegador real + targetes TEST a Stripe Checkout / Portal. Avui: manual (Playwright = següent iteració).</p></div>
+    </div>
+  </section>
+
+  <section id="qui">
+    <h2><span class="n">2</span> Què pot fer l’agent vs tu</h2>
+    <div class="ok">
+      <b>L’agent pot:</b> branca + <code>npm run dev</code>, verificar el fix <code>past_due</code> al codi, tests de functions, deixar protocol/guia, actualitzar HANDOFF.
+    </div>
+    <div class="warn">
+      <b>Tu (navegador) has de:</b> les 6 proves de targeta a Stripe Checkout hosted. L’agent <strong>no pot</strong> completar sol el formulari de pagament de Stripe (3DS, iframe, sessió real) sense un E2E Playwright dedicat encara no escrit.
+    </div>
+    <p>Fonts: <code>docs/BIBLIA_QA_STRIPE.md</code> · <code>docs/QA_STRIPE_PROTOCOLO_N3.md</code> · skill <code>.claude/skills/stripe-billing-qa</code></p>
+  </section>
+
+  <section id="prep">
+    <h2><span class="n">3</span> Preparació</h2>
+    <ol class="steps">
+      <li>Branca: <code>fix/past-due-billing-portal</code></li>
+      <li>Dev: <code>npm run dev</code> → <strong>http://localhost:5173</strong></li>
+      <li>Stripe Dashboard → <strong>Test mode ON</strong></li>
+      <li>Compte <strong>sense</strong> sub <code>trialing</code>/<code>active</code>/<code>past_due</code> (si cal: cancel <em>immediately</em> a Stripe)</li>
+      <li>Checkout: caducitat <code>12/34</code> · CVC <code>123</code> · CP <code>08001</code></li>
+    </ol>
+  </section>
+
+  <section id="capa1">
+    <h2><span class="n">4</span> Capa 1 — Motor (agent)</h2>
+    <h3>Checklist estàtica (pre-N3)</h3>
+    <ul>
+      <li>Listener inclou <code>past_due</code> + <code>unpaid</code> → <code>stripe.service.ts</code></li>
+      <li>Billing no redirigeix si cal Portal → <code>BillingPage.tsx</code></li>
+      <li>Banner + CTA a Pricing → <code>PricingPage.tsx</code></li>
+      <li>Guard antidoble a la CF (ja a <code>main</code>)</li>
+      <li><code>npm test</code> a <code>functions/</code> (billingPolicy)</li>
+    </ul>
+    <div class="tip"><b>Truc.</b> La Capa 1 demostra que <em>si</em> arriba un <code>past_due</code>, la UI el pot gestionar. La Capa 2 demostra que Stripe <em>genera</em> aquest estat amb targetes reals de TEST.</div>
+  </section>
+
+  <section id="capa2">
+    <h2><span class="n">5</span> Capa 2 — Les 6 proves (tu al navegador)</h2>
+    <p>Obre <strong>incògnit</strong> → <code>http://localhost:5173</code> · marca PASS/FAIL.</p>
+
+    <table>
+      <thead>
+        <tr><th>#</th><th>Prova</th><th>Targeta</th><th>PASS si…</th><th>☐</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Rebutjada</td>
+          <td><code>4000 0000 0000 0002</code></td>
+          <td>Error Stripe · sense Premium · sense sub viva</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Sense fons</td>
+          <td><code>4000 0000 0000 9995</code></td>
+          <td>Idem</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Caducada</td>
+          <td><code>4000 0000 0000 0069</code></td>
+          <td>Idem</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Reintent OK</td>
+          <td><code>4242 4242 4242 4242</code></td>
+          <td>Success · Billing trial · Stripe <code>trialing</code></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Anual</td>
+          <td><code>4242…</code> (compte net)</td>
+          <td>99,99 € / year · trial o premium</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><code>past_due</code></td>
+          <td><code>4000 0000 0000 0341</code> + End trial a Dashboard</td>
+          <td>Billing obrible · banner · Portal OK</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card">
+      <strong>Flux per cada error (1–3):</strong>
+      <ol class="steps">
+        <li>Login compte net → <code>/pricing</code> → Mensual → CTA</li>
+        <li>Omplir targeta + <code>12/34</code> + <code>123</code></li>
+        <li>Confirmar → ha de fallar</li>
+        <li>Comprovar app free + Stripe sense sub activa</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <strong>Flux prova 6:</strong>
+      <ol class="steps">
+        <li>Compte nou → checkout amb <code>…0341</code></li>
+        <li>Stripe → Subscription → <em>End trial now</em></li>
+        <li>Esperar <code>past_due</code> → logout/login</li>
+        <li><code>/pricing</code> (banner) → <code>/dashboard/billing</code> → Obrir portal</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="veredicte">
+    <h2><span class="n">6</span> Veredicte</h2>
+    <ul>
+      <li><strong>N2</strong> — ja fet (4242 player/club + cancel Portal)</li>
+      <li><strong>N3</strong> — quan 1–6 PASS (especialment 6)</li>
+      <li><strong>N4</strong> — go-live (Tax, webhook live, 1 pagament real)</li>
+    </ul>
+    <div class="tip"><b>Després.</b> Enganxa la taula PASS/FAIL al xat. El pas professional següent (com a la guia ViviaLiving) és automatitzar la Capa 2 amb Playwright + <code>@playwright/test</code>.</div>
+  </section>
+
+  <footer>
+    GlobalPlay360 · Estil basat en guia_qa_profesional (ViviaLiving) · 18 jul 2026<br>
+    Protocol detallat: docs/QA_STRIPE_PROTOCOLO_N3.md
+  </footer>
+</div>
+</body>
+</html>
