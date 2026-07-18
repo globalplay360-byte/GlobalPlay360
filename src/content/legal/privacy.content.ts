@@ -17,12 +17,11 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>El responsable del tractament de les teves dades personals és:</p>
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominació social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicili:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correu electrònic:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Delegat de Protecció de Dades (DPO):</strong> <em style="color:#6B7280">[pendent de configuració]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresari individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicili:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Espanya</li>
+            <li><strong>Correu electrònic:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
+            <li><strong>Delegat de Protecció de Dades (DPO):</strong> no se n'ha designat, atès que no és obligatori per la naturalesa i el volum del tractament (art. 37 RGPD). Per a qualsevol qüestió de protecció de dades, contacta amb el correu indicat.</li>
           </ul>
         `
       },
@@ -89,14 +88,14 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Oposició:</strong> oposar-te al tractament basat en interès legítim.</li>
             <li><strong>Retirar consentiment:</strong> per a tractaments basats en consentiment.</li>
           </ul>
-          <p>Per exercir aquests drets, envia un correu a <em style="color:#6B7280">[pendent de configuració]</em> amb una còpia del teu DNI o document equivalent. Respondrem en un màxim de 30 dies.</p>
+          <p>Pots exercir els drets de <strong>portabilitat</strong> (descàrrega de les teves dades) i <strong>supressió</strong> (eliminació del compte) directament i a l'instant des del teu perfil, a l'apartat «Privacitat i dades». Per a la resta de drets, o si prefereixes fer-ho per escrit, envia un correu a <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a> amb una còpia del teu DNI o document equivalent. Respondrem en un màxim de 30 dies.</p>
           <p>Si consideres que no hem respost correctament, pots presentar una reclamació davant l'<strong>Agència Espanyola de Protecció de Dades</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },
       {
         title: '7. Conservació de les dades',
         html: `
-          <p>Conservem les teves dades mentre tinguis un compte actiu. Les converses de missatgeria directa inactives es poden eliminar automàticament després de 90 dies sense activitat. Un cop suprimeixis el compte, eliminarem la resta de dades en un termini màxim de 30 dies, excepte aquelles que estiguem obligats a conservar per obligacions legals (fiscalitat: 6 anys).</p>
+          <p>Conservem les teves dades mentre tinguis un compte actiu. Les converses de missatgeria directa inactives es poden eliminar automàticament després de 90 dies sense activitat. Un cop suprimeixis el compte, eliminarem la resta de dades en un termini màxim de 30 dies, excepte aquelles que estiguem obligats a conservar per obligacions legals (fiscalitat: 6 anys) o que necessitem per a la formulació, l'exercici o la defensa de reclamacions (per exemple, el registre del teu consentiment), d'acord amb l'article 17.3 del RGPD.</p>
         `
       },
       {
@@ -130,12 +129,11 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>El responsable del tratamiento de tus datos personales es:</p>
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominación social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicilio:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correo electrónico:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Delegado de Protección de Datos (DPO):</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresario individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicilio:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), España</li>
+            <li><strong>Correo electrónico:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
+            <li><strong>Delegado de Protección de Datos (DPO):</strong> no se ha designado, dado que no es obligatorio por la naturaleza y el volumen del tratamiento (art. 37 RGPD). Para cualquier cuestión de protección de datos, contacta con el correo indicado.</li>
           </ul>
         `
       },
@@ -202,14 +200,14 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Oposición:</strong> oponerte al tratamiento basado en interés legítimo.</li>
             <li><strong>Retirar consentimiento:</strong> para tratamientos basados en consentimiento.</li>
           </ul>
-          <p>Para ejercer estos derechos, envía un correo a <em style="color:#6B7280">[pendiente de configuración]</em> con copia de tu DNI o documento equivalente. Responderemos en un máximo de 30 días.</p>
+          <p>Puedes ejercer los derechos de <strong>portabilidad</strong> (descarga de tus datos) y <strong>supresión</strong> (eliminación de la cuenta) directamente y al instante desde tu perfil, en el apartado «Privacidad y datos». Para el resto de derechos, o si prefieres hacerlo por escrito, envía un correo a <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a> con copia de tu DNI o documento equivalente. Responderemos en un máximo de 30 días.</p>
           <p>Si consideras que no hemos respondido correctamente, puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },
       {
         title: '7. Conservación de los datos',
         html: `
-          <p>Conservamos tus datos mientras tengas una cuenta activa. Las conversaciones de mensajería directa inactivas pueden eliminarse automáticamente después de 90 días sin actividad. Una vez suprimas tu cuenta, eliminaremos el resto de los datos en un plazo máximo de 30 días, excepto aquellos que estemos obligados a conservar por obligaciones legales (fiscalidad: 6 años).</p>
+          <p>Conservamos tus datos mientras tengas una cuenta activa. Las conversaciones de mensajería directa inactivas pueden eliminarse automáticamente después de 90 días sin actividad. Una vez suprimas tu cuenta, eliminaremos el resto de los datos en un plazo máximo de 30 días, excepto aquellos que estemos obligados a conservar por obligaciones legales (fiscalidad: 6 años) o que necesitemos para la formulación, el ejercicio o la defensa de reclamaciones (por ejemplo, el registro de tu consentimiento), de acuerdo con el artículo 17.3 del RGPD.</p>
         `
       },
       {
@@ -243,12 +241,11 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
         html: `
           <p>The controller of your personal data is:</p>
           <ul>
-            <li><strong>Owner:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Legal entity:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Tax ID:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Address:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Email:</strong> <em style="color:#6B7280">[pending configuration]</em></li>
-            <li><strong>Data Protection Officer (DPO):</strong> <em style="color:#6B7280">[pending configuration]</em></li>
+            <li><strong>Owner:</strong> Aleix Pérez Jané (sole trader)</li>
+            <li><strong>Tax ID:</strong> 47939862L</li>
+            <li><strong>Address:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Spain</li>
+            <li><strong>Email:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
+            <li><strong>Data Protection Officer (DPO):</strong> not appointed, as it is not mandatory given the nature and volume of the processing (art. 37 GDPR). For any data protection matter, contact the email above.</li>
           </ul>
         `
       },
@@ -315,14 +312,14 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
             <li><strong>Objection:</strong> object to processing based on legitimate interest.</li>
             <li><strong>Withdraw consent:</strong> for processing based on consent.</li>
           </ul>
-          <p>To exercise these rights, send an email to <em style="color:#6B7280">[pending configuration]</em> with a copy of your ID or equivalent document. We will respond within a maximum of 30 days.</p>
+          <p>You can exercise your rights to <strong>portability</strong> (download your data) and <strong>erasure</strong> (delete your account) directly and instantly from your profile, in the "Privacy & data" section. For the remaining rights, or if you prefer to do it in writing, send an email to <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a> with a copy of your ID or equivalent document. We will respond within a maximum of 30 days.</p>
           <p>If you believe we have not responded correctly, you can file a complaint with the <strong>Spanish Data Protection Agency</strong> (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
         `
       },
       {
         title: '7. Data retention',
         html: `
-          <p>We keep your data while you have an active account. Inactive direct-message conversations may be automatically deleted after 90 days without activity. Once you delete your account, we will remove the remaining data within a maximum of 30 days, except for that which we are legally required to keep (tax obligations: 6 years).</p>
+          <p>We keep your data while you have an active account. Inactive direct-message conversations may be automatically deleted after 90 days without activity. Once you delete your account, we will remove the remaining data within a maximum of 30 days, except for that which we are legally required to keep (tax obligations: 6 years) or that we need for the establishment, exercise or defence of legal claims (for example, the record of your consent), in accordance with Article 17.3 GDPR.</p>
         `
       },
       {

@@ -62,7 +62,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contacte',
-        html: `<p>Per a qualsevol qüestió sobre cookies o privacitat, contacta amb nosaltres a <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
+        html: `<p>Per a qualsevol qüestió sobre cookies o privacitat, contacta amb nosaltres a <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a>.</p>`
       }
     ]
   },
@@ -122,7 +122,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contacto',
-        html: `<p>Para cualquier cuestión sobre cookies o privacidad, contacta con nosotros en <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
+        html: `<p>Para cualquier cuestión sobre cookies o privacidad, contacta con nosotros en <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a>.</p>`
       }
     ]
   },
@@ -182,7 +182,7 @@ export const COOKIES: Record<LegalLang, CookiesContent> = {
       },
       {
         title: '5. Contact',
-        html: `<p>For any question about cookies or privacy, contact us at <em style="color:#6B7280">[pendent de configuració]</em>.</p>`
+        html: `<p>For any question about cookies or privacy, contact us at <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a>.</p>`
       }
     ]
   }

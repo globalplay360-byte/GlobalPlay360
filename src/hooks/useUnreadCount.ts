@@ -11,6 +11,9 @@ export function useUnreadCount() {
   // tick de Stripe a AuthContext i provocaria re-subscripcions inútils).
   useEffect(() => {
     if (!uid) {
+      // Reinici necessari en fer logout (uid passa a undefined): sense això el
+      // badge conservaria l'últim recompte de l'usuari anterior.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUnreadCount(0);
       return;
     }

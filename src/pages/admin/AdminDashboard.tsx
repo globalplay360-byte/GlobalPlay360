@@ -20,7 +20,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
+    // `loading` ja neix a true; el `finally` el tanca. No cal reiniciar-lo aquí.
     getAdminMetrics()
       .then((m) => {
         if (!cancelled) {

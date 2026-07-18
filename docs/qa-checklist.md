@@ -210,7 +210,7 @@ Provar a **Firebase Console → Firestore → Rules → Playground**:
     - ✅ Sense "Lorem ipsum", ✅ Sense `[PENDENT_*]` clicables.
   - **Fix crític aplicat**: `tests/legal-cleanup.mjs` script one-shot va substituir **54 placeholders `[PENDENT_*]`** dels 3 content files per `<em>[pendent de configuració]</em>` multiidioma. Això incloïa 15 `<a href="mailto:[PENDENT_EMAIL_LEGAL/DPO]">` que eren links mailto actius amb destinatari invàlid (hauria obert el client d'email amb destí trencat si algú els clicava). També els camps `[PENDENT_RESPONSABLE]`, `[PENDENT_NOM_LEGAL]`, `[PENDENT_NIF]`, `[PENDENT_DOMICILI]` com a text pla als apartats d'identificació de l'empresa.
   - **Afegit contingut legal nou**: secció "Durada de les cookies" als 3 idiomes (requerit per RGPD Art. 13 + Guia AEPD cookies).
-  - **Pendent de la clienta Aina**: substituir els marcadors `[pendent de configuració]` per dades reals (email legal, email DPO, NIF, nom legal, responsable, domicili) abans del go-live a producció.
+  - **Pendent del client Aleix Pérez Jané**: substituir els marcadors `[pendent de configuració]` per dades reals (email legal, email DPO, NIF, nom legal, responsable, domicili) abans del go-live a producció.
   - Reproduïble: `node tests/legal-content-audit.mjs`.
 
 - [x] **S8-T3 Pricing — plans i CTAs**: ✅ PASS. Revisió completa de `PricingPage.tsx` + `stripe.service.ts`:

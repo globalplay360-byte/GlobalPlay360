@@ -27,6 +27,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState(defaultRole);
+  const [consentAccepted, setConsentAccepted] = useState(false);
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -56,6 +57,11 @@ export default function RegisterPage() {
       setErrorMessage(t('registerPage.errors.weakPassword'));
       return;
     }
+    if (!consentAccepted) {
+      setStatus('error');
+      setErrorMessage(t('registerPage.errors.consentRequired', 'Has d\'acceptar els Termes i condicions i la Política de privacitat per crear el compte.'));
+      return;
+    }
 
     setStatus('loading');
 
@@ -71,6 +77,11 @@ export default function RegisterPage() {
   };
 
   const handleGoogleLogin = async () => {
+    if (!consentAccepted) {
+      setStatus('error');
+      setErrorMessage(t('registerPage.errors.consentRequired', 'Has d\'acceptar els Termes i condicions i la Política de privacitat per crear el compte.'));
+      return;
+    }
     setStatus('loading');
     try {
       await loginWithGoogle(ROLE_MAP[role] ?? 'player');
@@ -170,6 +181,27 @@ export default function RegisterPage() {
             />
             <PasswordMatchBar password={password} confirm={confirmPassword} />
           </div>
+
+          {/* Consentiment Art. 7 RGPD: checkbox explícit amb enllaços legals */}
+          <label className="flex items-start gap-3 text-sm text-[#9CA3AF] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={consentAccepted}
+              onChange={(e) => { setConsentAccepted(e.target.checked); if (status === 'error') setStatus('idle'); }}
+              disabled={status === 'loading' || status === 'success'}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#1F2937] bg-[#0F172A] text-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] accent-[#3B82F6]"
+            />
+            <span>
+              {t('registerPage.consent.pre', 'He llegit i accepto els')}{' '}
+              <Link to="/terms" target="_blank" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                {t('registerPage.consent.terms', 'Termes i condicions')}
+              </Link>{' '}
+              {t('registerPage.consent.and', 'i la')}{' '}
+              <Link to="/privacy" target="_blank" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                {t('registerPage.consent.privacy', 'Política de privacitat')}
+              </Link>.
+            </span>
+          </label>
 
           <button
             type="submit"

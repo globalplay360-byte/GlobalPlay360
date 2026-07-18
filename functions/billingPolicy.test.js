@@ -2,12 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   BILLING_TRIAL_DAYS,
+  CLUB_SEGMENT,
   FOUNDING_MEMBERS_LIMIT,
+  INDIVIDUAL_SEGMENT,
   canClaimFounderAccess,
   getCheckoutSessionTrialDays,
-  getPriceTrialDays,
-  isTrialPrice,
-  selectCheckoutPrice,
+  getExpectedSegmentForRole,
+  getProductSegment,
+  isBlockingSubscriptionStatus,
+  shouldGrantTrial,
 } from './billingPolicy.js';
 
 test('getCheckoutSessionTrialDays grants the first 30-day trial', () => {
@@ -18,84 +21,49 @@ test('getCheckoutSessionTrialDays removes the trial once it was consumed', () =>
   assert.equal(getCheckoutSessionTrialDays({ trialConsumedAt: '2026-05-01T10:00:00.000Z' }), null);
 });
 
-test('getPriceTrialDays reads top-level and recurring trial days', () => {
-  assert.equal(getPriceTrialDays({ trial_period_days: 30 }), 30);
-  assert.equal(getPriceTrialDays({ recurring: { trial_period_days: 14 } }), 14);
-  assert.equal(getPriceTrialDays({}), 0);
+test('shouldGrantTrial reflects whether the trial was already consumed', () => {
+  assert.equal(shouldGrantTrial(null), true);
+  assert.equal(shouldGrantTrial({}), true);
+  assert.equal(shouldGrantTrial({ trialConsumedAt: '2026-05-01T10:00:00.000Z' }), false);
 });
 
-test('selectCheckoutPrice returns the trial price for first-time users', () => {
-  const selectedPrice = selectCheckoutPrice(
-    [
-      { id: 'price_standard_monthly', recurring: { trial_period_days: null } },
-      { id: 'price_trial_monthly', recurring: { trial_period_days: 30 } },
-    ],
-    null,
-    'price_standard_monthly',
-  );
-
-  assert.equal(selectedPrice?.id, 'price_trial_monthly');
-  assert.equal(isTrialPrice(selectedPrice), true);
+test('getExpectedSegmentForRole maps player and coach to the individual segment', () => {
+  assert.equal(getExpectedSegmentForRole('player'), INDIVIDUAL_SEGMENT);
+  assert.equal(getExpectedSegmentForRole('coach'), INDIVIDUAL_SEGMENT);
 });
 
-test('selectCheckoutPrice returns the standard price after trial was consumed', () => {
-  const selectedPrice = selectCheckoutPrice(
-    [
-      { id: 'price_standard_monthly', recurring: { trial_period_days: null } },
-      { id: 'price_trial_monthly', recurring: { trial_period_days: 30 } },
-    ],
-    { trialConsumedAt: '2026-05-12T10:57:22.000Z' },
-    'price_standard_monthly',
-  );
-
-  assert.equal(selectedPrice?.id, 'price_standard_monthly');
-  assert.equal(isTrialPrice(selectedPrice), false);
+test('getExpectedSegmentForRole maps club to the club segment', () => {
+  assert.equal(getExpectedSegmentForRole('club'), CLUB_SEGMENT);
 });
 
-test('selectCheckoutPrice keeps the requested billing interval when granting a trial', () => {
-  const selectedPrice = selectCheckoutPrice(
-    [
-      { id: 'price_standard_monthly', lookup_key: 'premium_monthly', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: null } },
-      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
-      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
-      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
-    ],
-    null,
-    'price_standard_yearly',
-  );
-
-  assert.equal(selectedPrice?.id, 'price_trial_yearly');
-  assert.equal(isTrialPrice(selectedPrice), true);
+test('getExpectedSegmentForRole rejects admin and unknown roles', () => {
+  assert.equal(getExpectedSegmentForRole('admin'), null);
+  assert.equal(getExpectedSegmentForRole(undefined), null);
+  assert.equal(getExpectedSegmentForRole(''), null);
 });
 
-test('selectCheckoutPrice keeps the requested billing interval after trial consumption', () => {
-  const selectedPrice = selectCheckoutPrice(
-    [
-      { id: 'price_standard_monthly', lookup_key: 'premium_monthly', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: null } },
-      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
-      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
-      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
-    ],
-    { trialConsumedAt: '2026-05-12T10:57:22.000Z' },
-    'price_standard_yearly',
-  );
-
-  assert.equal(selectedPrice?.id, 'price_standard_yearly');
-  assert.equal(isTrialPrice(selectedPrice), false);
+test('getProductSegment reads nested and flattened extension metadata', () => {
+  assert.equal(getProductSegment({ metadata: { segment: 'club' } }), 'club');
+  assert.equal(getProductSegment({ stripe_metadata_segment: 'individual' }), 'individual');
+  assert.equal(getProductSegment({ metadata: { segment: ' club ' } }), 'club');
 });
 
-test('selectCheckoutPrice matches yearly trial sibling by lookup_key', () => {
-  const selectedPrice = selectCheckoutPrice(
-    [
-      { id: 'price_trial_monthly', lookup_key: 'premium_monthly_trial', currency: 'eur', unit_amount: 2500, recurring: { interval: 'month', interval_count: 1, trial_period_days: 30 } },
-      { id: 'price_standard_yearly', lookup_key: 'premium_yearly', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: null } },
-      { id: 'price_trial_yearly', lookup_key: 'premium_yearly_trial', currency: 'eur', unit_amount: 25000, recurring: { interval: 'year', interval_count: 1, trial_period_days: 30 } },
-    ],
-    null,
-    'price_standard_yearly',
-  );
+test('getProductSegment returns null when the product has no segment metadata', () => {
+  assert.equal(getProductSegment({}), null);
+  assert.equal(getProductSegment({ metadata: {} }), null);
+  assert.equal(getProductSegment(null), null);
+});
 
-  assert.equal(selectedPrice?.id, 'price_trial_yearly');
+test('isBlockingSubscriptionStatus blocks live subscriptions including past_due', () => {
+  assert.equal(isBlockingSubscriptionStatus('trialing'), true);
+  assert.equal(isBlockingSubscriptionStatus('active'), true);
+  assert.equal(isBlockingSubscriptionStatus('past_due'), true);
+});
+
+test('isBlockingSubscriptionStatus lets canceled and incomplete subscriptions retry', () => {
+  assert.equal(isBlockingSubscriptionStatus('canceled'), false);
+  assert.equal(isBlockingSubscriptionStatus('incomplete'), false);
+  assert.equal(isBlockingSubscriptionStatus('incomplete_expired'), false);
 });
 
 test('canClaimFounderAccess allows an eligible user before the deadline', () => {

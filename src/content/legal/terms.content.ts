@@ -20,11 +20,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servei',
         html: `
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominació social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicili:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correu:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresari individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicili:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Espanya</li>
+            <li><strong>Correu:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },
@@ -47,8 +46,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
           <p>GlobalPlay360 ofereix els següents plans:</p>
           <ul>
             <li><strong>Free:</strong> accés bàsic a la plataforma amb funcionalitats limitades.</li>
-            <li><strong>Premium:</strong> accés complet amb un <strong>període de prova de 30 dies</strong>, després 25 € al mes o 250 € a l'any.</li>
+            <li><strong>Premium per a jugadors i entrenadors:</strong> accés complet per 9,99 € al mes o 99,99 € a l'any.</li>
+            <li><strong>Premium per a clubs:</strong> accés complet per 24,99 € al mes o 249,99 € a l'any.</li>
           </ul>
+          <p>Tots els plans inclouen el <strong>primer mes gratuït</strong> (període de prova de 30 dies); el cobrament comença a partir del segon mes. Els preus indicats inclouen l'IVA aplicable.</p>
           <p>Durant el període de prova pots cancel·lar sense cap càrrec. En no cancel·lar, el primer càrrec es realitzarà automàticament en finalitzar la prova.</p>
         `
       },
@@ -118,11 +119,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Titular del servicio',
         html: `
           <ul>
-            <li><strong>Titular:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Denominación social:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>NIF:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Domicilio:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Correo:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
+            <li><strong>Titular:</strong> Aleix Pérez Jané (empresario individual)</li>
+            <li><strong>NIF:</strong> 47939862L</li>
+            <li><strong>Domicilio:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), España</li>
+            <li><strong>Correo:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },
@@ -145,8 +145,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
           <p>GlobalPlay360 ofrece los siguientes planes:</p>
           <ul>
             <li><strong>Free:</strong> acceso básico a la plataforma con funcionalidades limitadas.</li>
-            <li><strong>Premium:</strong> acceso completo con un <strong>periodo de prueba de 30 días</strong>, posteriormente 25 € al mes o 250 € al año.</li>
+            <li><strong>Premium para jugadores y entrenadores:</strong> acceso completo por 9,99 € al mes o 99,99 € al año.</li>
+            <li><strong>Premium para clubes:</strong> acceso completo por 24,99 € al mes o 249,99 € al año.</li>
           </ul>
+          <p>Todos los planes incluyen el <strong>primer mes gratuito</strong> (periodo de prueba de 30 días); el cobro comienza a partir del segundo mes. Los precios indicados incluyen el IVA aplicable.</p>
           <p>Durante el periodo de prueba puedes cancelar sin cargo. Si no cancelas, el primer cargo se realizará automáticamente al finalizar la prueba.</p>
         `
       },
@@ -216,11 +218,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
         title: '2. Service provider',
         html: `
           <ul>
-            <li><strong>Owner:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Legal entity:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Tax ID:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Address:</strong> <em style="color:#6B7280">[pendiente de configuración]</em></li>
-            <li><strong>Email:</strong> <em style="color:#6B7280">[pending configuration]</em></li>
+            <li><strong>Owner:</strong> Aleix Pérez Jané (sole trader)</li>
+            <li><strong>Tax ID:</strong> 47939862L</li>
+            <li><strong>Address:</strong> Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona), Spain</li>
+            <li><strong>Email:</strong> <a href="mailto:aleix.perez@hotmail.com">aleix.perez@hotmail.com</a></li>
           </ul>
         `
       },
@@ -243,8 +244,10 @@ export const TERMS: Record<LegalLang, TermsContent> = {
           <p>GlobalPlay360 offers the following plans:</p>
           <ul>
             <li><strong>Free:</strong> basic access to the platform with limited features.</li>
-            <li><strong>Premium:</strong> full access with a <strong>30-day trial period</strong>, then €25/month or €250/year.</li>
+            <li><strong>Premium for players and coaches:</strong> full access for €9.99/month or €99.99/year.</li>
+            <li><strong>Premium for clubs:</strong> full access for €24.99/month or €249.99/year.</li>
           </ul>
+          <p>All plans include the <strong>first month free</strong> (30-day trial period); billing starts from the second month. Prices shown include applicable VAT.</p>
           <p>During the trial period you can cancel at no charge. If you do not cancel, the first charge will be made automatically at the end of the trial.</p>
         `
       },

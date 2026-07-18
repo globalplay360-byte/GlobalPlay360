@@ -2,11 +2,16 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import type { Opportunity } from '@/types';
-import Select from 'react-select';
+import Select, { type StylesConfig, type SingleValue } from 'react-select';
 import Country from 'country-state-city/lib/country';
 import State from 'country-state-city/lib/state';
 
 type FormData = Omit<Opportunity, 'id' | 'createdAt' | 'clubId'>;
+
+interface SelectOption {
+  value: string;
+  label?: string;
+}
 
 const SPORT_OPTIONS = [
   'football',
@@ -22,7 +27,7 @@ const SPORT_OPTIONS = [
   'other'
 ];
 
-export const INITIAL_FORM: FormData = {
+const INITIAL_FORM: FormData = {
   title: '',
   sport: 'football',
   targetRole: 'player',
@@ -36,8 +41,8 @@ export const INITIAL_FORM: FormData = {
   status: 'open',
 };
 
-const darkSelectStyles = {
-  control: (base: any, state: any) => ({
+const darkSelectStyles: StylesConfig<SelectOption, false> = {
+  control: (base, state) => ({
     ...base,
     backgroundColor: '#0F172A',
     borderColor: state.isFocused ? '#3B82F6' : '#1F2937',
@@ -50,7 +55,7 @@ const darkSelectStyles = {
     cursor: state.isDisabled ? 'not-allowed' : 'pointer',
     opacity: state.isDisabled ? 0.5 : 1,
   }),
-  menu: (base: any) => ({
+  menu: (base) => ({
     ...base,
     backgroundColor: '#1F2937',
     border: '1px solid #374151',
@@ -58,7 +63,7 @@ const darkSelectStyles = {
     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
     zIndex: 50,
   }),
-  option: (base: any, state: any) => ({
+  option: (base, state) => ({
     ...base,
     backgroundColor: state.isSelected 
       ? '#3B82F6' 
@@ -71,21 +76,21 @@ const darkSelectStyles = {
       backgroundColor: '#2563EB',
     },
   }),
-  singleValue: (base: any) => ({
+  singleValue: (base) => ({
     ...base,
     color: '#D1D5DB',
     fontSize: '0.875rem'
   }),
-  input: (base: any) => ({
+  input: (base) => ({
     ...base,
     color: '#D1D5DB',
   }),
-  placeholder: (base: any) => ({
+  placeholder: (base) => ({
     ...base,
     color: '#6B7280',
     fontSize: '0.875rem'
   }),
-  indicatorSeparator: (base: any) => ({
+  indicatorSeparator: (base) => ({
     ...base,
     backgroundColor: '#374151',
   })
@@ -243,7 +248,7 @@ export default function OpportunityForm({
                 options={countryOptions}
                 value={currentCountryObj}
                 placeholder={t('opportunityForm.placeholders.country', 'Select country...')}
-                onChange={(selected: any) => {
+                onChange={(selected: SingleValue<SelectOption>) => {
                   setForm(prev => ({
                     ...prev,
                     country: selected ? selected.value : '',
@@ -261,7 +266,7 @@ export default function OpportunityForm({
               options={stateOptions}
               value={currentStateObj}
               placeholder={t('opportunityForm.placeholders.state', 'Select state...')}
-              onChange={(selected: any) => {
+              onChange={(selected: SingleValue<SelectOption>) => {
                 setForm(prev => ({
                   ...prev,
                   state: selected ? selected.value : '',

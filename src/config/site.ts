@@ -12,3 +12,9 @@ export const PRIVATE_PREVIEW_MODE = import.meta.env.VITE_PRIVATE_PREVIEW_MODE ==
 // Correu públic de contacte visible a la web. Quan existeixi la bústia real,
 // només caldrà actualitzar aquest valor.
 export const CONTACT_EMAIL = 'info@globalplay360.com';
+
+// Dades del titular del servei (responsable del tractament, Art. 13 RGPD).
+// Font de veritat per a ContactPage; els textos legals de src/content/legal
+// les dupliquen en HTML estàtic per idioma.
+export const LEGAL_EMAIL = 'aleix.perez@hotmail.com';
+export const LEGAL_ADDRESS = 'Carrer Joan Maragall, 9 CS, 08754 El Papiol (Barcelona)';

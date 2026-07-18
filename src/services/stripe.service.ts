@@ -33,6 +33,7 @@ export interface StripeProduct {
   name: string;
   description: string | null;
   role: string | null;
+  segment: string | null;
   metadata: Record<string, string>;
   prices: StripePrice[];
 }
@@ -117,6 +118,7 @@ export async function listActiveProductsWithPrices(): Promise<StripeProduct[]> {
         name: data.name ?? '',
         description: data.description ?? null,
         role: data.role ?? null,
+        segment: getProductSegment(data),
         metadata: data.metadata ?? {},
         prices,
       };
@@ -149,6 +151,20 @@ function getPriceTrialDays(data: Record<string, unknown>): number | null {
 
 export function isTrialStripePrice(price: StripePrice): boolean {
   return (price.trial_period_days ?? 0) > 0;
+}
+
+// Segment del Product (individual|club). L'extensió aplana la metadata de
+// Stripe com `stripe_metadata_<clau>`; acceptem també `metadata.segment` per
+// robustesa davant de canvis de versió de l'extensió.
+function getProductSegment(data: Record<string, unknown>): string | null {
+  const nested = (data.metadata as Record<string, unknown> | undefined)?.segment;
+  if (typeof nested === 'string' && nested.trim() !== '') {
+    return nested.trim();
+  }
+  const flattened = data.stripe_metadata_segment;
+  return typeof flattened === 'string' && flattened.trim() !== ''
+    ? flattened.trim()
+    : null;
 }
 
 /**

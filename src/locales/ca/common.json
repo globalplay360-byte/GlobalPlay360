@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR des del primer dia",
-        "desc": "Dades allotjades a europe-west1. Dret a l'oblit implementat via Cloud Functions. Controls de privacitat transparents."
+        "desc": "Dades allotjades a europe-west1. Regles de seguretat restrictives a cada col·lecció. Exportació de dades i eliminació de compte disponibles des del teu perfil."
       },
       "realtime": {
         "title": "Sincronització en temps real",
@@ -252,6 +252,10 @@
     "noPremiumActive": "No hi ha cap producte Premium actiu.",
     "monthly": "Mensual",
     "annual": "Anual",
+    "segment": {
+      "individual": "Jugadors i entrenadors",
+      "club": "Clubs"
+    },
     "save": "Estalvia {{amount}}€",
     "free": {
       "title": "Gratuït",
@@ -291,7 +295,13 @@
       "manage": "Gestiona la teva subscripció des del dashboard.",
       "cancelAnytime": "Cancel·la quan vulguis. Sense permanència."
     },
-    "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui"
+    "trustText": "Pagament segur gestionat per Stripe · Facturació en EUR · IVA inclòs segons correspongui",
+    "legal": {
+      "pre": "En subscriure't acceptes els",
+      "terms": "Termes i condicions",
+      "and": "i la",
+      "privacy": "Política de privacitat"
+    }
   },
   "loginPage": {
     "title": "Benvingut de nou",
@@ -328,7 +338,14 @@
       "passwordMismatch": "Les contrasenyes no coincideixen.",
       "weakPassword": "Sisplau, indica una contrasenya segura (mín. 8 caràcters, majúscules i símbols).",
       "registerError": "Hi ha hagut un error en crear el compte. Torna-ho a provar més tard.",
-      "googleError": "Error en registrar-se amb Google."
+      "googleError": "Error en registrar-se amb Google.",
+      "consentRequired": "Has d'acceptar els Termes i condicions i la Política de privacitat per crear el compte."
+    },
+    "consent": {
+      "pre": "He llegit i accepto els",
+      "terms": "Termes i condicions",
+      "and": "i la",
+      "privacy": "Política de privacitat"
     },
     "passwordStrength": {
       "veryWeak": "Molt feble",
@@ -356,6 +373,28 @@
     "googleButton": "Google",
     "hasAccount": "Ja tens compte?",
     "loginLink": "Inicia sessió"
+  },
+  "profilePrivacy": {
+    "title": "Privacitat i dades",
+    "exportTitle": "Descarrega les teves dades",
+    "exportDesc": "Obtén una còpia en format JSON de totes les teves dades personals (Art. 20 RGPD). Màxim una exportació cada 24 hores.",
+    "exportButton": "Descarregar les meves dades",
+    "exporting": "Preparant l'exportació…",
+    "exportRateLimited": "Ja has exportat les teves dades fa menys de 24 hores. Torna-ho a provar més tard.",
+    "exportError": "No s'han pogut exportar les dades. Torna-ho a provar.",
+    "deleteTitle": "Eliminar el compte",
+    "deleteDesc": "Elimina permanentment el teu compte i totes les teves dades (Art. 17 RGPD). Aquesta acció és irreversible.",
+    "deleteButton": "Eliminar el meu compte",
+    "confirmLabel": "Entenc que aquesta acció és irreversible i que totes les meves dades (perfil, candidatures, converses i fitxers) s'eliminaran definitivament.",
+    "confirmButton": "Eliminar definitivament",
+    "deleting": "Eliminant el compte…",
+    "cancel": "Cancel·lar",
+    "goToBilling": "Anar a Facturació",
+    "cancelSubscription": "Cancel·la la subscripció per continuar",
+    "openingPortal": "Obrint el portal…",
+    "errorSubscriptionActive": "Tens una subscripció activa. Cancel·la-la primer al portal de Stripe i torna-ho a provar quan hagi finalitzat.",
+    "errorRecentLogin": "Per seguretat, tanca la sessió, torna a iniciar-la i repeteix l'operació en els 5 minuts següents.",
+    "deleteError": "No s'ha pogut eliminar el compte. Torna-ho a provar."
   },
   "sidebar": {
     "nav": {

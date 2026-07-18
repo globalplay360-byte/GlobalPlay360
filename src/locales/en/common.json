@@ -193,7 +193,7 @@
       },
       "gdpr": {
         "title": "GDPR-first by design",
-        "desc": "Data hosted in europe-west1. Right to erasure implemented via Cloud Functions. Transparent privacy controls."
+        "desc": "Data hosted in europe-west1. Restrictive security rules on every collection. Self-service data export and account deletion from your profile."
       },
       "realtime": {
         "title": "Real-time synchronization",
@@ -252,6 +252,10 @@
     "noPremiumActive": "No active Premium product found.",
     "monthly": "Monthly",
     "annual": "Annual",
+    "segment": {
+      "individual": "Players & coaches",
+      "club": "Clubs"
+    },
     "save": "Save €{{amount}}",
     "free": {
       "title": "Free",
@@ -291,7 +295,13 @@
       "manage": "Manage your subscription from the dashboard.",
       "cancelAnytime": "Cancel anytime. No long-term commitments."
     },
-    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable"
+    "trustText": "Secure payment managed by Stripe · Billed in EUR · VAT included where applicable",
+    "legal": {
+      "pre": "By subscribing you agree to the",
+      "terms": "Terms & Conditions",
+      "and": "and the",
+      "privacy": "Privacy Policy"
+    }
   },
   "loginPage": {
     "title": "Welcome back",
@@ -328,7 +338,14 @@
       "passwordMismatch": "Passwords do not match.",
       "weakPassword": "Please enter a secure password (min. 8 characters, uppercase, and symbols).",
       "registerError": "An error occurred while creating your account. Please try again later.",
-      "googleError": "Error registering with Google."
+      "googleError": "Error registering with Google.",
+      "consentRequired": "You must accept the Terms & Conditions and the Privacy Policy to create your account."
+    },
+    "consent": {
+      "pre": "I have read and accept the",
+      "terms": "Terms & Conditions",
+      "and": "and the",
+      "privacy": "Privacy Policy"
     },
     "passwordStrength": {
       "veryWeak": "Very weak",
@@ -356,6 +373,28 @@
     "googleButton": "Google",
     "hasAccount": "Already have an account?",
     "loginLink": "Log in"
+  },
+  "profilePrivacy": {
+    "title": "Privacy & data",
+    "exportTitle": "Download your data",
+    "exportDesc": "Get a JSON copy of all your personal data (Art. 20 GDPR). Maximum one export every 24 hours.",
+    "exportButton": "Download my data",
+    "exporting": "Preparing your export…",
+    "exportRateLimited": "You already exported your data less than 24 hours ago. Please try again later.",
+    "exportError": "Your data could not be exported. Please try again.",
+    "deleteTitle": "Delete account",
+    "deleteDesc": "Permanently delete your account and all your data (Art. 17 GDPR). This action is irreversible.",
+    "deleteButton": "Delete my account",
+    "confirmLabel": "I understand this action is irreversible and all my data (profile, applications, conversations and files) will be permanently deleted.",
+    "confirmButton": "Delete permanently",
+    "deleting": "Deleting account…",
+    "cancel": "Cancel",
+    "goToBilling": "Go to Billing",
+    "cancelSubscription": "Cancel your subscription to continue",
+    "openingPortal": "Opening the portal…",
+    "errorSubscriptionActive": "You have an active subscription. Cancel it first in the Stripe portal and try again once it has ended.",
+    "errorRecentLogin": "For security, sign out, sign back in, and repeat this action within the next 5 minutes.",
+    "deleteError": "Your account could not be deleted. Please try again."
   },
   "sidebar": {
     "nav": {

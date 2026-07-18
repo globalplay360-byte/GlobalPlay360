@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -7,41 +7,55 @@ import {
   createCheckoutSession,
   isTrialStripePrice,
   type StripePrice,
+  type StripeProduct,
 } from '@/services/stripe.service';
+import type { UserRole } from '@/types';
 import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
 type Interval = 'month' | 'year';
+type Segment = 'individual' | 'club';
+
+// El rol de l'usuari determina el segment de pricing que li correspon.
+// Els clubs paguen el pla club; jugadors i entrenadors, l'individual.
+// Admin/anònim → individual per defecte (l'admin no pot subscriure's igualment).
+function segmentForRole(role?: UserRole): Segment {
+  return role === 'club' ? 'club' : 'individual';
+}
 
 export default function PricingPage() {
   const { user, activePlan, subscriptionLoading } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const isAlreadyPremium = activePlan === 'premium';
 
   const [interval, setBillingInterval] = useState<Interval>('month');
-  const [prices, setPrices] = useState<Record<Interval, StripePrice | null>>({
-    month: null,
-    year: null,
-  });
+  const [segment, setSegment] = useState<Segment>(segmentForRole(user?.role));
+  const [products, setProducts] = useState<StripeProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const canceled = searchParams.get('checkout') === 'cancel';
 
+  // Els usuaris identificats queden fixats al segment del seu rol (un club no
+  // pot comprar el pla individual: el checkout ho rebutjaria). Els visitants
+  // anònims poden alternar amb el selector.
+  const canChooseSegment = !user;
+
+  useEffect(() => {
+    if (user) {
+      setSegment(segmentForRole(user.role));
+    }
+  }, [user]);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const products = await listActiveProductsWithPrices();
-        const premium = products.find((p) => p.role === 'premium') ?? products[0];
-        if (!premium) throw new Error(t('pricingPage.noPremiumActive'));
-        const displayPrices = premium.prices.filter((price) => !isTrialStripePrice(price));
-        const month = displayPrices.find((p) => p.interval === 'month') ?? null;
-        const year = displayPrices.find((p) => p.interval === 'year') ?? null;
-        if (!cancelled) setPrices({ month, year });
+        const activeProducts = await listActiveProductsWithPrices();
+        if (!cancelled) setProducts(activeProducts);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : t('pricingPage.errorPrice'));
@@ -54,6 +68,35 @@ export default function PricingPage() {
       cancelled = true;
     };
   }, [t]);
+
+  // Selecció del Product pel segment (metadata `segment`), no pel simple
+  // `role === 'premium'`: amb 2 Products premium (individual + club) el find
+  // per rol era ambigu i podia mostrar preus del segment equivocat.
+  const selectedProduct = useMemo(() => {
+    const premiumProducts = products.filter((p) => p.role === 'premium');
+    return (
+      premiumProducts.find((p) => p.segment === segment)
+      ?? premiumProducts.find((p) => p.segment == null)
+      ?? premiumProducts[0]
+      ?? null
+    );
+  }, [products, segment]);
+
+  const prices = useMemo<Record<Interval, StripePrice | null>>(() => {
+    const displayPrices = (selectedProduct?.prices ?? []).filter(
+      (price) => !isTrialStripePrice(price),
+    );
+    return {
+      month: displayPrices.find((p) => p.interval === 'month') ?? null,
+      year: displayPrices.find((p) => p.interval === 'year') ?? null,
+    };
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    if (!loading && products.length > 0 && !selectedProduct) {
+      setError(t('pricingPage.noPremiumActive'));
+    }
+  }, [loading, products, selectedProduct, t]);
 
   const handleSubscribe = async () => {
     if (!user) {
@@ -82,8 +125,24 @@ export default function PricingPage() {
     }
   };
 
+  // Preus amb decimals reals (9,99 €), formatats segons l'idioma actiu.
+  // Mai toFixed(0): arrodonir 9,99 € a "10€" seria un sobrepreu visual.
+  const formatEuros = (cents: number): string =>
+    new Intl.NumberFormat(i18n.language, {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(cents / 100);
+
+  const formatAmount = (euros: number): string =>
+    new Intl.NumberFormat(i18n.language, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(euros);
+
   const priceLabel = (price: StripePrice | null): string =>
-    price ? `${(price.unit_amount / 100).toFixed(0)}€` : '—';
+    price ? formatEuros(price.unit_amount) : '—';
 
   const monthlyTotalIfAnnual =
     prices.month && prices.year
@@ -135,6 +194,37 @@ export default function PricingPage() {
           {error && (
             <div className="max-w-2xl mx-auto mb-8 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm text-center">
               {error}
+            </div>
+          )}
+
+          {/* Segment selector — només per a visitants anònims. Els usuaris
+              identificats queden fixats al segment del seu rol. */}
+          {canChooseSegment && (
+            <div className="flex justify-center mb-6 relative">
+              <div className="inline-flex bg-[#111827] border border-[#1F2937] rounded-full p-1.5 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setSegment('individual')}
+                  className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    segment === 'individual'
+                      ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                      : 'text-[#9CA3AF] hover:text-gray-100'
+                  }`}
+                >
+                  {t('pricingPage.segment.individual')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSegment('club')}
+                  className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    segment === 'club'
+                      ? 'bg-[#3B82F6] text-gray-100 shadow-md'
+                      : 'text-[#9CA3AF] hover:text-gray-100'
+                  }`}
+                >
+                  {t('pricingPage.segment.club')}
+                </button>
+              </div>
             </div>
           )}
 
@@ -207,7 +297,7 @@ export default function PricingPage() {
                 <div className="flex items-baseline gap-2 mb-3">
                   {interval === 'year' && prices.month && (
                     <span className="text-2xl sm:text-3xl font-medium text-[#6B7280] line-through decoration-2 decoration-[#6B7280] mr-1">
-                      {((prices.month.unit_amount * 12) / 100).toFixed(0)}€
+                      {formatEuros(prices.month.unit_amount * 12)}
                     </span>
                   )}
                   <span className="text-5xl font-medium text-[#3B82F6] tracking-tight">
@@ -221,7 +311,7 @@ export default function PricingPage() {
                 {interval === 'year' && monthlyTotalIfAnnual !== null && monthlyTotalIfAnnual > 0 ? (
                   <div className="flex flex-col gap-1.5 mb-2">
                     <span className="inline-block w-fit bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 text-xs font-semibold px-2.5 py-1 rounded-md mb-1">
-                      {t('pricingPage.premium.saveToday', { amount: monthlyTotalIfAnnual.toFixed(0) })}
+                      {t('pricingPage.premium.saveToday', { amount: formatAmount(monthlyTotalIfAnnual) })}
                     </span>
                     <p className="text-sm text-[#9CA3AF] font-medium tracking-wide">
                       {t('pricingPage.premium.trial')}
@@ -246,6 +336,18 @@ export default function PricingPage() {
                 <FeatureRow included>{t('pricingPage.premium.features.f5')}</FeatureRow>
                 <FeatureRow included>{t('pricingPage.premium.features.f6')}</FeatureRow>
               </ul>
+
+              {/* Enllaços legals visibles ABANS del CTA (Art. 13 RGPD + LSSI) */}
+              <p className="text-xs text-[#9CA3AF] text-center mb-3">
+                {t('pricingPage.legal.pre', "En subscriure't acceptes els")}{' '}
+                <Link to="/terms" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                  {t('pricingPage.legal.terms', 'Termes i condicions')}
+                </Link>{' '}
+                {t('pricingPage.legal.and', 'i la')}{' '}
+                <Link to="/privacy" className="text-[#93C5FD] underline underline-offset-2 hover:text-gray-100 transition-colors">
+                  {t('pricingPage.legal.privacy', 'Política de privacitat')}
+                </Link>.
+              </p>
 
               {isAlreadyPremium ? (
                 <Link

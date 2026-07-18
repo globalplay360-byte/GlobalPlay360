@@ -8,6 +8,7 @@ import ProfileView from '@/components/profile/ProfileView';
 import { uploadAvatar, updateUserProfile } from '@/services/profile.service';
 
 const ProfileEditForm = lazy(() => import('@/components/profile/ProfileEditForm'));
+const AccountPrivacySection = lazy(() => import('@/components/profile/AccountPrivacySection'));
 
 function EditFormFallback() {
   return (
@@ -107,6 +108,11 @@ export default function ProfilePage() {
           </Button>
         }
       />
+      <div className="p-4 sm:p-6 pt-0 sm:pt-0 max-w-5xl mx-auto w-full">
+        <Suspense fallback={null}>
+          <AccountPrivacySection />
+        </Suspense>
+      </div>
       <input
         type="file"
         ref={fileInputRef}
