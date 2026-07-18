@@ -247,6 +247,8 @@
     "subtitleBold": "30 days risk-free",
     "subtitle2": ".",
     "cancelBanner": "The subscription was not completed. You can try again whenever you want.",
+    "pastDueBanner": "Your subscription has a failed payment. Update your card to restore Premium.",
+    "pastDueCta": "Go to billing",
     "errorPrice": "Error loading prices.",
     "errorCheckout": "Could not start checkout.",
     "noPremiumActive": "No active Premium product found.",
@@ -834,6 +836,10 @@
       "title": "Subscription Canceled",
       "message1": "Your subscription is scheduled to end on",
       "message2": "Until then, you can continue to enjoy all Premium features."
+    },
+    "pastDueBanner": {
+      "title": "Payment past due",
+      "message": "We could not charge your subscription. Update your payment method in the Stripe portal to restore Premium access."
     },
     "card": {
       "premiumPlan": "Premium Plan",

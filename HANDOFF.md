@@ -1,73 +1,72 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (matí — camí entrega completa)**.
-> Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md`.
+> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (tarda — sessió tancada)**.
+> Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md` · Bíblia Stripe: `docs/BIBLIA_QA_STRIPE.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
 
 ---
 
-## ▶️ REPRESA AQUÍ — 18 jul 2026 matí
+## ▶️ REPRESA AQUÍ — 18 jul 2026 tarda (tanquem sessió)
 
 ### Fase del projecte
 
-**Pre-entrega / TEST → després LIVE.** Codi a `fix/bloc1-pre-cobros` (no fusionada, no pushejada). Decisió: **cap retall** — tot ha de quedar fet abans d’entregar a l’Aleix (encara que calgui més temps).
+**Pre-entrega → go-live Stripe (N4).** Decisió: **cap retall**.  
+Codi a `main` (PR #47 pre-cobros + PR #48 `past_due` + PR #49 informe client).  
+Hosting desplegat amb fix `past_due`: https://globalplay360-3f9a1.web.app  
 
-Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → go-live Stripe → document entrega.
+**Informe enviat a l’Aleix** (WhatsApp + HTML) el 18/07 tarda:  
+`docs/informe-situacio-client-juliol-2026.html` (distingeix què fa desenvolupament vs què només pot fer el titular).
 
-### Fet a la consola (17 jul)
+### Veredicte QA Stripe
 
-| Ítem | Estat |
+| Nivell | Estat |
 |---|---|
-| Diagnosi sync | ✅ Productes eren a **LIVE** per error; TEST estava buit. Recreats en TEST. |
-| Webhook `401 Invalid Secret` | ✅ Arreglat: `whsec` nou a l’extensió → entregues **200 OK** |
-| 2 Products + 4 Prices TEST a Firestore | ✅ amb `segment` / `stripe_metadata_segment` + `prices` |
-| Extensió `invertase/…@0.3.12` | ✅ `europe-west1`, ID `firestore-stripe-payments` |
-| Catàleg LIVE (Clubs + Players) | ⚠️ Existeix (creat sense voler). **No usar per QA.** Deixar per al go-live. |
-| **IVA / `tax_behavior` / Stripe Tax** | ⏳ **AJORNAT al go-live.** Els Prices TEST tenen `tax_behavior: unspecified`. No s’ha trobat via clara a la UI per gestionar IVA ara; els imports (9,99/99,99/24,99/249,99) ja estan pensats **IVA inclòs**. Abans de LIVE: activar Stripe Tax + dades fiscals Aleix + OSS UE + `tax_behavior: inclusive` (o equivalent). Documentat a consciència 17/07. |
-| Sync Products → Firestore (TEST) | ✅ 17/07 nit — webhook 200; 2 products + 4 prices; Clubs `prices` OK després de reintent/propagació |
-| Customer Portal + emails trial | ⏳ Següent consola |
-| Prova Pricing local | ✅ 17/07 — anònim + player/coach/club (preus/segment OK). Checkout 4242 encara no. |
-| Alert Stripe «2 tareas / transferencias» | ℹ️ Sense impacte en TEST; completar abans de LIVE |
+| N3 Billing QA OK (TEST) | ✅ 18/07 — errors targeta + anual + cancel Portal + `past_due` UI/Portal |
+| N4 Go-live LIVE | ⏳ proper bloc |
 
-### Codi ja fet (no cal refer)
+Skills porta dura (no saltar passos):  
+`~/.cursor/skills/stripe-billing-qa` · `~/.claude/skills/stripe-billing-qa` · `.claude/skills/stripe-billing-qa` · `.cursor/rules/stripe-billing-qa.mdc`
 
-- Trial a nivell de checkout (`trial_period_days` a la CF) — commits `a9f3def`+
-- PricingPage selecció per `segment` + i18n — commits `5f112d2`+
-- BLOC 1+2 RGPD (Art. 7/17/20, storage.rules, texts legals, rol↔segment, antidoble…)
-
-### Camí entrega completa (sense retalls) — ordre 18/07
+### Camí entrega — estat
 
 | # | Acció | Estat |
 |---|---|---|
 | A | Pricing + sync TEST + QA rols | ✅ |
-| B | Customer Portal TEST | ✅ 18/07 — cancel al final període; canvi de pla OFF; support `info@globalplay360.com` + raó social Aleix Perez Jane. ⚠️ adreça suport a Stripe = Angel Guimera (textos legals app = Joan Maragall 9 CS) — alinear quan es pugui. |
-| C | Emails Stripe: fi de trial + pagament fallit | ⚠️ 18/07 — UI no deixa activar toggles a `/test/settings/billing/subscriptions` (possible bloqueig per compte incomplet «2 tareas»). **No bloqueja checkout TEST.** Reintentar abans de LIVE (o via Empresa → Correos electrónicos de clientes). |
-| D | Deploy branca: `firestore:rules,storage,functions` + hosting | ✅ 18/07 — rules, storage, CFs noves (recordConsent/delete/export + checkout trial) + hosting |
-| E | Checkout E2E TEST `4242` | ✅ 18/07 — player + club OK; cancel Portal Clubs OK (cancel programada 17 ago, sense propera factura). |
-| F | Merge `fix/bloc1-pre-cobros` → `main` | ⏳ en curs |
-| G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ |
-| H | Document entrega Aleix + demo | ⏳ |
+| B | Customer Portal TEST | ✅ cancel fi període; canvi pla OFF |
+| C | Emails trial / pagament fallit | ⚠️ bloquejats per «2 tareas» compte Stripe |
+| D | Deploy rules/storage/functions/hosting | ✅ (+ redeploy hosting amb `past_due` 18/07 tarda) |
+| E | Checkout E2E + matriu N3 | ✅ |
+| F | Merge pre-cobros + past_due | ✅ PR #47, #48, #49 |
+| G | Go-live Stripe (compte, Tax/IVA, LIVE, webhook) | ⏳ **següent** — espera input Aleix |
+| H | Document entrega + demo | ⏳ informe situació enviat; falta manual/demo final |
 
-Codi verificat 18/07: `tsc` ✅ · functions 18/18 ✅ · `npm run build` ✅
+### Properes passes (ordre)
 
-### Enllaços ràpids (consola)
+1. **Aleix:** completar compte Stripe («2 tareas» / identitat / banc) — https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status  
+2. **Aleix:** enviar dades fiscals.  
+3. **Anna (amb OK):** verificar DPA Stripe + Firebase a consola; Stripe Tax; plantilla Art. 30; activació tècnica LIVE (pressupost 2 dies).  
+4. **Aleix:** aprovar Art. 30; decidir política menors abans de reobrir registre.  
+5. Demo + document entrega final.
+
+### Nota git local
+
+El `main` local pot haver quedat desalineat per bloquejos de permisos a `.claude`/`.cursor`. Al reprendre:  
+`git fetch origin` → `git reset --hard origin/main` (si no hi ha canvis locals a conservar).  
+Informe HTML actual pot estar només local o ja a `main` via PR #49 — verificar amb `git status`.
+
+### Enllaços ràpids
 
 | Què | URL |
 |---|---|
-| Firebase Extensions | https://console.firebase.google.com/project/globalplay360-3f9a1/extensions |
-| Firestore `products` | https://console.firebase.google.com/project/globalplay360-3f9a1/firestore/databases/-default-/data/~2Fproducts |
-| Cloud Functions (logs webhook) | https://console.firebase.google.com/project/globalplay360-3f9a1/functions |
-| Stripe Products (TEST) | https://dashboard.stripe.com/test/products |
-| Stripe Webhooks (TEST) | https://dashboard.stripe.com/test/webhooks |
-| Stripe API keys (TEST) | https://dashboard.stripe.com/test/apikeys |
-| Stripe Customer Portal | https://dashboard.stripe.com/test/settings/billing/portal |
-| Stripe emails / Billing | https://dashboard.stripe.com/test/settings/billing |
-| Extensió Invertase (docs) | https://extensions.dev/extensions/invertase/firestore-stripe-payments |
-| URL webhook (funció) | `https://europe-west1-globalplay360-3f9a1.cloudfunctions.net/ext-firestore-stripe-payments-handleWebhookEvents` |
+| Hosting | https://globalplay360-3f9a1.web.app |
+| Stripe account status | https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status |
+| Informe client | `docs/informe-situacio-client-juliol-2026.html` |
+| Bíblia QA Stripe | `docs/BIBLIA_QA_STRIPE.md` |
+| Protocol N3 | `docs/QA_STRIPE_PROTOCOLO_N3.md` |
 
 ### Prompt per al proper xat
 
-> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ**. Projecte GlobalPlay360. Continuem al punt: webhook Stripe TEST creat + extensió invertase 0.3.12 instal·lada, però **Products nous no sincronitzen a Firestore**. Diagnosi entregues webhook + forçar sync + verificar `products` amb `segment`. Després Customer Portal + emails. Stripe TEST only, no Live, no deploy fins sync OK. Català.
+> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ** (18 jul tarda). GlobalPlay360. N3 Stripe TEST fet i enviat informe a l’Aleix. Continuem al **go-live N4**: compte Stripe «2 tareas», dades fiscals, verificar DPA consoles, Stripe Tax, webhook/secrets LIVE, plantilla Art. 30. Català. Cap retall.
 
 ---
 

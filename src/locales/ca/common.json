@@ -247,6 +247,8 @@
     "subtitleBold": "30 dies sense compromís",
     "subtitle2": ".",
     "cancelBanner": "La subscripció no s'ha completat. Pots tornar-ho a intentar quan vulguis.",
+    "pastDueBanner": "Hi ha un pagament pendent a la teva subscripció. Actualitza la targeta per recuperar Premium.",
+    "pastDueCta": "Anar a facturació",
     "errorPrice": "Error carregant els preus.",
     "errorCheckout": "No s'ha pogut iniciar el checkout.",
     "noPremiumActive": "No hi ha cap producte Premium actiu.",
@@ -835,6 +837,10 @@
       "title": "Subscripció cancel·lada",
       "message1": "La teva subscripció està programada per finalitzar el",
       "message2": "Fins aleshores pots continuar gaudint de totes les funcions Premium."
+    },
+    "pastDueBanner": {
+      "title": "Pagament pendent",
+      "message": "No hem pogut cobrar la subscripció. Actualitza el mètode de pagament al portal de Stripe per recuperar l'accés Premium."
     },
     "card": {
       "premiumPlan": "Pla Premium",

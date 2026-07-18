@@ -194,7 +194,7 @@
           <a href="#qa">3. Què s’ha validat a Stripe TEST</a>
           <a href="#pressupost">4. Pressupost de dos dies</a>
           <a href="#stripe">5. Acció teva: compte Stripe</a>
-          <a href="#pendent-tu">6. Pendent legal / fiscal (titular)</a>
+          <a href="#pendent-tu">6. Properes passes: què fa desenvolupament i què cal de tu</a>
           <a href="#checklist">7. Checklist tècnic (RGPD, drets, seguretat, QA)</a>
           <a href="#proper">8. Properes passes</a>
         </nav>
@@ -347,24 +347,79 @@
 
     <section class="sheet" id="pendent-tu">
       <div class="sheet-inner">
-        <h2>6. Què queda pendent per part teva (legal / fiscal)</h2>
+        <h2>6. Properes passes: què fa desenvolupament i què cal de tu</h2>
         <p>
-          La programació i el compliance tècnic pre-cobros estan fets. El que segueix és del
-          <strong class="ink">responsable del tractament</strong> (tu) i de l’activació comercial:
+          La programació i el compliance tècnic pre-cobros estan fets. Per al go-live, una part
+          la pot avançar l’equip tècnic amb el teu OK i les teves dades; una altra només la pots
+          tancar tu (o el teu assessor), perquè ets el
+          <strong class="ink">responsable del tractament</strong> i titular del negoci.
         </p>
-        <ul class="todo">
-          <li><strong>Completar el compte Stripe</strong> (apartat 5).</li>
-          <li><strong>Stripe Tax + IVA</strong> (i OSS UE si escau) amb les teves dades fiscals. Els preus web ja estan pensats amb IVA inclòs.</li>
-          <li><strong>Confirmar els DPA</strong> de Stripe i Google Cloud / Firebase al teu compte.</li>
-          <li><strong>Registre d’activitats de tractament (Art. 30 RGPD)</strong> — document intern del titular (es pot ajudar amb plantilla tècnica).</li>
-          <li><strong>Abans de reobrir el registre públic massiu:</strong> política de menors (edat mínima i validació). Mentrestant el registre tancat redueix el risc.</li>
-          <li><strong>Revisió legal / fiscal externa (recomanat)</strong> — aquest informe no substitueix un advocat o assessor.</li>
+
+        <h3>Ho avançem des de desenvolupament (amb el teu OK / dades)</h3>
+        <ul class="check">
+          <li>
+            <strong>DPA Stripe i Google Cloud / Firebase:</strong> verificar a la consola si els
+            acords de tractament estan acceptats i, si cal i hi ha permisos d’admin, activar-los
+            al compte del projecte. La responsabilitat legal segueix sent teva com a titular;
+            nosaltres deixem constància tècnica de l’estat.
+          </li>
+          <li>
+            <strong>Stripe Tax + IVA a la consola:</strong> configurar-ho quan ens passis les
+            dades fiscals (NIF, adreça, règim). Els preus de la web ja estan pensats amb IVA inclòs.
+          </li>
+          <li>
+            <strong>Registre Art. 30 (plantilla tècnica):</strong> redactar un esborrany del
+            registre d’activitats de tractament perquè el puguis revisar i assumir com a document
+            del responsable.
+          </li>
+          <li>
+            <strong>Política de menors (implementació):</strong> un cop decideixis l’edat mínima
+            (p. ex. 14 o 16), programar la validació al registre abans de reobrir l’alta pública.
+          </li>
+          <li>
+            <strong>Activació tècnica Live</strong> (productes, webhook, secrets Firebase, prova
+            controlada) dins l’abast del pressupost de dos dies, quan el compte Stripe estigui llest.
+          </li>
         </ul>
+
+        <h3>Només tu (o el teu assessor)</h3>
+        <ul class="todo">
+          <li>
+            <strong>Completar el compte Stripe</strong> (apartat 5): sobretot
+            <em>verificació d’identitat</em>, compte bancari i les «2 tareas» que demana Stripe.
+            Les dades de negoci les podem ajudar a omplir si ens les passes.
+          </li>
+          <li>
+            <strong>Alta / gestió OSS (Hisenda)</strong> si venem serveis digitals a la UE i el
+            teu assessor ho indica — això no es fa des del codi de l’app.
+          </li>
+          <li>
+            <strong>Aprovar el registre Art. 30</strong> com a document intern teu (un cop tinguis
+            la plantilla).
+          </li>
+          <li>
+            <strong>Decidir la política de menors</strong> (edat mínima i si cal consentiment
+            parental) abans de reobrir el registre públic massiu. Mentrestant el registre tancat
+            redueix el risc.
+          </li>
+          <li>
+            <strong>Revisió legal / fiscal externa (recomanat)</strong> — aquest informe no
+            substitueix un advocat o assessor.
+          </li>
+        </ul>
+
         <div class="callout blue">
           <p>
             <strong>Ja incorporat a la web:</strong> titular Aleix Pérez Jané, NIF, domicili,
             <code>info@globalplay360.com</code>, correu per a drets RGPD, condicions i privacitat
             amb el pricing real.
+          </p>
+        </div>
+        <div class="callout green">
+          <p>
+            <strong>Per avançar ja:</strong> completa l’enllaç de l’apartat 5 (compte Stripe) i,
+            quan puguis, envia’ns les dades fiscals per Tax. Mentrestant comprovem DPA a les
+            consoles i preparem la plantilla Art. 30.
           </p>
         </div>
       </div>
@@ -434,8 +489,13 @@
             </tr>
             <tr>
               <td>Art. 30</td>
-              <td><span class="pill wait">Pendent titular</span></td>
-              <td>Registre intern</td>
+              <td><span class="pill wait">Plantilla + aprovació</span></td>
+              <td>Esborrany tècnic + OK del titular</td>
+            </tr>
+            <tr>
+              <td>DPA Stripe / Firebase</td>
+              <td><span class="pill info">Verificació consola</span></td>
+              <td>Ho comprovem nosaltres; responsabilitat del titular</td>
             </tr>
             <tr>
               <td>Registre públic + menors</td>
@@ -455,24 +515,26 @@
         <h2>8. Properes passes recomanades</h2>
         <ol style="color: var(--ink); padding-left: 1.2rem; margin: 0;">
           <li style="margin-bottom: 10px;">
-            Completar l’estat del compte Stripe
-            (<a href="https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status" target="_blank" rel="noopener noreferrer">(enllaç)</a>.
+            <strong>Tu:</strong> completar l'estat del compte Stripe
+            <a href="https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status" target="_blank" rel="noopener noreferrer">(enllaç)</a>
+            — identitat, banc i «2 tareas».
           </li>
           <li style="margin-bottom: 10px;">
-            Confirmar dades fiscals → activar Stripe Tax i pas a Live (pressupost 2 dies).
+            <strong>Tu:</strong> enviar dades fiscals → <strong>nosaltres:</strong> Stripe Tax + activació tècnica Live (pressupost 2 dies).
           </li>
           <li style="margin-bottom: 10px;">
-            Activació Live: catàleg, webhook, secrets Firebase i una prova controlada de pagament real.
+            <strong>Nosaltres:</strong> verificar DPA a consoles + plantilla Art. 30 → <strong>tu:</strong> aprovar el registre i decidir política de menors abans de reobrir altes públiques.
           </li>
           <li style="margin-bottom: 10px;">
-            Entrega: manual d’ús, gestió de subscripcions al Portal i demo guiada.
+            Entrega: manual d'ús, gestió de subscripcions al Portal i demo guiada.
           </li>
         </ol>
         <div class="callout green" style="margin-top: 22px;">
           <p>
             <strong>Missatge clau:</strong> el producte i el billing en proves ja no són el blocker.
-            El tram que queda és <strong>activar el negoci amb Stripe en viu</strong> amb el compte
-            i la fiscalitat del titular a punt — cobert pel pressupost de dos dies.
+            El tram que queda és <strong>activar el negoci amb Stripe en viu</strong>: tu tanques
+            el compte i la fiscalitat; nosaltres configurem Tax, DPA a consola i el pas tècnic a Live
+            (pressupost de dos dies).
           </p>
         </div>
         <p class="footer-note" style="margin-top: 28px;">

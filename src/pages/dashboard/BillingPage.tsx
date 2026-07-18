@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
-import { createPortalSession, subscribeToBillingState, type BillingState } from '@/services/stripe.service';
+import {
+  createPortalSession,
+  subscribeToBillingState,
+  subscriptionNeedsPaymentAttention,
+  type BillingState,
+} from '@/services/stripe.service';
 import {
   CreditCardIcon,
   CalendarIcon,
@@ -21,10 +26,13 @@ export default function BillingPage() {
   const [billingState, setBillingState] = useState<BillingState | null>(null);
 
   useEffect(() => {
-    if (!subscriptionLoading && activePlan !== 'premium') {
+    if (subscriptionLoading) return;
+    // past_due/unpaid: cal poder obrir Billing/Portal encara que la claim ja no sigui premium.
+    const needsPaymentFix = subscriptionNeedsPaymentAttention(subscription);
+    if (activePlan !== 'premium' && !needsPaymentFix) {
       navigate('/pricing', { replace: true });
     }
-  }, [subscriptionLoading, activePlan, navigate]);
+  }, [subscriptionLoading, activePlan, subscription, navigate]);
 
   useEffect(() => {
     if (!user || !hasFounderAccess) {
@@ -149,8 +157,27 @@ export default function BillingPage() {
         description={t('billing.subtitle', 'Gestiona la teva subscripció, mètodes de pagament i factures.')}
       />
 
+      {/* Banner impagament — prioritat sobre cancel programada */}
+      {subscriptionNeedsPaymentAttention(subscription) && (
+        <div className="relative flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-gradient-to-b from-red-500/10 to-red-500/5 border border-red-500/30 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.6)]">
+          <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-red-400/20 to-transparent" />
+          <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-semibold text-red-400 mb-1 tracking-tight">
+              {t('billing.pastDueBanner.title', 'Pagament pendent')}
+            </p>
+            <p className="text-red-300/85 leading-relaxed">
+              {t(
+                'billing.pastDueBanner.message',
+                'No hem pogut cobrar la subscripció. Actualitza el mètode de pagament al portal de Stripe per recuperar l’accés Premium.',
+              )}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Banner cancel·lació programada */}
-      {subscription.cancel_at_period_end && (
+      {subscription.cancel_at_period_end && !subscriptionNeedsPaymentAttention(subscription) && (
         <div className="relative flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-gradient-to-b from-[#EAB308]/10 to-[#EAB308]/5 border border-[#EAB308]/30 shadow-[0_1px_0_0_rgba(243,244,246,0.04)_inset,0_10px_30px_-16px_rgba(0,0,0,0.6)]">
           <div className="pointer-events-none absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-[#EAB308]/20 to-transparent" />
           <ExclamationTriangleIcon className="w-5 h-5 text-[#EAB308] flex-shrink-0 mt-0.5" />

@@ -348,8 +348,18 @@ export function subscribeToFounderCampaign(
   );
 }
 
+/** Subscripció que encara cal gestionar a Billing/Portal (impagament). */
+export function subscriptionNeedsPaymentAttention(
+  sub: Pick<StripeSubscription, 'status'> | null | undefined,
+): boolean {
+  return sub?.status === 'past_due' || sub?.status === 'unpaid';
+}
+
 /**
- * Escolta en temps real la subscripció activa (trialing | active) d'un usuari.
+ * Escolta en temps real la subscripció rellevant d'un usuari
+ * (trialing | active | past_due | unpaid).
+ * Incloem past_due/unpaid perquè l'usuari pugui obrir el Customer Portal
+ * i actualitzar la targeta (si només filtrem trialing/active, Billing el perd).
  * L'extensió escriu aquesta col·lecció via webhook, amb `price` i `product` com a
  * DocumentReference, per això els normalitzem a string id.
  */
@@ -360,7 +370,7 @@ export function subscribeToActiveSubscription(
 ): () => void {
   const q = query(
     collection(db, 'customers', uid, 'subscriptions'),
-    where('status', 'in', ['trialing', 'active']),
+    where('status', 'in', ['trialing', 'active', 'past_due', 'unpaid']),
     limit(1),
   );
   return onSnapshot(
