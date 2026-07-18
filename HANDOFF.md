@@ -35,14 +35,20 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 - PricingPage selecció per `segment` + i18n — commits `5f112d2`+
 - BLOC 1+2 RGPD (Art. 7/17/20, storage.rules, texts legals, rol↔segment, antidoble…)
 
-### Primeres accions en reprendre (ordre)
+### Camí entrega completa (sense retalls) — ordre 18/07
 
-1. Neteja Firestore: eliminar o `active: false` l’antic `prod_ULxLPJvpWpH7vc` si encara hi és.
-2. **Customer Portal** (TEST): https://dashboard.stripe.com/test/settings/billing/portal — URLs `/terms` + `/privacy`; només canvi mensual↔anual del mateix Product (no Individual↔Clubs).
-3. **Emails Stripe**: recordatori fi de trial + pagament fallit.
-4. Prova Pricing/checkout en local (targeta test `4242`) amb usuari player i club.
-5. Merge branca + `firebase deploy --only firestore:rules,storage,functions` + QA E2E TEST. **Encara no LIVE.**
-6. Al go-live: Stripe Tax + IVA (`tax_behavior` / inclusive) — vegeu fila IVA amunt.
+| # | Acció | Estat |
+|---|---|---|
+| A | Pricing + sync TEST + QA rols | ✅ |
+| B | Customer Portal TEST (URLs legals + pla mensual↔anual mateix producte) | ⏳ en curs |
+| C | Emails Stripe: fi de trial + pagament fallit | ⏳ |
+| D | Deploy branca: `firestore:rules,storage,functions` (+ hosting UI) | ⏳ |
+| E | Checkout E2E TEST `4242` (player + club → trial → Portal cancel) | ⏳ |
+| F | Merge `fix/bloc1-pre-cobros` → `main` | ⏳ |
+| G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ |
+| H | Document entrega Aleix + demo | ⏳ |
+
+Codi verificat 18/07: `tsc` ✅ · functions 18/18 ✅ · `npm run build` ✅
 
 ### Enllaços ràpids (consola)
 
