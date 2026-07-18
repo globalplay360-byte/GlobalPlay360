@@ -40,10 +40,10 @@ Sync Pricing TEST ✅. **Ara:** Portal + emails → deploy → checkout E2E → 
 | # | Acció | Estat |
 |---|---|---|
 | A | Pricing + sync TEST + QA rols | ✅ |
-| B | Customer Portal TEST (URLs legals + pla mensual↔anual mateix producte) | ⏳ en curs |
+| B | Customer Portal TEST (URLs legals + pla mensual↔anual mateix producte) | ⏳ en curs (Anna consola) |
 | C | Emails Stripe: fi de trial + pagament fallit | ⏳ |
-| D | Deploy branca: `firestore:rules,storage,functions` (+ hosting UI) | ⏳ |
-| E | Checkout E2E TEST `4242` (player + club → trial → Portal cancel) | ⏳ |
+| D | Deploy branca: `firestore:rules,storage,functions` + hosting | ✅ 18/07 — rules, storage, CFs noves (recordConsent/delete/export + checkout trial) + hosting |
+| E | Checkout E2E TEST `4242` (player + club → trial → Portal cancel) | ⏳ següent després de B/C |
 | F | Merge `fix/bloc1-pre-cobros` → `main` | ⏳ |
 | G | Go-live Stripe: dades compte, Tax/IVA, catàleg LIVE, webhook/secrets live | ⏳ |
 | H | Document entrega Aleix + demo | ⏳ |
