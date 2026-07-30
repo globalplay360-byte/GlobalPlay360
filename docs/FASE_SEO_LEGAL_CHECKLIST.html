@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Fase SEO + Legal — GlobalPlay360 | Anna</title>
+  <style>
+    :root {
+      --bg: #0A0A0A; --surface: #111; --border: #1E1E1E;
+      --text: #F0EDE6; --muted: #958D80; --accent: #C4533A;
+      --ok: #6B9F7A; --warn: #C4A35A; --bad: #B85C5C;
+      --font-d: Georgia, 'Times New Roman', serif;
+      --font-b: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-m: ui-monospace, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-b); line-height: 1.65; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .eyebrow { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.75rem; }
+    h1 { font-family: var(--font-d); font-size: clamp(1.75rem, 4vw, 2.35rem); font-weight: 400; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .lead { color: var(--muted); margin: 0 0 2rem; max-width: 56ch; }
+    .meta { font-family: var(--font-m); font-size: 0.72rem; color: var(--muted); border: 1px solid var(--border); padding: 1rem 1.25rem; margin-bottom: 2.5rem; background: var(--surface); }
+    .meta strong { color: var(--text); }
+    h2 { font-family: var(--font-d); font-size: 1.35rem; font-weight: 400; margin: 2.5rem 0 1rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+    h3 { font-family: var(--font-m); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 0.75rem; font-weight: 400; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 1rem 0 1.5rem; }
+    th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-family: var(--font-m); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+    .badge { font-family: var(--font-m); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.45rem; }
+    .pass { color: var(--ok); } .partial { color: var(--warn); } .fail { color: var(--bad); }
+    ul { padding-left: 1.2rem; color: var(--muted); }
+    li { margin: 0.35rem 0; }
+    li strong { color: var(--text); }
+    .box { border: 1px solid var(--border); background: var(--surface); padding: 1.25rem 1.4rem; margin: 1rem 0; }
+    .box p { margin: 0.4rem 0; color: var(--muted); }
+    code { font-family: var(--font-m); font-size: 0.85em; color: var(--accent); }
+    footer { margin-top: 3rem; font-family: var(--font-m); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; }
+    a { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">GlobalPlay360 · fase operativa</p>
+    <h1>SEO + Legal — timeline i tasques</h1>
+    <p class="lead">
+      Document de treball per no deixar escapar res. Legal/billing ja són forts;
+      la fase actual és tancar el paquet SEO públic (i mantenir el legal).
+      Obre aquest HTML des de <code>docs/</code> quan tornis al projecte.
+    </p>
+
+    <div class="meta">
+      <div><strong>Auditoria:</strong> 2026-07-19</div>
+      <div><strong>App:</strong> <code>f:\Freelance\globalplay360\globalplay360\</code></div>
+      <div><strong>Stack:</strong> React · Vite · Firebase · Stripe (extensió) · i18n CA/ES/EN</div>
+      <div><strong>Fase actual:</strong> SEO públic (Bloc 3) — legal P0 OK</div>
+      <div><strong>Agents:</strong> reflectit a <code>CLAUDE.md</code> + <code>.cursor/rules/fase-seo-legal.mdc</code></div>
+    </div>
+
+    <h2>1. Estat checklist (aborras pattern)</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Ítem</th><th>Estat</th><th>Nota</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Meta + OG + imatge OG</td><td class="fail"><span class="badge">FAIL</span></td><td>Només title a index.html</td></tr>
+        <tr><td>2</td><td>robots.txt + sitemap (+ hreflang)</td><td class="fail"><span class="badge">FAIL</span></td><td>Inexistent; i18n sense prefix URL</td></tr>
+        <tr><td>3</td><td>JSON-LD</td><td class="fail"><span class="badge">FAIL</span></td><td>—</td></tr>
+        <tr><td>4</td><td>noindex zones privades</td><td class="fail"><span class="badge">FAIL</span></td><td>Dashboard / admin / checkout</td></tr>
+        <tr><td>5</td><td>Prerender SPA rutes públiques</td><td class="fail"><span class="badge">FAIL</span></td><td>CSR pur</td></tr>
+        <tr><td>6</td><td>Apex ↔ www canònic</td><td class="partial"><span class="badge">PARTIAL</span></td><td>Configurar redirect Hosting/DNS</td></tr>
+        <tr><td>7</td><td>Privacy abans email/pagaments</td><td class="pass"><span class="badge">PASS</span></td><td>Consent Art.7 al registre</td></tr>
+        <tr><td>8</td><td>Secrets + webhooks Stripe</td><td class="pass"><span class="badge">PASS</span></td><td>Secret Manager + extensió</td></tr>
+      </tbody>
+    </table>
+
+    <h2>2. Timeline proposat</h2>
+    <h3>Fase A — Fonament SEO (1 sessió)</h3>
+    <ul>
+      <li><strong>A1</strong> Meta description + OG/Twitter per Home, About, Pricing, Contact, Legal</li>
+      <li><strong>A2</strong> Imatge <code>public/og-default.png</code> (marca real, 1200×630)</li>
+      <li><strong>A3</strong> Component Helmet/SEO per ruta (titleKey / noindex)</li>
+      <li><strong>A4</strong> <code>robots.txt</code> + <code>sitemap.xml</code> a <code>public/</code></li>
+    </ul>
+    <h3>Fase B — Crawlers + privadesa index (1 sessió)</h3>
+    <ul>
+      <li><strong>B1</strong> <code>noindex</code> a <code>/dashboard/*</code>, <code>/admin/*</code>, success checkout</li>
+      <li><strong>B2</strong> Prerender o shells estàtics de rutes públiques (com aborras <code>prerender-meta</code>)</li>
+      <li><strong>B3</strong> JSON-LD Organization + WebSite</li>
+    </ul>
+    <h3>Fase C — Domini + i18n SEO (opcional / després go-live)</h3>
+    <ul>
+      <li><strong>C1</strong> Redirect canònic apex ↔ www</li>
+      <li><strong>C2</strong> Decidir: un sol locale d’URL <em>o</em> prefixes <code>/ca</code> <code>/es</code> + hreflang</li>
+      <li><strong>C3</strong> Search Console + sitemap submit</li>
+    </ul>
+
+    <h2>3. Ja fet (no reobrir sense motiu)</h2>
+    <div class="box">
+      <p>Privacy / Terms / Cookies · consent registre · Art.17/20 · AuthAction custom · Stripe via extensió · secrets fora del repo.</p>
+      <p>Detall: <code>docs/AUDITORIA_RGPD.md</code>, <code>HANDOFF.md</code>.</p>
+    </div>
+
+    <h2>4. Ordre de treball quan obris el projecte</h2>
+    <ol style="color: var(--muted);">
+      <li>Llegir aquest HTML + secció «Fase SEO» a <code>CLAUDE.md</code></li>
+      <li>Branca <code>feat/seo-public-shell</code></li>
+      <li>Tancar Fase A → commit → (opcional) deploy staging</li>
+      <li>Fase B abans de considerar “SEO OK” per clienta</li>
+    </ol>
+
+    <h2>5. Criteri de “fet”</h2>
+    <ul>
+      <li>Share LinkedIn/WhatsApp mostra títol + imatge correcta</li>
+      <li><code>/robots.txt</code> i <code>/sitemap.xml</code> no cauen a l’SPA HTML</li>
+      <li>View-source de Home té description + og:image</li>
+      <li>Dashboard no surt a Google (noindex o bloqueig robots)</li>
+    </ul>
+
+    <footer>Anna Borràs · intern · noindex · actualitzar estat quan tanquis cada fase</footer>
+  </div>
+</body>
+</html>

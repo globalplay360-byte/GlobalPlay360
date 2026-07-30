@@ -1,0 +1,14 @@
+---
+description: Fase SEO/legal GlobalPlay360 — llegir checklist HTML abans de tasques SEO o llançament públic.
+alwaysApply: true
+---
+
+# GlobalPlay360 — fase SEO + legal
+
+Abans de treballar SEO, indexació, meta/OG, robots o “estem llestos per Google”:
+
+1. Obrir i respectar `docs/FASE_SEO_LEGAL_CHECKLIST.html` (timeline A→B→C + estats PASS/FAIL).
+2. Legal/billing P0 es considera **fet** (privacy, terms, cookies, consent Art.7, Stripe extensió). No reimplementar.
+3. Gaps reals: meta+OG, robots/sitemap, JSON-LD, noindex dashboard/admin, prerender rutes públiques, redirect apex/www.
+4. i18n UI CA/ES/EN existeix; **no hi ha** rutes localitzades — no afegir hreflang fins decidir prefixes URL.
+5. Actualitzar l’HTML checklist quan es tanqui una fase (canviar FAIL→PASS).
