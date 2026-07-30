@@ -1,12 +1,61 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (vespre — sessió tancada)**.
-> Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md` · Bíblia Stripe: `docs/BIBLIA_QA_STRIPE.md`.
+> Document de traspàs entre sessions. Última actualització: **30 juliol 2026**.
+> Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md` · Bíblia Stripe: `docs/BIBLIA_QA_STRIPE.md` · Registre Art. 30: `docs/REGISTRE_ART30.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
 
 ---
 
-## ▶️ REPRESA AQUÍ — 18 jul 2026 vespre (tanquem sessió)
+## ▶️ REPRESA AQUÍ — 30 jul 2026
+
+### On som
+
+**Tot el que depenia de desenvolupament està fet. El llançament depèn de l'Aleix.**
+
+| Bloc | Estat |
+|---|---|
+| P0 de la porta de cobros | **12 de 14 resolts i verificats contra el codi** (30/07) |
+| #10 lookup_keys | ⏳ verificació manual a la consola d'Stripe |
+| **#12 secrets pin-ats a `versions/1`** | 🔴 **obert** — s'ha de resoldre *durant* el pas a LIVE |
+| Registre Art. 30 | ✅ redactat (`docs/REGISTRE_ART30.md` + `.html`), pendent de signatura del titular |
+| SEO Bloc 3 | ⏳ ajornat per decisió d'Anna |
+
+### El bloqueig real
+
+El compte d'Stripe de l'Aleix té **dues tasques de verificació vençudes el 28/07** i
+Stripe ha **suspès les transferències**. Obrir cobraments ara acumularia pagaments
+retinguts sense arribar-li al banc. **Correu enviat el 30/07** demanant-li:
+
+1. Completar les dues verificacions d'Stripe
+2. Tornar el registre Art. 30 datat i signat
+3. Decidir l'edat mínima de registre (política de menors) i si vol comunicacions comercials
+
+### Fet en aquesta sessió
+
+- **Reparat el repositori:** `main` estava divergit (3 local / 4 remot). En local faltaven
+  la Bíblia d'Stripe, el protocol de QA N3 i la guia HTML — el HANDOFF les citava com a
+  font de veritat i no existien al disc. Fusionat i sincronitzat.
+- Afegits al repositori el `FASE_SEO_LEGAL_CHECKLIST.html` i la regla de Cursor, que el
+  `CLAUDE.md` citava com a documents mestres i tampoc estaven versionats.
+- Redactat el registre Art. 30 (tanca el P1-3 de l'auditoria RGPD).
+- Re-verificats els 14 P0 i actualitzat el veredicte de la porta.
+- `CASE-STUDY/` al `.gitignore`: 28 MB de material de portfolio d'Anna dins el repositori
+  del client.
+
+### Quan l'Aleix respongui
+
+1. **#12 primer:** apuntar els secrets a la versió nova (o `versions/latest`) i redesplegar
+   l'extensió. Sense això, la clau LIVE no s'aplicaria i seguiríem en TEST sense avís.
+2. Crear els 4 Prices a LIVE i arxivar el Product antic (25 €/250 €).
+3. Webhook LIVE, Tax, DPA a les consoles.
+4. Implementar el llindar d'edat que decideixi.
+5. Re-executar la porta i demo final.
+
+> ⚠️ El pas TEST→LIVE el fa **Anna manualment**. Mai un agent.
+
+---
+
+## 18 jul 2026 vespre (sessió anterior)
 
 ### Fase del projecte
 
