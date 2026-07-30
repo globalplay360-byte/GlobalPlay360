@@ -36,6 +36,11 @@ vite.config.js.timestamp-*.mjs
 docs/*.pdf
 .firebase/
 
+# Material de portfolio d'Anna Borràs — NO és del client.
+# Viu en local per comoditat, però no ha d'acabar mai al repositori de
+# GlobalPlay360: és material comercial propi dins l'organització del client.
+CASE-STUDY/
+
 # Temporary one-off scripts / scratch files
 temp-*
 temp_*

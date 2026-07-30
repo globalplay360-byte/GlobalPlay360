@@ -5,7 +5,52 @@
 
 ---
 
-## Veredicte release: 🔴 NO-GO
+## ⚠️ Re-verificació del 30 juliol 2026 — llegir abans que la resta
+
+El veredicte 🔴 NO-GO d'aquest document és **del 16 de juliol**, anterior als PR #47,
+#48 i #49. S'han re-verificat els 14 P0 **contra el codi**, no contra la memòria:
+
+| P0 | Estat 30/07 | Evidència |
+|---|---|---|
+| #1 Art. 17 esborrat | ✅ Resolt | `functions/index.js:511` `deleteUserAccount` |
+| #2 Art. 20 exportació | ✅ Resolt | `functions/index.js:594` `exportUserData` + `src/services/privacy.service.ts` |
+| #3 storage.rules | ✅ Resolt | Fitxer present i bloc `storage` a `firebase.json:11` |
+| #4 Textos legals amb marcadors | ✅ Resolt | `privacy.content.ts` amb titular, NIF, domicili i correu reals |
+| #5 Art. 7 registre de consentiment | ✅ Resolt | `RegisterPage.tsx:185` casella obligatòria + `consent_history` |
+| #6 Enllaços legals al paywall | ✅ Resolt | `PricingPage.tsx:360` abans del CTA |
+| #7 Terms amb pricing desfasat | ✅ Resolt | Cap rastre de 25 €/250 € |
+| #8 Validació rol↔segment | ✅ Resolt | `functions/index.js:250-276` |
+| #9 Guard antidoble subscripció | ✅ Resolt | `functions/index.js:280` |
+| #10 lookup_keys a Stripe | ⏳ Consola | Verificació manual d'Anna |
+| #11 `toFixed(0)` | ✅ Resolt | Substituït, amb comentari explicatiu |
+| **#12 Secrets pin-ats a `versions/1`** | 🔴 **OBERT** | `extensions/firestore-stripe-payments.env:6,8` |
+| #13 Rutes legals públiques | ✅ Resolt | Solapava amb #4 i #6 |
+| #14 Lint | ✅ Resolt | `npm run lint` → **0 errors**, 5 warnings (eren 26 errors) |
+
+### Per què #12 és el que queda i per què importa
+
+Els secrets `STRIPE_API_KEY` i `STRIPE_WEBHOOK_SECRET` apunten a `versions/1`. En posar
+la clau LIVE es crearà una versió nova del secret, però **l'extensió seguiria llegint la
+versió 1, és a dir la clau de TEST**. El sistema no donaria cap error: els cobraments
+continuarien en mode prova sense senyal visible. **Cal resoldre-ho en el mateix moment
+del pas a LIVE**, apuntant a la versió nova o a `versions/latest`, i redesplegant
+l'extensió.
+
+### Bloqueig extern (no és tècnic)
+
+El compte d'Stripe del titular té **dues tasques de verificació vençudes el 28/07/2026**
+(propietat de l'empresa i document de verificació). Stripe indica «las transferencias se
+han suspendido». Mentre no es resolguin, obrir cobraments **acumularia pagaments retinguts
+sense arribar al compte bancari del client**. Sol·licitat a l'Aleix el 30/07.
+
+### Veredicte
+
+**El veredicte final el signa Anna.** Amb el que s'ha verificat: la porta tècnica està
+neta excepte #12, i el llançament depèn d'una acció del client que encara no s'ha fet.
+
+---
+
+## Veredicte release 16/07/2026: 🔴 NO-GO *(històric — superat, veure la re-verificació de dalt)*
 
 Hi ha **P0 oberts a les tres portes** (RGPD, Stripe/Firebase i producte). Cap matís: no es poden obrir cobraments fins que la llista de P0 d'aquest document estigui tancada i re-verificada.
 
