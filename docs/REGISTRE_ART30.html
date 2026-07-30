@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalPlay360 · Registre d'activitats de tractament (Art. 30 RGPD)</title>
+<style>
+  :root {
+    --bg: #edf2f7;
+    --paper: #ffffff;
+    --ink: #172033;
+    --muted: #5d6a7d;
+    --line: #d8e0ea;
+    --navy: #0b1120;
+    --navy-2: #111a2e;
+    --blue: #2563eb;
+    --blue-soft: #dbeafe;
+    --green: #0f9f6e;
+    --green-soft: #e8f7f1;
+    --gold: #c78a1d;
+    --gold-soft: #fdf6e7;
+    --amber: #b45309;
+    --amber-soft: #fff7ed;
+    --shadow: 0 18px 45px rgba(11, 17, 32, 0.12);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30%),
+      linear-gradient(180deg, #f5f7fb 0%, #eaf0f7 100%);
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.65;
+    padding: 28px;
+  }
+  .document { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+  .sheet {
+    background: var(--paper);
+    border: 1px solid rgba(23, 32, 51, 0.08);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .sheet-inner { padding: 42px 48px; }
+  .cover {
+    background:
+      radial-gradient(circle at 85% 12%, rgba(37, 99, 235, 0.22), transparent 22%),
+      radial-gradient(circle at 15% 85%, rgba(199, 138, 29, 0.16), transparent 18%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 58%, #1d2a43 100%);
+    color: #f8fbff;
+  }
+  .eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(248, 251, 255, 0.55); margin-bottom: 18px;
+  }
+  .cover h1 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15;
+    margin: 0 0 14px; letter-spacing: -0.02em;
+  }
+  .cover .lead {
+    font-size: 1.05rem; color: rgba(248, 251, 255, 0.78);
+    max-width: 660px; margin: 0 0 28px;
+  }
+  .meta-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px; margin-top: 8px;
+  }
+  .meta-card {
+    background: rgba(248, 251, 255, 0.07);
+    border: 1px solid rgba(248, 251, 255, 0.14);
+    border-radius: 14px; padding: 14px 16px;
+  }
+  .meta-card .k {
+    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: rgba(248, 251, 255, 0.5); margin-bottom: 5px;
+  }
+  .meta-card .v { font-size: 0.95rem; font-weight: 600; }
+  h2 { font-size: 1.35rem; margin: 0 0 12px; letter-spacing: -0.02em; }
+  h3 { font-size: 1.05rem; margin: 26px 0 10px; }
+  p { margin: 0 0 12px; color: var(--muted); }
+  .ink { color: var(--ink); }
+  .callout {
+    border-radius: 14px; padding: 16px 18px; margin: 16px 0;
+    border: 1px solid var(--line);
+  }
+  .callout.blue { background: var(--blue-soft); border-color: #bfdbfe; }
+  .callout.green { background: var(--green-soft); border-color: #a7e3cb; }
+  .callout.amber { background: var(--amber-soft); border-color: #fed7aa; }
+  .callout.gold { background: var(--gold-soft); border-color: #f5e0b0; }
+  .callout strong { color: var(--ink); }
+  .callout p:last-child { margin-bottom: 0; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+  }
+  .pill.ok { background: var(--green-soft); color: #0b6b4a; }
+  .pill.wait { background: var(--amber-soft); color: var(--amber); }
+  .pill.info { background: var(--blue-soft); color: #1d4ed8; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  td strong { color: var(--ink); }
+  .act {
+    border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px 24px; margin-top: 18px; background: #fbfcfe;
+  }
+  .act h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .act .code {
+    background: var(--navy); color: #f8fbff; border-radius: 8px;
+    padding: 3px 9px; font-size: 0.78rem; letter-spacing: 0.04em;
+  }
+  .act dl { margin: 0; display: grid; grid-template-columns: 200px 1fr; gap: 0; }
+  .act dt {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted); padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .act dd {
+    margin: 0; padding: 10px 0; border-bottom: 1px solid var(--line);
+    color: var(--ink); font-size: 0.93rem;
+  }
+  .act dl > dt:last-of-type, .act dl > dd:last-of-type { border-bottom: none; }
+  .sign {
+    border: 2px dashed var(--line); border-radius: 16px;
+    padding: 26px; margin-top: 20px; text-align: center;
+  }
+  .sign .line {
+    border-bottom: 1px solid var(--ink); width: min(320px, 80%);
+    margin: 34px auto 8px; height: 1px;
+  }
+  .footer-note { font-size: 0.82rem; color: var(--muted); margin-top: 10px; }
+  @media (max-width: 640px) {
+    body { padding: 14px; }
+    .sheet-inner { padding: 28px 22px; }
+    .act { padding: 18px 16px; }
+    .act dl { grid-template-columns: 1fr; }
+    .act dt { padding-bottom: 0; border-bottom: none; }
+    .act dd { padding-top: 4px; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { box-shadow: none; border-radius: 0; page-break-inside: avoid; }
+    .cover { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="document">
+
+  <!-- PORTADA -->
+  <section class="sheet cover">
+    <div class="sheet-inner">
+      <div class="eyebrow">Document intern · No publicable</div>
+      <h1>Registre d'activitats de tractament</h1>
+      <p class="lead">
+        Article 30 del Reglament (UE) 2016/679 (RGPD). Document que acredita davant
+        l'autoritat de control quines dades personals tracta GlobalPlay360, amb quina
+        finalitat i sota quines garanties.
+      </p>
+      <div class="meta-grid">
+        <div class="meta-card"><div class="k">Responsable</div><div class="v">Aleix Pérez Jané</div></div>
+        <div class="meta-card"><div class="k">Versió</div><div class="v">1.0</div></div>
+        <div class="meta-card"><div class="k">Data</div><div class="v">30 de juliol de 2026</div></div>
+        <div class="meta-card"><div class="k">Estat</div><div class="v">Pendent d'aprovació</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÈ ÉS -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>Què és aquest document</h2>
+      <p>
+        És un <strong class="ink">document intern teu</strong>. No es publica al web ni el
+        veuen els usuaris. La seva funció és poder demostrar què es fa amb les dades
+        personals de la plataforma.
+      </p>
+      <div class="callout amber">
+        <p><strong>Per què importa.</strong> És el primer document que demana l'Agència
+        Espanyola de Protecció de Dades en una inspecció o després d'una reclamació d'un
+        usuari. No tenir-lo és, per si sol, una infracció sancionable amb fins a
+        <strong>10.000 €</strong>, al marge que la resta estigui bé.</p>
+      </div>
+      <p>
+        S'ha de <strong class="ink">mantenir viu</strong>: cada cop que s'afegeixi una
+        funcionalitat que tracti dades noves, entri un proveïdor nou o canviï un termini
+        de conservació, cal revisar-lo.
+      </p>
+
+      <h3>Per què no us aplica l'exempció de les pimes</h3>
+      <p>
+        El RGPD eximeix del registre les organitzacions de menys de 250 treballadors,
+        i per això sovint es dona per fet que un empresari individual no l'ha de tenir.
+        Aquesta exempció, però, <strong class="ink">decau quan el tractament no és
+        ocasional</strong>. A GlobalPlay360 el tractament és continuat i estructural
+        —registre permanent d'usuaris, perfils esportius, missatgeria i subscripcions de
+        pagament—, de manera que el registre <strong class="ink">sí que és
+        obligatori</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- RESPONSABLE -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>1 · Responsable del tractament</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th style="width:34%">Titular</th><td><strong>Aleix Pérez Jané</strong> (empresari individual)</td></tr>
+          <tr><th>NIF</th><td>47939862L</td></tr>
+          <tr><th>Domicili</th><td>Carrer Joan Maragall, 9 CS · 08754 El Papiol (Barcelona), Espanya</td></tr>
+          <tr><th>Correu de contacte</th><td>aleix.perez@hotmail.com</td></tr>
+          <tr><th>Activitat</th><td>Plataforma en línia que connecta jugadors, entrenadors i clubs esportius</td></tr>
+          <tr><th>Delegat de protecció de dades</th><td>No designat — no concorre cap dels supòsits obligatoris de l'article 37.1</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITATS -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>2 · Activitats de tractament</h2>
+      <p>Set activitats identificades, cadascuna amb la seva finalitat, base jurídica i termini.</p>
+
+      <div class="act">
+        <h3><span class="code">A1</span> Registre i gestió de comptes</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Crear i mantenir el compte, autenticar l'usuari i gestionar-ne el rol (jugador, entrenador o club)</dd>
+          <dt>Base jurídica</dt><dd>Execució d'un contracte (art. 6.1.b)</dd>
+          <dt>Interessats</dt><dd>Jugadors, entrenadors i representants de clubs registrats</dd>
+          <dt>Dades</dt><dd>Nom i cognoms, correu electrònic, contrasenya xifrada, rol, data de naixement</dd>
+          <dt>Destinataris</dt><dd>Google Ireland Ltd. (Firebase Authentication, Cloud Firestore)</dd>
+          <dt>Conservació</dt><dd>Mentre el compte sigui actiu. Un cop suprimit, esborrat de la resta en un màxim de 30 dies</dd>
+        </dl>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A2</span> Perfil esportiu i mercat d'oportunitats</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Publicar el perfil esportiu, permetre als clubs publicar ofertes i als usuaris presentar-hi candidatura</dd>
+          <dt>Base jurídica</dt><dd>Execució d'un contracte (art. 6.1.b)</dd>
+          <dt>Interessats</dt><dd>Jugadors, entrenadors i clubs</dd>
+          <dt>Dades</dt><dd>Esport, posició, data de naixement, alçada, pes, vídeos i enllaços publicats voluntàriament, fotografia de perfil. Dades de club: nom, any de fundació, web, instal·lació, aforament</dd>
+          <dt>Destinataris</dt><dd>Google Ireland Ltd. · <strong>Altres usuaris</strong>, segons la visibilitat que l'usuari triï</dd>
+          <dt>Conservació</dt><dd>Mentre el compte sigui actiu</dd>
+        </dl>
+        <div class="callout blue">
+          <p><strong>Nota sobre les fotografies.</strong> Les imatges de perfil poden
+          contenir cares, però <strong>no se'n fa cap tractament biomètric</strong>: no hi
+          ha reconeixement facial ni identificació automatitzada. Per això no són dades de
+          categoria especial. Si algun dia s'incorporés qualsevol funció de reconeixement,
+          aquesta qualificació canviaria i caldria revisar la base jurídica.</p>
+        </div>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A3</span> Missatgeria entre usuaris</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Permetre el contacte directe entre jugadors, entrenadors i clubs</dd>
+          <dt>Base jurídica</dt><dd>Execució d'un contracte (art. 6.1.b) · Interès legítim (art. 6.1.f) per a la seguretat i la resolució d'incidències</dd>
+          <dt>Dades</dt><dd>Contingut dels missatges, identificadors d'emissor i receptor, marques de temps</dd>
+          <dt>Destinataris</dt><dd>Google Ireland Ltd. (Firestore)</dd>
+          <dt>Conservació</dt><dd>Les converses inactives es poden eliminar automàticament als <strong>90 dies</strong> sense activitat</dd>
+        </dl>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A4</span> Subscripcions i cobraments</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Gestionar i cobrar la subscripció Premium, mantenir l'estat de facturació i complir les obligacions fiscals</dd>
+          <dt>Base jurídica</dt><dd>Execució d'un contracte (art. 6.1.b) · Obligació legal (art. 6.1.c) per a la conservació fiscal</dd>
+          <dt>Dades</dt><dd>Identificador de client a Stripe, estat de la subscripció, historial de pagaments i dades fiscals de la factura. <strong>Les dades de targeta no passen mai pels sistemes de GlobalPlay360</strong>: les tracta Stripe directament</dd>
+          <dt>Destinataris</dt><dd>Stripe Payments Europe Ltd. · Google Ireland Ltd.</dd>
+          <dt>Conservació</dt><dd>Mentre la subscripció sigui viva. Documentació comptable i fiscal: <strong>6 anys</strong></dd>
+        </dl>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A5</span> Atenció dels drets i acreditació del compliment</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Registrar el consentiment prestat, atendre les sol·licituds d'accés, portabilitat i supressió, i poder acreditar que s'han atès</dd>
+          <dt>Base jurídica</dt><dd>Obligació legal (art. 6.1.c, en relació amb els arts. 7.1, 15, 17 i 20)</dd>
+          <dt>Dades</dt><dd>Data i versió dels textos acceptats, registre d'exportacions sol·licitades i d'esborrats efectuats</dd>
+          <dt>Destinataris</dt><dd>Google Ireland Ltd. (Firestore)</dd>
+          <dt>Conservació</dt><dd>Mentre pugui ser necessari per a la defensa de reclamacions (art. 17.3.e)</dd>
+        </dl>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A6</span> Seguretat de la plataforma i registres tècnics</h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Prevenir accessos no autoritzats i abusos, diagnosticar incidències i auditar les accions d'administració</dd>
+          <dt>Base jurídica</dt><dd>Interès legítim (art. 6.1.f) en la seguretat de la plataforma i dels seus usuaris</dd>
+          <dt>Dades</dt><dd>Adreça IP, dispositiu i navegador, pàgines visitades, sessions d'autenticació, registres d'accions administratives</dd>
+          <dt>Destinataris</dt><dd>Google Ireland Ltd. (Firebase, Cloud Logging)</dd>
+          <dt>Conservació</dt><dd>Segons la política de retenció de registres de Firebase</dd>
+        </dl>
+      </div>
+
+      <div class="act">
+        <h3><span class="code">A7</span> Comunicacions comercials <span class="pill wait">Pendent de confirmar</span></h3>
+        <dl>
+          <dt>Finalitat</dt><dd>Enviar informació sobre novetats i promocions de la plataforma</dd>
+          <dt>Base jurídica</dt><dd>Consentiment (art. 6.1.a), revocable en qualsevol moment</dd>
+          <dt>Dades</dt><dd>Nom i adreça de correu electrònic</dd>
+          <dt>Conservació</dt><dd>Fins a la retirada del consentiment</dd>
+        </dl>
+        <div class="callout amber">
+          <p><strong>Cal decidir.</strong> La base de dades preveu aquesta funcionalitat.
+          Si <strong>no</strong> es faran enviaments comercials, aquesta activitat s'ha de
+          treure del registre. Si <strong>sí</strong>, el consentiment s'ha de recollir
+          separat de l'acceptació dels termes: no pot anar dins la mateixa casella.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENCARREGATS -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>3 · Empreses que tracten dades per encàrrec</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Proveïdor</th><th>Servei</th><th>On són les dades</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Google Ireland Ltd.</strong></td>
+              <td>Firebase: autenticació, base de dades, emmagatzematge, funcions i allotjament</td>
+              <td><span class="pill ok">europe-west1</span><br><span class="footer-note">Bèlgica, Unió Europea</span></td>
+            </tr>
+            <tr>
+              <td><strong>Stripe Payments Europe Ltd.</strong></td>
+              <td>Processament de pagaments i subscripcions</td>
+              <td>Irlanda (UE), amb tractament als EUA</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Transferències internacionals</h3>
+      <p>
+        Tots dos proveïdors poden tractar dades fora de l'Espai Econòmic Europeu,
+        principalment als Estats Units. La transferència s'empara en les
+        <strong class="ink">clàusules contractuals tipus</strong> aprovades per la
+        Comissió Europea, complementades pel marc de privacitat de dades UE-EUA en què
+        ambdós estan certificats.
+      </p>
+    </div>
+  </section>
+
+  <!-- SEGURETAT -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>4 · Mesures de seguretat aplicades</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th style="width:36%">Xifratge en trànsit</th><td>HTTPS obligatori a tot el domini</td></tr>
+          <tr><th>Xifratge en repòs</th><td>Gestionat per Firebase</td></tr>
+          <tr><th>Control d'accés</th><td>Regles de seguretat per document i per rol a la base de dades i a l'emmagatzematge</td></tr>
+          <tr><th>Autenticació</th><td>Firebase Authentication; les contrasenyes no són accessibles ni per al responsable</td></tr>
+          <tr><th>Custòdia de claus</th><td>Claus d'API i de webhook a Google Secret Manager, mai al codi</td></tr>
+          <tr><th>Minimització</th><td>El navegador no accedeix a claus de pagament; els cobraments passen per funcions al servidor</td></tr>
+          <tr><th>Auditoria</th><td>Registre de les accions d'administració</td></tr>
+          <tr><th>Drets automatitzats</th><td>L'usuari pot exportar i esborrar les seves dades des del seu perfil, sense intervenció manual</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PENDENTS -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>5 · Què falta per tancar aquest registre</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:56%">Punt</th><th>Qui ho decideix</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Política de menors:</strong> edat mínima per registrar-se i si cal consentiment dels pares per sota d'una edat</td><td><span class="pill wait">Aleix</span></td></tr>
+            <tr><td>Confirmar si s'enviaran comunicacions comercials (activitat A7)</td><td><span class="pill wait">Aleix</span></td></tr>
+            <tr><td>Acceptar i arxivar els contractes de tractament a les consoles de Google i Stripe</td><td><span class="pill info">Anna, amb el teu vistiplau</span></td></tr>
+            <tr><td>Signar i datar aquest registre</td><td><span class="pill wait">Aleix</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout gold">
+        <p><strong>El punt dels menors no és menor.</strong> GlobalPlay360 és un mercat de
+        talent esportiu, i una part rellevant dels perfils poden ser jugadors joves. La
+        llei espanyola fixa el llindar del consentiment propi als <strong>14 anys</strong>.
+        La teva decisió determina la validació d'edat al formulari de registre i el text
+        de la política de privacitat, així que és la primera que cal prendre.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURA -->
+  <section class="sheet">
+    <div class="sheet-inner">
+      <h2>6 · Aprovació</h2>
+      <p>
+        La part tècnica d'aquest registre l'ha elaborat el desenvolupament a partir del
+        codi de la plataforma i de la política de privacitat vigent. L'adopció, el
+        manteniment i la custòdia corresponen al responsable del tractament.
+      </p>
+      <div class="sign">
+        <div class="footer-note">El responsable del tractament aprova aquest registre</div>
+        <div class="line"></div>
+        <div><strong>Aleix Pérez Jané</strong> · NIF 47939862L</div>
+        <div class="footer-note">Data: ____ / ____ / 2026</div>
+      </div>
+      <p class="footer-note" style="margin-top:22px">
+        Versió 1.0 · 30 de juliol de 2026 · Elaborat per Anna Borràs Font
+        (<a href="https://www.aborrasdesign.com">aborrasdesign.com</a>) ·
+        Document intern, no destinat a publicació.
+      </p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
