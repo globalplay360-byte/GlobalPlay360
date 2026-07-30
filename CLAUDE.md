@@ -225,3 +225,17 @@ Polish:
 
 ### 📝 Update 22/04/2026: Auditoria de lògica i rols completada
 S'ha auditat correctament l'accés a les ofertes (Clubs no poden aplicar a ofertes com si fossin candidats). S'ha assegurat el comportament en cas que una oportunitat sigui esborrada pel Club i quedi 'òrfena'. Aquesta funcionalitat permet a la resta de rols eliminar l'element de la BD correctament. S'ha assegurat i sanejat _firestore.rules_ assegurant-ho.
+
+---
+
+## 🔎 Fase SEO + Legal (update 2026-07-19)
+
+**Document mestre (obrir sempre):** [`docs/FASE_SEO_LEGAL_CHECKLIST.html`](docs/FASE_SEO_LEGAL_CHECKLIST.html)  
+**Regla Cursor:** `.cursor/rules/fase-seo-legal.mdc`
+
+| Àrea | Estat |
+|------|--------|
+| Legal / consent / Stripe secrets | ✅ Fort |
+| SEO (meta, OG, robots, sitemap, JSON-LD, prerender, noindex) | ❌ Pendent — Bloc 3 |
+
+Quan l’usuària obri aquest projecte per “tancar SEO”, seguir el timeline A→B→C de l’HTML. No reobrir legal P0 sense motiu. No inventar hreflang sense prefixes d’URL.

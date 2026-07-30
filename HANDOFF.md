@@ -1,72 +1,64 @@
 # HANDOFF — GlobalPlay360
 
-> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (tarda — sessió tancada)**.
+> Document de traspàs entre sessions. Última actualització: **18 juliol 2026 (vespre — sessió tancada)**.
 > Font de veritat legal: `docs/AUDITORIA_RGPD.md` · Pla de pricing: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/RELEASE_GATE_COBROS.md` · Bíblia Stripe: `docs/BIBLIA_QA_STRIPE.md`.
 > **Client/titular: Aleix Pérez Jané** (correcció: les mencions antigues a "Aina" eren errònies).
 
 ---
 
-## ▶️ REPRESA AQUÍ — 18 jul 2026 tarda (tanquem sessió)
+## ▶️ REPRESA AQUÍ — 18 jul 2026 vespre (tanquem sessió)
 
 ### Fase del projecte
 
 **Pre-entrega → go-live Stripe (N4).** Decisió: **cap retall**.  
 Codi a `main` (PR #47 pre-cobros + PR #48 `past_due` + PR #49 informe client).  
-Hosting desplegat amb fix `past_due`: https://globalplay360-3f9a1.web.app  
+Hosting: https://globalplay360-3f9a1.web.app  
 
-**Informe enviat a l’Aleix** (WhatsApp + HTML) el 18/07 tarda:  
-`docs/informe-situacio-client-juliol-2026.html` (distingeix què fa desenvolupament vs què només pot fer el titular).
+**Bloqueig actual:** esperar **feedback / accions d’Aleix** (compte Stripe «2 tareas», dades fiscals, decisions menors / Art. 30). Informe ja enviat.
+
+### Case study portfolio (validat 18/07 vespre)
+
+| Ítem | Estat |
+|---|---|
+| HTML motion + captures ES | ✅ `CASE-STUDY/index.html` + `CASE-STUDY/captures/` |
+| Scripts captures | `CASE-STUDY/scripts/capture-es.mjs` · `capture-roles-frame.mjs` |
+| Context / MD | `CASE-STUDY/_CONTEXT_ANNA_360.md` · `case-study-globalplay360.md` |
+| Integració aborrasdesign | ⏳ en curs (altra pestanya): `/globalplay360/` + Selected work amb Synapse + GP360 |
+| Deploy portfolio | només amb OK Anna |
 
 ### Veredicte QA Stripe
 
 | Nivell | Estat |
 |---|---|
-| N3 Billing QA OK (TEST) | ✅ 18/07 — errors targeta + anual + cancel Portal + `past_due` UI/Portal |
-| N4 Go-live LIVE | ⏳ proper bloc |
-
-Skills porta dura (no saltar passos):  
-`~/.cursor/skills/stripe-billing-qa` · `~/.claude/skills/stripe-billing-qa` · `.claude/skills/stripe-billing-qa` · `.cursor/rules/stripe-billing-qa.mdc`
+| N3 Billing QA OK (TEST) | ✅ 18/07 |
+| N4 Go-live LIVE | ⏳ espera Aleix |
 
 ### Camí entrega — estat
 
 | # | Acció | Estat |
 |---|---|---|
-| A | Pricing + sync TEST + QA rols | ✅ |
-| B | Customer Portal TEST | ✅ cancel fi període; canvi pla OFF |
-| C | Emails trial / pagament fallit | ⚠️ bloquejats per «2 tareas» compte Stripe |
-| D | Deploy rules/storage/functions/hosting | ✅ (+ redeploy hosting amb `past_due` 18/07 tarda) |
-| E | Checkout E2E + matriu N3 | ✅ |
-| F | Merge pre-cobros + past_due | ✅ PR #47, #48, #49 |
-| G | Go-live Stripe (compte, Tax/IVA, LIVE, webhook) | ⏳ **següent** — espera input Aleix |
-| H | Document entrega + demo | ⏳ informe situació enviat; falta manual/demo final |
+| A–F | Pricing, Portal, deploy, N3, merges | ✅ |
+| G | Go-live Stripe LIVE | ⏳ **espera Aleix** |
+| H | Demo + document entrega final | ⏳ després N4 / feedback |
 
-### Properes passes (ordre)
+### Properes passes (quan hi hagi resposta)
 
-1. **Aleix:** completar compte Stripe («2 tareas» / identitat / banc) — https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status  
-2. **Aleix:** enviar dades fiscals.  
-3. **Anna (amb OK):** verificar DPA Stripe + Firebase a consola; Stripe Tax; plantilla Art. 30; activació tècnica LIVE (pressupost 2 dies).  
-4. **Aleix:** aprovar Art. 30; decidir política menors abans de reobrir registre.  
-5. Demo + document entrega final.
+1. **Aleix:** compte Stripe + dades fiscals + decisions (menors / Art. 30).  
+2. **Anna:** DPA consoles · Tax · LIVE · webhook · Art. 30 tècnic · demo final.  
+3. Portfolio: tancar integració aborrasdesign si encara pendent.
 
-### Nota git local
+### Enllaços
 
-El `main` local pot haver quedat desalineat per bloquejos de permisos a `.claude`/`.cursor`. Al reprendre:  
-`git fetch origin` → `git reset --hard origin/main` (si no hi ha canvis locals a conservar).  
-Informe HTML actual pot estar només local o ja a `main` via PR #49 — verificar amb `git status`.
-
-### Enllaços ràpids
-
-| Què | URL |
+| Què | On |
 |---|---|
 | Hosting | https://globalplay360-3f9a1.web.app |
-| Stripe account status | https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/test/account/status |
 | Informe client | `docs/informe-situacio-client-juliol-2026.html` |
-| Bíblia QA Stripe | `docs/BIBLIA_QA_STRIPE.md` |
-| Protocol N3 | `docs/QA_STRIPE_PROTOCOLO_N3.md` |
+| Case study | `CASE-STUDY/index.html` |
+| HANDOFF resume | aquesta secció |
 
-### Prompt per al proper xat
+### Prompt proper xat (producte)
 
-> Llegeix `HANDOFF.md` secció **REPRESA AQUÍ** (18 jul tarda). GlobalPlay360. N3 Stripe TEST fet i enviat informe a l’Aleix. Continuem al **go-live N4**: compte Stripe «2 tareas», dades fiscals, verificar DPA consoles, Stripe Tax, webhook/secrets LIVE, plantilla Art. 30. Català. Cap retall.
+> Llegeix `HANDOFF.md` **REPRESA AQUÍ** (18 jul vespre). Esperàvem feedback Aleix. Si ha respost: continuar **N4 go-live**. Si no: no empènyer producte; només portfolio/aborrasdesign si cal. Català. Cap retall.
 
 ---
 
