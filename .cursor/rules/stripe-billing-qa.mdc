@@ -1,0 +1,14 @@
+---
+description: Porta dura QA Stripe — mai declarar cobros OK només amb 4242; exigir N3/N4.
+alwaysApply: true
+---
+
+# Stripe Billing QA (hard stop)
+
+Abans de dir «Stripe OK», «billing fet», «podem cobrar» o proposar go-live LIVE:
+
+1. Llegeix i aplica `.claude/skills/stripe-billing-qa/SKILL.md` i `docs/BIBLIA_QA_STRIPE.md`.
+2. Exigeix evidència PASS: targetes errònies (rebutjada / sense fons / caducada) + `past_due` amb Billing/Portal obrible.
+3. Comunica sempre el nivell N1–N4. Sense N3 → màxim «flux de venda OK».
+4. Si el listener ignora `past_due`/`unpaid` → FAIL F3 → NO-GO LIVE fins al fix.
+5. Inflar el nivell sense proves és inacceptable (risc legal de consum i reputació professional).
