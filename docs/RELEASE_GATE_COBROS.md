@@ -36,12 +36,21 @@ continuarien en mode prova sense senyal visible. **Cal resoldre-ho en el mateix 
 del pas a LIVE**, apuntant a la versió nova o a `versions/latest`, i redesplegant
 l'extensió.
 
-### Bloqueig extern (no és tècnic)
+### Bloqueig extern (no és tècnic) — ✅ RESOLT EL 6/08/2026
 
-El compte d'Stripe del titular té **dues tasques de verificació vençudes el 28/07/2026**
-(propietat de l'empresa i document de verificació). Stripe indica «las transferencias se
-han suspendido». Mentre no es resolguin, obrir cobraments **acumularia pagaments retinguts
-sense arribar al compte bancari del client**. Sol·licitat a l'Aleix el 30/07.
+~~El compte d'Stripe del titular té **dues tasques de verificació vençudes el 28/07/2026**~~
+~~(propietat de l'empresa i document de verificació).~~
+
+**Tancat el 6/08/2026.** Les dues tasques surten **Completada** a Estado de la cuenta
+(«No hay tareas activas para tu cuenta») i Saldos ja no mostra l'avís de transferències
+pausades. El saldo és 0 € i no hi ha transferències perquè encara no s'ha cobrat res:
+és l'esperat, no un símptoma.
+
+Recorregut: el primer document que va pujar l'Aleix es va rebutjar el 4/08 («no es un
+documento aceptable»); es va tornar a enviar el 5/08 amb el document correcte d'activitat
+—no el DNI— i Stripe el va acceptar.
+
+**El go-live ja no depèn de cap acció del client.** El que queda és tècnic i intern.
 
 ### Veredicte
 

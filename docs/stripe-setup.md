@@ -1,5 +1,18 @@
 # Integració Stripe — Estat i roadmap
 
+> ## ⚠️ INSTANTÀNIA HISTÒRICA — NO ÉS FONT DE VERITAT
+>
+> Document del **17 abril 2026**. Es conserva pel raonament de les decisions
+> d'arquitectura (§2), que segueix sent vàlid. **Els estats i els preus d'aquest
+> document estan superats i no s'actualitzen.**
+>
+> Concretament, aquí hi ha desfasat: els preus (deien 25 €/250 €; els vigents són
+> 9,99/99,99 individual i 24,99/249,99 club), les fases 3-8 marcades ⏳/🚧 quan ja
+> estan fetes, i les dades fiscals marcades com a pendents quan van arribar el 30/07.
+>
+> **Per l'estat real, mirar sempre `HANDOFF.md` (§ REPRESA AQUÍ).**
+> Pricing vigent: `docs/PLA_PRICING_STRIPE.md` · Porta QA: `docs/BIBLIA_QA_STRIPE.md`.
+
 **Última actualització:** 2026-04-17
 **Branca de treball:** `feat/stripe-payments-setup`
 **Extensió oficial:** `stripe/firestore-stripe-payments@0.3.4`

@@ -141,7 +141,11 @@ Cap canvi necessari a `firestore.rules`, `AuthContext` ni tests de rules amb aqu
 2. Configuració actual de l'extensió (versió de secrets pin-ada, webhook events actius) abans de replicar-la en live.
 3. Si l'extensió 0.3.4 (o la versió nova d'`invertase/`) suporta `automatic_tax` i `consent_collection` al doc de checkout_session (punts 5 i 7 de la checklist).
 4. Emails natius de Stripe: recordatori de fi de trial i de pagament fallit (punts 8 de la checklist i risc R3).
-5. Stripe Tax: dades fiscals de l'Aleix + registre OSS UE.
+5. Stripe Tax: ~~dades fiscals de l'Aleix~~ **JA LES TENIM** (30/07) — NIF i domicili a
+   `src/content/legal/privacy.content.ts` §1, i el domicili quadra amb el del compte
+   d'Stripe. Queda **configurar** Stripe Tax a la consola (adreça d'origen + registre
+   fiscal d'Espanya). **Registre OSS UE: fora del camí crític** mentre no se superin
+   els 10.000 €/any de B2C digital a altres països de la UE — vegeu `HANDOFF.md`.
 6. Configuració del Customer Portal: quins products/prices permet canviar (risc R2) i política de cancel·lació de trials (risc R4).
 7. Estat de les rutes legals públiques `/terms` i `/privacy` en producció (bloquejant per al Portal i per a Stripe live).
 

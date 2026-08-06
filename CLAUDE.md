@@ -163,8 +163,10 @@ Bloquejants per a live mode:
 - [ ] Restringir permisos de la restricted API key (`Webhook Endpoints: Ninguno`).
 - [ ] URLs legals reals (Privacy, Terms) al Customer Portal — depèn del Bloc 1 (rutes legals).
 
-Obligatoris (requereixen input clienta):
-- [ ] Stripe Tax activat amb dades fiscals de l'empresa + OSS UE.
+Obligatoris:
+- [ ] Stripe Tax activat. **Les dades fiscals ja les tenim des del 30/07** (NIF i domicili
+  a `src/content/legal/privacy.content.ts` §1) — no cal demanar res al client. OSS UE fora
+  del camí crític sota els 10.000 €/any. Vegeu `HANDOFF.md`.
 - [ ] Branding del Customer Portal amb logo i colors Dark SaaS Navy.
 
 Polish:

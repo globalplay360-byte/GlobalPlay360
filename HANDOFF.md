@@ -6,7 +6,97 @@
 
 ---
 
-## ▶️ REPRESA AQUÍ — 30 jul 2026
+## ▶️ REPRESA AQUÍ — 6 ago 2026
+
+### On som
+
+**El bloqueig extern d'Stripe està resolt. El que queda és tot tècnic i intern.**
+
+| Bloc | Estat |
+|---|---|
+| Verificacions d'Stripe | ✅ **Les 2 Completada** (verificat 6/08 a Estado de la cuenta · «No hay tareas activas») |
+| Payouts | ✅ **Desbloquejats.** Saldos sense avís de pausa. Saldo 0 € i cap transferència perquè encara no s'ha cobrat res — és l'esperat |
+| Dades fiscals de l'Aleix | ✅ **Ja les tenim des del 30/07** — NIF + domicili a `src/content/legal/privacy.content.ts` §1. El domicili quadra amb el d'Stripe. **No tornar-les a demanar** |
+| Stripe Tax | 🔴 Desactivat. **Ja no depèn del client**: es pot configurar amb el NIF i el domicili que tenim |
+| OSS UE | ⚪ **Fora del camí crític.** Només obligatori per sobre de 10.000 €/any de B2C digital a altres països UE. Amb 0 € facturats, IVA espanyol a tota la UE. Revisar en acostar-se al llindar — la responsabilitat del llindar és de l'Aleix |
+| Google Pay | ✅ Activat el 6/08 (abans deshabilitat amb Apple Pay actiu — pèrdua de conversió a Android). **Sense smoke al checkout encara** |
+| Edat mínima de registre | ✅ **16 anys**, decidit per l'Aleix el 4/08 i **implementat el 5/08** |
+| Registre Art. 30 | ✅ **Signat**, PDF a `docs/` |
+| #12 secrets pin-ats a `versions/1` | 🔴 segueix obert — es resol *durant* el pas a LIVE |
+| #10 lookup_keys | ⏳ verificació manual a la consola |
+
+### Veredicte Stripe: N3 (Billing QA OK · TEST) — 🔴 NO-GO LIVE
+
+N3 signat el 18/07 (`docs/BIBLIA_QA_STRIPE.md` §5). Blocadors que queden per N4, **tots tècnics**:
+
+1. **Secrets clavats a `versions/1`** — el silenciós. Posar la clau LIVE no tindria efecte i els cobraments seguirien en TEST sense cap senyal.
+2. **Els 8 Prices no existeixen en LIVE** — només en TEST.
+3. **Webhook LIVE + URLs legals al Customer Portal.**
+
+Pendents menors abans del smoke: activar els emails d'Stripe (fi de trial + payment
+failed) — estaven bloquejats per les tasques del compte i **ara ja es poden activar**;
+re-executar el pas F (`past_due`) després del deploy, i un smoke de Google Pay.
+
+### Edat mínima · fet el 5 ago 2026
+
+Detall complet i decisions a `docs/REGISTRE_ART30.md` §5 punt 1. Resum: casella
+declarativa al registre, constància a `consent_history`, i porta real a
+`firestore.rules` sobre `dateOfBirth`. `LEGAL_TEXTS_VERSION` puja a `2026-08-05`
+perquè la política de privacitat canvia.
+
+**Provada contra l'emulador**, no només llegida:
+
+```bash
+npm run test:rules      # aixeca l'emulador, passa els 9 casos i el tanca
+```
+
+`tests/rules-minimum-age.mjs` · 9/9. Cobreix el límit exacte (qui neix l'any-16 passa,
+qui neix l'any-15 no), el perfil sense data —clubs i entrenadors no en donen mai— i el
+cas que justifica la guarda d'`affectedKeys`: un perfil que ja portava una data de menys
+de 16 des d'abans de la política ha de poder editar la resta de camps. Les dates es
+deriven de l'any en curs perquè el test no comenci a mentir el 2027.
+
+`@firebase/rules-unit-testing` ja era al `package.json` sense fer-se servir. Cap
+dependència nova.
+
+> **Anomalia coneguda, no resolta.** L'emulador registra `evaluation error` a la línia
+> de l'`allow update` **acompanyant els DENY** (mai els ALLOW). Els 9 casos es comporten
+> com toca, o sigui que el resultat és correcte, però no he pogut atribuir la causa: la
+> posició que reporta apunta a l'inici de la condició sencera i no a la subexpressió. Es
+> va afegir una guarda `resource != null` —un `setDoc` sobre un document inexistent fa
+> avaluar la branca d'update amb `resource` nul— i **no la va fer desaparèixer**, o sigui
+> que la guarda és correcta però no n'era la causa. Val la pena mirar-ho amb calma abans
+> de tocar aquesta rule per a res més.
+
+### Accés amb Google · retirat el 5/08
+
+**El forat era preexistent**, no el va introduir el canvi de l'edat.
+
+`LoginPage.tsx` tenia botó d'accés amb Google i **cap casella** — ni consentiment ni
+edat, perquè s'assumeix que qui hi entra ja té compte. Però `loginWithGoogle` crea el
+document d'usuari si `isNewUser`: **per aquí es podia arribar a registrar sense acceptar
+res.** Afectava el P0 #5 (consentiment Art. 7), que constava com a resolt — ho era al
+formulari de registre, no en aquest camí.
+
+Es va valorar mantenir-lo rebutjant usuaris nous, i es va **descartar**: no hi havia cap
+compte registrat amb Google, el client no ho havia demanat mai, i hauria estat afegir
+codi —i una passada de QA— per sostenir un camí que no serveix ningú.
+
+Retirat de `LoginPage`, `RegisterPage`, `AuthContext` i `auth.service`, amb les 6 claus
+i18n mortes fora dels tres locales. **Amb això, el P0 #5 passa a ser cert per a tots els
+camins d'alta**, cosa que abans no ho era.
+
+> 🔴 **Falta el pas de consola, i sense ell això només amaga el botó.** El proveïdor
+> segueix actiu a Firebase Auth: la clau pública va al bundle, o sigui que
+> `signInWithPopup` continuaria creant comptes des de fora de l'app.
+>
+> **Firebase Console → Authentication → Sign-in method → Google → Disable.**
+>
+> Fins que no estigui fet, el forat és obert encara que la UI no el mostri.
+
+---
+
+## REPRESA ANTERIOR — 30 jul 2026
 
 ### On som
 
