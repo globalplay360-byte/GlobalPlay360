@@ -1,9 +1,6 @@
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  getAdditionalUserInfo,
   signOut,
   updateProfile,
   sendPasswordResetEmail,
@@ -20,8 +17,6 @@ import { getUserPrivateProfile, migrateLegacyPrivateFields } from './profile.ser
 import { activateSingleSession } from './session.service';
 import { PUBLIC_REGISTRATION_ENABLED } from '@/config/site';
 
-const googleProvider = new GoogleAuthProvider();
-
 /**
  * Registra el consentiment (Art. 7 RGPD) via CF: el servidor hi afegeix
  * timestamp, versió dels textos legals, IP i user agent, i escriu al log
@@ -29,10 +24,13 @@ const googleProvider = new GoogleAuthProvider();
  * això n'és l'evidència. Si la crida falla no bloquegem el registre (l'usuari
  * ja existeix a Auth), però en deixem constància a la consola.
  */
-async function recordRegistrationConsent(): Promise<void> {
+async function recordRegistrationConsent(ageDeclaredOver16: boolean): Promise<void> {
   try {
-    const fn = httpsCallable<{ consentType: string }, { recorded: boolean }>(functions, 'recordConsent');
-    await fn({ consentType: 'registration' });
+    const fn = httpsCallable<
+      { consentType: string; ageDeclaredOver16: boolean },
+      { recorded: boolean }
+    >(functions, 'recordConsent');
+    await fn({ consentType: 'registration', ageDeclaredOver16 });
   } catch (err) {
     console.error('No s\'ha pogut registrar el consentiment:', err);
   }
@@ -138,6 +136,10 @@ export async function registerWithEmail(
   password: string,
   displayName: string,
   role: UserRole = 'player',
+  // Es passa explícitament en comptes de donar-lo per fet: si algú registrés
+  // saltant-se el formulari, el log ha de reflectir que la declaració no s'ha
+  // fet, no una que ningú va marcar. El log és una prova, no un tràmit.
+  ageDeclaredOver16: boolean,
 ): Promise<User> {
   if (!PUBLIC_REGISTRATION_ENABLED) {
     throw new Error('PUBLIC_REGISTRATION_DISABLED');
@@ -155,41 +157,22 @@ export async function registerWithEmail(
   // Create Firestore user document. Premium/trial access only comes from Stripe.
   const user = await createUserDoc(cred.user.uid, email, displayName, role, 'free', cred.user.photoURL);
   await activateSingleSession();
-  await recordRegistrationConsent();
+  await recordRegistrationConsent(ageDeclaredOver16);
   return user;
 }
 
-export async function loginWithGoogle(
-  role: UserRole = 'player',
-): Promise<User> {
-  if (!PUBLIC_REGISTRATION_ENABLED) {
-    throw new Error('PUBLIC_REGISTRATION_DISABLED');
-  }
-
-  const cred = await signInWithPopup(auth, googleProvider);
-  const { uid, email, displayName, photoURL } = cred.user;
-  const isNewUser = getAdditionalUserInfo(cred)?.isNewUser === true;
-
-  if (isNewUser) {
-    await createUserDoc(
-      uid,
-      email ?? '',
-      displayName ?? 'User',
-      role,
-      'free',
-      photoURL,
-    );
-  }
-
-  await activateSingleSession();
-
-  if (isNewUser) {
-    await recordRegistrationConsent();
-  }
-  const userDoc = await getUserDoc(uid);
-  if (!userDoc) throw new Error('User document not found in Firestore');
-  return userDoc;
-}
+// L'accés amb Google es va retirar el 5 d'agost de 2026. `signInWithPopup` creava
+// el compte si l'usuari era nou, i des de la pantalla d'accés això volia dir
+// registrar-se sense passar per cap casella: ni consentiment (Art. 7) ni
+// declaració d'edat. No era un cas hipotètic, era el camí que el botó feia.
+//
+// Es va valorar mantenir-lo rebutjant usuaris nous, i es va descartar: no hi
+// havia cap compte registrat amb Google, el client no ho havia demanat mai, i
+// hauria estat afegir codi per sostenir un camí que no serveix ningú.
+//
+// El proveïdor també s'ha de desactivar a Firebase Console → Authentication →
+// Sign-in method. Sense això, treure el botó només l'amaga: la clau pública va
+// al bundle i `signInWithPopup` seguiria funcionant des de fora de l'app.
 
 export async function logout(): Promise<void> {
   await signOut(auth);

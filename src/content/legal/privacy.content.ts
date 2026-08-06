@@ -101,7 +101,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '8. Menors',
         html: `
-          <p>GlobalPlay360 no està dirigit a menors de 16 anys. Si ets menor de 16 anys necessites el consentiment dels teus tutors legals per registrar-te. Si detectem comptes de menors sense autorització, els suspendrem.</p>
+          <p>L'edat mínima per registrar-se a GlobalPlay360 és de 16 anys. No hi ha cap via de registre per a menors d'aquesta edat, tampoc amb el consentiment dels tutors legals. En crear el compte se't demana que confirmis que tens 16 anys o més. Si detectem un compte d'una persona menor de 16 anys, el suspendrem.</p>
         `
       },
       {
@@ -213,7 +213,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '8. Menores',
         html: `
-          <p>GlobalPlay360 no está dirigido a menores de 16 años. Si eres menor de 16 años necesitas el consentimiento de tus tutores legales para registrarte. Si detectamos cuentas de menores sin autorización, las suspenderemos.</p>
+          <p>La edad mínima para registrarse en GlobalPlay360 es de 16 años. No existe ninguna vía de registro para menores de esa edad, tampoco con el consentimiento de los tutores legales. Al crear la cuenta se te pide que confirmes que tienes 16 años o más. Si detectamos una cuenta de una persona menor de 16 años, la suspenderemos.</p>
         `
       },
       {
@@ -325,7 +325,7 @@ export const PRIVACY: Record<LegalLang, PrivacyContent> = {
       {
         title: '8. Minors',
         html: `
-          <p>GlobalPlay360 is not directed at minors under 16. If you are under 16 you need the consent of your legal guardians to register. If we detect accounts of minors without authorization, we will suspend them.</p>
+          <p>The minimum age to register on GlobalPlay360 is 16. There is no registration path for anyone under that age, not even with the consent of a legal guardian. When you create your account you are asked to confirm that you are 16 or older. If we detect an account belonging to someone under 16, we will suspend it.</p>
         `
       },
       {

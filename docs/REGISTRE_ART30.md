@@ -176,14 +176,36 @@ pel marc de privacitat de dades UE-EUA en què ambdós proveïdors estan certifi
 
 | # | Punt | Qui ho decideix |
 |---|---|---|
-| 1 | **Política de menors**: edat mínima de registre i si cal consentiment del titular de la pàtria potestat per sota d'una edat determinada (l'art. 7 de la LOPDGDD el fixa en 14 anys a Espanya) | **Aleix** |
+| 1 | ~~**Política de menors**: edat mínima de registre~~ | ✅ **Resolt · 4 ago 2026** |
 | 2 | Confirmar si s'enviaran comunicacions comercials (activitat A7) | **Aleix** |
 | 3 | Acceptar i arxivar els DPA a les consoles de Google Cloud i Stripe | Anna, amb el vistiplau de l'Aleix |
-| 4 | Signar i datar aquest registre | **Aleix** |
+| 4 | ~~Signar i datar aquest registre~~ | ✅ **Signat · 5 ago 2026** |
 
-> El punt 1 no és menor en aquesta plataforma: es tracta d'un mercat de talent esportiu
-> on una part rellevant dels perfils poden ser jugadors joves. La decisió condiciona la
-> validació d'edat al registre i el text de la política de privacitat.
+### Punt 1 · resolt
+
+**L'Aleix fixa l'edat mínima de registre en 16 anys** (correu del 4 d'agost de 2026).
+És per sobre dels 14 que fixa l'art. 7 de la LOPDGDD a Espanya i coincideix amb el
+llindar màxim que el RGPD deixa als estats membres.
+
+**No hi ha via de consentiment de tutors**: implementar-la voldria dir verificar la
+identitat d'un tercer, i no es fa. Per sota de 16 no hi ha registre possible.
+
+Aplicat el 5 d'agost de 2026:
+
+| On | Què |
+|---|---|
+| `RegisterPage.tsx` | Casella obligatòria de declaració d'edat, separada de la del consentiment legal perquè el log les pugui distingir |
+| `functions/index.js` | `recordConsent` desa `ageDeclaredOver16` i `minimumAge` a cada entrada de `consent_history` |
+| `firestore.rules` | `meetsMinimumAge()` rebutja una `dateOfBirth` que impliqui menys de 16 anys |
+| `privacy.content.ts` §8 | Reescrita als tres idiomes. **Deia que un menor de 16 es podia registrar amb el consentiment dels tutors, i això no era cert**: aquella via no existeix |
+| `LEGAL_TEXTS_VERSION` | `2026-07-16` → `2026-08-05` |
+
+> **Límit conegut, dit pel seu nom.** Al registre l'edat és una *declaració*, no una
+> verificació: el compte de Firebase Auth es crea des del client i no hi ha cap punt on
+> el servidor la pugui bloquejar. L'única porta real seria una *blocking function*
+> `beforeUserCreated`, que exigeix pujar a Identity Platform. El que sí que hi ha és
+> constància immutable de la declaració, i una porta de servidor de veritat al perfil,
+> que és on la declaració es contrasta amb una dada.
 
 ---
 

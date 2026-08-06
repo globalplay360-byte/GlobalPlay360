@@ -41,6 +41,17 @@ export interface UserPrivate {
   dateOfBirth?: string;         // ISO date — PII
 }
 
+/**
+ * Edat mínima per fer servir la plataforma. Decisió del titular (Aleix, 4 ago
+ * 2026): 16 anys, per sobre dels 14 que fixa l'art. 7 de la LOPDGDD a Espanya.
+ *
+ * Aquest valor viu en tres llocs que han de dir el mateix: aquí (client),
+ * `MINIMUM_AGE` a `functions/index.js` (el que es desa al log de consentiment)
+ * i `meetsMinimumAge()` a `firestore.rules` (l'única porta real). Si en canvies
+ * un, canvia'ls tots tres.
+ */
+export const MINIMUM_AGE = 16;
+
 /** Claus que es migraran de `users/{uid}` a `users/{uid}/private/profile`. */
 export const PRIVATE_PROFILE_KEYS = [
   'email',

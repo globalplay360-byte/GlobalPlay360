@@ -26,8 +26,7 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, displayName: string, role?: UserRole) => Promise<void>;
-  loginWithGoogle: (role?: UserRole) => Promise<void>;
+  register: (email: string, password: string, displayName: string, role: UserRole | undefined, ageDeclaredOver16: boolean) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -273,10 +272,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(
-    async (email: string, password: string, displayName: string, role: UserRole = 'player') => {
+    async (email: string, password: string, displayName: string, role: UserRole = 'player', ageDeclaredOver16 = false) => {
       setState((s) => ({ ...s, loading: true, error: null }));
       try {
-        const user = await authService.registerWithEmail(email, password, displayName, role);
+        const user = await authService.registerWithEmail(email, password, displayName, role, ageDeclaredOver16);
         setState((s) => ({ ...s, user, loading: false, error: null }));
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Registration failed';
@@ -287,17 +286,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const loginWithGoogle = useCallback(async (role: UserRole = 'player') => {
-    setState((s) => ({ ...s, loading: true, error: null }));
-    try {
-      const user = await authService.loginWithGoogle(role);
-      setState((s) => ({ ...s, user, loading: false, error: null }));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Google login failed';
-      setState((s) => ({ ...s, loading: false, error: message }));
-      throw err;
-    }
-  }, []);
 
   const logout = useCallback(async () => {
     await authService.logout();
@@ -323,8 +311,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // canvia algun camp d'`state`, no a cada render del provider. Els callbacks
   // ja són estables via useCallback, així que no entren a les deps.
   const value = useMemo<AuthContextValue>(
-    () => ({ ...state, login, register, loginWithGoogle, logout, refreshUser }),
-    [state, login, register, loginWithGoogle, logout, refreshUser]
+    () => ({ ...state, login, register, logout, refreshUser }),
+    [state, login, register, logout, refreshUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

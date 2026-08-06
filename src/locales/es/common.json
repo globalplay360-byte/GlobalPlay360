@@ -311,8 +311,7 @@
     "errors": {
       "invalidEmail": "Por favor, introduce un correo electrónico válido.",
       "shortPassword": "La contraseña debe tener al menos 6 caracteres.",
-      "invalidCredentials": "Credenciales incorrectas o usuario no encontrado.",
-      "googleError": "Error al iniciar sesión con Google."
+      "invalidCredentials": "Credenciales incorrectas o usuario no encontrado."
     },
     "emailLabel": "Correo Electrónico",
     "emailPlaceholder": "tu@email.com",
@@ -321,8 +320,6 @@
     "loading": "Accediendo...",
     "success": "¡Conectado!",
     "submitButton": "Entrar a mi cuenta",
-    "orContinueWith": "O continúa con",
-    "googleButton": "Google",
     "noAccount": "¿Aún no tienes cuenta?",
     "registerLink": "Crear cuenta nueva"
   },
@@ -340,14 +337,15 @@
       "passwordMismatch": "Las contraseñas no coinciden.",
       "weakPassword": "Por favor, indica una contraseña segura (mín. 8 caracteres, mayúsculas y símbolos).",
       "registerError": "Ocurrió un error al crear la cuenta. Inténtalo más tarde.",
-      "googleError": "Error al registrarse con Google.",
-      "consentRequired": "Debes aceptar los Términos y condiciones y la Política de privacidad para crear la cuenta."
+      "consentRequired": "Debes aceptar los Términos y condiciones y la Política de privacidad para crear la cuenta.",
+      "ageRequired": "Debes confirmar que tienes 16 años o más para crear la cuenta."
     },
     "consent": {
       "pre": "He leído y acepto los",
       "terms": "Términos y condiciones",
       "and": "y la",
-      "privacy": "Política de privacidad"
+      "privacy": "Política de privacidad",
+      "age": "Confirmo que tengo 16 años o más."
     },
     "passwordStrength": {
       "veryWeak": "Muy débil",
@@ -371,8 +369,6 @@
     "loading": "Registrándote...",
     "success": "¡Cuenta creada!",
     "submitButton": "Crear mi cuenta gratis",
-    "orRegisterWith": "O regístrate con",
-    "googleButton": "Google",
     "hasAccount": "¿Ya tienes cuenta?",
     "loginLink": "Iniciar sesión"
   },
@@ -968,6 +964,7 @@
       "spikeReach": "Ej: 320"
     },
     "hints": {
+      "dateOfBirth": "La edad mínima para usar la plataforma es de 16 años.",
       "bio": "Describe tu trayectoria, objetivos y experiencia.",
       "phone": "Visible para clubes premium.",
       "instagram": "Usuario o URL del perfil.",

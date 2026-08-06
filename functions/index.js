@@ -30,7 +30,16 @@ const FOUNDING_MEMBERS_ACCESS_END_DATE = getFoundingMembersAccessEndDate();
 
 // Versió dels textos legals vigents (data de l'última revisió de
 // privacy/terms/cookies a src/content/legal). Actualitzar quan canviïn.
-const LEGAL_TEXTS_VERSION = '2026-07-16';
+//
+// 2026-08-05: la política de privacitat passa a declarar l'edat mínima de
+// registre. La versió ha de pujar sí o sí: `consent_history` la desa a cada
+// entrada, i si no canviés, els consentiments d'abans i de després de la nova
+// política quedarien indistingibles al log — que és precisament la prova.
+const LEGAL_TEXTS_VERSION = '2026-08-05';
+
+// Edat mínima de registre. Decisió del titular (Aleix, 4 ago 2026): 16 anys,
+// per sobre dels 14 que fixa l'art. 7 de la LOPDGDD a Espanya.
+const MINIMUM_AGE = 16;
 
 const CONSENT_TYPES = ['registration'];
 
@@ -203,11 +212,19 @@ export const recordConsent = onCall({
     ? request.data.consentType
     : 'registration';
 
+  // Es desa el que el client ha declarat, no el que hauria d'haver declarat.
+  // Si algun dia hi ha una entrada amb `false`, vol dir que aquell compte s'ha
+  // creat per un camí que no passa per la casella d'edat, i es pot trobar amb
+  // una consulta. Un `true` per omissió convertiria el log en un tràmit.
+  const ageDeclaredOver16 = request.data?.ageDeclaredOver16 === true;
+
   await db.collection('consent_history').doc(uid).collection('entries').add({
     consentType,
     legalTextsVersion: LEGAL_TEXTS_VERSION,
     acceptedTerms: true,
     acceptedPrivacy: true,
+    ageDeclaredOver16,
+    minimumAge: MINIMUM_AGE,
     ip: getRequestIp(request.rawRequest),
     userAgent: getRequestHeader(request.rawRequest, 'user-agent', 256),
     locale: getRequestHeader(request.rawRequest, 'accept-language', 32),

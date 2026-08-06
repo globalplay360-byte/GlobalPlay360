@@ -311,8 +311,7 @@
     "errors": {
       "invalidEmail": "Sisplau, introdueix un correu electrònic vàlid.",
       "shortPassword": "La contrasenya ha de tenir almenys 6 caràcters.",
-      "invalidCredentials": "Credencials incorrectes o usuari no trobat.",
-      "googleError": "Error en iniciar sessió amb Google."
+      "invalidCredentials": "Credencials incorrectes o usuari no trobat."
     },
     "emailLabel": "Correu Electrònic",
     "emailPlaceholder": "el.teu@email.com",
@@ -321,8 +320,6 @@
     "loading": "Accedint...",
     "success": "Connectat!",
     "submitButton": "Entrar al meu compte",
-    "orContinueWith": "O continua amb",
-    "googleButton": "Google",
     "noAccount": "Encara no tens compte?",
     "registerLink": "Crear compte nou"
   },
@@ -340,14 +337,15 @@
       "passwordMismatch": "Les contrasenyes no coincideixen.",
       "weakPassword": "Sisplau, indica una contrasenya segura (mín. 8 caràcters, majúscules i símbols).",
       "registerError": "Hi ha hagut un error en crear el compte. Torna-ho a provar més tard.",
-      "googleError": "Error en registrar-se amb Google.",
-      "consentRequired": "Has d'acceptar els Termes i condicions i la Política de privacitat per crear el compte."
+      "consentRequired": "Has d'acceptar els Termes i condicions i la Política de privacitat per crear el compte.",
+      "ageRequired": "Has de confirmar que tens 16 anys o més per crear el compte."
     },
     "consent": {
       "pre": "He llegit i accepto els",
       "terms": "Termes i condicions",
       "and": "i la",
-      "privacy": "Política de privacitat"
+      "privacy": "Política de privacitat",
+      "age": "Confirmo que tinc 16 anys o més."
     },
     "passwordStrength": {
       "veryWeak": "Molt feble",
@@ -371,8 +369,6 @@
     "loading": "Registrant-te...",
     "success": "Compte creat!",
     "submitButton": "Crear el meu compte gratis",
-    "orRegisterWith": "O registra't amb",
-    "googleButton": "Google",
     "hasAccount": "Ja tens compte?",
     "loginLink": "Inicia sessió"
   },
@@ -969,6 +965,7 @@
       "spikeReach": "Ex: 320"
     },
     "hints": {
+      "dateOfBirth": "L'edat mínima per fer servir la plataforma és de 16 anys.",
       "bio": "Descriu la teva trajectòria, objectius i experiència.",
       "phone": "Visible per clubs premium.",
       "instagram": "Handle o URL del perfil.",

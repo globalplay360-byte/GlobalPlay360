@@ -311,8 +311,7 @@
     "errors": {
       "invalidEmail": "Please enter a valid email address.",
       "shortPassword": "Password must be at least 6 characters long.",
-      "invalidCredentials": "Incorrect credentials or user not found.",
-      "googleError": "Error logging in with Google."
+      "invalidCredentials": "Incorrect credentials or user not found."
     },
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@email.com",
@@ -321,8 +320,6 @@
     "loading": "Logging in...",
     "success": "Connected!",
     "submitButton": "Log in to my account",
-    "orContinueWith": "Or continue with",
-    "googleButton": "Google",
     "noAccount": "Don't have an account yet?",
     "registerLink": "Create new account"
   },
@@ -340,14 +337,15 @@
       "passwordMismatch": "Passwords do not match.",
       "weakPassword": "Please enter a secure password (min. 8 characters, uppercase, and symbols).",
       "registerError": "An error occurred while creating your account. Please try again later.",
-      "googleError": "Error registering with Google.",
-      "consentRequired": "You must accept the Terms & Conditions and the Privacy Policy to create your account."
+      "consentRequired": "You must accept the Terms & Conditions and the Privacy Policy to create your account.",
+      "ageRequired": "You must confirm that you are 16 or older to create your account."
     },
     "consent": {
       "pre": "I have read and accept the",
       "terms": "Terms & Conditions",
       "and": "and the",
-      "privacy": "Privacy Policy"
+      "privacy": "Privacy Policy",
+      "age": "I confirm that I am 16 or older."
     },
     "passwordStrength": {
       "veryWeak": "Very weak",
@@ -371,8 +369,6 @@
     "loading": "Registering...",
     "success": "Account created!",
     "submitButton": "Create my free account",
-    "orRegisterWith": "Or sign up with",
-    "googleButton": "Google",
     "hasAccount": "Already have an account?",
     "loginLink": "Log in"
   },
@@ -968,6 +964,7 @@
       "spikeReach": "Ex: 320"
     },
     "hints": {
+      "dateOfBirth": "The minimum age to use the platform is 16.",
       "bio": "Describe your career, goals, and experience.",
       "phone": "Visible to premium clubs.",
       "instagram": "Handle or profile URL.",

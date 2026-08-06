@@ -1,4 +1,5 @@
 import type { User, Sport } from '@/types';
+import { MINIMUM_AGE } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { Field, Input, Select } from './FormControls';
 import { FormSection } from './FormSection';
@@ -48,9 +49,17 @@ export default function PlayerFields({ formData, onChange, disabled }: Props) {
               ))}
             </Select>
           </Field>
-          <Field label={t('profileEdit.fields.dateOfBirth', 'Data de naixement')}>
+          <Field
+            label={t('profileEdit.fields.dateOfBirth', 'Data de naixement')}
+            hint={t('profileEdit.hints.dateOfBirth', 'L\'edat mínima per fer servir la plataforma és de 16 anys.')}
+          >
             <Input
               type="date"
+              // El `max` ha de deixar passar exactament el mateix que la rule de
+              // Firestore, que compara per any. Si el navegador fos més permissiu,
+              // l'usuari xocaria després contra un error de permisos sec; si fos
+              // més estricte, li negaríem una data que el servidor sí que accepta.
+              max={`${new Date().getFullYear() - MINIMUM_AGE}-12-31`}
               value={formData.dateOfBirth?.slice(0, 10) || ''}
               onChange={(e) =>
                 onChange({

@@ -42,6 +42,28 @@ service cloud.firestore {
              && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Edat mínima de registre: 16 anys. Decisió del titular (Aleix, 4 ago 2026);
+    // l'art. 7 de la LOPDGDD la fixa en 14 a Espanya, o sigui que anem per sobre
+    // del mínim legal. Veure `docs/REGISTRE_ART30.md` §Punts oberts.
+    //
+    // Al registre l'edat només es pot declarar: el compte de Firebase Auth es
+    // crea des del client i no hi ha cap punt on el servidor la pugui bloquejar.
+    // Aquí sí: el perfil s'escriu directament a Firestore, així que aquesta rule
+    // és l'últim mur i l'únic lloc on la declaració es contrasta amb la dada.
+    //
+    // Es compara per ANY i no per dia a propòsit. La data no la verifica ningú,
+    // així que ser exacte al dia seria precisió falsa sobre una dada autodeclarada.
+    // El marge és, com a molt, d'un any al límit, i sempre a favor de l'usuari.
+    function meetsMinimumAge(data) {
+      return !data.keys().hasAny(['dateOfBirth'])
+             || data.dateOfBirth == null
+             || (
+               data.dateOfBirth is string
+               && data.dateOfBirth.size() >= 4
+               && int(data.dateOfBirth[0:4]) <= request.time.year() - 16
+             );
+    }
+
     // ── USERS ──────────────────────────────────────────────
     // Doc `users/{uid}` conté NOMÉS camps públics (displayName, role, bio, sport,
     // country, position, height, etc.) necessaris per al marketplace.
@@ -92,8 +114,31 @@ service cloud.firestore {
       match /private/{docId} {
         allow read: if hasValidSingleSession()
                     && (request.auth.uid == userId || hasPremium());
-        allow create: if request.auth != null && request.auth.uid == userId;
-        allow update: if hasValidSingleSession() && request.auth.uid == userId;
+        // `dateOfBirth` és un PRIVATE_PROFILE_KEY: aquest és el camí real per on
+        // entra la data de naixement, i per tant on es fa complir l'edat mínima.
+        allow create: if request.auth != null
+                      && request.auth.uid == userId
+                      && meetsMinimumAge(request.resource.data);
+        // A `update`, només es comprova si l'escriptura TOCA `dateOfBirth`. En
+        // rules, `request.resource.data` és el document sencer resultant, no els
+        // camps canviats: comprovar-lo sempre deixaria un usuari amb una data
+        // antiga de menys de 16 sense poder editar res més del seu perfil, amb un
+        // error de permisos sec i sense explicació. Això bloqueja el que entra,
+        // no castiga el que ja hi era.
+        // `resource != null` va primer i no és defensa per si de cas: un `setDoc`
+        // sobre un document que no existeix fa avaluar també aquesta branca, i
+        // allà `resource` és nul. Sense la guarda, `resource.data` dins del
+        // `diff()` llança — i una rule que llança denega per error, no per regla.
+        // Si `resource` és nul, caiem a `meetsMinimumAge`, que és el que toca.
+        allow update: if hasValidSingleSession()
+                      && request.auth.uid == userId
+                      && (
+                        (
+                          resource != null
+                          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['dateOfBirth'])
+                        )
+                        || meetsMinimumAge(request.resource.data)
+                      );
         allow delete: if false;
       }
     }
