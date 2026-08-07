@@ -25,6 +25,25 @@
 | #12 secrets pin-ats a `versions/1` | 🔴 segueix obert — es resol *durant* el pas a LIVE |
 | #10 lookup_keys | ⏳ verificació manual a la consola |
 
+### 🔴 Producció va endarrerida respecte de `main` — verificat el 7/08
+
+Últim desplegament de **tot**: **18 juliol**. Regles 08:02 · Functions 08:03 · Hosting 13:26.
+
+El commit `cb4d7ed` és de les **13:47 del 18/07**, 21 minuts després del deploy de hosting,
+i conté el fix de `past_due` (F3). **Mai s'ha desplegat.** En producció, avui, un usuari
+amb el pagament rebutjat desapareix de Billing i no pot canviar la targeta — el criteri
+de NO-GO de `BIBLIA_QA_STRIPE.md`. La fitxa el marca PASS perquè es va provar en local.
+
+Tampoc hi és res del 5/08: ni la porta d'edat a `firestore.rules`, ni la casella al
+registre, ni la retirada de l'accés amb Google.
+
+**Desplegar `main` és el pas 0 del go-live, abans de tocar Stripe.**
+
+### SEO Bloc 3 — fora d'abast (decisió d'Anna, 7/08)
+
+El client no ho ha demanat mai. Passa a **fase d'ampliació**, no és pendent d'entrega.
+No reobrir-ho com a bloquejant.
+
 ### Veredicte Stripe: N3 (Billing QA OK · TEST) — 🔴 NO-GO LIVE
 
 N3 signat el 18/07 (`docs/BIBLIA_QA_STRIPE.md` §5). Blocadors que queden per N4, **tots tècnics**:
