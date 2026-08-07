@@ -25,11 +25,37 @@ Ordre pensat perquè, si algun pas falla, encara no s'hagi cobrat res a ningú.
 **Comprovar a cada pas que el commutador diu LIVE, no TEST.** És l'error més fàcil
 de cometre i el més car: crear el catàleg en TEST i creure que ja està fet.
 
-1. **Stripe Tax** — *Configuración → Impuesto*. Adreça d'origen (ja hi consta) i afegir
-   el registre fiscal d'**Espanya**. Els Prices porten `tax_behavior: inclusive`: el preu
-   que veu l'usuari ja inclou l'IVA i no se li suma res al checkout.
-   **OSS UE: no cal ara.** Només és obligatori per sobre de 10.000 €/any de venda B2C
-   digital a altres països de la UE. Revisar-ho en acostar-se al llindar.
+1. **IVA · tipus manual del 21%, NO Stripe Tax** (decisió d'Anna, 7/08).
+
+   Stripe Tax és un producte de pagament i el cost aniria al compte del titular. Amb
+   venda B2C només a Espanya i per sota dels **10.000 €/any** de venda digital a altres
+   països de la UE, es pot repercutir l'IVA espanyol a tota la UE: un tipus manual del
+   21 % inclusiu és correcte i gratuït.
+
+   - Crear un **Tax Rate** del 21 %, **inclusiu**, país Espanya, nom visible `IVA`.
+     Cal fer-ho **dues vegades**: un a TEST i un a LIVE (els IDs són diferents).
+   - La Cloud Function ha de passar-lo com a `tax_rates` al doc de `checkout_sessions`.
+     L'extensió el reenvia a Stripe com a `subscription_data.default_tax_rates`
+     (verificat contra el codi de l'extensió, només quan `automatic_tax` és fals).
+   - Els Prices porten `tax_behavior: inclusive`: el preu que veu l'usuari ja inclou
+     l'IVA i al checkout no se li suma res a sobre.
+
+   > ⚠️ **Vigilar el llindar dels 10.000 €.** En superar-lo cal donar-se d'alta a l'OSS
+   > i repercutir el tipus de cada país — i llavors el tipus manual ja no serveix.
+   > La responsabilitat del llindar és del titular; deixar-ho per escrit.
+
+   **Estat 7/08:** tipus de TEST creat — `txr_1U11fDGXsJqj46j917L5ByQk`, ja apuntat a la
+   constant `STRIPE_TAX_RATE_ID` de `functions/index.js`.
+
+   **1-bis · El canvi que no es pot oblidar al pas a LIVE:**
+
+   1. Crear el mateix tipus a LIVE: https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/tax-rates
+      (IVA · España · 21 % · **Sí (incluido)** · descripció `IVA 21%`).
+   2. Substituir `STRIPE_TAX_RATE_ID` a `functions/index.js` pel `txr_` **de LIVE**.
+   3. `firebase deploy --only functions --project globalplay360-3f9a1`.
+
+   Si s'oblida, el checkout LIVE peta de seguida amb «No such tax rate». Molesta, però
+   avisa: el mode silenciós seria cobrar sense IVA i adonar-se'n a la declaració.
 
 2. **Products i Prices** — crear els 2 Products i els **4 Prices** de
    `PLA_PRICING_STRIPE.md` §1, amb els `lookup_key` exactes:

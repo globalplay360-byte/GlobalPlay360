@@ -41,6 +41,23 @@ const LEGAL_TEXTS_VERSION = '2026-08-05';
 // per sobre dels 14 que fixa l'art. 7 de la LOPDGDD a Espanya.
 const MINIMUM_AGE = 16;
 
+// Tipus d'IVA de les subscripcions (21 % inclòs al preu, Espanya). Es passa com a
+// `tax_rates` al doc de `checkout_sessions` i l'extensió el reenvia a Stripe com a
+// `subscription_data.default_tax_rates`.
+//
+// 7 ago 2026: es descarta Stripe Tax —és de pagament i el cost aniria al titular— i
+// s'aplica un tipus manual. És correcte mentre la venda B2C a altres països de la UE
+// no superi els 10.000 €/any; a partir d'aquí cal OSS i el tipus de cada país.
+//
+// L'ID és **diferent a TEST i a LIVE**: aquesta constant es canvia al pas TEST→LIVE
+// (`docs/RUNBOOK_STRIPE_LIVE.md`, fase A). Si algú se n'oblida, Stripe rebutja la
+// creació de la sessió amb «No such tax rate» i el checkout peta a la primera. És
+// sorollós expressament: val més que peti que no pas que cobri sense IVA.
+//
+// Viu al codi i no a `.env` perquè `.env*` és al `.gitignore`: allà existiria només a
+// la màquina de qui el va escriure i es perdria en qualsevol traspàs.
+const STRIPE_TAX_RATE_ID = 'txr_1U11fDGXsJqj46j917L5ByQk'; // TEST · IVA 21 % inclòs
+
 const CONSENT_TYPES = ['registration'];
 
 function getRequestIp(rawRequest) {
@@ -334,6 +351,8 @@ export const createBillingCheckoutSession = onCall({
     success_url: successUrl,
     cancel_url: cancelUrl,
     allow_promotion_codes: true,
+    // Sense `automatic_tax`: l'extensió només aplica `tax_rates` quan aquell és fals.
+    tax_rates: [STRIPE_TAX_RATE_ID],
     metadata: {
       source: 'globalplay360',
       requestedPriceId: priceId,
