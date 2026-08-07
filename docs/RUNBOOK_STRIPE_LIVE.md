@@ -44,8 +44,12 @@ de cometre i el més car: crear el catàleg en TEST i creure que ja està fet.
    > i repercutir el tipus de cada país — i llavors el tipus manual ja no serveix.
    > La responsabilitat del llindar és del titular; deixar-ho per escrit.
 
-   **Estat 7/08:** tipus de TEST creat — `txr_1U11fDGXsJqj46j917L5ByQk`, ja apuntat a la
+   **Estat 7/08:** tipus de TEST creat — `txr_1U1lfDGXsJqj46j9l7L5ByQk`, ja apuntat a la
    constant `STRIPE_TAX_RATE_ID` de `functions/index.js`.
+
+   > Els IDs d'Stripe barregen `1`/`l`/`I` i `0`/`O`. **Copiar-los sempre amb el botó de
+   > copiar del dashboard, mai transcrivint-los d'una captura.** El primer intent del
+   > 7/08 va fallar amb «No such tax rate» per dues `1` que eren `l`.
 
    **1-bis · El canvi que no es pot oblidar al pas a LIVE:**
 
