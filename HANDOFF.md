@@ -30,7 +30,9 @@
 N3 signat el 18/07 (`docs/BIBLIA_QA_STRIPE.md` §5). Blocadors que queden per N4, **tots tècnics**:
 
 1. **Secrets clavats a `versions/1`** — el silenciós. Posar la clau LIVE no tindria efecte i els cobraments seguirien en TEST sense cap senyal.
-2. **Els 8 Prices no existeixen en LIVE** — només en TEST.
+2. **Els 4 Prices no existeixen en LIVE** — només en TEST. Són 4, no 8: les variants
+   `_trial` es van descartar el 16/07 (el trial l'aplica la CF al checkout). Detall a
+   `docs/PLA_PRICING_STRIPE.md` §1.
 3. **Webhook LIVE + URLs legals al Customer Portal.**
 
 Pendents menors abans del smoke: activar els emails d'Stripe (fi de trial + payment
