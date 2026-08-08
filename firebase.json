@@ -1,6 +1,6 @@
 {
   "extensions": {
-    "firestore-stripe-payments": "stripe/firestore-stripe-payments@0.3.4"
+    "firestore-stripe-payments": "invertase/firestore-stripe-payments@0.3.12"
   },
   "functions": {
     "source": "functions"
@@ -28,19 +28,28 @@
       {
         "source": "/index.html",
         "headers": [
-          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
         ]
       },
       {
         "source": "/favicon.svg",
         "headers": [
-          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
         ]
       },
       {
         "source": "/assets/**",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
         ]
       }
     ]
