@@ -56,7 +56,8 @@ const MINIMUM_AGE = 16;
 //
 // Viu al codi i no a `.env` perquè `.env*` és al `.gitignore`: allà existiria només a
 // la màquina de qui el va escriure i es perdria en qualsevol traspàs.
-const STRIPE_TAX_RATE_ID = 'txr_1U1lfDGXsJqj46j9l7L5ByQk'; // TEST · IVA 21 % inclòs
+const STRIPE_TAX_RATE_ID = 'txr_1U1mtwGXsJqj46j9L2QELLxt'; // LIVE · IVA 21 % inclòs
+// TEST (per si cal tornar enrere): txr_1U1lfDGXsJqj46j9l7L5ByQk
 
 const CONSENT_TYPES = ['registration'];
 
