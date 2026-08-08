@@ -35,16 +35,105 @@ Conseqüència coneguda i acceptada: l'extensió només guarda **un** secret de 
 té el de LIVE. Provar en TEST tornarà a sincronitzar amb Firestore només si es munta un
 segon projecte de Firebase. **Decisió d'arquitectura pendent, no un pas de runbook.**
 
-### Què falta per poder dir «llest per cobros reals» (N4)
+### 🎯 PROPERA SESSIÓ — camí fins a N4, en ordre
 
-1. **Registre públic tancat** — `VITE_PUBLIC_REGISTRATION_ENABLED` no està definida, o sigui
-   `false`. Es cuina al build: cal editar l'`.env`, **reconstruir i redesplegar**. Sense
-   això ningú es pot registrar per pagar.
-2. Customer Portal de LIVE: URLs legals i política de cancel·lació.
-3. Emails de Billing (fi de prova · pagament fallit) — ja es poden activar.
-4. Firebase Auth → Google → Disable (pendent des del 5/08).
-5. **Smoke de LIVE**: 1 pagament real, factura amb IVA i NIF, cancel·lació pel Portal,
-   Google Pay, i **confirmar que la transferència arriba al banc de l'Aleix**.
+Fer-los **d'un en un** i marcar-los aquí en acabar. Veredicte actual: **N3**. No es pot dir
+«llest per cobros reals» fins que el punt 8 estigui verd.
+
+---
+
+**□ 0 · 🔴 URGENT · contrasenya QA en un repositori públic** · Anna · 15 min
+
+`scripts/create-qa-accounts.mjs:29` porta `const PASSWORD = 'QaTest2026!Gp360'` en clar, i
+`github.com/globalplay360-byte/GlobalPlay360` és **PÚBLIC**. Obre comptes reals d'Auth del
+projecte de producció (`qa.player…`, `qa.coach…`, `qa.club…` amb rols player/coach/club).
+
+Esborrar la línia **no n'hi ha prou**: l'historial de git és públic i permanent.
+
+1. Firebase Console → Authentication → Users → **esborrar els tres comptes `qa.*`**
+   (o canviar-los la contrasenya si se'n vol conservar algun per al smoke).
+2. Treure el valor del script i llegir-lo de `process.env.QA_PASSWORD`.
+3. Afegir `.vite/` al `.gitignore` — hi ha codi de build versionat.
+4. **Informar l'Aleix que el repositori és públic.** El propietari és el seu compte
+   (`globalplay360-byte`) i l'Anna hi té permís **WRITE**, no ADMIN: **no pot canviar-ne la
+   visibilitat i no li correspon**. La decisió és seva. El que ha de saber per decidir:
+   essent públic s'hi veuen les `firestore.rules`, l'estructura de la integració de
+   pagaments i els identificadors del catàleg. Res d'això és un secret en si mateix, però
+   tot plegat és feina estalviada a qui hi vulgui buscar les pessigolles.
+
+   **Els punts 1-3 no depenen d'això** i s'han de fer igualment: la contrasenya ja és
+   pública i ho seguirà sent encara que el repositori es tanqui demà.
+
+**□ 1 · Emails de Billing** · Anna · consola · 5 min
+https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/settings/billing/automatic
+Activar «recordatori de fi de prova» i «pagament fallit». Estaven bloquejats per les
+tasques del compte; ja no. Sense el de pagament fallit, un usuari en `past_due` no
+s'assabenta de res.
+
+**□ 2 · Customer Portal de LIVE** · Anna · consola · 10 min
+https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/settings/billing/portal
+URLs legals reals (`/privacy`, `/terms`), cancel·lació **al final del període**, i limitar
+els canvis de pla perquè no es pugui creuar del segment individual al de club.
+
+**□ 3 · Desactivar Google a Firebase Auth** · Anna · consola · 2 min
+Firebase Console → Authentication → Sign-in method → Google → **Disable**.
+Pendent des del 5/08. El botó ja no és a la UI, però la clau pública va al bundle: mentre
+el proveïdor estigui actiu es poden crear comptes saltant-se la casella d'edat i el
+consentiment (`src/services/auth.service.ts:164-175`).
+
+**□ 4 · Netejar mètodes de pagament** · Anna · consola · 5 min
+La configuració `pmc_1T4kiRGXsJqj46j9b9MG3Ih9` té actius Klarna, Kakao Pay i Naver Pay a
+factures i subscripcions. Per un servei recurrent a Espanya no serveixen ningú i cada
+mètode actiu és una superfície de fallada de renovació més.
+
+**□ 5 · DECISIÓ: obrir el registre públic** · Anna
+`VITE_PUBLIC_REGISTRATION_ENABLED` no està definida → `false`. **Es cuina al build**, no és
+un interruptor de consola:
+```
+.env.local → VITE_PUBLIC_REGISTRATION_ENABLED=true
+npm run build
+firebase deploy --only hosting --project globalplay360-3f9a1
+```
+⚠️ La casella d'edat i el registre de consentiment **només existeixen en un build amb el
+registre obert** (Rollup els elimina com a codi mort quan està tancat). Verificar després
+del build que `ageDeclaredOver16` surt al bundle.
+
+**□ 6 · Posar els flags a un fitxer versionat** · Anna+Claude · 15 min
+Avui viuen a `.env.local`, que és al `.gitignore`: existeixen només a la màquina d'Anna i
+es perdran al traspàs. Els `VITE_*` són públics per definició (van al bundle), així que
+poden anar a un `.env.production` versionat.
+
+**□ 7 · SMOKE DE LIVE amb diners reals** · Anna · 30 min
+El pas que no es pot saltar. Amb targeta pròpia, pla individual mensual:
+- checkout OK i Premium actiu a l'app sense refrescar
+- factura amb `8,26 € + 1,73 € IVA = 9,99 €` **i el NIF al peu**
+- càrrec a l'extracte com a `GLOBAL PLAY 360`
+- cancel·lació pel Customer Portal, amb accés fins al final del període
+- **Google Pay al checkout** (activat el 6/08, mai provat)
+
+**□ 8 · Confirmar que el diner arriba al banc de l'Aleix** · Anna
+Fins que no hi hagi **una transferència completada** a
+https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/balance
+el circuit no està provat de punta a punta. Tot el bloqueig del 28/07 anava d'això.
+
+**□ 9 · Entrega** · Anna+Claude
+Demo guiada, credencials, manual de gestió de subscripcions a Stripe. Compte: les
+credencials QA viuen a `scripts/qa-accounts.generated.json`, que és al `.gitignore` i es
+perdrà si no es tracta a part.
+
+---
+
+### Decisions obertes (no bloquegen, però s'han de prendre)
+
+- **Segon projecte de Firebase per poder tornar a fer QA en TEST.** Avui el QA de billing
+  en mode de prova està mort: un sol projecte = un sol secret de webhook. Cost vs. risc de
+  provar canvis de billing directament en producció.
+- **`invoice.*` i migració futura:** els esdeveniments de factura estan fora de l'endpoint
+  perquè `invoice.paid` peta amb la versió d'API `2026-01-28.clover`. Si algun dia cal
+  guardar factures a Firestore, s'ha de resoldre abans.
+- **Llindar OSS de 10.000 €/any.** Mentre no se superi, l'IVA espanyol al 21 % és correcte
+  per a tota la UE. Passat el llindar, cal alta a l'OSS i el tipus manual deixa de servir.
+  **La responsabilitat de vigilar-ho és del titular** — deixar-ho per escrit a l'entrega.
 
 ---
 
