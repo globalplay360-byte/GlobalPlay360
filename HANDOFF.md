@@ -6,7 +6,49 @@
 
 ---
 
-## ▶️ REPRESA AQUÍ — 6 ago 2026
+## ▶️ REPRESA AQUÍ — 8 ago 2026 · TALL A LIVE FET
+
+**Stripe ja opera en mode actiu.** Fet i verificat contra Firestore i els registres, no
+contra pantalles:
+
+| | |
+|---|---|
+| Clau de l'extensió | `rk_live_…` restringida (Customers/Checkout/Portal escriptura · Subscriptions/Prices lectura · **Webhook Endpoints cap**) → secret versió **2** |
+| Webhook LIVE | endpoint existent, 14 esdeveniments, `invoice.*` fora. Secret **rotat** → versió **6** |
+| Extensió | `invertase/…@0.3.12` reconfigurada, respon **200** |
+| Catàleg a Firestore | només els 2 productes de LIVE + 4 preus (999/9999/2499/24999) |
+| Productes de TEST a Firestore | **esborrats** el 8/08 amb autorització d'Anna |
+| IVA | tipus manual 21 % inclusiu · LIVE `txr_1U1mtwGXsJqj46j9L2QELLxt` a `functions/index.js` |
+| NIF a factures | al peu de pàgina de la plantilla (config compartida entre modes) |
+
+### ⚠️ Incident de seguretat tancat el 8/08
+
+El `whsec_` de producció es va enganxar sense voler al camp «Nombre del destino» del
+webhook i va quedar exposat en una captura. **Rotat immediatament**: caducat a Stripe i
+la versió del Secret Manager destruïda. Amb aquell secret es podien forjar esdeveniments
+contra la Cloud Function pública i, com que l'extensió assigna `stripeRole: premium` a
+partir d'ells, regalar-se Premium. Ja no serveix.
+
+### 🔴 El QA en mode de prova ha deixat de funcionar
+
+Conseqüència coneguda i acceptada: l'extensió només guarda **un** secret de webhook i ara
+té el de LIVE. Provar en TEST tornarà a sincronitzar amb Firestore només si es munta un
+segon projecte de Firebase. **Decisió d'arquitectura pendent, no un pas de runbook.**
+
+### Què falta per poder dir «llest per cobros reals» (N4)
+
+1. **Registre públic tancat** — `VITE_PUBLIC_REGISTRATION_ENABLED` no està definida, o sigui
+   `false`. Es cuina al build: cal editar l'`.env`, **reconstruir i redesplegar**. Sense
+   això ningú es pot registrar per pagar.
+2. Customer Portal de LIVE: URLs legals i política de cancel·lació.
+3. Emails de Billing (fi de prova · pagament fallit) — ja es poden activar.
+4. Firebase Auth → Google → Disable (pendent des del 5/08).
+5. **Smoke de LIVE**: 1 pagament real, factura amb IVA i NIF, cancel·lació pel Portal,
+   Google Pay, i **confirmar que la transferència arriba al banc de l'Aleix**.
+
+---
+
+## REPRESA ANTERIOR — 6 ago 2026
 
 ### On som
 
@@ -22,7 +64,7 @@
 | Google Pay | ✅ Activat el 6/08 (abans deshabilitat amb Apple Pay actiu — pèrdua de conversió a Android). **Sense smoke al checkout encara** |
 | Edat mínima de registre | ✅ **16 anys**, decidit per l'Aleix el 4/08 i **implementat el 5/08** |
 | Registre Art. 30 | ✅ **Signat**, PDF a `docs/` |
-| #12 secrets pin-ats a `versions/1` | 🔴 segueix obert — es resol *durant* el pas a LIVE |
+| #12 secrets pin-ats a `versions/1` | ✅ **TANCAT — ja ho estava.** Vegeu «L'extensió no era la que dèiem» |
 | #10 lookup_keys | ⏳ verificació manual a la consola |
 
 ### 🔴 Producció va endarrerida respecte de `main` — verificat el 7/08
@@ -39,6 +81,39 @@ registre, ni la retirada de l'accés amb Google.
 
 **Desplegar `main` és el pas 0 del go-live, abans de tocar Stripe.**
 
+### 🔴 L'extensió no era la que dèiem — descobert el 8/08
+
+`firebase ext:list` contra el projecte real:
+
+```
+invertase/firestore-stripe-payments@0.3.12 · instància firestore-stripe-payments
+última actualització: 2026-07-17 19:53
+```
+
+El `firebase.json` deia `stripe/firestore-stripe-payments@0.3.4`. **La migració a l'extensió
+mantinguda d'invertase —que constava als documents com a tasca opcional pendent— es va fer
+el 17 de juliol i no es va escriure enlloc.**
+
+Conseqüències, totes verificades amb `firebase ext:export`:
+
+1. **El P0 #12 estava tancat des del 17/07.** La configuració desplegada de veritat ja diu
+   `versions/latest` als dos secrets. El `versions/1` que arrossegàvem als documents era
+   d'una instància que ja no existeix.
+2. **Els secrets reals es diuen sense el prefix `ext-`**: `firestore-stripe-payments-STRIPE_API_KEY`
+   i `firestore-stripe-payments-STRIPE_WEBHOOK_SECRET` (el nom surt de l'ID d'instància).
+   Els `ext-…` d'abril són restes de la instal·lació antiga i **no els llegeix ningú**.
+3. ⚠️ **`firebase deploy --only extensions` hauria estat destructiu** fins avui: amb el
+   `firebase.json` i el `.env` que hi havia al repositori, hauria intentat tornar l'extensió
+   a `stripe@0.3.4` i repuntar-la a un secret inexistent, sobre uns cobraments que
+   funcionen. El pas 9 del runbook ho demanava. No es va arribar a executar.
+
+**Sincronitzat el 8/08:** `firebase.json` i `extensions/firestore-stripe-payments.env` ara
+reflecteixen la instància desplegada. El `.env` es deixa **exactament** com el genera
+`ext:export`, sense comentaris, perquè qualsevol desviació futura es vegi com a diferència.
+
+**Regla que en surt:** abans de tocar l'extensió, `firebase ext:list` i `firebase ext:export`.
+Mai fiar-se del `firebase.json` del repositori.
+
 ### SEO Bloc 3 — fora d'abast (decisió d'Anna, 7/08)
 
 El client no ho ha demanat mai. Passa a **fase d'ampliació**, no és pendent d'entrega.
@@ -48,10 +123,20 @@ No reobrir-ho com a bloquejant.
 
 N3 signat el 18/07 (`docs/BIBLIA_QA_STRIPE.md` §5). Blocadors que queden per N4, **tots tècnics**:
 
-1. **Secrets clavats a `versions/1`** — el silenciós. Posar la clau LIVE no tindria efecte i els cobraments seguirien en TEST sense cap senyal.
-2. **Els 4 Prices no existeixen en LIVE** — només en TEST. Són 4, no 8: les variants
-   `_trial` es van descartar el 16/07 (el trial l'aplica la CF al checkout). Detall a
-   `docs/PLA_PRICING_STRIPE.md` §1.
+1. ~~**Secrets clavats a `versions/1`**~~ — ✅ **ja estava resolt.** Vegeu la secció de sota.
+2. ~~**Els 4 Prices no existeixen en LIVE**~~ — ✅ **FALS, ja hi eren.** Verificat a la
+   consola el 7/08: el catàleg de LIVE es va crear el **16-17 de juliol** i està complet.
+   `GlobalPlay360 Premium — Players & Coaches` (`prod_UtgFoPBknbMEJ4`) amb 9,99/99,99 i
+   `segment: individual`; `GlobalPlay360 Premium — Clubs` (`prod_UtgHnrVqvGvYLE`) amb
+   24,99/249,99 i `segment: club`. Els dos amb `firebaseRole: premium`. El producte antic
+   de 25 € ja estava arxivat.
+
+   Ho vam donar per pendent perquè `PLA_PRICING_STRIPE.md` deia «els crearà Anna» i
+   ningú ho va tancar quan es va fer. Mateix patró que les dades fiscals.
+
+   **#10 lookup_keys: no aplica.** El codi no en fa servir cap
+   (`grep lookup_key` → 0 coincidències). `PricingPage.tsx:80` tria el producte per
+   metadata `segment` i `:92` el preu per `interval`. El P0 queda tancat sense feina.
 3. **Webhook LIVE + URLs legals al Customer Portal.**
 
 Pendents menors abans del smoke: activar els emails d'Stripe (fi de trial + payment

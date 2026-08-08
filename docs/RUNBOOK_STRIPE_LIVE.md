@@ -25,6 +25,22 @@ Ordre pensat perquè, si algun pas falla, encara no s'hagi cobrat res a ningú.
 **Comprovar a cada pas que el commutador diu LIVE, no TEST.** És l'error més fàcil
 de cometre i el més car: crear el catàleg en TEST i creure que ja està fet.
 
+> ⚠️ **Tres entorns, no dos.** El selector de comptes en té tres i dos es diuen quasi igual:
+>
+> | Entorn | Compte | Què hi ha |
+> |---|---|---|
+> | GLOBALPLAY360 · actiu | `acct_1T4khvGXsJqj46j9` | producció |
+> | GLOBALPLAY360 · **Modo de prueba** | `acct_1T4khvGXsJqj46j9` | **tot el QA**: comptes QA, subscripcions, `txr_` de TEST, i on apunta la clau de l'extensió |
+> | **Entorno de prueba** (sandbox) | `acct_1T4kiAGsDnXOvDn3` | buit, no fer-hi res |
+> | JLS BABY S.L. | — | un altre negoci |
+>
+> El **sandbox és un compte diferent**: el que s'hi creï no el veu mai la integració.
+> Té tasques de verificació pròpies (n'hi havia una amb data 19 set 2026) que **no
+> afecten cap transferència real** — no confondre-les amb les del compte actiu.
+>
+> La clau `sk_test_51T4kiAGsDnXOvDn3…` apuntada a `stripe.txt` és **la del sandbox**.
+> No fer-la servir.
+
 1. **IVA · tipus manual del 21%, NO Stripe Tax** (decisió d'Anna, 7/08).
 
    Stripe Tax és un producte de pagament i el cost aniria al compte del titular. Amb
@@ -51,12 +67,36 @@ de cometre i el més car: crear el catàleg en TEST i creure que ja està fet.
    > copiar del dashboard, mai transcrivint-los d'una captura.** El primer intent del
    > 7/08 va fallar amb «No such tax rate» per dues `1` que eren `l`.
 
+   **✅ Verificat el 7/08 en TEST.** Factura `SCKBF1XZ-0005`: base 8,26 € + IVA 1,73 %
+   = 9,99 €, amb la línia «IVA (21 % incluido en 8,26 €)». L'extensió 0.3.4 reenvia
+   `tax_rates` correctament.
+
+1-ter. **NIF de l'emissor a la factura** — 🔴 detectat el 7/08, obert.
+
+   La factura de prova porta nom, adreça i correu del titular, però **no el NIF**. Una
+   factura espanyola ha de portar el NIF de qui l'emet, i aquestes són les que rebran
+   els clients reals.
+
+   Afegir-lo a la plantilla de factures:
+   https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/settings/billing/invoice
+   → secció d'identificadors fiscals del compte → afegir `ES47939862L` (o `47939862L`
+   segons el format que accepti) i marcar que es mostri a les factures.
+
+   Fer-ho **als dos modes**, TEST i LIVE, i tornar a emetre una factura de prova per
+   comprovar que hi surt.
+
    **1-bis · El canvi que no es pot oblidar al pas a LIVE:**
 
-   1. Crear el mateix tipus a LIVE: https://dashboard.stripe.com/acct_1T4khvGXsJqj46j9/tax-rates
-      (IVA · España · 21 % · **Sí (incluido)** · descripció `IVA 21%`).
-   2. Substituir `STRIPE_TAX_RATE_ID` a `functions/index.js` pel `txr_` **de LIVE**.
-   3. `firebase deploy --only functions --project globalplay360-3f9a1`.
+   1. ✅ **Fet el 7/08.** Tipus de LIVE creat: **`txr_1U1mtwGXsJqj46j9L2QELLxt`**
+   2. ⏳ Substituir `STRIPE_TAX_RATE_ID` a `functions/index.js` per aquest ID de LIVE.
+      **No fer-ho abans del tall**: mentre l'extensió faci servir la clau de TEST, posar-hi
+      l'ID de LIVE trencaria el checkout de proves.
+   3. ⏳ `firebase deploy --only functions --project globalplay360-3f9a1`.
+
+   | Mode | Tax rate ID |
+   |---|---|
+   | TEST (actiu al codi ara) | `txr_1U1lfDGXsJqj46j9l7L5ByQk` |
+   | LIVE (pendent de posar) | `txr_1U1mtwGXsJqj46j9L2QELLxt` |
 
    Si s'oblida, el checkout LIVE peta de seguida amb «No such tax rate». Molesta, però
    avisa: el mode silenciós seria cobrar sense IVA i adonar-se'n a la declaració.
@@ -90,38 +130,80 @@ de cometre i el més car: crear el catàleg en TEST i creure que ja està fet.
 6. **Restricted API key** (LIVE) — permís **Webhook Endpoints: Ninguno**. Editar la key,
    no recrear-la.
 
-7. **Webhook endpoint** (LIVE) apuntant a l'extensió. Guardar el `whsec_...`.
-   Esdeveniments: els mateixos que en TEST.
+7. **Webhook endpoint** (LIVE) — ✅ **ja existeix** (verificat 7/08). Es diu «Firebase GP360
+   TEST» —nom enganyós— i apunta a
+   `https://europe-west1-globalplay360-3f9a1.cloudfunctions.net/ext-firestore-stripe-payments-handleWebhookEvents`.
+   Els 401 que s'hi veuen són normals abans del tall: l'extensió encara té el secret de TEST.
+   Cal revelar-ne el `whsec_` per al pas 8.
+
+7-bis. **Treure els `invoice.*` de la subscripció d'esdeveniments** (detectat 7/08).
+
+   `invoice.paid` falla sempre: *«Value for argument "documentPath" is not a valid resource
+   path»*. Hipòtesi: el webhook va en versió d'API `2026-01-28.clover` i l'extensió 0.3.4
+   és d'abans que Stripe mogués `invoice.subscription` dins de `parent`.
+
+   Res de l'app llegeix factures de Firestore (l'usuari se les baixa del Customer Portal),
+   així que es treuen tots els `invoice.*`. Es mantenen `product.*`, `price.*`,
+   `checkout.session.completed`, `customer.subscription.*`, `payment_intent.*` i
+   `tax_rate.*`. El `past_due` no en depèn: arriba per `customer.subscription.updated`.
+
+   Solució de fons, no ara: migrar a l'extensió mantinguda d'`invertase`.
+
+   > ⚠️ **Un sol secret de webhook.** L'extensió només en guarda un. Ara serveix TEST i
+   > rebutja LIVE; **després del tall serà a l'inrevés i el QA en mode de prova deixarà de
+   > sincronitzar amb Firestore.** És conseqüència d'un sol projecte de Firebase per als
+   > dos modes. Poder seguir provant en TEST després del llançament exigiria un segon
+   > projecte: decisió d'arquitectura, no un pas d'aquest runbook.
 
 ---
 
 ## Fase B · Secrets i desplegament
 
-8. **Crear les versions noves** dels secrets (no substitueixen res: s'afegeixen):
+> **Abans de res: `firebase ext:list` i `firebase ext:export`.** El 8/08 es va descobrir
+> que el repositori descrivia una extensió que no era la desplegada. Comprovar-ho abans de
+> tocar l'extensió, sempre.
+>
+> Instància real: **`invertase/firestore-stripe-payments@0.3.12`**, instància
+> `firestore-stripe-payments`. Els secrets **no porten el prefix `ext-`**.
+> Els dos ja apunten a **`versions/latest`** des del 17/07: el P0 #12 estava tancat.
+
+8. **Crear les versions noves** dels secrets (no substitueixen res: s'afegeixen a sobre, i
+   com que la config apunta a `latest`, la nova passa a ser la vigent):
 
    ```bash
-   # Clau secreta LIVE (sk_live_...)
-   gcloud secrets versions add ext-firestore-stripe-payments-STRIPE_API_KEY \
+   # Clau LIVE de l'extensió (restringida rk_live_… o secreta sk_live_…)
+   gcloud secrets versions add firestore-stripe-payments-STRIPE_API_KEY \
      --project=globalplay360-3f9a1 --data-file=-
 
-   # Webhook secret LIVE (whsec_... del pas 7)
-   gcloud secrets versions add ext-firestore-stripe-payments-STRIPE_WEBHOOK_SECRET \
+   # Webhook secret de l'endpoint de LIVE (whsec_…)
+   gcloud secrets versions add firestore-stripe-payments-STRIPE_WEBHOOK_SECRET \
      --project=globalplay360-3f9a1 --data-file=-
    ```
 
    Enganxar el valor i tancar amb Ctrl+D. **No passar la clau per `--data-file` amb un
    fitxer al repo ni deixar-la a l'historial de la terminal.**
 
-9. **Desplegar l'extensió** perquè llegeixi `versions/latest`:
+   Estat previ dels secrets (8/08): `STRIPE_API_KEY` té 1 versió (16/07);
+   `STRIPE_WEBHOOK_SECRET` té la 3 i la 4 actives i la 1 i la 2 destruïdes.
+
+9. **Forçar que les funcions agafin la versió nova.** Amb `versions/latest`, el valor es
+   resol quan arrenca una instància: les instàncies calentes seguirien amb la clau vella.
+   Redesplegar l'extensió les renova de cop:
 
    ```bash
    firebase deploy --only extensions --project globalplay360-3f9a1
    ```
 
-10. **Verificar que ha agafat la clau LIVE.** Aquest és el pas que la configuració vella
-    feia impossible: amb `versions/1` el desplegament passava igual i seguia en TEST.
-    - Stripe LIVE → *Desarrolladores → Webhooks*: l'endpoint rep esdeveniments amb **2xx**.
-    - Firestore: la col·lecció `products` conté els 2 products LIVE amb els seus prices.
+   > ⚠️ **Aquesta comanda només és segura si el repositori està sincronitzat.** Fins al
+   > 8/08 hauria degradat l'extensió a `stripe@0.3.4` i l'hauria repuntada a un secret
+   > inexistent. Comprovar sempre que `firebase.json` diu `invertase/…@0.3.12` i que
+   > `extensions/firestore-stripe-payments.env` és idèntic a la sortida d'`ext:export`.
+
+10. **Verificar que ha agafat la clau LIVE:**
+    - Stripe LIVE → l'endpoint del webhook rep esdeveniments amb **2xx** i deixa de donar
+      401 (`Webhook signature verification failed`).
+    - Registres: `gcloud functions logs read ext-firestore-stripe-payments-handleWebhookEvents --region=europe-west1 --project=globalplay360-3f9a1`
+    - Firestore: la col·lecció `products` conté els 2 products de LIVE amb els seus prices.
     - La PricingPage mostra 9,99 / 99,99 / 24,99 / 249,99.
 
 ---
